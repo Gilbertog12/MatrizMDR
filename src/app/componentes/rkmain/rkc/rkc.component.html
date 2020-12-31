@@ -1,0 +1,569 @@
+<h6 class="article-title">Area > Proceso > Subproceso > Actividad</h6>
+<div class="col-xl-12 text-right" align="end" [ngSwitch]="actividadModel.actividadStatus">
+
+
+    <div *ngSwitchCase="'CREADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'PENDIENTE INACTIVACION'">
+
+        <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
+        <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+    </div>
+
+    <div *ngSwitchCase="'MODIFICADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'ENVIADO A VALIDACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
+        </mat-dialog-actions>
+    </div>
+
+    <div *ngSwitchCase="'PENDIENTE DE APROBACION'">
+        <mat-dialog-actions align="end">
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+
+    </div>
+    <!-- <div *ngSwitchCase="'RECHAZADO'">
+
+        <mat-dialog-actions align="end" cdkDragHandle>
+
+            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="accent" (click)="consola('archivar')">Archivar</button>
+            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
+
+
+
+        </mat-dialog-actions>
+
+    </div> -->
+
+    <div *ngSwitchCase="'ENVIADO A APROBACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+    </div>
+
+</div>
+<br>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaId" placeholder="Area" [(ngModel)]="actividadModel.areaId" #areaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaDescripcion" placeholder="" [(ngModel)]="actividadModel.areaDescripcion" #areaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoId" placeholder="Proceso" [(ngModel)]="actividadModel.procesoId" #procesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoDescripcion" placeholder="" [(ngModel)]="actividadModel.procesoDescripcion" #procesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoId" placeholder="Subproceso" [(ngModel)]="actividadModel.subprocesoId" #subprocesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoDescripcion" placeholder="" [(ngModel)]="actividadModel.subprocesoDescripcion" #subprocesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadId" placeholder="Actividad" [(ngModel)]="actividadModel.actividadId" #actividadId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <a (click)="tablero(actividadModel.actividadStatus)"><input matInput type="text" name="actividadDescripcion" placeholder="" [(ngModel)]="actividadModel.actividadDescripcion" #actividadDescripcion="ngModel" readonly="true" /></a>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <mat-form-field>
+                                <textarea style="height: 20px;" matInput name="actividadDescripcionExt" placeholder="Descripción extendida" [(ngModel)]="actividadModel.actividadDescripcionExt" #actividadDescripcionExt="ngModel" readonly="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput style="width: auto;" type="text" name="actividadIdClasificacion" placeholder="Clasif" [(ngModel)]="actividadModel.actividadIdClasificacion" #actividadIdClasificacion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input matInput style="width: auto " type="text" name="actividadDescClasificacion" placeholder="" [(ngModel)]="actividadModel.actividadDescClasificacion" #actividadDescClasificacion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput style="width: auto" type="text" name="actividadRiesgoPuroDesc" placeholder="Riesgo puro" [(ngModel)]="actividadModel.actividadRiesgoPuroDesc" #actividadRiesgoPuroDesc="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput style="width: auto" type="text" name="actividadRiesgoResidualDesc" placeholder="Riesgo residual" [(ngModel)]="actividadModel.actividadRiesgoResidualDesc" #actividadRiesgoResidualDesc="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput style="width: auto" type="text" name="actividadStatus" placeholder="Status" [(ngModel)]="actividadModel.actividadStatus" #actividadStatus="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput style="width: auto" type="text" name="actividadVersion" placeholder="Versión" [(ngModel)]="actividadModel.actividadVersion" #actividadVersion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput style="width: auto" type="text" name="actividadFechaApprovedDate" [(ngModel)]="actividadModel.actividadFechaApprovedDate" #actividadFechaApprovedDate="ngModel" placeholder="Fecha" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn !== 'lectura'">
+        <mat-tab-group>
+            <mat-tab label="Evaluación Riesgo">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <button *ngIf='ActivarBoton' class="BotonSinColorNiRelleno" type="button" (click)='ReordenarItems()'>Reordenar</button>
+                                </th>
+                                <th style="text-align: center; ">
+                                    <p><b></b></p>
+                                </th>
+                                <th colspan=2 style="text-align: center; ">Seguridad y Salud Ocupacional</th>
+                                <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                                <th colspan=2 style="text-align: center; ">Operacional</th>
+                            </tr>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                                    <p><b></b></p>Tarea</th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción Tarea</th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                                <tr *ngFor="let item of tareasList" cdkDrag>
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete === "Y"|| item.estado ==="002" && item.pendingDelete === "Y" || item.estado ==="003" && item.pendingDelete === "Y" || item.estado ==="006" && item.pendingDelete === "Y"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete === "Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete === "Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+
+                                    <td title="Ítem pendiente por enviar a validar." *ngIf=' item.estado ==="001" && item.pendingDelete === "N" || item.estado ==="002" && item.pendingDelete === "N" || item.estado ==="003"  && item.pendingDelete === "N"|| item.estado ==="006" && item.pendingDelete === "N"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                                    <td title="Ítem pendiente de validar." *ngIf=' item.estado ==="004" && item.pendingDelete === "N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                    <td title="Ítem pendiente por Aprobar" *ngIf=' item.estado ==="007" && item.pendingDelete === "N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                                    <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                                    <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                                    <td title="Aprobado" *ngIf='item.estado ==="008" && item.pendingDelete === "N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoPuroS}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoResidualS}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoPuroM}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoResidualM}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoPuroN}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoResidualN}}</td>
+                                </tr>
+                            </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab label="Std. Job">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; height: 30px;"></th>
+
+                                <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                    <div [ngSwitch]="canAdd">
+                                        <div *ngSwitchCase="'N'">
+
+                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()" disabled>
+                              <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                          </button>
+                                        </div>
+                                        <div *ngSwitchCase="'Y'">
+
+                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
+                              <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
+                          </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="text-align: left; height: 30px;"></th>
+                                <th style="text-align: left;">Std Job No</th>
+                                <th style="text-align: left; width: 300px;">Std Job Descripción</th>
+                                <th style="text-align: left;"><b>Task No</b></th>
+                                <th style="text-align: left;"><b>Task Descripción</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of stdJobList; let indice = index">
+                                <td>{{indice+1}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <div [ngSwitch]="canAdd">
+
+                                        <div *ngSwitchCase="'Y'">
+                                            <button class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)">
+                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                        </button>
+                                        </div>
+                                        <div *ngSwitchCase="'N'">
+                                            <button class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" disabled>
+                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                        </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <button class="btn btn-sm btn-light btn-round" (click)="cargarequipo(item)">
+                        <img class="img-circle" src="assets/images/Help.png" style="width: 10px; height: 10px;">
+                    </button>
+                                </td>
+                                <td *ngIf='item.statusId ==="001" || item.statusId ==="002"||item.statusId ==="003"|| item.statusId ==="006"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                                <td *ngIf='item.statusId ==="004"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                <td *ngIf='item.statusId ==="007"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                                <td *ngIf='item.statusId ==="000"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                <!-- <td *ngIf='item.statusId !=="008"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
+                                <td *ngIf='item.statusId ==="008"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobTaskNo}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobTaskDesc}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab label="Detalle">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th colspan="2" rowspan="2" style="text-align: center;">Riesgo</th>
+                                <th colspan="2" rowspan="2" style="text-align: center;">Tarea</th>
+                                <th colspan="2" rowspan="2" style="text-align: center;">Consecuencia</th>
+                                <th colspan=2 style="text-align: center; "> Seguridad y Salud Ocupacional</th>
+                                <th colspan=2 style="text-align: center; ">Medio ambiente</th>
+                                <th colspan=2 style="text-align: center; ">Negocio</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left; " id="estatico">Puro</th>
+                                <th style="text-align: left; " id="estatico">Residual</th>
+                                <th style="text-align: left; " id="estatico">Puro</th>
+                                <th style="text-align: left; " id="estatico">Residual</th>
+                                <th style="text-align: left; " id="estatico">Puro</th>
+                                <th style="text-align: left; " id="estatico">Residual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of detalleList">
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.tareaId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.tareaDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidadM}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidadM}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidadN}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidadN}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidadS}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidadS}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab label="Log">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Fecha y Hora </th>
+                                <th style="text-align: left;">Usuario</th>
+                                <th style="text-align: left;">Operacion</th>
+                                <th style="text-align: left;">Item</th>
+                                <!-- <th style="text-align: left;">Ruta</th> -->
+                                <th style="text-align: left; width: 400px;">Before</th>
+                                <th style="text-align: left; width: 400px;">After</th>
+                                <th style="text-align: left;">Versión</th>
+                                <!-- <th style="text-align: left;">Consecuencia</th>
+                                <th style="text-align: left;">Control</th>
+                                <th style="text-align: left;">Fecha</th>
+                                <th style="text-align: left;">Hora</th>
+                                <th style="text-align: left;">Operación</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of logList">
+                                <td class="mdl-data-table__cell--non-numeric">{{item.ULTIMAFECHAHORAMODIFICACION}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.ultimaUsuarioModifico}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.operacion}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.item}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.before}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.after}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.version}}</td>
+                                <!-- <td class="mdl-data-table__cell--non-numeric">{{item.tarea}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.dimension}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgo}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuencia}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.control}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.ultimaHoraModificacion}}</td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn === 'lectura'">
+        <mat-tab-group>
+            <mat-tab label="Evaluación Riesgo">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <button *ngIf='ActivarBoton' class="BotonSinColorNiRelleno" type="button" (click)='ReordenarItems()'>Reordenar</button>
+                                </th>
+                                <th style="text-align: center; ">
+                                    <p><b></b></p>
+                                </th>
+                                <th colspan=2 style="text-align: center; ">Seguridad y Salud Ocupacional</th>
+                                <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                                <th colspan=2 style="text-align: center; ">Operacional</th>
+                            </tr>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                                    <p><b></b></p>Tarea</th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción Tarea</th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                                <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                                <tr *ngFor="let item of tareasListLectura" cdkDrag>
+                                    <td *ngIf=' item.estado ==="001" || item.estado ==="002" || item.estado ==="003" || item.estado ==="006"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                                    <td *ngIf=' item.estado ==="004"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                    <td *ngIf=' item.estado ==="007"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                                    <td *ngIf=' item.estado ==="000"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <td *ngIf=' item.estado ==="010"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (AR)</a></td>
+                                    <td *ngIf='item.estado ==="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoPuroS}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoResidualS}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoPuroM}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoResidualM}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoPuroN}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.tareaRiesgoResidualN}}</td>
+                                </tr>
+                            </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab label="Std. Job">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; height: 30px;"></th>
+                                <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                    <div [ngSwitch]="canAdd">
+                                        <div *ngSwitchCase="'N'">
+
+                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()" disabled>
+                              <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                          </button>
+                                        </div>
+                                        <div *ngSwitchCase="'Y'">
+
+                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
+                              <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
+                          </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="text-align: left; height: 30px;"></th>
+                                <th style="text-align: left;">Std Job No</th>
+                                <th style="text-align: left; width: 300px;">Std Job Descripción</th>
+                                <th style="text-align: left;"><b>Task No</b></th>
+                                <th style="text-align: left;"><b>Task Descripción</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of stdJobListLectura; let indice = index">
+                                <td>{{indice+1}}</td>
+
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <div [ngSwitch]="canAdd">
+
+                                        <div *ngSwitchCase="'Y'">
+                                            <button class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)">
+                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                        </button>
+                                        </div>
+                                        <div *ngSwitchCase="'N'">
+                                            <button class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" disabled>
+                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                        </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <button class="btn btn-sm btn-light btn-round" (click)="cargarequipo(item)">
+                        <img class="img-circle" src="assets/images/Help.png" style="width: 10px; height: 10px;">
+                    </button>
+                                </td>
+
+                                <!-- <td *ngIf='item.statusId !=="008"' class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobNo}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobTaskNo}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.stdJobTaskDesc}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab label="Detalle">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th colspan="2" rowspan="2" style="text-align: center;">Riesgo</th>
+                                <th colspan="2" rowspan="2" style="text-align: center;">Tarea</th>
+                                <th colspan="2" rowspan="2" style="text-align: center;">Consecuencia</th>
+                                <th colspan=2 style="text-align: center; "> Seguridad y Salud Ocupacional</th>
+                                <th colspan=2 style="text-align: center; ">Medio ambiente</th>
+                                <th colspan=2 style="text-align: center; ">Negocio</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left; " id="estatico">Puro</th>
+                                <th style="text-align: left; " id="estatico">Residual</th>
+                                <th style="text-align: left; " id="estatico">Puro</th>
+                                <th style="text-align: left; " id="estatico">Residual</th>
+                                <th style="text-align: left; " id="estatico">Puro</th>
+                                <th style="text-align: left; " id="estatico">Residual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of detalleList">
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.tareaId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.tareaDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidadM}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidadM}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidadN}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidadN}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidadS}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidadS}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <mat-tab label="Log">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Fecha y Hora </th>
+                                <th style="text-align: left;">Usuario</th>
+                                <th style="text-align: left;">Operacion</th>
+                                <th style="text-align: left;">Item</th>
+                                <!-- <th style="text-align: left;">Ruta</th> -->
+                                <th style="text-align: left; width: 400px;">Before</th>
+                                <th style="text-align: left; width: 400px;">After</th>
+                                <th style="text-align: left;">Versión</th>
+                                <!-- <th style="text-align: left;">Consecuencia</th>
+                                <th style="text-align: left;">Control</th>
+                                <th style="text-align: left;">Fecha</th>
+                                <th style="text-align: left;">Hora</th>
+                                <th style="text-align: left;">Operación</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of logList">
+                                <td class="mdl-data-table__cell--non-numeric">{{item.ULTIMAFECHAHORAMODIFICACION}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.ultimaUsuarioModifico}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.operacion}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.item}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.before}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.after}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.version}}</td>
+                                <!-- <td class="mdl-data-table__cell--non-numeric">{{item.tarea}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.dimension}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgo}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuencia}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.control}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.ultimaHoraModificacion}}</td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+</div>

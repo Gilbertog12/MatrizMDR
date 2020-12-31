@@ -1,0 +1,116 @@
+<div class="page-auth">
+    <div class="main-body">
+        <div class="card card-white">
+            <div class="card-content">
+                <div class="logo">
+                    <div class="top-nav-left">
+                        <a [routerLink]="['/login']"><img src="assets/images/logo_collahuasi.png" style="width: 100px; height: 40px;"></a>
+                    </div>
+                    <div class="top-nav-right"><b style="font-size: 10px;">Matriz de Riesgos <br> {{ambiente}}</b></div>
+                </div>
+                <form *ngIf="pass === false ; else test" name="material_login_form" class="form-validation" (ngSubmit)=" login()" #loginForm="ngForm" novalidate>
+                    <fieldset>
+                        <div class="form-group">
+                            <mat-form-field class="full-width">
+                                <mat-icon matSuffix class="material-icons">person_outline</mat-icon>
+                                <input matInput type="text" name="username" (change)="defaultvalues()" placeholder="Usuario" [(ngModel)]="model.username" #username="ngModel">
+
+
+                            </mat-form-field>
+
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field class="full-width">
+                                <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+                                <input matInput type="password" name="password" placeholder="Contraseña" [(ngModel)]="model.password" #password="ngModel">
+
+
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field class="full-width">
+
+                                <!-- <mat-icon matSuffix class="material-icons">account_balance</mat-icon> -->
+                                <!-- <input required matInput type="text" name="district" placeholder="Distrito" [(ngModel)]="model.district" #district="ngModel"> -->
+                                <label for="district">Distrito</label>
+                                <mat-select class="full-width" name="district" placeholder="Distrito" [(ngModel)]="model.district" #district="ngModel">
+                                    <mat-option *ngFor="let item of districts" value="{{item.name}}">{{item.name}} - {{item.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+
+                            <mat-form-field class="full-width">
+                                <!-- <mat-icon matSuffix class="material-icons">all_out</mat-icon> -->
+                                <label for="position">Posicion</label>
+                                <!-- <input required matInput type="text" name="position" placeholder="Posición" [(ngModel)]="model.position" #position="ngModel"> -->
+                                <mat-select class="full-width" [(value)]='posicion' name="position" [(ngModel)]="model.position" #position="ngModel">
+                                    <mat-option *ngFor="let item of positions" value="{{item.name}}">{{item.name}} - {{item.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+
+
+                        <div class="top-nav-left">
+                            <a (click)="copyright()"><img class="img-circle" src="assets/images/Help.png" style="width: 25px; height: 25px;"></a>
+                        </div>
+                        <div class="top-nav-right"><button mat-raised-button type="submit" [disabled]="!loginForm.form.valid" color="primary" class="float-right">Entrar</button></div>
+                    </fieldset>
+                </form>
+                <ng-template #test>
+                    <form name="material_login_form" class="form-validation" (ngSubmit)=" login()" #loginForm="ngForm" novalidate>
+                        <fieldset>
+                            <div class="form-group">
+                                <mat-form-field class="full-width">
+                                    <mat-icon matSuffix class="material-icons">person_outline</mat-icon>
+                                    <input matInput type="text" name="username" placeholder="Usuario" [(ngModel)]="model.username" #username="ngModel">
+
+
+                                </mat-form-field>
+
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field class="full-width">
+                                    <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+                                    <input matInput type="password" name="password" (change)="defaultvalues()" placeholder="Contraseña" [(ngModel)]="model.password" #password="ngModel">
+
+
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field class="full-width">
+
+                                    <!-- <mat-icon matSuffix class="material-icons">account_balance</mat-icon> -->
+                                    <!-- <input required matInput type="text" name="district" placeholder="Distrito" [(ngModel)]="model.district" #district="ngModel"> -->
+                                    <label for="district">Distrito</label>
+                                    <mat-select class="full-width" name="district" placeholder="Distrito" [(ngModel)]="model.district" #district="ngModel">
+                                        <mat-option *ngFor="let item of districts" value="{{item.name}}">{{item.name}} - {{item.value}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+
+                                <mat-form-field class="full-width">
+                                    <!-- <mat-icon matSuffix class="material-icons">all_out</mat-icon> -->
+                                    <label for="position">Posicion</label>
+                                    <!-- <input required matInput type="text" name="position" placeholder="Posición" [(ngModel)]="model.position" #position="ngModel"> -->
+                                    <mat-select class="full-width" name="position" [(value)]='posicion' [(ngModel)]="model.position" #position="ngModel">
+                                        <mat-option *ngFor="let item of positions" value="{{item.name}}">{{item.name}} - {{item.value}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+
+
+                            <div class="top-nav-left">
+                                <a (click)="copyright()"><img class="img-circle" src="assets/images/Help.png" style="width: 25px; height: 25px;"></a>
+                            </div>
+                            <div class="top-nav-right"><button mat-raised-button type="submit" [disabled]="!loginForm.form.valid" color="primary" class="float-right">Entrar</button></div>
+                        </fieldset>
+                    </form>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.2rem;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.mdl-data-table th {
+    position: relative;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 12px;
+    letter-spacing: 0;
+    height: 28px;
+    color: black;
+    padding-bottom: 4px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.mdl-data-table tbody tr {
+    font-size: 10px;
+    line-height: 12px;
+    position: relative;
+    height: 28px;
+    padding-bottom: 4px;
+    transition-duration: 0.14s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: background-color;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.box-body {
+    padding: .25rem;
+}
+
+.divider {
+    display: block;
+    border: 0;
+    border-top: 1px solid transparent;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.mdl-data-table__cell--non-numeric {
+    text-align:left !important;
+    height: 9px !important;
+    padding: 0px 0px 0px 12px;
+    max-width: 300px;
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+table th {
+  position: sticky;
+  background: white;
+  top: -1px;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+thead tr:first-child th { 
+    position: sticky; 
+    background: white;
+    top: -1px; 
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+#estatico{
+    position: sticky; 
+    background: white;
+    top: 25px; 
+}
+.article-title{
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 60px;
+    background-color:#175641;
+    display:inline-block;
+    width: 100%;
+
+}

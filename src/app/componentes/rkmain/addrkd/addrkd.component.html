@@ -1,0 +1,28 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{ data.title }}</h1>
+<form name="rkd_form" class="form-validation" (ngSubmit)="!dimensionControl.hasError('required') && rkdForm.form.valid && guardar()" #rkdForm="ngForm" noValidate>
+    <div class="row">
+        <div class="col-xl-7">
+            <mat-form-field>
+
+
+                <mat-label>Seleccione una Dimensión</mat-label>
+
+                <mat-select [formControl]="dimensionControl" required [(ngModel)]="dimensionModel.dimensionId" #dimensionId multiple>
+                    <!-- <input  matInput focused="'true'"  (keydown)="Buscar($event)" type="text" [(ngModel)]="dimensionModel.name" value={{dimensionModel.name}} name='name' placeholder="search"> -->
+                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="descripcion" name="descripcion">
+                    <mat-option *ngFor="let item of dimensionesList| filterPipe:descripcion " (keydown)="$event.stopPropagation()" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="dimensionControl.hasError('required')">No ha seleccionado una Dimensión</mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-dialog-actions align="end">
+        <button type="submit" class="btn-w-md mat-raised-button mat-primary" color="primary" md-raised-button="" ng-reflect-color="primary">
+                    <span class="mat-button-wrapper">
+                    <mat-icon mat-list-icon>save</mat-icon>
+                    {{ data.button_confirm }}
+                    </span>
+            </button>
+        <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+    </mat-dialog-actions>
+</form>

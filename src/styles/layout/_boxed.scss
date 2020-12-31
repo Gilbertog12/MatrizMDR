@@ -1,0 +1,124 @@
+//Tipografia Utilizada por 'collahuasi'
+// Desktop only, for boxed layout
+.app-main {
+    max-width: 100%;
+    margin: auto;
+    transition: max-width .35s ease;
+    .app-sidebar {
+        left: auto;
+    }
+}
+
+.bt {
+    padding-left: 300px !important;
+    font-size: 20px !important;
+    color: #175641 !important;
+    padding-top: 10px !important;
+    text-align: center;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    .app-header-inner {}
+    .app-header {
+        >.app-header-inner {
+            max-width: 100%;
+            margin: auto;
+            transition: max-width .35s ease;
+        }
+    }
+}
+
+@media only screen and (max-width:1024px) {
+    .app-main {
+        max-width: 100%;
+        margin: auto;
+        transition: max-width .35s ease;
+        .app-sidebar {
+            left: auto;
+        }
+        .bt {
+            padding-left: 100px !important;
+            font-size: 20px !important;
+            color: #175641 !important;
+            padding-top: 10px !important;
+            text-align: center;
+            font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+        }
+        .app-header {
+            >.app-header-inner {
+                max-width: 100%;
+                margin: auto;
+                transition: max-width .35s ease;
+            }
+        }
+    }
+}
+
+@media only screen and(max-width:400px) {
+    .app-header a img {
+        display: none;
+    }
+    .bt {
+        padding-left: 500px !important;
+        font-size: 20px !important;
+        color: #175641 !important;
+        padding-top: 10px !important;
+        text-align: center;
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    }
+    button {
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    }
+    .mat-button,
+    .header-btn button {
+        display: inline-block;
+        width: 12px !important;
+        height: 12px !important;
+        font-size: 8px;
+    }
+}
+
+@media only screen and(max-width:700px) {
+    .app-header a img {
+        display: none;
+    }
+    .bt {
+        padding-left: 500px !important;
+        font-size: 20px !important;
+        color: #175641 !important;
+        padding-top: 10px !important;
+        text-align: center;
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    }
+    .mat-button,
+    .header-btn button {
+        padding-top: 0px;
+        width: 12px !important;
+        height: 12px !important;
+        font-size: 12px !important;
+    }
+    .mat-button,
+    .header-btn button button {
+        color: red;
+    }
+}
+
+@media only screen and (min-width: $l_screen_md_min) {
+    .layout-boxed {
+        &.app-main {
+            max-width: $l_layout_boxed_max_width;
+            box-shadow: 0 0 1px rgba(0, 0, 0, .2);
+            .app-header {
+                // in boxed mode, .app-header position is the same, only style of .app-header-inner is changed
+                >.app-header-inner {
+                    max-width: $l_layout_boxed_max_width;
+                    box-shadow: 0 1px 1px rgba(0, 0, 0, .2); // Note: it overrides default $header_box_shadow
+                }
+            }
+            .app-overlay {
+                >.app-overlay-inner {
+                    max-width: $l_layout_boxed_max_width;
+                    margin: auto;
+                }
+            }
+        }
+    }
+}

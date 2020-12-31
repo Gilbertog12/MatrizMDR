@@ -1,0 +1,93 @@
+<h1 mat-dialog-title>Asociar Documento Ellipse</h1>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field>
+                <input matInput type="text" name="documentNo" placeholder="Codigo Ellipse" [(ngModel)]="filterModel.documentNo" #documentNo="ngModel" />
+            </mat-form-field>
+        </div>
+        <div class="col-xl-2">
+            <!-- <mat-form-field>
+                <input matInput type="text" name="documentType" placeholder="Tipo Documento" [(ngModel)]="filterModel.documentType" #documentType="ngModel" />
+            </mat-form-field> -->
+            <mat-form-field>
+                <mat-label>Elija el tipo de Documento</mat-label>
+                <mat-select required [(ngModel)]="filterModel.documentType" #documentType>
+
+                    <mat-option *ngFor="let item of doList" [value]="item.Id" (onSelectionChange)="getDescription(item)">{{item.Id}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-xl-2">
+            <mat-form-field>
+                <input matInput type="text" name="documentTypeDesc" placeholder="Tipo Documento Desc" [(ngModel)]="filterModel.documentTypeDesc" #documentTypeDesc="ngModel" readonly="true" />
+            </mat-form-field>
+        </div>
+        <div class="col-xl-2"></div>
+        <div class="col-xl-2">
+            <button mat-raised-button color="accent" (click)="cargarTablaDocs(refresh, 'R')">Buscar</button>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-8">
+            <mat-form-field>
+                <input matInput type="text" name="startWith" placeholder="Buscar texto en nombre documento" [(ngModel)]="filterModel.startWith" #startWith="ngModel" />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field>
+                <input matInput type="text" name="keyword1" placeholder="Palabras clave 1" [(ngModel)]="filterModel.keyword1" #keyword1="ngModel" />
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field>
+                <input matInput type="text" name="keyword2" placeholder="Palabras clave 2" [(ngModel)]="filterModel.keyword2" #keyword2="ngModel" />
+            </mat-form-field>
+        </div>
+        <div class="col-xl-1"></div>
+        <div class="col-xl-3">
+            <button mat-raised-button class="btn-sm" [disabled]="!activePagination" (click)="cargarTablaDocs(first, 'L')">
+                <i class="material-icons">arrow_left</i>
+            </button>
+            <button mat-raised-button class="btn-sm" [disabled]="!activePagination" (click)="cargarTablaDocs(last, 'R')">
+                <i class="material-icons">arrow_right</i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar>
+            <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 270px;">
+                <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                            <th class="mdl-data-table__cell--non-numeric">No Documento</th>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                            <th class="mdl-data-table__cell--non-numeric">Tipo</th>
+                            <th class="mdl-data-table__cell--non-numeric">Autor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of dataList">
+                            <td>
+                                <mat-checkbox class="example-margin" [(ngModel)]="item.selected" (change)="deseleccionarTodo(item)"></mat-checkbox>
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.documentNo}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.documentTypeDesc}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.documentAuthor}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="aceptar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions>

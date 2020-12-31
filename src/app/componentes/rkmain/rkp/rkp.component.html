@@ -1,0 +1,221 @@
+<h6 class="article-title">Area > Proceso</h6>
+<div class="col-xl-12 text-right" align="end" [ngSwitch]="procesoModel.procesoStatus">
+
+
+    <div *ngSwitchCase="'CREADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'PENDIENTE INACTIVACION'">
+
+       <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+    </div>
+
+    <div *ngSwitchCase="'MODIFICADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'ENVIADO A VALIDACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
+        </mat-dialog-actions>
+    </div>
+
+    <div *ngSwitchCase="'PENDIENTE DE APROBACION'">
+        <mat-dialog-actions align="end">
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+
+    </div>
+    <!-- <div *ngSwitchCase="'RECHAZADO'">
+
+        <mat-dialog-actions align="end" cdkDragHandle>
+
+            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="accent" (click)="consola('archivar')">Archivar</button>
+            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
+            <!-- <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion" mat-raised-button color="accent" (click)="consola()">Re</button> -->
+
+
+
+        <!-- </mat-dialog-actions> -->
+
+    <!-- </div> --> 
+
+    <div *ngSwitchCase="'ENVIADO A APROBACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaId" placeholder="Area" [(ngModel)]="procesoModel.areaId" #areaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaDescripcion" placeholder="" [(ngModel)]="procesoModel.areaDescripcion" #areaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoId" placeholder="Proceso" [(ngModel)]="procesoModel.procesoId" #procesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoDescripcion" placeholder="" [(ngModel)]="procesoModel.procesoDescripcion" #procesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <mat-form-field>
+                                <textarea style="height: 40px;" matInput name="procesoDescripcionExt" placeholder="Descripción extendida" [(ngModel)]="procesoModel.procesoDescripcionExt" #procesoDescripcionExt="ngModel" readonly="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoIdClasificacion" placeholder="Clasificación" [(ngModel)]="procesoModel.procesoIdClasificacion" #procesoIdClasificacion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoDescClasificacion" placeholder="" [(ngModel)]="procesoModel.procesoDescClasificacion" #procesoDescClasificacion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoRiesgoPuro" placeholder="Riesgo Puro" [(ngModel)]="procesoModel.procesoRiesgoPuro" #procesoRiesgoPuro="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoRiesgoResidual" placeholder="Riesgo Residual" [(ngModel)]="procesoModel.procesoRiesgoResidual" #procesoRiesgoResidual="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn !== 'lectura'">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp"  style="height: 500px;">
+            <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                <thead>
+                    <tr>
+                        <th>
+                            <p><b></b></p>
+                        </th>
+                        <th></th>
+                        <th colspan=2 style="text-align: center;">Seguridad y Salud Ocupacional</th>
+                        <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                        <th colspan=2 style="text-align: center;">Negocio</th>
+                    </tr>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                            <p><b></b></p>SubProceso</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción SubProceso</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of subprocesosList">
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001"  && item.pendingDelete ==="Y"|| item.estado ==="002" && item.pendingDelete ==="Y"|| item.estado ==="003"  && item.pendingDelete ==="Y"|| item.estado ==="006" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+
+                        <td title="Ítem pendiente por enviar a validar." *ngIf=' item.estado ==="001" && item.pendingDelete ==="N" || item.estado ==="002" && item.pendingDelete ==="N" || item.estado ==="003" && item.pendingDelete ==="N" || item.estado ==="006" && item.pendingDelete ==="N"'
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                        <td title="Ítem pendiente de validar." *ngIf=' item.estado ==="004" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td title="Ítem pendiente por Aprobar" *ngIf=' item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                        <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                        <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                         <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <td *ngIf='item.estado ==="008" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualN}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn === 'lectura'">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp"  style="height: 500px;">
+            <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                <thead>
+                    <tr>
+                        <th>
+                            <p><b></b></p>
+                        </th>
+                        <th></th>
+                        <th colspan=2 style="text-align: center;">Seguridad y Salud Ocupacional</th>
+                        <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                        <th colspan=2 style="text-align: center;">Negocio</th>
+                    </tr>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                            <p><b></b></p>SubProceso</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción SubProceso</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of subprocesosListLectura">
+
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualN}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

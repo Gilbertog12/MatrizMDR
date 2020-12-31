@@ -1,0 +1,283 @@
+<h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea > Dimension > Riesgo</h6>
+<div class="col-xl-12 text-right" align="end" [ngSwitch]="riesgoModel.riesgoStatus">
+
+
+    <div *ngSwitchCase="'CREADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'PENDIENTE INACTIVACION'">
+
+         <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+    </div>
+
+    <div *ngSwitchCase="'MODIFICADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'ENVIADO A VALIDACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
+        </mat-dialog-actions>
+    </div>
+
+    <div *ngSwitchCase="'PENDIENTE DE APROBACION'">
+        <mat-dialog-actions align="end">
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+
+    </div>
+    <!-- <div *ngSwitchCase="'RECHAZADO'">
+
+        <mat-dialog-actions align="end" cdkDragHandle>
+
+            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="accent" (click)="consola('archivar')">Archivar</button>
+            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
+            
+
+
+        </mat-dialog-actions>
+
+    </div> -->
+
+    <div *ngSwitchCase="'ENVIADO A APROBACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaId" placeholder="Area" [(ngModel)]="riesgoModel.areaId" #areaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaDescripcion" placeholder="" [(ngModel)]="riesgoModel.areaDescripcion" #areaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoId" placeholder="Proceso" [(ngModel)]="riesgoModel.procesoId" #procesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoDescripcion" placeholder="" [(ngModel)]="riesgoModel.procesoDescripcion" #procesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoId" placeholder="Subproceso" [(ngModel)]="riesgoModel.subprocesoId" #subprocesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoDescripcion" placeholder="" [(ngModel)]="riesgoModel.subprocesoDescripcion" #subprocesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadId" placeholder="Actividad" [(ngModel)]="riesgoModel.actividadId" #actividadId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadDescripcion" placeholder="" [(ngModel)]="riesgoModel.actividadDescripcion" #actividadDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="tareaId" placeholder="Tarea" [(ngModel)]="riesgoModel.tareaId" #tareaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="tareaDescripcion" placeholder="" [(ngModel)]="riesgoModel.tareaDescripcion" #tareaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="dimensionId" placeholder="Dimensión" [(ngModel)]="riesgoModel.dimensionId" #dimensionId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="dimensionDescripcion" placeholder="" [(ngModel)]="riesgoModel.dimensionDescripcion" #dimensionDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoId" placeholder="Riesgo" [(ngModel)]="riesgoModel.riesgoId" #riesgoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescripcion" placeholder="" [(ngModel)]="riesgoModel.riesgoDescripcion" #riesgoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <mat-form-field>
+                                <textarea style="height: 40px;" matInput name="riesgoDescripcionExt" placeholder="Descripción extendida" [(ngModel)]="riesgoModel.riesgoDescripcionExt" #riesgoDescripcionExt="ngModel" readonly="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoIdRama" placeholder="Rama" [(ngModel)]="riesgoModel.riesgoIdRama" #riesgoIdRama="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescRama" placeholder="" [(ngModel)]="riesgoModel.riesgoDescRama" #riesgoDescRama="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoIdFamilia" placeholder="Familia" [(ngModel)]="riesgoModel.riesgoIdFamilia" #riesgoIdFamilia="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescRama" placeholder="" [(ngModel)]="riesgoModel.riesgoDescRama" #riesgoDescRama="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="riesgoModel.riesgoRiesgoPuroDesc" #riesgoRiesgoPuroDesc="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="riesgoModel.riesgoRiesgoResidualDesc" #riesgoRiesgoResidualDesc="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn !== 'lectura' ">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp"  style="height:500px;">
+            <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                <thead>
+                    <tr>
+                        <th>
+                            <p><b></b></p>
+                        </th>
+                        <th></th>
+                        <th colspan=2 style="text-align: center; ">Seguridad y Salud Ocupacional</th>
+                        <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                        <th colspan=2 style="text-align: center;">Negocio</th>
+                    </tr>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                            <p><b></b></p>Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual"</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of consecuenciasList">
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete ==="Y" || item.estado ==="002" && item.pendingDelete ==="Y"|| item.estado ==="003"  && item.pendingDelete ==="Y"|| item.estado ==="006" && item.pendingDelete ==="Y"'
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+
+
+                        <td *ngIf=' item.estado ==="001"  && item.pendingDelete ==="N"|| item.estado ==="002" && item.pendingDelete ==="N" || item.estado ==="003" && item.pendingDelete ==="N" || item.estado ==="006" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                        <td *ngIf=' item.estado ==="004" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td *ngIf=' item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                        <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                        <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                         <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <td *ngIf='item.estado ==="008" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualN}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-xl-12" *ngIf="btn === 'lectura' ">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp"  style="height:500px;">
+            <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                <thead>
+                    <tr>
+                        <th>
+                            <p><b></b></p>
+                        </th>
+                        <th></th>
+                        <th colspan=2 style="text-align: center; ">Seguridad y Salud Ocupacional</th>
+                        <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                        <th colspan=2 style="text-align: center;">Negocio</th>
+                    </tr>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                            <p><b></b></p>Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual"</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of consecuenciasListLectura">
+
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualN}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

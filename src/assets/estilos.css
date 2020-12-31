@@ -1,0 +1,19 @@
+.aprobar{
+    color : #EF5350;
+    background: white;
+}
+
+.por_aprobar{
+    color: #00BCD4;
+ background: white;
+}
+
+.por_validar{
+    color: #ffc107;
+background: white;
+}
+
+.validar{
+    color: #66BB6A;
+    background: white;
+}

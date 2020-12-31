@@ -1,0 +1,9 @@
+<div style="font-size: 12px;" mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle
+>{{ data.title }}</div>
+<mat-dialog-content>
+    <div [innerHTML]="data.message"></div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="aceptar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" mat-dialog-close>{{ data.button_close }}</button>
+</mat-dialog-actions>

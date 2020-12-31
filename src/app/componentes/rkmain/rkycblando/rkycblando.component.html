@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+    <!-- <mat-form-field>
+        <input matInput type="text" name="areaId" placeholder="areaId" #areaId readonly="true" value="{{data.areaId}}" [(ngModel)]="cBlandoModel.areaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="procesoId" placeholder="procesoId" #procesoId readonly="true" value="{{data.procesoId}}" [(ngModel)]="cBlandoModel.procesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="subprocesoId" placeholder="subprocesoId" #subprocesoId readonly="true" value="{{data.subprocesoId}}" [(ngModel)]="cBlandoModel.subprocesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="actividadId" placeholder="actividadId" #actividadId readonly="true" value="{{data.actividadId}}" [(ngModel)]="cBlandoModel.actividadId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="tareaId" placeholder="tareaId" #tareaId readonly="true" value="{{data.tareaId}}" [(ngModel)]="cBlandoModel.tareaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="dimensionId" placeholder="dimensionId" #dimensionId readonly="true" value="{{data.dimensionId}}" [(ngModel)]="cBlandoModel.dimensionId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="riesgoId" placeholder="riesgoId" #riesgoId readonly="true" value="{{data.riesgoId}}" [(ngModel)]="cBlandoModel.riesgoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="consecuenciaId" placeholder="consecuenciaId" #consecuenciaId readonly="true" value="{{data.consecuenciaId}}" [(ngModel)]="cBlandoModel.consecuenciaId"/>
+    </mat-form-field> -->
+    <mat-form-field>
+        <mat-label>Seleccione un Cont</mat-label>
+        <mat-select required [(ngModel)]="cBlandoModel.cblandoId" #cblandoId multiple>
+
+            <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="descripcion" name="descripcion">
+            <mat-option *ngFor="let item of cBlandosList |filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+        <!-- <mat-error *ngIf="areaControl.hasError('required')">No ha seleccionado un Area</mat-error> -->
+    </mat-form-field>
+    <!-- <mat-form-field>
+        <input matInput type="text" name="cblandoId" placeholder="Control Blando"[(ngModel)]="cBlandoModel.cblandoId" readonly="true" />
+    </mat-form-field> -->
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions>

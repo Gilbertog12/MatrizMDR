@@ -1,0 +1,489 @@
+<section class="container-fluid no-breadcrumbs">
+    <div class="row">
+        <div *ngIf="checked===true" class="col-xl-4" style="padding-left: 10px; padding-right: 5px;">
+            <div class="box box-default">
+                <div style="position: absolute; right: 0px;">
+                    <button class="btn btn-sm btn-light btn-round" (click)="verSinAprobar()">
+        <img class="img-circle" src="assets/images/Refresh.png" style="width: 10px; height: 10px;">
+        Refrescar
+        </button>
+                </div>
+
+                <mat-slide-toggle [color]="color" [checked]="checked" [(ngModel)]="checked" (change)="switchToTree()">
+                    &nbsp;&nbsp;&nbsp;{{tittle}}
+                </mat-slide-toggle>
+                <input {{cambio}} style="display: none;">
+                <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar>
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 780px;">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                        <thead>
+                            <tr>
+                                <th style="width:10px; height: 28px;"></th>
+                                <th class="mdl-data-table__cell--non-numeric" style="text-align:left;">Ruta</th>
+                                <th class="mdl-data-table__cell--non-numeric" style="text-align:left;">Id</th>
+                                <th class="mdl-data-table__cell--non-numeric" style="text-align:left; width: 300px;">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of aprobacionesList">
+                                <th style="width:10px; height: 28px;">
+                                    <button class="btn btn-sm btn-light btn-round" (click)="verDetalleAprobacion(item)">
+                        <img class="img-circle" src="assets/images/Help.png" style="width: 10px; height: 10px;">
+                    </button>
+                                </th>
+                                <th class="mdl-data-table__cell--non-numeric">{{item.ruta}}</th>
+                                <th class="mdl-data-table__cell--non-numeric">
+                                    <a (click)="verTable(item)" [routerLink]="">{{item.id}}</a>
+                                </th>
+                                <th class="mdl-data-table__cell--non-numeric" style="width: 300px;">{{item.descripcion}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="checked===false" class="col-xl-4" style="padding-left: 10px; padding-right: 5px ">
+            <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="position: sticky;">
+                <div style="position: absolute;
+    right: 0px;">
+
+                    <button alt class="btn btn-sm btn-light btn-round" (click)="VerLeyenda()">
+        <img class="img-circle"  title="Mostrar Leyenda" src="assets/images/Help.png" style="width: 10px; height: 10px;" >
+        </button>
+
+
+                    <ng-template [ngIf]="fix ==='YN'" [ngIfElse]="Lectura">
+
+                        <ng-template [ngIf]="Activo ==='004' || Activo ==='007' || Activo ==='008'" [ngIfElse]="Permitido">
+                            <button id="SinPermisos" [style.display]='enviar' class="btn btn-sm btn-light btn-round" (click)="sendValidate()" disabled>
+<img class="img-circle" src="assets/images/Send.png" style="width: 10px; height: 10px;" >
+</button>
+                        </ng-template>
+
+
+                        <ng-template #Permitido>
+                            <button [style.display]='enviar' class="btn btn-sm btn-light btn-round" (click)="sendValidate()">
+<img class="img-circle" src="assets/images/Send.png" style="width: 10px; height: 10px;" title="Envio a Validar">
+</button>
+                        </ng-template>
+                    </ng-template>
+
+
+
+                    <ng-template #Lectura>
+
+
+                        <button [style.display]='enviar' class="btn btn-sm btn-light btn-round" (click)="sendValidate()" disabled>
+                <img class="img-circle" src="assets/images/Send.png" style="width: 10px; height: 10px;" title="Envio a Validar">
+            </button>
+                    </ng-template>
+
+
+
+                    <button [style.display]='AgregarArea' *ngIf="fix ==='YN'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()">
+        <img   class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;"title="Agregar Area">
+        </button>
+                    <button [style.display]='AgregarArea' *ngIf="fix ==='NN' " class="btn btn-sm btn-light btn-round" (click)="nuevaArea()" disabled>
+        <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;"title="Agregar Area">
+        </button>
+                    <button [style.display]='AgregarArea' *ngIf="fix ==='NY' " class="btn btn-sm btn-light btn-round" (click)="nuevaArea()" disabled>
+        <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;"title="Agregar Area">
+        </button>
+                    <button [style.display]='AgregarArea' *ngIf="fix ==='YY'  " class="btn btn-sm btn-light btn-round" (click)="nuevaArea()" disabled>
+        <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;"title="Agregar Area">
+        </button>
+                    <!-- <button [style.display]='AgregarArea' *ngIf="fix !=='YN'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()" disabled>
+            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;"title="Agregar Area">
+            </button> -->
+                    <button class="btn btn-sm btn-light btn-round" (click)="recargarArbol()">
+        <img class="img-circle" src="assets/images/Refresh.png"  style="width: 10px; height: 10px;">
+        Refrescar
+        </button>
+
+                </div>
+                <!-- <select name="miselect" [(ngModel)]="areaId">
+                <option *ngFor='let item of lista'  [value]="item.value" >{{item.nombre}}</option> 
+                </select>
+            <input type="search" style="height: 20px;" (keyup)='Buscar()' [(ngModel)]="busqueda" name="busqueda" id="">
+                <mat-icon>search</mat-icon> -->
+                <br>
+
+
+                <!-- <mat"fixide-toggle
+        style="display: none;"
+        [color]="color"
+        [checked]="checked"
+        [(ngModel)]="checked"
+        (change)="switchToTable()">
+    &nbsp;&nbsp;&nbsp;
+    </mat-slide-toggle>           -->
+
+                <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar>
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree ">
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                        <button mat-icon-button></button>
+                        <b *ngFor="let item of node.sp">&nbsp;&nbsp;&nbsp;</b>
+                        <a *ngIf="node.status !== '008'" style="color: blue;" [routerLink]="" (click)="ver(node)">{{node.item}}</a>
+                        <a *ngIf="node.status === '008'" style="color: black;" [routerLink]="" (click)="ver(node)">{{node.item}}</a>
+                    </mat-tree-node>
+
+                    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding id="{{node.key}}">
+                        <div [ngSwitch]="node.permiso">
+                            <div *ngSwitchCase="'YY'">
+
+
+                                <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+            </button>
+                                <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+            </button>
+                            </div>
+                            <div *ngSwitchCase="'NN'">
+
+                                <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+            </button>
+                                <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+            </button>
+                            </div>
+                            <div *ngSwitchCase="'NY'">
+
+                                <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+            </button>
+                                <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+            </button>
+                            </div>
+                            <div *ngSwitchCase="'YN' ">
+
+                                <div [ngSwitch]="node.status">
+                                    <div *ngSwitchCase="006">
+
+                                        <ng-template [ngIf]="node.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+
+                                        <ng-template #sinmarca>
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+
+                                    </div>
+                                    <div *ngSwitchCase="010">
+                                        <ng-template [ngIf]="node.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+
+                                        <ng-template #sinmarca>
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+                                    </div>
+
+                                    <div *ngSwitchCase="000">
+                                        <ng-template [ngIf]="node.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+
+                                        <ng-template #sinmarca>
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+                                    </div>
+                                    <div *ngSwitchCase="004">
+                                        <ng-template [ngIf]="node.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; " dis>
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+
+                                        <ng-template #sinmarca>
+
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+                                    </div>
+                                    <div *ngSwitchCase="007">
+                                        <ng-template [ngIf]="node.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                            <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                            <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+
+                                        </ng-template>
+
+                                        <ng-template #sinmarca>
+
+                                            <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                                <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+                                            <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                            </button>
+                                        </ng-template>
+                                    </div>
+                                    <div *ngSwitchDefault>
+                                        <button [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                        <img   class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px; ">
+                                        </button>
+                                        <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)">
+                                        <img   class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px; ">
+                                    </button>
+                                    </div>
+                                </div>
+                                <!-- <div *ngIf="node.status !=='006' || node.status !=='010'">
+
+                                    <button [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                    <img   class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px; ">
+                                    </button>
+                                    <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)">
+                                    <img   class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px; ">
+                                </button>
+                                </div> -->
+                                <!-- <div *ngIf="node.status ==='006' || node.status ==='010'">
+
+                                    <button [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                    <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                    </button>
+                                    <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)">
+                                    <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                    </button>
+                                </div> -->
+
+                            </div>
+                            <div *ngSwitchDefault></div>
+                        </div>
+
+                        <!-- <button class="btn btn-sm btn-light btn-round" (click)="ver(node)">
+        <img class="img-circle" src="assets/images/Play.png" style="width: 10px; height: 10px;">
+        </button> -->
+
+
+                        <b *ngFor="let item of node.sp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                        <!-- <button class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle> -->
+
+
+                        <div *ngIf="treeControl.isExpanded(node)">
+
+                            <div [ngSwitch]="node.hijo">
+                                <div *ngSwitchCase="'N'"></div>
+                                <div *ngSwitchDefault>
+                                    <div>
+                                        <button class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
+
+                <img  *ngIf="node.level !== 8" class="img-circle" src="assets/images/ArrowDown.png"  style="width: 10px; height: 10px; " >
+                </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div *ngIf="!treeControl.isExpanded(node) ">
+
+                            <div [ngSwitch]="node.hijo">
+                                <div *ngSwitchCase="'N'" disabled>
+                                    <button class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle disabled>
+
+                    <img  *ngIf="node.level !== 8 " class="img-circle" src="assets/images/SinFondo.png"  style="width: 10px; height: 10px; " disabled >
+                </button>
+                                </div>
+                                <div *ngSwitchDefault>
+                                    <div>
+                                        <button id='click' class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
+
+                <img *ngIf="node.level !== 8 && node.hijo==='Y'" class="img-circle" src="assets/images/ArrowRigth.png" style="width: 10px; height: 10px; ">
+                </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- <div *ngIf="treeControl.isExpanded(node) == true">
+            <img class="img-circle" src="assets/images/ArrowDown.png" style="width: 10px; height: 10px;">
+        </div>
+        <div *ngIf="treeControl.isExpanded(node) == false">
+            <img class="img-circle" src="assets/images/ArrowRigth.png" style="width: 10px; height: 10px;">
+        </div> -->
+
+
+
+
+                        <a *ngIf="node.level === 1" title="Area" style="background-color: #bdf987e6; font-size: 8px;">AR- </a>
+                        <a *ngIf="node.level === 2" title="Proceso" style="background-color: #bdf987e6; font-size: 8px;">PR- </a>
+                        <a *ngIf="node.level === 3" title="SubProceso" style="background-color: #bdf987e6; font-size: 8px;">SP- </a>
+                        <a *ngIf="node.level === 4" title="Actividad" style="background-color: #bdf987e6; font-size: 8px;">AC- </a>
+                        <a *ngIf="node.level === 5" title="Tarea" style="background-color: #bdf987e6; font-size: 8px;">TA- </a>
+                        <a *ngIf="node.level === 6 " title="Dimension" style="background-color: #bdf987e6; font-size: 8px;">DM- </a>
+                        <a *ngIf="node.level === 7" title="Riesgo" style="background-color: #bdf987e6; font-size: 8px;">RG- </a>
+                        <a *ngIf="node.level === 8" title="Consecuencia" style="background-color: #bdf987e6; font-size: 8px;">CS- </a>
+                        <a *ngIf="node.level === 9" title="Control" style="background-color: #bdf987e6; font-size: 8px;">CT- </a>
+                        <a *ngIf="node.status === '001' || node.status === '002' || node.status === '003'  " title="Ítem pendiente por enviar a validar." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a>
+                        <a *ngIf="node.status === '006' && node.pendingDelete ==='Y' " title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(**)</a></a>
+
+                        <a *ngIf="node.status === '006' && node.pendingDelete ==='N' " title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(**)</a></a>
+
+
+                        <a *ngIf="node.status === '008'" title="Aprobado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}</a>
+                        <a *ngIf="node.status === '004'&& node.pendingDelete ==='Y' " title="Pendiente Inactivacion (Eliminacion)." style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(**)</a></a>
+                        <a *ngIf="node.status === '004'&& node.pendingDelete ==='N' " title="Ítem pendiente de validar." style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(**)</a></a>
+                        <a *ngIf="node.status === '007' && node.pendingDelete ==='Y' " title="Pendiente Inactivacion (Eliminacion)." Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(***)</a></a>
+                        <a *ngIf="node.status === '007' && node.pendingDelete ==='N' " title="Ítem pendiente por Aprobar" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(***)</a></a>
+
+                        <a *ngIf="node.status === '000' " title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(R)</a></a>
+                        <a *ngIf="node.status === '010' " title="Ítem Archivado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(Ar)</a></a>
+                        <!-- <a *ngIf="node.status === '010' " title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(AR)</a></a> -->
+                        <!-- <a *ngIf="node.status === '005'" title="Ítem pendiente por enviar a aprobar" style="color: black;  " [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a> -->
+
+
+
+                        <mat-progress-bar *ngIf="node.isLoading" style="width: 50px" mode="buffer"></mat-progress-bar>
+                    </mat-tree-node>
+                </mat-tree>
+            </div>
+
+        </div>
+
+        <div class="col-xl-8" id="refrescar">
+            <div class="box box-default" *ngIf="showDashboard === true">
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div *ngIf="showDashboard === true && !sololectura" class="col-xl-12 text-center">
+                                <h4 [style.display]='titulo'>Transacciones pendientes</h4>
+                            </div>
+                            <div *ngIf="showDashboard === true && !sololectura" class="col-xl-2"></div>
+                            <div *ngIf="showDashboard === true && !sololectura" class="col-xl-4 text-center">
+                                <div [style.display]='creado' class="card bg-color-warning">
+                                    <a class='pasos'>Paso 1</a>
+                                    <div class="card-content">
+                                        <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.ENVIAR_A_VALIDAR}}</span>
+
+                                        <p><a style="color: black; font-size: 13px;" [routerLink]="" (click)="VerEnviarValidar()"> ITEMS PENDIENTES POR ENVIAR A VALIDAR
+                        
+                                        <a style="font-size: 11px;">(Items en fase de creación, modificación o borrado)</a>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="showDashboard===true && !sololectura" class="col-xl-4 text-center">
+                                <div [style.display]='PendientesValidacion' class="card bg-color-danger">
+                                    <a class='pasos'>Paso 2</a>
+                                    <div class="card-content">
+                                        <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.POR_VALIDAR}}</span>
+                                        <p><a style="color: black; font-size: 13px;" [routerLink]="" (click)="VerValidar()">ITEMS PENDIENTES DE VALIDAR</a></p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="showDashboard === true && !sololectura" class="col-xl-2"></div>
+
+                            <div *ngIf="showDashboard === true && !sololectura" class="col-xl-2"></div>
+                            <div *ngIf="showDashboard===true && !sololectura" class="col-xl-4 text-center">
+                                <div [style.display]='Validados' class="card bg-color-success">
+                                    <div class="card-content">
+                                        <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.Rechazados}}</span>
+                                        <p><a style="color: black; font-size: 13px;" [routerLink]="" (click)="VerEnviarAprobar()"> ITEMS RECHAZADOS
+                                            
+
+                                    </a>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div [style.display]='PendientesAprobar' *ngIf="showDashboard===true && !sololectura" class="col-xl-4 text-center">
+                                <div class="card bg-color-info ">
+                                    <a class='pasos'>Paso 3</a>
+                                    <div class="card-content">
+                                        <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.POR_APROBAR}}</span>
+                                        <p><a style="color: black; font-size: 13px;" [routerLink]="" (click)="VerPorAprobar()">ITEMS PENDIENTES POR APROBAR</a></p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <router-outlet></router-outlet>
+        </div>
+
+
+    </div>
+
+
+
+    <a style="padding-top:0px ; text-align:right; display: inline;  padding-left:1080px">Desarrollado por SUMMA CONSULTING @2020</a>
+
+
+</section>
+
+
+<!-- <div style="margin-left:20px; margin-top: 0cm;">
+
+
+    
+    
+    
+    
+    
+
+</div> -->

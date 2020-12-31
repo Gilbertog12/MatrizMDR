@@ -1,0 +1,50 @@
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: black;
+}
+  /* Font color */
+input.mat-input-element {
+    color: black;
+}
+
+.Group {
+    width: 188px;
+    height: 37px;
+    object-fit: contain;
+}
+
+.button-login {
+    background-image: linear-gradient(to bottom, #bf070a, #8b0304) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 7px 0 rgba(139, 3, 4, 0.25) !important;
+}
+
+.label {
+    width: 122px;
+    height: 18px;
+    opacity: 0.6;
+    // font-family: 'Montserrat';
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    color: black;
+}
+
+.page-auth .main-body {
+    padding-top: 40px;
+}
+
+.page-auth .main-body {
+    position: relative;
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 50px 0 20px;
+}
+
+form input[disabled]{
+    background: #ccc;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }

@@ -1,0 +1,27 @@
+.app-header-inner  {
+  span .bt{
+    padding-left: 30px !important;
+    font-size: 30px !important;
+    color: white !important;
+    padding-top: 10px !important; 
+    padding-left: 50px !important;
+    font-size: 15px !important; 
+  }
+     
+     
+}
+
+
+
+.app-header-inner{
+  background-color: white !important;
+ 
+}
+@media only screen and (max-width: 400px){
+    .app-header-inner a img{
+      display: none !important;
+    }
+    .app-header{
+      height:auto !important;
+    }
+  }

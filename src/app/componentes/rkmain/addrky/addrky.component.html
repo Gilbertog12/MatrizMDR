@@ -1,0 +1,119 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{ data.title }}</h1>
+<form name="rky_form" class="form-validation" (ngSubmit)="  !riesgoPuroSControl.hasError('required') && !riesgoPuroPControl.hasError('required') && !consecuenciaControl.hasError('required') && rkyForm.form.valid && guardar()" #rkyForm="ngForm" noValidate>
+    <div class="row">
+        <div class="col-xl-7">
+            <mat-form-field>
+                <mat-label>Seleccione una Consecuencia</mat-label>
+                <mat-select [formControl]="consecuenciaControl" required [(ngModel)]="consecuenciaModel.consecuenciaId" #consecuenciaId multiple>
+                    <!-- <input  matInput   id='busqueda '  style="height: 18px;"   (keydown)="Buscar($event)" type="text" [(ngModel)]="consecuenciaModel.name" name='name' value={{consecuenciaModel.name}} placeholder="search"> -->
+                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="descripcion" name="descripcion">
+                    <mat-option *ngFor="let item of consecuenciasList|filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="consecuenciaControl.hasError('required')">No ha seleccionado una Consecuencia</mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <br />
+            <div><b>Riesgo puro</b>
+            </div>
+            <div class="box box-default">
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <mat-form-field>
+                                    <mat-label>Probabilidad</mat-label>
+                                    <mat-select [formControl]="riesgoPuroPControl" required [(ngModel)]="consecuenciaModel.riesgoPuroP" #riesgoPuroP>
+
+                                        <mat-option *ngFor="let item of probabilidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="riesgoPuroPControl.hasError('required')">No ha seleccionado la Probabilidad</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-sm btn-light btn-round" (click)="tablaProbabilidad('RP')"> 
+                                    <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <mat-form-field>
+                                    <mat-label>Severidad</mat-label>
+                                    <mat-select [formControl]="riesgoPuroSControl" required [(ngModel)]="consecuenciaModel.riesgoPuroS" #riesgoPuroS>
+
+                                        <mat-option *ngFor="let item of severidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="riesgoPuroSControl.hasError('required')">No ha seleccionado la Severidad</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-sm btn-light btn-round" (click)="tablaSeveridad('RP')">
+                                    <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <br />
+            <div><b>Riesgo residual</b>
+            </div>
+            <div class="box box-default">
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <mat-form-field>
+                                    <mat-label>Probabilidad</mat-label>
+                                    <mat-select [formControl]="riesgoResidualPControl" disabled='true' [(ngModel)]="consecuenciaModel.riesgoResidualP" #riesgoResidualP>
+
+                                        <mat-option *ngFor="let item of probabilidadList" [value]="">{{item.Descripcion}}</mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="riesgoResidualPControl.hasError('required')">No ha seleccionado la Probabilidad</mat-error> -->
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-sm btn-light btn-round" type="" disabled='true' (click)="tablaProbabilidad('RR')">
+                                        <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                    </button>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <mat-form-field>
+                                    <mat-label>Severidad</mat-label>
+                                    <mat-select [formControl]="riesgoResidualSControl" disabled='true' [(ngModel)]="consecuenciaModel.riesgoResidualS" #riesgoResidualS>
+
+                                        <mat-option *ngFor="let item of severidadList" [value]="">{{item.Descripcion}}</mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="riesgoResidualSControl.hasError('required')">No ha seleccionado la Severidad</mat-error> -->
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-sm btn-light btn-round" disabled='true' (click)="tablaSeveridad('RR')">
+                                        <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <mat-dialog-actions align="end">
+        <button type="submit" class="btn-w-md mat-raised-button mat-primary" color="primary" md-raised-button="" ng-reflect-color="primary">
+                <span class="mat-button-wrapper">
+                <mat-icon mat-list-icon>save</mat-icon>
+                {{ data.button_confirm }}
+                </span>
+        </button>
+        <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+    </mat-dialog-actions>
+</form>
