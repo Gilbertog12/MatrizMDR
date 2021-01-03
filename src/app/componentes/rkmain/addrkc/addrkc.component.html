@@ -3,10 +3,11 @@
     <div class="row">
         <div class="col-xl-7">
             <mat-form-field>
-                <mat-label>Seleccione una Actividad</mat-label>
-                <mat-select focused="'false'" [formControl]="actividadControl" required [(ngModel)]="actividadModel.actividadId" #actividadId multiple>
+
+                <mat-select focused="'false'" [formControl]="actividadControl" placeholder="Seleccione una Actividad" required [(ngModel)]="actividadModel.actividadId" #actividadId multiple>
                     <!-- <input  matInput autofocus  id='busqueda '  style="height: 18px;"   (keydown)="Buscar($event)" type="text" [(ngModel)]="actividadModel.name" name='name' value={{actividadModel.name}} placeholder="search"> -->
-                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="descripcion" name="descripcion">
+                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+
                     <mat-option *ngFor="let item of actividadesList|filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
                 </mat-select>
                 <!-- <mat-error *ngIf="actividadControl.hasError('required')">No ha seleccionado una actividad</mat-error> -->

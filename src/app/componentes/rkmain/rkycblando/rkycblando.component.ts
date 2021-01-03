@@ -13,16 +13,17 @@ import { FormControl, Validators } from '@angular/forms';
 export class RkycblandoComponent implements OnInit {
 
   CblandoControl = new FormControl("", [Validators.required]);
-
+  
   public cBlandoModel: any = {
     
     cblandoId: "",
-      name: "",
-      areaDescripcion: "",
-  
+    name: "",
+    areaDescripcion: "",
+    
   };
   public descripcion: string
-
+  
+  bankMultiFilterCtrl = new FormControl();
 
   public cBlandosList: any[] = [];
 

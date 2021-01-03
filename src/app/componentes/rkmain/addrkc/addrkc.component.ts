@@ -26,6 +26,8 @@ export class AddrkcComponent implements OnInit {
   public descripcion: string
 
   actividadControl = new FormControl("", [Validators.required]);
+  public bankMultiFilterCtrl: FormControl = new FormControl();
+
 
   constructor(
     public dialogRef: MatDialogRef<AddrkcComponent>,

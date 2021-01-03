@@ -1,11 +1,13 @@
-import { Component, OnInit, Inject, OnChanges } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Component, OnInit, Inject, OnChanges, ViewChild } from '@angular/core';
+import { MatDialogRef, MatSelect, MAT_DIALOG_DATA } from "@angular/material";
 import { AuthenticationService, ControlsService } from "../../../shared";
 import { FormControl, Validators } from "@angular/forms";
 import { ConfirmationComponent } from "../../../controls/confirmation/confirmation.component";
 import { MatDialog } from "@angular/material";
 
 import Swal2 from 'sweetalert2'
+import { takeUntil } from 'rxjs/operators';
+import { pipe, ReplaySubject, Subject } from 'rxjs';
 
 @Component({
   selector: "app-addrka",
@@ -24,19 +26,68 @@ export class AddrkaComponent implements OnInit,OnChanges {
   areaControl = new FormControl("", [Validators.required]);
   aux: any;
 
+  protected banks = this.areasList;
+
+  /** control for the selected bank for multi-selection */
+  public bankMultiCtrl: FormControl = new FormControl();
+
+  /** control for the MatSelect filter keyword multi-selection */
   public bankMultiFilterCtrl: FormControl = new FormControl();
 
+  /** list of banks filtered by search keyword */
+  public filteredBanksMulti: ReplaySubject<any[]> = new ReplaySubject();
+
+  @ViewChild('multiSelect') multiSelect: MatSelect;
+
+  /** Subject that emits when the component has been destroyed. */
+  protected _onDestroy = new Subject<void>();
+  
+  
   constructor(
     public dialogRef: MatDialogRef<AddrkaComponent>,
     private controlService: ControlsService,
     private autentication: AuthenticationService,
     private confirm: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+    ) {}
 
-  ngOnInit() {
-    this.cargarAreas(this.areaModel.areaId, this.areaModel.name);
-  }
+    ngOnInit() {
+      this.cargarAreas(this.areaModel.areaId, this.areaModel.name);
+
+    
+
+      this.bankMultiCtrl.setValue([this.areasList[10], this.areasList[11], this.areasList[12]]);
+
+      // load the initial bank list
+      this.filteredBanksMulti.next(this.areasList.slice());
+  
+      // listen for search field value changes
+      this.bankMultiFilterCtrl.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterBanksMulti();
+        });
+      
+    }
+
+    protected filterBanksMulti() {
+      if (!this.areasList) {
+        return;
+      }
+      // get the search keyword
+      let search = this.bankMultiFilterCtrl.value;
+      if (!search) {
+        this.filteredBanksMulti.next(this.areasList.slice());
+        return;
+      } else {
+        search = search.toLowerCase();
+      }
+      // filter the banks
+      this.filteredBanksMulti.next(
+        this.areasList.filter(bank => bank.Descripcion.toLowerCase().indexOf(search) > -1)
+      );
+    }
+  
 
   ngOnChanges(){
     this.aux += this.areaModel.areaId

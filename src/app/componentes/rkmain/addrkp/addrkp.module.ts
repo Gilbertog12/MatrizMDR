@@ -13,6 +13,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
 import Swal from 'sweetalert';
 import { FiltroPipe } from './filtro.pipe';
 import {FilterModule} from '@josee9988/filter-pipe-ngx';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import {FilterModule} from '@josee9988/filter-pipe-ngx';
     MatButtonModule,
     MatInputModule,
     DragDropModule,
-    FilterModule
+    FilterModule,
+    NgxMatSelectSearchModule
   ],
   declarations: [AddrkpComponent, FiltroPipe],
   entryComponents: [AddrkpComponent],

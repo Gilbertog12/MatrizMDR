@@ -3,10 +3,11 @@
     <div class="row">
         <div class="col-xl-7">
             <mat-form-field>
-                <mat-label>Seleccione un Subproceso</mat-label>
-                <mat-select [formControl]="subprocesoControl" required [(ngModel)]="subprocesoModel.subprocesoId" #subprocesoId multiple>
+
+                <mat-select [formControl]="subprocesoControl" placeholder="Seleccione un Subproceso" required [(ngModel)]="subprocesoModel.subprocesoId" #subprocesoId multiple>
                     <!-- <input  matInput focused="'true'"  style="height: 18px;" (keydown)="Buscar($event)" type="text" [(ngModel)]="subprocesoModel.name" value={{subprocesoModel.name}} name='name' placeholder="search"> -->
-                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="descripcion" name="descripcion">
+                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+
                     <mat-option *ngFor="let item of subprocesosList|filterPipe:descripcion" (keydown)="$event.stopPropagation()" [value]="item.Id">{{item.Descripcion}}</mat-option>
                 </mat-select>
                 <!-- <mat-error *ngIf="subprocesoControl.hasError('required')">No ha seleccionado un subProceso</mat-error> -->

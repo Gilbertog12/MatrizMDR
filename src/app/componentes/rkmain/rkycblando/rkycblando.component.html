@@ -25,10 +25,11 @@
         <input matInput type="text" name="consecuenciaId" placeholder="consecuenciaId" #consecuenciaId readonly="true" value="{{data.consecuenciaId}}" [(ngModel)]="cBlandoModel.consecuenciaId"/>
     </mat-form-field> -->
     <mat-form-field>
-        <mat-label>Seleccione un Cont</mat-label>
-        <mat-select required [(ngModel)]="cBlandoModel.cblandoId" #cblandoId multiple>
+        <!-- <mat-label>Seleccione un Cont</mat-label> -->
+        <mat-select required [(ngModel)]="cBlandoModel.cblandoId" aria-placeholder="Seleccione un Control Blando" #cblandoId multiple>
 
-            <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="descripcion" name="descripcion">
+            <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+
             <mat-option *ngFor="let item of cBlandosList |filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
         </mat-select>
         <!-- <mat-error *ngIf="areaControl.hasError('required')">No ha seleccionado un Area</mat-error> -->

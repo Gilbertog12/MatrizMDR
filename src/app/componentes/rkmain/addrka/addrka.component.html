@@ -4,9 +4,10 @@
         <div class="col-xl-7">
             <mat-form-field>
                 <mat-select [formControl]="areaControl" [(ngModel)]="areaModel.areaId" #areaId placeholder="Seleccione un Area" [multiple]="true" #multiSelect>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
-                    </mat-option>
+
+                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+
+
                     <mat-option *ngFor="let item of areasList | filterPipe:descripcion" [value]="item.Id">
                         {{item.Descripcion}}
                     </mat-option>

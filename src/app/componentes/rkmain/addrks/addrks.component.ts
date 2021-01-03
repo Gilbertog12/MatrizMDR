@@ -30,6 +30,8 @@ export class AddrksComponent implements OnInit {
 
   subprocesoControl = new FormControl('', [Validators.required]);
 
+  bankMultiFilterCtrl = new FormControl()
+
   constructor(public dialogRef: MatDialogRef<AddrksComponent>,
     private controlService: ControlsService,
     private autentication: AuthenticationService,

@@ -329,7 +329,7 @@ verTable(item: any) {
 
     Swal2.fire({
       title: 'Validar',
-      text: '¿ Está seguro que desea  Validar este registro ?',
+      text: 'Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.',
        icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

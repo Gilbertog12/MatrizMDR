@@ -234,7 +234,7 @@ export class RkporaprobarComponent implements OnInit {
     
     Swal2.fire({
       title: 'Aprobar',
-        text: '¿ Está seguro que desea Aprobar este registro ?',
+        text: 'Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

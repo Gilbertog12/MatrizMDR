@@ -50,6 +50,7 @@ export class AddrkyComponent implements OnInit {
   riesgoResidualPControl = new FormControl('', [Validators.required]);
   riesgoResidualSControl = new FormControl('', [Validators.required]);
   riesgoResidualCControl = new FormControl('', [Validators.required]);
+  bankMultiFilterCtrl = new FormControl()
 
     constructor(public dialogRef: MatDialogRef<AddrkyComponent>,
                 private controlService: ControlsService,

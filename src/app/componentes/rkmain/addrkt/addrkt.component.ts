@@ -28,6 +28,7 @@ export class AddrktComponent implements OnInit {
   public descripcion: string
 
   tareaControl = new FormControl('', [Validators.required]);
+  bankMultiFilterCtrl = new FormControl()
 
   constructor(public dialogRef: MatDialogRef<AddrktComponent>,
     private controlService: ControlsService,

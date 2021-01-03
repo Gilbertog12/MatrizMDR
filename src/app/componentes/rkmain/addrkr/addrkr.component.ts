@@ -30,6 +30,8 @@ export class AddrkrComponent implements OnInit {
   public descripcion: string
 
   riesgoControl = new FormControl('', [Validators.required]);
+  public bankMultiFilterCtrl: FormControl = new FormControl();
+
 
   constructor(public dialogRef: MatDialogRef<AddrkrComponent>,
     private controlService: ControlsService,

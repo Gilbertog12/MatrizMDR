@@ -12,6 +12,7 @@ import { RkmessagesModule } from '../rkmessages/rkmessages.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FiltroPipe } from './filtro.pipe';
 import { FilterModule } from '@josee9988/filter-pipe-ngx';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { FilterModule } from '@josee9988/filter-pipe-ngx';
     MatButtonModule,
     MatInputModule,
     DragDropModule,
-    FilterModule
+    FilterModule,
+    NgxMatSelectSearchModule
   ],
   declarations: [AddrksComponent, FiltroPipe],
   entryComponents: [AddrksComponent],

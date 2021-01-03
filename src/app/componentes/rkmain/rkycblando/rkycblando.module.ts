@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RkycblandoComponent } from './rkycblando.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FilterModule } from '@josee9988/filter-pipe-ngx';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { FilterModule } from '@josee9988/filter-pipe-ngx';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    FilterModule
+    FilterModule,
+    NgxMatSelectSearchModule
 
   ],
   declarations: [RkycblandoComponent],

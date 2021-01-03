@@ -177,11 +177,12 @@ export class RkpendComponent implements OnInit {
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
       return;
     }
+    
 
     Swal2.fire({
       title: 'Enviar a Validar',
-      text: "¿ Está seguro que desea Enviar a Validar este registro ?",
-      icon: 'question',
+      text: "Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.",
+      icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',

@@ -23,8 +23,11 @@ export class AddrkpComponent implements OnInit {
 
   public procesosList: any[] = [];
   public descripcion: string
+  public bankMultiFilterCtrl: FormControl = new FormControl();
+
 
   procesoControl = new FormControl('', [Validators.required]);
+  
 
   constructor(public dialogRef: MatDialogRef<AddrkpComponent>,
     private controlService: ControlsService,
@@ -42,6 +45,8 @@ export class AddrkpComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    
   }
 
   cargarprocesos(areaId: string, procesoId: string, name: string) {

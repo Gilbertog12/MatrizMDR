@@ -14,6 +14,7 @@ import { AddrkyseveridadModule } from '../addrkyseveridad/addrkyseveridad.module
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FiltroPipe } from './filtro.pipe';
 import { FilterModule } from '@josee9988/filter-pipe-ngx';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { FilterModule } from '@josee9988/filter-pipe-ngx';
     AddrkyprobabilidadModule,
     AddrkyseveridadModule,
     DragDropModule,
-    FilterModule
+    FilterModule,
+    NgxMatSelectSearchModule
   ],
   declarations: [AddrkyComponent, FiltroPipe],
   entryComponents: [AddrkyComponent],
