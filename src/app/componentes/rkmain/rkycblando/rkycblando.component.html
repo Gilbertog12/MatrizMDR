@@ -25,18 +25,17 @@
         <input matInput type="text" name="consecuenciaId" placeholder="consecuenciaId" #consecuenciaId readonly="true" value="{{data.consecuenciaId}}" [(ngModel)]="cBlandoModel.consecuenciaId"/>
     </mat-form-field> -->
     <mat-form-field>
-        <!-- <mat-label>Seleccione un Cont</mat-label> -->
-        <mat-select required [(ngModel)]="cBlandoModel.cblandoId" aria-placeholder="Seleccione un Control Blando" #cblandoId multiple>
-
+        <!-- <mat-label>Seleccione un Control</mat-label> -->
+        <mat-select [(ngModel)]="cBlandoModel.cblandoId" aria-placeholder="Seleccione un Control" #cblandoId multiple>
+            <!-- <input matInput (keydown)="Buscar($event)" type="text" [(ngModel)]="cBlandoModel.name" value={{cBlandoModel.name}} name='name' placeholder="search"> -->
             <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
 
-            <mat-option *ngFor="let item of cBlandosList |filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
+            <mat-option *ngFor="let item of cBlandosList" [value]="item.Id">{{item.Descripcion}}</mat-option>
         </mat-select>
-        <!-- <mat-error *ngIf="areaControl.hasError('required')">No ha seleccionado un Area</mat-error> -->
     </mat-form-field>
-    <!-- <mat-form-field>
-        <input matInput type="text" name="cblandoId" placeholder="Control Blando"[(ngModel)]="cBlandoModel.cblandoId" readonly="true" />
-    </mat-form-field> -->
+    <mat-form-field>
+        <input matInput type="text" name="cblandoId" placeholder="Control Blando" #stdJobNo [(ngModel)]="cBlandoModel.cblandoId" readonly="true" />
+    </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>

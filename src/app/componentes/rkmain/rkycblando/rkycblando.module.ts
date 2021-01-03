@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatButtonModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RkycblandoComponent } from './rkycblando.component';
@@ -12,6 +12,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,     
