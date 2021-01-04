@@ -51,6 +51,7 @@ public Razon : string
   private pid : string;
   private sid : string;
   EnviarHijos: string;
+  permisoValidar: boolean;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -115,8 +116,16 @@ public Razon : string
                     subprocesoNivel: element.atts[14].value,
                     subprocesoAtributos: element.atts[15].value,
                     subprocesoStatusId: data.data[0].atts[16].value,
-                    key: data.data[0].atts[17].value
+                    key: data.data[0].atts[17].value,
+                    statusParent: data.data[0].atts[18].value
                   };
+
+                  if(parseInt(this.subprocesoModel.subprocesoStatusId)<parseInt(this.subprocesoModel.statusParent)){
+                    this.permisoValidar = true
+                  }else{
+                    this.permisoValidar= false
+                  }
+                  console.log(this.permisoValidar)
 
                   localStorage.setItem('keySelected', this.subprocesoModel.key);
                   localStorage.setItem('versionSelected', this.subprocesoModel.subprocesoVersion);

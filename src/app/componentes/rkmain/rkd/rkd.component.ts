@@ -54,6 +54,7 @@ public Razon : string
   private tid : string;
   private did : string;
   EnviarHijos: string;
+  permisoValidar: boolean;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -104,7 +105,7 @@ public Razon : string
           // console.log(data)
           const result = data.success;
           if (result) {
-
+            console.log(data)
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                 if ( element.atts[0].value === '0' ) {
@@ -132,8 +133,16 @@ public Razon : string
                     dimensionNivel: element.atts[20].value,
                     dimensionAtributos: element.atts[21].value,
                     dimensionStatusId: element.atts[22].value,
-                    key: element.atts[23].value
+                    key: element.atts[23].value,
+                    statusParent:element.atts[24].value
                   };
+
+                  if(parseInt(this.dimensionModel.dimensionStatusId)<parseInt(this.dimensionModel.statusParent)){
+                    this.permisoValidar = true
+                  }else{
+                    this.permisoValidar= false
+                  }
+                  console.log(this.permisoValidar)
 
                   localStorage.setItem('keySelected', this.dimensionModel.key);
                   localStorage.setItem('versionSelected', this.dimensionModel.dimensionVersion);

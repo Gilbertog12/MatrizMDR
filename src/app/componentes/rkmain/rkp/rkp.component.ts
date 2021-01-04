@@ -56,6 +56,7 @@ public Razon : string
 private id : string;
 private pid : string;
 EnviarHijos: string;
+  permisoValidar: boolean;
 
 constructor(private autentication: AuthenticationService,
             private methodService: HttpMethodService,
@@ -115,8 +116,17 @@ ver(areaId: string, procesoId: string) {
                   procesoNivel: element.atts[12].value,
                   procesoAtributos: element.atts[13].value,
                   procesoStatusId: data.data[0].atts[14].value,
-                  key: data.data[0].atts[15].value
+                  key: data.data[0].atts[15].value,
+                  statusParent: data.data[0].atts[16].value
+
                 };
+
+                if(parseInt(this.procesoModel.procesoStatusId)<parseInt(this.procesoModel.statusParent)){
+                  this.permisoValidar = true
+                }else{
+                  this.permisoValidar= false
+                }
+                console.log(this.permisoValidar)
 
                 localStorage.setItem('keySelected', this.procesoModel.key);
                 localStorage.setItem('versionSelected', this.procesoModel.procesoVersion);

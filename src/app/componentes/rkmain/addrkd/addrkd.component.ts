@@ -40,6 +40,7 @@ export class AddrkdComponent implements OnInit {
 
 
   dimensionControl = new FormControl('', [Validators.required]);
+  bankMultiFilterCtrl = new FormControl()
 
   constructor(private builder: FormBuilder, public dialogRef: MatDialogRef<AddrkdComponent>,
     private controlService: ControlsService,

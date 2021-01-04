@@ -70,6 +70,7 @@ public Razon : string
   private rid: string;
   private yid: string;
   EnviarHijos: string;
+  permisoValidar: boolean;
   
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
@@ -174,10 +175,18 @@ public Razon : string
                       consecuenciaDescRMRP: element.atts[38].value.trim(),
                       consecuenciaIdRMRR: element.atts[39].value.trim(),
                       consecuenciaDescRMRR: element.atts[40].value.trim(),
-                      key: element.atts[41].value.trim()
+                      key: element.atts[41].value.trim(),
+                      statusParent:element.atts[42].value.trim()
 
 
                     };
+
+                    if(parseInt(this.consecuenciaModel.consecuenciaStatusId)<parseInt(this.consecuenciaModel.statusParent)){
+                      this.permisoValidar = true
+                    }else{
+                      this.permisoValidar= false
+                    }
+                    console.log(this.permisoValidar)
                     //alert(this.consecuenciaModel.key);
                     localStorage.setItem('keySelected', this.consecuenciaModel.key);
                     localStorage.setItem('versionSelected', this.consecuenciaModel.consecuenciaVersion);

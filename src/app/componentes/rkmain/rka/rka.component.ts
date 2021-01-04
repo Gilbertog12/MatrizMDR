@@ -52,6 +52,7 @@ public Razon : string
   private id : string;
   EnviarHijos: string;
   public papa:RkmainComponent;
+  permisoValidar: boolean;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -116,8 +117,16 @@ public Razon : string
                     areaNivel: data.data[0].atts[12].value,
                     areaAtributos: data.data[0].atts[13].value,
                     areaStatusId: data.data[0].atts[14].value,
-                    key: data.data[0].atts[15].value
+                    key: data.data[0].atts[15].value,
+                    statusParent: data.data[0].atts[16].value
                   };
+
+                  if(parseInt(this.areaModel.areaStatusId)<parseInt(this.areaModel.statusParent)){
+                    this.permisoValidar = true
+                  }else{
+                    this.permisoValidar= false
+                  }
+                  console.log(this.permisoValidar)
 
                   localStorage.setItem('keySelected', this.areaModel.key);
                   localStorage.setItem('versionSelected', this.areaModel.areaVersion);

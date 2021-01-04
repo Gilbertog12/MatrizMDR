@@ -5,57 +5,64 @@
 
     <div *ngSwitchCase="'CREADO'">
 
-        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+        <mat-dialog-actions *ngIf="btn === creacion && permisoValidar  || btn === administrador && permisoValidar || btn === validacionaprobacion && permisoValidar|| btn === creacionvalidacion && permisoValidar || btn ===  validacion && permisoValidar || btn === creacionaprobacion && permisoValidar "
+            align="end" cdkDragHandle>
             <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
         </mat-dialog-actions>
     </div>
     <div *ngSwitchCase="'PENDIENTE INACTIVACION'">
 
-        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
-            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
-        </mat-dialog-actions>
+        <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+            color="accent" (click)="consola('validaraprobar')">Validar</button>
+        <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+            color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
     </div>
 
     <div *ngSwitchCase="'MODIFICADO'">
 
-        <mat-dialog-actions *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn === creacionaprobacion " align="end" cdkDragHandle>
+        <mat-dialog-actions *ngIf="btn === creacion  && permisoValidar|| btn === administrador  && permisoValidar|| btn === validacionaprobacion && permisoValidar|| btn === creacionvalidacion && permisoValidar || btn ===  validacion && permisoValidar || btn === creacionaprobacion && permisoValidar "
+            align="end" cdkDragHandle>
             <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
         </mat-dialog-actions>
     </div>
     <div *ngSwitchCase="'ENVIADO A VALIDACION'">
         <mat-dialog-actions align="end">
 
-            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
-            <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+            <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar|| btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+                color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+                color="warn" (click)="consola('rechazar')"> Rechazar</button>
 
         </mat-dialog-actions>
     </div>
 
     <div *ngSwitchCase="'PENDIENTE DE APROBACION'">
         <mat-dialog-actions align="end">
-            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
-            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+            <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === creacionaprobacion  && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion  && permisoValidar || btn === creacionaprobacion && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
         </mat-dialog-actions>
 
     </div>
-    <!-- <div *ngSwitchCase="'RECHAZADO'">
+    <!--<div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
             <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="accent" (click)="consola('archivar')">Archivar</button>
             <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
-            
+            <!-- <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion" mat-raised-button color="accent" (click)="consola()">Re</button> -->
 
 
-        </mat-dialog-actions>
 
-    </div> -->
+    <!-- </mat-dialog-actions> -->
+
+    <!-- </div> -->
 
     <div *ngSwitchCase="'ENVIADO A APROBACION'">
         <mat-dialog-actions align="end">
 
-            <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
-            <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+            <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === creacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion  && permisoValidar|| btn === validacionaprobacion  && permisoValidar || btn === creacionaprobacion && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
         </mat-dialog-actions>
     </div>
 
@@ -141,7 +148,7 @@
     </div>
 
     <div class="col-xl-12" *ngIf="btn !== 'lectura'">
-        <div class="box box-default table-box table-responsive mdl-shadow--2dp"  style="height: 500px;">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
             <table class="mdl-data-table table-bordered table-striped cf no-margin">
                 <thead>
                     <tr>
@@ -167,7 +174,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of actividadesList">
-                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete === "Y" || item.estado ==="002" && item.pendingDelete ==="Y" || item.estado ==="003" && item.pendingDelete === "Y" || item.estado ==="006" && item.pendingDelete === "Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 15px;color: red;">(**)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete === "Y" || item.estado ==="002" && item.pendingDelete ==="Y" || item.estado ==="003" && item.pendingDelete === "Y" || item.estado ==="006" && item.pendingDelete === "Y"'
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 15px;color: red;">(**)</a></td>
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete === "Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 15px;color: red;">(**)</a></td>
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete === "Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 15px;color: red;">(***)</a></td>
 
@@ -177,7 +185,7 @@
                         <td *ngIf=' item.estado ==="007" && item.pendingDelete === "N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 15px;color: red;">(***)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                         <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
                         <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
                         <td title="Aprobado" *ngIf='item.estado ==="008" && item.pendingDelete === "N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
@@ -194,7 +202,7 @@
     </div>
 
     <div class="col-xl-12" *ngIf="btn === 'lectura'">
-        <div class="box box-default table-box table-responsive mdl-shadow--2dp"  style="height: 500px;">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
             <table class="mdl-data-table table-bordered table-striped cf no-margin">
                 <thead>
                     <tr>

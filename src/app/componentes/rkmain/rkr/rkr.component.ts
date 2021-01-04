@@ -54,6 +54,7 @@ public Razon : string
   private did : string;
   private rid : string;
   EnviarHijos: any;
+  permisoValidar: boolean;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -138,8 +139,16 @@ public Razon : string
                     riesgoNivel: element.atts[24].value,
                     riesgoAributos: element.atts[25].value,
                     riesgoStatusId: element.atts[26].value,
-                    key: element.atts[27].value
+                    key: element.atts[27].value,
+                    statusParent:element.atts[28].value
                   };
+
+                  if(parseInt(this.riesgoModel.riesgoStatusId)<parseInt(this.riesgoModel.statusParent)){
+                    this.permisoValidar = true
+                  }else{
+                    this.permisoValidar= false
+                  }
+                  console.log(this.permisoValidar)
 
                   localStorage.setItem('keySelected', this.riesgoModel.key);
                   localStorage.setItem('versionSelected', this.riesgoModel.riesgoVersion);

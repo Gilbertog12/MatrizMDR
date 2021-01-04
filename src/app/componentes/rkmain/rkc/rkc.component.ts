@@ -69,6 +69,7 @@ public Razon : string
   dia: any;
   fecha: any;
   EnviarHijos: string;
+  permisoValidar: boolean;
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
     private controlService: ControlsService,
@@ -146,7 +147,15 @@ public Razon : string
                       actividadStatusId: data.data[0].atts[18].value,
                       key: data.data[0].atts[19].value,
                       actividadFechaApprovedDate: data.data[0].atts[20].value,
-                    };
+                      statusParent:data.data[0].atts[21].value,
+                    };  
+
+                    if(parseInt(this.actividadModel.actividadStatusId)<parseInt(this.actividadModel.statusParent)){
+                      this.permisoValidar = true
+                    }else{
+                      this.permisoValidar= false
+                    }
+                    console.log(this.permisoValidar)
 
                     
                     // console.log(this.actividadModel)

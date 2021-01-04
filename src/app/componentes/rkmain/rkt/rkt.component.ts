@@ -67,6 +67,7 @@ public canAdd : string
   private cid : string;
   private tid : string;
   EnviarHijos: string;
+  permisoValidar: boolean;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -145,8 +146,17 @@ public canAdd : string
                     tareaRiesgoPuroDesc: element.atts[16].value,
                     tareaRiesgoResidualDesc: element.atts[17].value,
                     key: data.data[0].atts[18].value,
-                    tareaStatus: data.data[0].atts[19].value
+                    statusParent: data.data[0].atts[19].value,
+                    tareaStatus: data.data[0].atts[20].value,
+                    tareaStatusId :data.data[0].atts[24].value,
                   };
+
+                  if(parseInt(this.tareaModel.tareaStatusId)<parseInt(this.tareaModel.statusParent)){
+                    this.permisoValidar = true
+                  }else{
+                    this.permisoValidar= false
+                  }
+                  console.log(this.permisoValidar)
 
                   localStorage.setItem('keySelected', this.tareaModel.key);
                   localStorage.setItem('versionSelected', this.tareaModel.tareaVersion);
