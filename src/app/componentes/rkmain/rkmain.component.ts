@@ -43,7 +43,7 @@ import { NgClass } from '@angular/common';
 
 export class DynamicFlatNode {
   constructor(public item: string, public level = 1, public expandable = false,
-    public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string,public pendingDelete:string ) { }
+    public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string,public pendingDelete:string ,public StatusPadre:boolean) { }
     
     
     
@@ -156,13 +156,24 @@ export class DynamicFlatNode {
               let canAdd = value['atts'][12]['value'];
               let perfil = value['atts'][15]['value']+value['atts'][16]['value']+value['atts'][17]['value']+value['atts'][18]['value']+value['atts'][19]['value']
               let pendingDelete = value['atts'][20]['value'];
+
+              let statusParent = value['atts'][22]['value'];
+              let flag
+              if(parseInt(status)< parseInt(statusParent)){
+                var StatusPadre = true
+                
+              }else{
+                var StatusPadre = false
+              }
+
             if(perfil === 'NNYNN'){
               var lectura = 'Y'
 
             }else{
               var lectura = 'N'
             }
-
+            let BloqueoDesdePadre = StatusPadre
+            localStorage.setItem('StatusPadre',BloqueoDesdePadre.toString())
             let permiso = canAdd+lectura
             localStorage.setItem('sololectura',permiso)
               
@@ -194,7 +205,7 @@ export class DynamicFlatNode {
                     route = 'rky/' + key.substring(0, 2) + '/' + key.substring(2, 6) + '/' + key.substring(6, 10) + '/' + key.substring(10, 14) + '/' + key.substring(14, 18) + '/' + key.substring(18, 19) + '/' + key.substring(19, 23) + '/' + key.substring(23, 27);
                     break;
                 }
-                response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios,hijo,canAdd,permiso,pendingDelete));
+                response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios,hijo,canAdd,permiso,pendingDelete,StatusPadre));
               });
               
               
@@ -242,7 +253,9 @@ export class DynamicFlatNode {
       hijo:'',
       canAdd:'',
       permiso: '',
-      pendingDelete: ''
+      pendingDelete: '',
+      StatusPadre: false
+      
     }
     this.data.splice(index + 1, 0, ...[dfn]);
     this.dataChange.next(this.data);
@@ -267,7 +280,9 @@ export class DynamicFlatNode {
       hijo: '',
       canAdd:'',
       permiso: '',
-      pendingDelete: ''
+      pendingDelete: '',
+      StatusPadre: false
+      
     }
     this.data.splice(index + 1, 0, ...[dfn]);
     this.data = [...this.data];
@@ -416,6 +431,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   percreacion: string;
   listo: any;
   bandera= false;
+  StatusPadre: string;
   constructor(
     private autentication: AuthenticationService,
     private methodService: HttpMethodService,
@@ -733,8 +749,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     params.push({ name: 'action', value: 'SEARCH_NODE' });
     params.push({ name: 'level', value: '1' });
     params.push({ name: 'id', value: '' });
-    params.push({name : 'areaid', value : this.areaId})
-    params.push({name : 'texto', value : this.busqueda})
+   
 
 
     let response = [];
@@ -758,7 +773,14 @@ export class RkmainComponent implements OnInit,OnChanges {
             let canAdd = value['atts'][12]['value']
             let perfil = value['atts'][15]['value']+value['atts'][16]['value']+value['atts'][17]['value']+value['atts'][18]['value']+value['atts'][19]['value']
             let pendingDelete = value['atts'][20]['value'];
+            let statusParent = value['atts'][22]['value'];
             
+            if(parseInt(status)< parseInt(statusParent)){
+              var StatusPadre = true
+              
+            }else{
+              var StatusPadre = false
+            }
             
             switch(perfil){
                 case 'NNYNN':
@@ -805,13 +827,14 @@ export class RkmainComponent implements OnInit,OnChanges {
             }
 
             
-      
+            let BloqueoDesdePadre = StatusPadre
             let permiso = canAdd+lectura
             let Pcreador = NoCreador
             console.log(canAdd+lectura)
 
             localStorage.setItem('sololectura',permiso)
             localStorage.setItem('NoCreador',Pcreador)
+            localStorage.setItem('StatusPadre',BloqueoDesdePadre.toString())
 
 
             localStorage.setItem('canAdd',canAdd)
@@ -819,7 +842,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             // console.log(localStorage.getItem('canAdd'))
             
             
-            response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [],hijo,canAdd,permiso,pendingDelete));
+            response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [],hijo,canAdd,permiso,pendingDelete,StatusPadre));
             
           });
           // console.log(prueba);
@@ -832,6 +855,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           localStorage.setItem('versionSelected', '');
           localStorage.setItem('statusSelected', '');
           this.fix=localStorage.getItem('sololectura')
+          this.StatusPadre=localStorage.getItem('StatusPadre')
           this.percreacion = localStorage.getItem('NoCreador')
           console.log(this.fix )
           
@@ -995,6 +1019,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   HabilitarEnvioValidacion(){
 
     this.Activo = localStorage.getItem('statusSelected')
+    this.StatusPadre = localStorage.getItem('StatusPadre')
     
 
   }
