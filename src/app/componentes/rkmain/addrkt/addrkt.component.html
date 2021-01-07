@@ -6,7 +6,10 @@
                 <!-- <mat-label>Seleccione una Tarea</mat-label> -->
                 <mat-select [formControl]="tareaControl" placeholder="Seleccione una Tarea" required [(ngModel)]="tareaModel.tareaId" #tareaId multiple>
                     <!-- <input  matInput focused="'true'"  type="text"   (keydown)="Buscar($event)"  style="height: 18px;" [(ngModel)]="tareaModel.name" value={{tareaModel.name}} name='name' placeholder="search"> -->
-                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
 
 
                     <mat-option *ngFor="let item of tareasList|filterPipe:descripcion" (keydown)="$event.stopPropagation()" [value]="item.Id">{{item.Descripcion}}</mat-option>

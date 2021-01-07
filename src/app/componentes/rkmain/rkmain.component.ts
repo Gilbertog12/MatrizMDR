@@ -2177,7 +2177,7 @@ export class RkmainComponent implements OnInit,OnChanges {
  
   let desplegable = []
 
-  this.listo = Observable.interval(3000)
+  this.listo = Observable.interval(500)
     .subscribe((val) => { 
 
         console.log(val)
@@ -2334,7 +2334,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                       this.nivel7 = this.nivel6+i+1;
                       // console.log(this.nivel7)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel7])
-                      document.getElementById(tarea).style.backgroundColor= '#cff5e9' 
+                      document.getElementById(riesgo).style.backgroundColor= '#cff5e9' 
         
         
                     }
@@ -2355,7 +2355,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                       this.nivel8 = this.nivel7+i+1;
                       // console.log(this.nivel8)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
-                      document.getElementById(tarea).style.backgroundColor= '#cff5e9' 
+                      document.getElementById(consecuencia).style.backgroundColor= '#cff5e9' 
                       
         
                     }

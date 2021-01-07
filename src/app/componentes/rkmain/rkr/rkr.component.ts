@@ -143,7 +143,20 @@ public Razon : string
                     statusParent:element.atts[28].value
                   };
 
-                  if(parseInt(this.riesgoModel.riesgoStatusId)<parseInt(this.riesgoModel.statusParent)){
+                  if(parseInt(this.riesgoModel.riesgoStatusId) == 1 || parseInt(this.riesgoModel.riesgoStatusId) == 2 ||parseInt(this.riesgoModel.riesgoStatusId) == 6 ){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(this.riesgoModel.riesgoStatusId)
+                  }
+                  console.log(StatusTemp)
+
+                  if(parseInt(this.riesgoModel.statusParent) == 1 || parseInt(this.riesgoModel.statusParent) == 2 ||parseInt(this.riesgoModel.statusParent) == 6 ){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(this.riesgoModel.statusParent)
+                  }
+
+                  if(StatusTemp<StatusTempP){
                     this.permisoValidar = true
                   }else{
                     this.permisoValidar= false

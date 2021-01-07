@@ -120,8 +120,18 @@ ver(areaId: string, procesoId: string) {
                   statusParent: data.data[0].atts[16].value
 
                 };
-
-                if(parseInt(this.procesoModel.procesoStatusId)<parseInt(this.procesoModel.statusParent)){
+                if(parseInt(this.procesoModel.procesoStatusId) == 1 || parseInt(this.procesoModel.procesoStatusId) == 2 ||parseInt(this.procesoModel.procesoStatusId) == 6 ){
+                  var StatusTemp = 1
+                }else{
+                  var StatusTemp = parseInt(this.procesoModel.procesoStatusId)
+                }
+                if(parseInt(this.procesoModel.statusParent) == 1 || parseInt(this.procesoModel.statusParent) == 2 ||parseInt(this.procesoModel.statusParent) == 6 ){
+                  var StatusTempP = 1
+                }else{
+                  var StatusTempP = parseInt(this.procesoModel.statusParent)
+                }
+                
+                if(StatusTemp<StatusTempP){
                   this.permisoValidar = true
                 }else{
                   this.permisoValidar= false

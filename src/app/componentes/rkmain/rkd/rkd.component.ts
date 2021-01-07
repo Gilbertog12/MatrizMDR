@@ -137,7 +137,20 @@ public Razon : string
                     statusParent:element.atts[24].value
                   };
 
-                  if(parseInt(this.dimensionModel.dimensionStatusId)<parseInt(this.dimensionModel.statusParent)){
+                  if(parseInt(this.dimensionModel.dimensionStatusId) == 1 || parseInt(this.dimensionModel.dimensionStatusId) == 2 ||parseInt(this.dimensionModel.dimensionStatusId) == 6 ){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(this.dimensionModel.dimensionStatusId)
+                  }
+                  console.log(StatusTemp)
+
+                  if(parseInt(this.dimensionModel.statusParent) == 1 || parseInt(this.dimensionModel.statusParent) == 2 ||parseInt(this.dimensionModel.statusParent) == 6 ){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(this.dimensionModel.statusParent)
+                  }
+
+                  if(StatusTemp<StatusTempP){
                     this.permisoValidar = true
                   }else{
                     this.permisoValidar= false

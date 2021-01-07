@@ -6,7 +6,10 @@
                 <!-- <mat-label>Seleccione un Proceso</mat-label> -->
                 <mat-select [formControl]="procesoControl" required placeholder="Seleccione un Proceso" [(ngModel)]="procesoModel.procesoId" #procesoId multiple>
                     <!-- <input  matInput focused="'true'"    style="height: 18px;" (keydown)="Buscar($event)" type="text" [(ngModel)]="procesoModel.name" value={{procesoModel.name}} name='name' placeholder="search"> -->
-                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
 
                     <mat-option *ngFor="let item of procesosList| filterPipe:descripcion" (keydown)="$event.stopPropagation()" [value]="item.Id">{{item.Descripcion}}</mat-option>
                 </mat-select>

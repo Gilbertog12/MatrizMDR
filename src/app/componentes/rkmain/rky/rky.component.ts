@@ -180,8 +180,21 @@ public Razon : string
 
 
                     };
+                    if(parseInt(this.consecuenciaModel.consecuenciaStatusId) == 1 || parseInt(this.consecuenciaModel.consecuenciaStatusId) == 2 ||parseInt(this.consecuenciaModel.consecuenciaStatusId) == 6 ){
+                      var StatusTemp = 1
+                    }else{
+                      var StatusTemp = parseInt(this.consecuenciaModel.consecuenciaStatusId)
+                    }
+                    console.log(StatusTemp)
 
-                    if(parseInt(this.consecuenciaModel.consecuenciaStatusId)<parseInt(this.consecuenciaModel.statusParent)){
+                    if(parseInt(this.consecuenciaModel.statusParent) == 1 || parseInt(this.consecuenciaModel.statusParent) == 2 ||parseInt(this.consecuenciaModel.statusParent) == 6 ){
+                      var StatusTempP = 1
+                    }else{
+                      var StatusTempP = parseInt(this.consecuenciaModel.statusParent)
+                    }
+
+                    
+                    if(StatusTemp<StatusTempP){
                       this.permisoValidar = true
                     }else{
                       this.permisoValidar= false

@@ -3,12 +3,14 @@
     <div class="row">
         <div class="col-xl-7">
             <mat-form-field>
-                <mat-select [formControl]="areaControl" [(ngModel)]="areaModel.areaId" #areaId placeholder="Seleccione un Area" [multiple]="true" #multiSelect>
+                <mat-select [formControl]="areaControl" [(ngModel)]="areaModel.areaId" #areaId placeholder="Seleccione un Area" [multiple]="true">
+                    <mat-option style="height: 50px !important;">
 
-                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
 
 
-                    <mat-option *ngFor="let item of areasList | filterPipe:descripcion" [value]="item.Id">
+                    <mat-option *ngFor="let item of areasList | filterPipe:descripcion " [value]="item.Id">
                         {{item.Descripcion}}
                     </mat-option>
                 </mat-select>

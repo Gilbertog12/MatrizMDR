@@ -120,7 +120,20 @@ public Razon : string
                     statusParent: data.data[0].atts[18].value
                   };
 
-                  if(parseInt(this.subprocesoModel.subprocesoStatusId)<parseInt(this.subprocesoModel.statusParent)){
+                  if(parseInt(this.subprocesoModel.subprocesoStatusId) == 1 || parseInt(this.subprocesoModel.subprocesoStatusId) == 2 ||parseInt(this.subprocesoModel.subprocesoStatusId) == 6 ){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(this.subprocesoModel.subprocesoStatusId)
+                  }
+                  console.log(StatusTemp)
+
+                  if(parseInt(this.subprocesoModel.statusParent) == 1 || parseInt(this.subprocesoModel.statusParent) == 2 ||parseInt(this.subprocesoModel.statusParent) == 6 ){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(this.subprocesoModel.statusParent)
+                  }
+
+                  if(StatusTemp<StatusTempP){
                     this.permisoValidar = true
                   }else{
                     this.permisoValidar= false

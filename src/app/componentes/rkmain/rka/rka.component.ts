@@ -120,11 +120,24 @@ public Razon : string
                     key: data.data[0].atts[15].value,
                     statusParent: data.data[0].atts[16].value
                   };
-
-                  if(parseInt(this.areaModel.areaStatusId)<parseInt(this.areaModel.statusParent)){
+                  
+                  if(parseInt(this.areaModel.areaStatusId) == 1 || parseInt(this.areaModel.areaStatusId) == 2 ||parseInt(this.areaModel.areaStatusId) == 6 ){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(this.areaModel.areaStatusId)
+                  }
+                  if(parseInt(this.areaModel.statusParent) == 1 || parseInt(this.areaModel.statusParent) == 2 ||parseInt(this.areaModel.statusParent) == 6 ){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(this.areaModel.statusParent)
+                  }
+                  console.log(StatusTemp)
+                  if(StatusTemp <StatusTempP){
+                    
                     this.permisoValidar = true
                   }else{
                     this.permisoValidar= false
+
                   }
                   console.log(this.permisoValidar)
 

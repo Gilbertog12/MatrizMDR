@@ -7,7 +7,10 @@
             <mat-form-field>
                 <mat-select [formControl]="dimensionControl" [(ngModel)]="dimensionModel.dimensionId" #areaId placeholder="Seleccione una Dimension" #dimensionId multiple>
 
-                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
 
 
                     <mat-option *ngFor="let item of dimensionesList | filterPipe:descripcion" [value]="item.Id">

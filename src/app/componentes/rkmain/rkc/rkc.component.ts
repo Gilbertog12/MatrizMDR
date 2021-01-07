@@ -149,8 +149,21 @@ public Razon : string
                       actividadFechaApprovedDate: data.data[0].atts[20].value,
                       statusParent:data.data[0].atts[21].value,
                     };  
+                    if(parseInt(this.actividadModel.actividadStatusId) == 1 || parseInt(this.actividadModel.actividadStatusId) == 2 ||parseInt(this.actividadModel.actividadStatusId) == 6 ){
+                      var StatusTemp = 1
+                    }else{
+                      var StatusTemp = parseInt(this.actividadModel.actividadStatusId)
+                    }
+                    console.log(StatusTemp)
 
-                    if(parseInt(this.actividadModel.actividadStatusId)<parseInt(this.actividadModel.statusParent)){
+                    if(parseInt(this.actividadModel.statusParent) == 1 || parseInt(this.actividadModel.statusParent) == 2 ||parseInt(this.actividadModel.statusParent) == 6 ){
+                      var StatusTempP = 1
+                    }else{
+                      var StatusTempP = parseInt(this.actividadModel.statusParent)
+                    }
+
+
+                    if(StatusTemp <StatusTempP){
                       this.permisoValidar = true
                     }else{
                       this.permisoValidar= false

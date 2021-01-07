@@ -6,7 +6,10 @@
 
                 <mat-select [formControl]="riesgoControl" placeholder="Seleccione un Riesgo" required [(ngModel)]="riesgoModel.riesgoId" #riesgoId multiple>
                     <!-- <input  matInput focused="'true'"   style="height: 18px;" (keydown)="Buscar($event)"  type="text" [(ngModel)]="riesgoModel.name" value={{riesgoModel.name}} name='name' placeholder="search"> -->
-                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
 
                     <mat-option *ngFor="let item of riesgosList |filterPipe:descripcion" (keydown)="$event.stopPropagation()" [value]="item.Id">{{item.Descripcion}}</mat-option>
                 </mat-select>

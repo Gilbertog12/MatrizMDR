@@ -51,7 +51,14 @@
             <tbody>
                 <tr *ngFor="let item of pendList">
                     <td class="mdl-data-table__cell--non-numeric" style="text-align:left">
-                        <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
+                        <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" (change)="MarcarJerarquia(item.key)" [value]="item.check" [(ngModel)]="item.check">
+                        <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
+
+                        </ng-template>
+                        <ng-template #PadreMayor>
+                            <input readonly type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
+
+                        </ng-template> -->
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Accion}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Comentarios}}</td>
@@ -91,7 +98,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end" cdkDragHandle>
     <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button>
-    <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn ===  validacion || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola()">Enviar a Validar</button>
+    <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola()">Enviar a Validar</button>
 
 
 

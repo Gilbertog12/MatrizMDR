@@ -6,7 +6,10 @@
 
                 <mat-select focused="'false'" [formControl]="actividadControl" placeholder="Seleccione una Actividad" required [(ngModel)]="actividadModel.actividadId" #actividadId multiple>
                     <!-- <input  matInput autofocus  id='busqueda '  style="height: 18px;"   (keydown)="Buscar($event)" type="text" [(ngModel)]="actividadModel.name" name='name' value={{actividadModel.name}} placeholder="search"> -->
-                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
 
                     <mat-option *ngFor="let item of actividadesList|filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
                 </mat-select>

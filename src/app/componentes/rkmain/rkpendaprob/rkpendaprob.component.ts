@@ -95,11 +95,13 @@ export class RkpendaprobComponent implements OnInit {
                     Dimension: element.atts[10].value.trim(),
                     Riesgo: element.atts[11].value.trim(),
                     Consecuencia: element.atts[12].value.trim(),
+                    Controles : element.atts[13].value.trim(),
                     Fecha: element.atts[15].value.trim(),
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
-                    Controles : element.atts[13].value.trim(),
+                    estado : parseInt(element.atts[19].value.trim()),
+                    statusParent:parseInt(element.atts[20].value.trim()),
                     check: false,
                       
                   });
@@ -118,6 +120,36 @@ export class RkpendaprobComponent implements OnInit {
             this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
           });
     });
+
+  }
+
+  MarcarJerarquia(Value){
+
+    let key = Value
+    // let entidadActual
+    console.log(key)
+    
+    console.error('Entro al For')
+    for(let i = 0; i < this.pendList.length; i++){
+      console.log(key)
+      console.log(this.pendList[i]['check'])
+      
+      if(this.pendList[i]['key'].startsWith(key)){
+
+        console.error('Aqui')
+        // key =this.pendList[i]['key']
+        this.pendList[i]['check'] = true
+        
+          // if(key.length == 31){
+          
+          // break;
+          //  key = key.substring(0,27)
+          //  console.log(key)
+          //  console.log(key.length)
+          // }
+
+      }
+    }
 
   }
 
@@ -624,18 +656,22 @@ async RestaurarItem() {
 
 
   }
-
+  
+  
   consola(opcion) {
     this.valor = "";
     for (let i = 0; i < this.pendList.length; i++) {
 
       if (this.pendList[i]["check"] === true) {
-        this.valor = this.pendList[i]["key"] + "," + this.valor;
+        this.valor = this.valor + ',' + this.pendList[i]['key']  ;
+
         
       }
 
     }
-    console.log(this.valor);
+    console.log(this.valor = this.valor.slice(1));
+
+    
     //AQUI COLOCA EL LLAMADO EL SRVICIIO
     if(opcion ==='archivar'){
 

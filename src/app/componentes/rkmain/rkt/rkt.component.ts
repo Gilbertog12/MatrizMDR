@@ -150,8 +150,22 @@ public canAdd : string
                     tareaStatus: data.data[0].atts[20].value,
                     tareaStatusId :data.data[0].atts[24].value,
                   };
+                  console.log(this.tareaModel.tareaStatusId)
+                  if(parseInt(this.tareaModel.tareaStatusId) == 1 || parseInt(this.tareaModel.tareaStatusId) == 2 ||parseInt(this.tareaModel.tareaStatusId) == 6 ){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(this.tareaModel.tareaStatusId)
+                  }
+                  console.log(StatusTemp)
 
-                  if(parseInt(this.tareaModel.tareaStatusId)<parseInt(this.tareaModel.statusParent)){
+                  if(parseInt(this.tareaModel.statusParent) == 1 || parseInt(this.tareaModel.statusParent) == 2 ||parseInt(this.tareaModel.statusParent) == 6 ){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(this.tareaModel.statusParent)
+                  }
+
+
+                  if(StatusTemp <StatusTempP){
                     this.permisoValidar = true
                   }else{
                     this.permisoValidar= false

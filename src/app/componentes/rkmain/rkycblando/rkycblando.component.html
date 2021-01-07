@@ -28,7 +28,10 @@
         <!-- <mat-label>Seleccione un Control</mat-label> -->
         <mat-select [(ngModel)]="cBlandoModel.cblandoId" aria-placeholder="Seleccione un Control" #cblandoId multiple>
             <!-- <input matInput (keydown)="Buscar($event)" type="text" [(ngModel)]="cBlandoModel.name" value={{cBlandoModel.name}} name='name' placeholder="search"> -->
-            <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+            <mat-option style="height: 50px !important;">
+
+                <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+            </mat-option>
 
             <mat-option *ngFor="let item of cBlandosList" [value]="item.Id">{{item.Descripcion}}</mat-option>
         </mat-select>
