@@ -2,48 +2,47 @@
 <div class="col-xl-12 text-right" align="end" [ngSwitch]="riesgoModel.riesgoStatus">
 
 
-    < <div *ngSwitchCase="'CREADO'">
+    <div *ngSwitchCase="'CREADO'">
 
-        <mat-dialog-actions *ngIf="btn === creacion && permisoValidar  || btn === administrador && permisoValidar || btn === validacionaprobacion && permisoValidar|| btn === creacionvalidacion && permisoValidar || btn ===  validacion && permisoValidar || btn === creacionaprobacion && permisoValidar "
-            align="end" cdkDragHandle>
+        <mat-dialog-actions *ngIf="btn === creacion && permisoValidar  || btn === administrador && permisoValidar || btn === creacionvalidacion && permisoValidar  || btn === creacionaprobacion && permisoValidar " align="end" cdkDragHandle>
             <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
         </mat-dialog-actions>
-</div>
-<div *ngSwitchCase="'PENDIENTE INACTIVACION'">
+    </div>
+    <div *ngSwitchCase="'PENDIENTE INACTIVACION'">
 
-    <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
-        color="accent" (click)="consola('validaraprobar')">Validar</button>
-    <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
-        color="warn" (click)="consola('rechazar')"> Rechazar</button>
-
-</div>
-
-<div *ngSwitchCase="'MODIFICADO'">
-
-    <mat-dialog-actions *ngIf="btn === creacion  && permisoValidar|| btn === administrador  && permisoValidar|| btn === validacionaprobacion && permisoValidar|| btn === creacionvalidacion && permisoValidar || btn ===  validacion && permisoValidar || btn === creacionaprobacion && permisoValidar "
-        align="end" cdkDragHandle>
-        <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
-    </mat-dialog-actions>
-</div>
-<div *ngSwitchCase="'ENVIADO A VALIDACION'">
-    <mat-dialog-actions align="end">
-
-        <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar|| btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+        <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
             color="accent" (click)="consola('validaraprobar')">Validar</button>
         <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
             color="warn" (click)="consola('rechazar')"> Rechazar</button>
 
-    </mat-dialog-actions>
-</div>
+    </div>
 
-<div *ngSwitchCase="'PENDIENTE DE APROBACION'">
-    <mat-dialog-actions align="end">
-        <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === creacionaprobacion  && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
-        <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion  && permisoValidar || btn === creacionaprobacion && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
-    </mat-dialog-actions>
+    <div *ngSwitchCase="'MODIFICADO'">
 
-</div>
-<!--<div *ngSwitchCase="'RECHAZADO'">
+
+        <mat-dialog-actions *ngIf="btn === creacion && permisoValidar  || btn === administrador && permisoValidar || btn === creacionvalidacion && permisoValidar  || btn === creacionaprobacion && permisoValidar " align="end" cdkDragHandle>
+            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
+        </mat-dialog-actions>
+    </div>
+    <div *ngSwitchCase="'ENVIADO A VALIDACION'">
+        <mat-dialog-actions align="end">
+
+            <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar|| btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+                color="accent" (click)="consola('validaraprobar')">Validar</button>
+            <button *ngIf="btn === creacionvalidacion && permisoValidar || btn === validacion && permisoValidar || btn == creacionvalidacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button
+                color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
+        </mat-dialog-actions>
+    </div>
+
+    <div *ngSwitchCase="'PENDIENTE DE APROBACION'">
+        <mat-dialog-actions align="end">
+            <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === creacionaprobacion  && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion  && permisoValidar || btn === creacionaprobacion && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+
+    </div>
+    <!--<div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
@@ -53,17 +52,18 @@
 
 
 
-<!-- </mat-dialog-actions> -->
+    <!-- </mat-dialog-actions> -->
 
-<!-- </div> -->
+    <!-- </div> -->
 
-<div *ngSwitchCase="'ENVIADO A APROBACION'">
-    <mat-dialog-actions align="end">
+    <div *ngSwitchCase="'ENVIADO A APROBACION'">
+        <mat-dialog-actions align="end">
 
-        <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === creacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
-        <button *ngIf="btn === aprobacion  && permisoValidar|| btn === validacionaprobacion  && permisoValidar || btn === creacionaprobacion && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
-    </mat-dialog-actions>
-</div>
+            <button *ngIf="btn === aprobacion && permisoValidar || btn === validacionaprobacion && permisoValidar || btn === creacionaprobacion && permisoValidar || btn === administrador && permisoValidar" mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
+            <button *ngIf="btn === aprobacion  && permisoValidar|| btn === validacionaprobacion  && permisoValidar || btn === creacionaprobacion && permisoValidar|| btn === administrador && permisoValidar" mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
+        </mat-dialog-actions>
+    </div>
+
 </div>
 <br>
 

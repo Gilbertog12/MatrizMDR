@@ -14,6 +14,7 @@ import swal from 'sweetalert';
 })
 export class RkvalidarComponent implements OnInit {
   EnviarHijos: string;
+  permi: boolean;
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
@@ -77,6 +78,26 @@ export class RkvalidarComponent implements OnInit {
 
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
+
+                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 3){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(element.atts[19].value.trim())
+                  }
+                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 3){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(element.atts[20].value.trim())
+                  }
+
+                  if(StatusTemp < StatusTempP){
+                    this.permi = true
+                    // console.log(this.permi)
+                  }else{
+                    this.permi= false
+                    // console.log(this.permi)
+
+                  }
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
                     Entidad: element.atts[2].value.trim(),
@@ -90,19 +111,32 @@ export class RkvalidarComponent implements OnInit {
                     Dimension: element.atts[10].value.trim(),
                     Riesgo: element.atts[11].value.trim(),
                     Consecuencia: element.atts[12].value.trim(),
+                    Controles : element.atts[13].value.trim(),
                     Fecha: element.atts[15].value.trim(),
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
-                    Controles : element.atts[13].value.trim(),
+                    permiso: this.permi,
                     check: false,
                     
+                    
+                    
                   });
-
+                  
                 }
-              });
 
-            this.controlService.closeSpinner(spinner)
+                
+              
+              }
+
+              
+              );
+
+              // this.comprobarPadre()
+              
+              // this.TotalRegistros = this.pendList.length
+
+              this.controlService.closeSpinner(spinner);
             } else {
               this.controlService.snackbarError(data.message);
             }
@@ -199,22 +233,41 @@ export class RkvalidarComponent implements OnInit {
     });
   }
 
-  MarcarJerarquia(Value){
+  MarcarJerarquia(Value,status?){
 
     let key = Value
+    let Istatus = status;
+
+    // console.log(Istatus)
     // let entidadActual
-    console.log(key)
+    // console.log(key)
     
-    console.error('Entro al For')
+    // console.error('Entro al For')
     for(let i = 0; i < this.pendList.length; i++){
-      console.log(key)
-      console.log(this.pendList[i]['check'])
+      // console.log(key)
       
+
       if(this.pendList[i]['key'].startsWith(key)){
 
         console.error('Aqui')
         // key =this.pendList[i]['key']
-        this.pendList[i]['check'] = true
+
+        
+
+        if(this.pendList[i]['key'] !== key){
+          
+          if(this.pendList[i]['check'] == false){
+             console.log('aqui estoy')
+             this.pendList[i]['check'] = true
+             this.pendList[i]['permiso'] = true
+             
+           }else{
+             this.pendList[i]['check'] = false
+             this.pendList[i]['permiso'] = false
+   
+           }
+        }
+        
         
           // if(key.length == 31){
           
@@ -225,6 +278,39 @@ export class RkvalidarComponent implements OnInit {
           // }
 
       }
+      
+     /* if(this.pendList[i]['key'].startsWith(key)){
+        
+        // console.error()
+        // if(this.pendList[i]['check'] == false){
+        //   break;
+        // }
+        // key =this.pendList[i]['key']
+        
+        this.pendList[i]['check'] = true
+            
+          // if(this.pendList[i]['check'] == false){
+          //   console.log('aqui estoy')
+          //   this.pendList[i]['check'] = true
+          //   this.pendList[i]['permiso'] = true
+            
+          // }else{
+          //   this.pendList[i]['check'] = false
+          //   this.pendList[i]['permiso'] = false
+  
+          // }
+        
+        // this.pendList[i]['permiso'] = true}
+        
+          // if(key.length == 31){
+          
+          // break;
+          //  key = key.substring(0,27)
+          //  console.log(key)
+          //  console.log(key.length)
+          // }
+
+      }*/
     }
 
   }

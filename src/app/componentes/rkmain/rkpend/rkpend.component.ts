@@ -89,6 +89,7 @@ export class RkpendComponent implements OnInit {
   public recargare: boolean = false
   masterSelected = false;
   EnviarHijos: string;
+  permi: boolean;
   
 
   
@@ -109,7 +110,6 @@ export class RkpendComponent implements OnInit {
       this.recargar();
       
       this.aperfil();  
-      console.log(this.Recargar)
       
     }
     
@@ -117,6 +117,7 @@ export class RkpendComponent implements OnInit {
     
     // tslint:disable-next-line: no-empty
     ngOnInit() {
+      // this.comprobarPadre()
       
       // this.MarcarJerarquia('01000200010001','')
 
@@ -131,7 +132,7 @@ export class RkpendComponent implements OnInit {
 
 
   cerrar(mensaje:any) {
-    console.log(mensaje)
+    // console.log(mensaje)
 
     if(mensaje !==''){
 
@@ -351,22 +352,41 @@ export class RkpendComponent implements OnInit {
 
     //   });
 
-  MarcarJerarquia(Value){
+  MarcarJerarquia(Value,status?){
 
     let key = Value
+    let Istatus = status;
+
+    // console.log(Istatus)
     // let entidadActual
-    console.log(key)
+    // console.log(key)
     
-    console.error('Entro al For')
+    // console.error('Entro al For')
     for(let i = 0; i < this.pendList.length; i++){
-      console.log(key)
-      console.log(this.pendList[i]['check'])
+      // console.log(key)
       
+
       if(this.pendList[i]['key'].startsWith(key)){
 
         console.error('Aqui')
         // key =this.pendList[i]['key']
-        this.pendList[i]['check'] = true
+
+        
+
+        if(this.pendList[i]['key'] !== key){
+          
+          if(this.pendList[i]['check'] == false){
+             console.log('aqui estoy')
+             this.pendList[i]['check'] = true
+             this.pendList[i]['permiso'] = true
+             
+           }else{
+             this.pendList[i]['check'] = false
+             this.pendList[i]['permiso'] = false
+   
+           }
+        }
+        
         
           // if(key.length == 31){
           
@@ -377,6 +397,39 @@ export class RkpendComponent implements OnInit {
           // }
 
       }
+      
+     /* if(this.pendList[i]['key'].startsWith(key)){
+        
+        // console.error()
+        // if(this.pendList[i]['check'] == false){
+        //   break;
+        // }
+        // key =this.pendList[i]['key']
+        
+        this.pendList[i]['check'] = true
+            
+          // if(this.pendList[i]['check'] == false){
+          //   console.log('aqui estoy')
+          //   this.pendList[i]['check'] = true
+          //   this.pendList[i]['permiso'] = true
+            
+          // }else{
+          //   this.pendList[i]['check'] = false
+          //   this.pendList[i]['permiso'] = false
+  
+          // }
+        
+        // this.pendList[i]['permiso'] = true}
+        
+          // if(key.length == 31){
+          
+          // break;
+          //  key = key.substring(0,27)
+          //  console.log(key)
+          //  console.log(key.length)
+          // }
+
+      }*/
     }
 
   }
@@ -397,7 +450,7 @@ export class RkpendComponent implements OnInit {
       
 
     }
-    console.log(this.valor = this.valor.slice(1));
+    // console.log(this.valor = this.valor.slice(1));
     // AQUI COLOCA EL LLAMADO EL SRVICIIO
 
     this.sendvalidate();
@@ -423,6 +476,26 @@ export class RkpendComponent implements OnInit {
 
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
+
+                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 3){
+                    var StatusTemp = 1
+                  }else{
+                    var StatusTemp = parseInt(element.atts[19].value.trim())
+                  }
+                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 3){
+                    var StatusTempP = 1
+                  }else{
+                    var StatusTempP = parseInt(element.atts[20].value.trim())
+                  }
+
+                  if(StatusTemp < StatusTempP){
+                    this.permi = true
+                    // console.log(this.permi)
+                  }else{
+                    this.permi= false
+                    // console.log(this.permi)
+
+                  }
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
                     Entidad: element.atts[2].value.trim(),
@@ -441,11 +514,11 @@ export class RkpendComponent implements OnInit {
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
-                    estado : parseInt(element.atts[19].value.trim()),
-                    statusParent:parseInt(element.atts[20].value.trim()),
+                    permiso: this.permi,
                     check: false,
                     
-
+                    
+                    
                   });
                   
                 }
@@ -453,8 +526,12 @@ export class RkpendComponent implements OnInit {
                 
               
               }
-                              
+
+              
               );
+
+              // this.comprobarPadre()
+              
               this.TotalRegistros = this.pendList.length
 
               this.controlService.closeSpinner(spinner);
@@ -644,6 +721,9 @@ export class RkpendComponent implements OnInit {
     }
   }
 
+
+  
+
   aperfil() {
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -653,7 +733,7 @@ export class RkpendComponent implements OnInit {
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log("RES:" + JSON.stringify(data));
+            // console.log("RES:" + JSON.stringify(data));
             const result = data.success;
             if (result) {
 
@@ -759,24 +839,7 @@ export class RkpendComponent implements OnInit {
 
   
 
-  async VerEnviarValidar() {
-
-    this.confirm.open(RkpendComponent, {
-      hasBackdrop: true,
-      height: 'auto',
-      width: 'auto',
-      data:
-      {
-        title: 'Items en fase de creacion, modificacion o eliminacion',
-        message: '',
-        button_confirm: 'Cerrar',
-        button_close: 'Cerrar'
-
-      }
-
-    });
-
-  }
+  
 
   
 }

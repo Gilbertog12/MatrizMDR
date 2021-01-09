@@ -882,6 +882,9 @@ export class RkmainComponent implements OnInit,OnChanges {
         // document.getElementById(key).style.backgroundColor= '#cff5e9';
         // // document.getElementById(key).className= 'background-highlight';
         // }
+
+
+        this.router.navigate(['/rkmain/']); 
   }
   
  
@@ -2177,12 +2180,11 @@ export class RkmainComponent implements OnInit,OnChanges {
  
   let desplegable = []
 
-  this.listo = Observable.interval(500)
-    .subscribe((val) => { 
+ 
 
-        console.log(val)
-        if(this.bandera === true){
-          console.log("entre despues de la bandera")
+      
+        
+          // console.log("entre despues de la bandera")s
           for(let i =0 ;this.dataSource.data.length; i++){
             if(this.dataSource.data[i]['key'] === area)
             {
@@ -2367,10 +2369,10 @@ export class RkmainComponent implements OnInit,OnChanges {
           
           }
 
-        }
+        
 
 
-    })
+    
 
   
 

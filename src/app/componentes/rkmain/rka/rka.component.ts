@@ -127,7 +127,7 @@ public Razon : string
                     var StatusTemp = parseInt(this.areaModel.areaStatusId)
                   }
                   if(parseInt(this.areaModel.statusParent) == 1 || parseInt(this.areaModel.statusParent) == 2 ||parseInt(this.areaModel.statusParent) == 6 ){
-                    var StatusTempP = 1
+                    parseInt(element.atts[19].value.trim())
                   }else{
                     var StatusTempP = parseInt(this.areaModel.statusParent)
                   }
