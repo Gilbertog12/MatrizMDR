@@ -80,12 +80,12 @@ export class RkporaprobarComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
-                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 3){
+                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
                     var StatusTemp = 1
                   }else{
                     var StatusTemp = parseInt(element.atts[19].value.trim())
                   }
-                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 3){
+                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
                     var StatusTempP = 1
                   }else{
                     var StatusTempP = parseInt(element.atts[20].value.trim())
@@ -752,58 +752,58 @@ verTable(item: any) {
             }
           });
 
-          conf1.afterClosed().subscribe
-          (async ( result1) =>{
-            console.log( result1)
+          // conf1.afterClosed().subscribe
+          // (async ( result1) =>{
+          //   console.log( result1)
 
-           if(result1){
+          //  if(result1){
 
-              this.Razon = localStorage.getItem('RazonRechazo')
-                 let _atts = [];
-          _atts.push({ name: 'scriptName', value: 'coemdr'});
-          _atts.push({ name: 'action', value: 'VALIDATE'});
-          _atts.push({ name: 'key', value: this.valor });
-          _atts.push({ name: 'version', value: this.version});
-          _atts.push({ name: 'approveInd', value: 'U' });
-          _atts.push({ name: 'comments', value: this.Razon });
+          //     this.Razon = localStorage.getItem('RazonRechazo')
+          //        let _atts = [];
+          // _atts.push({ name: 'scriptName', value: 'coemdr'});
+          // _atts.push({ name: 'action', value: 'VALIDATE'});
+          // _atts.push({ name: 'key', value: this.valor });
+          // _atts.push({ name: 'version', value: this.version});
+          // _atts.push({ name: 'approveInd', value: 'U' });
+          // _atts.push({ name: 'comments', value: this.Razon });
 
-          const spinner = this.controlService.openSpinner();
-          const obj = await this.autentication.generic(_atts);
+          // const spinner = this.controlService.openSpinner();
+          // const obj = await this.autentication.generic(_atts);
 
-          obj.subscribe(
-            (data) => {
-              if (data.success === true) {
-                if (data.data[0].atts[1]) {
-                  // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-                  Swal2.fire({
-                    text:'Registro Rechazado',
-                    icon:'success',
-                    showConfirmButton: false,
-                    timer: 3000
-                  })
-                  localStorage.removeItem('RazonRechazo')
+          // obj.subscribe(
+          //   (data) => {
+          //     if (data.success === true) {
+          //       if (data.data[0].atts[1]) {
+          //         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+          //         Swal2.fire({
+          //           text:'Registro Rechazado',
+          //           icon:'success',
+          //           showConfirmButton: false,
+          //           timer: 3000
+          //         })
+          //         localStorage.removeItem('RazonRechazo')
   
-                }
+          //       }
 
-              } else {
-                // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                Swal2.fire({
-                  text:data.message,
-                  icon:'error',
-                  showConfirmButton: false,
-                  timer: 3000
-                })
-              }
-              this.controlService.closeSpinner(spinner);
+          //     } else {
+          //       // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+          //       Swal2.fire({
+          //         text:data.message,
+          //         icon:'error',
+          //         showConfirmButton: false,
+          //         timer: 3000
+          //       })
+          //     }
+          //     this.controlService.closeSpinner(spinner);
 
-            },
-            (error) => {
-              // if ( error.status === 401 ) { this.autentication.logout(); return; }
-              this.controlService.closeSpinner(spinner);
-            });
+          //   },
+          //   (error) => {
+          //     // if ( error.status === 401 ) { this.autentication.logout(); return; }
+          //     this.controlService.closeSpinner(spinner);
+          //   });
 
-            }
-          } )
+          //   }
+          // } )
 
         }
     })
@@ -880,7 +880,7 @@ verTable(item: any) {
        
   //       //   console.log('Aqui Estoy..!')
   //       }
-        this.cerrar('falso');
+        // this.cerrar('falso');
           
         
   //     });

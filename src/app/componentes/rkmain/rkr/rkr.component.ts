@@ -109,6 +109,7 @@ public Razon : string
           if (result) {
 
             data.data.forEach( (element) => {
+              console.log(data)
               if ( element.atts.length > 0) {
                 if ( element.atts[0].value === '0' ) {
                   this.riesgoModel = {

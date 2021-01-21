@@ -42,7 +42,7 @@
         </mat-dialog-actions>
 
     </div>
-    <!--<div *ngSwitchCase="'RECHAZADO'">
+    <div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
@@ -52,9 +52,9 @@
 
 
 
-    <!-- </mat-dialog-actions> -->
+        </mat-dialog-actions>
 
-    <!-- </div> -->
+    </div>
 
     <div *ngSwitchCase="'ENVIADO A APROBACION'">
         <mat-dialog-actions align="end">
@@ -179,12 +179,18 @@
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="riesgoRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="riesgoModel.riesgoRiesgoPuroDesc" #riesgoRiesgoPuroDesc="ngModel" readonly="true" />
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoPuroDesc !== ' '" type="text" [class]="riesgoModel.riesgoRiesgoPuroDesc" name="riesgoRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="riesgoModel.riesgoRiesgoPuroDesc" #riesgoRiesgoPuroDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoPuroDesc === ' '" type="text" [id]="riesgoModel.riesgoRiesgoPuroDesc" name="riesgoRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="riesgoModel.riesgoRiesgoPuroDesc" #riesgoRiesgoPuroDesc="ngModel" readonly="true"
+                                />
                             </mat-form-field>
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="riesgoRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="riesgoModel.riesgoRiesgoResidualDesc" #riesgoRiesgoResidualDesc="ngModel" readonly="true" />
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoResidualDesc !== ' '" type="text" [class]="riesgoModel.riesgoRiesgoResidualDesc" name="riesgoRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="riesgoModel.riesgoRiesgoResidualDesc" #riesgoRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoResidualDesc === ' '" type="text" [id]="riesgoModel.riesgoRiesgoResidualDesc" name="riesgoRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="riesgoModel.riesgoRiesgoResidualDesc" #riesgoRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -221,7 +227,7 @@
                 <tbody>
                     <tr *ngFor="let item of consecuenciasList">
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete ==="Y" || item.estado ==="002" && item.pendingDelete ==="Y"|| item.estado ==="003"  && item.pendingDelete ==="Y"|| item.estado ==="006" && item.pendingDelete ==="Y"'
-                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
 
@@ -231,16 +237,16 @@
                         <td *ngIf=' item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
                         <td *ngIf='item.estado ==="008" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroN}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroS">{{item.consecuenciaRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualS">{{item.consecuenciaRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroM">{{item.consecuenciaRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualM">{{item.consecuenciaRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroN">{{item.consecuenciaRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualN">{{item.consecuenciaRiesgoResidualN}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -276,12 +282,12 @@
 
                         <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoPuroN}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaRiesgoResidualN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroS">{{item.consecuenciaRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualS">{{item.consecuenciaRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroM">{{item.consecuenciaRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualM">{{item.consecuenciaRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroN">{{item.consecuenciaRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualN">{{item.consecuenciaRiesgoResidualN}}</td>
                     </tr>
                 </tbody>
             </table>

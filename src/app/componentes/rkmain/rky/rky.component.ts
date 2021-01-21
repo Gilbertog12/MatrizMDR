@@ -71,6 +71,7 @@ public Razon : string
   private yid: string;
   EnviarHijos: string;
   permisoValidar: boolean;
+  percreacion: string;
   
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
@@ -101,7 +102,8 @@ public Razon : string
 
   ngOnInit() {
     localStorage.setItem('isSendToValidate', '0');
-    localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
+    localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
+    this.percreacion = localStorage.getItem('NoCreador')
   }
 
   

@@ -561,9 +561,10 @@ export class RkmainComponent implements OnInit,OnChanges {
   cargarDashboard() {
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
-    _atts.push({ name: 'stdJobNo1', value: '' });
+    // _atts.push({ name: 'stdJobNo1', value: '' });
     _atts.push({ name: 'action', value: 'TABLERO_LIST' });
 
+    // const spinner = this.controlService.openSpinner()
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
         .subscribe(
@@ -577,6 +578,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                 POR_APROBAR: data.data[0].atts[4].value
               };
             } else {
+              // this.controlService.closeSpinner(spinner);
+
               this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
             }
             return result;
@@ -738,7 +741,9 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
-  recargarArbol() {
+ 
+  
+  recargarArbol(arbol?:boolean) {
     this.isLoading = true;
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
 
@@ -787,27 +792,27 @@ export class RkmainComponent implements OnInit,OnChanges {
                   var NoCreador = 'Y'
                   break;
                 case 'NYYNY'://APROBADORVALIDADOR
-                  var NoCreador = 'Y' 
+                   NoCreador = 'Y' 
                   break;
                 
                 case 'NNYNY'://VALIDADOR
-                  var NoCreador = 'Y' 
+                   NoCreador = 'Y' 
                   break;
                 
                 case 'NYYNN'://APROBADOR
-                  var NoCreador = 'Y' 
+                   NoCreador = 'Y' 
                   break;
                 
                   case 'YYYNY'://Administrador
-                  var NoCreador = 'Y' 
+                   NoCreador = 'Y' 
                   break;
 
                   case 'YNYNY'://
-                  var NoCreador = 'Y' 
+                   NoCreador = 'Y' 
                   break;
 
                   case 'YNYNN'://
-                  var NoCreador = 'Y' 
+                   NoCreador = 'Y' 
                   break;
 
                
@@ -815,10 +820,12 @@ export class RkmainComponent implements OnInit,OnChanges {
                 
                 
                   default:
-                    var NoCreador  = 'N'
+                     NoCreador  = 'N'
                     break;
                     
             }
+
+            localStorage.setItem('noCreador',NoCreador)
             
             if(perfil === 'NNYNN'){
               var lectura = 'Y'
@@ -864,7 +871,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.autentication.showMessage(data.success, data.message, data['data'], data.redirect);
         }
         this.isLoading = false;
-        this.bandera = true;
+        // this.bandera = true;
       },
         error => {
           //if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', {}, false); }
@@ -883,8 +890,10 @@ export class RkmainComponent implements OnInit,OnChanges {
         // // document.getElementById(key).className= 'background-highlight';
         // }
 
+        if(arbol){
 
-        this.router.navigate(['/rkmain/']); 
+          this.router.navigate(['/rkmain/']); 
+        }
   }
   
  
@@ -1031,7 +1040,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     //alert(item.ruta.trim().length.toString());
     switch (item.key.trim().length.toString()) {
       case '2':
-        this.router.navigate(['/rkmain/rka/' + item.key]);
+        this.router.navigate(['/rka/' + item.key]);
         console.log(item.key + 'hola')
 
         
@@ -2155,6 +2164,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           
             this.recargarArbol()
             setTimeout(() => {
+              console.log(result)
               this.ExpandirNodos(result)
               
             }, 3000);
@@ -2165,9 +2175,15 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   }
 
+  /**
+   * pruebaclick
+   */
   
 
  ExpandirNodos(key:any){
+
+  console.log(key)
+  // const spinner = this.controlService.openSpinner()
 
    let area = key.substring(0,2)
   let proceso = key.substring(0,6)
@@ -2182,21 +2198,30 @@ export class RkmainComponent implements OnInit,OnChanges {
 
  
 
+  // console.log(this.dataSource.data)
+  
+  for(let i =0 ;this.dataSource.data.length; i++){
+    
+    if(this.dataSource.data[i]['key'] === area)
+    {
+      let level =this.dataSource.data[i]
       
-        
-          // console.log("entre despues de la bandera")s
-          for(let i =0 ;this.dataSource.data.length; i++){
-            if(this.dataSource.data[i]['key'] === area)
-            {
-              let level =this.dataSource.data[i]
-        
-                  console.log('area')
-                  
+      const spinner = this.controlService.openSpinner()
+      console.log('area')
+      
                   let padre = this.dataSource.data.indexOf(level)
                   console.log(padre)
                   console.log(level.key)
                   this.treeControl.expand(level)
                   let band = true
+                  // this.ver(level)
+                  if(key.length == area.length ){
+                    document.getElementById(area).click()
+                    
+                    // this.ver(this.nivel2)
+                    this.controlService.closeSpinner(spinner);
+                    
+                  }
                   
                   
                   
@@ -2218,7 +2243,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                           console.log(this.nivel2)
                           this.treeControl.expand(this.treeControl.dataNodes[this.nivel2])
                           if(key.length == proceso.length ){
-                            document.getElementById(proceso).style.backgroundColor= '#cff5e9' 
+                            document.getElementById(proceso).click() 
+                            // this.ver(this.nivel2)
+                            this.controlService.closeSpinner(spinner);
                             
                           }
           
@@ -2246,8 +2273,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // console.log(this.nivel3)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel3])
                       if(key.length == subproceso.length ){
-                        document.getElementById(subproceso).style.backgroundColor= '#cff5e9' 
-                        
+                        document.getElementById(subproceso).click()
+                        // this.ver(this.nivel3)
+                        this.controlService.closeSpinner(spinner);
                       }
         
                     }
@@ -2269,7 +2297,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // console.log(this.nivel4)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel4])
                       if(key.length == actividad.length ){
-                        document.getElementById(actividad).style.backgroundColor= '#cff5e9' 
+                        document.getElementById(actividad).click()
+                        // this.ver(this.nivel4) 
+                        this.controlService.closeSpinner(spinner);
                         
                       }
         
@@ -2292,7 +2322,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // console.log(this.nivel5)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel5])
                       if(key.length == tarea.length ){
-                        document.getElementById(tarea).style.backgroundColor= '#cff5e9' 
+                        document.getElementById(tarea).click()
+                        // this.ver(this.nivel5) 
+                        this.controlService.closeSpinner(spinner);
                         
                       }
         
@@ -2314,7 +2346,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // console.log(this.nivel6)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel6])
                       if(key.length == dimension.length ){
-                        document.getElementById(dimension).style.backgroundColor= '#cff5e9' 
+                        document.getElementById(dimension).click()
+                        // this.ver(this.nivel6)
+                        this.controlService.closeSpinner(spinner);
                         
                       }
         
@@ -2324,7 +2358,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         
                   setTimeout(() => {
                   
-                    console.log('riesgo')
+                    console.log('dimension')
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
         
@@ -2334,10 +2368,14 @@ export class RkmainComponent implements OnInit,OnChanges {
         
                       console.log(desplegable[i])
                       this.nivel7 = this.nivel6+i+1;
-                      // console.log(this.nivel7)
+                      // console.log(this.nivel6)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel7])
-                      document.getElementById(riesgo).style.backgroundColor= '#cff5e9' 
-        
+                      if(key.length == riesgo.length ){
+                        document.getElementById(riesgo).click()
+                        // this.ver(this.nivel6)
+                        this.controlService.closeSpinner(spinner);
+                        
+                      }
         
                     }
                     }
@@ -2357,7 +2395,10 @@ export class RkmainComponent implements OnInit,OnChanges {
                       this.nivel8 = this.nivel7+i+1;
                       // console.log(this.nivel8)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
-                      document.getElementById(consecuencia).style.backgroundColor= '#cff5e9' 
+                      document.getElementById(consecuencia).click();
+                      // this.ver(this.nivel8)
+                      this.controlService.closeSpinner(spinner);
+    
                       
         
                     }
@@ -2365,20 +2406,18 @@ export class RkmainComponent implements OnInit,OnChanges {
                   }, 14000);
                     
                   // this.treeControl.expand(this.treeControl.dataNodes[level])
+                // this.controlService.closeSpinner(spinner);
             }
           
           }
+          
+
+       
 
         
-
-
-    
-
-  
-
-
-
-    
+          // console.log("entre despues de la bandera")s
+         
+ 
 
  }
 

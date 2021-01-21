@@ -1,5 +1,42 @@
+.INSIGNIFICANTE {
+    background-color: #00B600;
+    color: white;
+    font-weight: bold;
+    border: 0px;
+}
 
-  
+.INTOLERABLE {
+    background-color: #FF0000;
+    color: black;
+    font-weight: bold;
+    border: 0px;
+}
+
+.TOLERABLE {
+    background-color: #FFFF01;
+    color: black;
+    font-weight: bold;
+    border: 0px;
+}
+
+#INSIGNIFICANTE {
+    background-color: #00B600;
+    color: white;
+    font-weight: bold;
+}
+
+#INTOLERABLE {
+    background-color: #FF0000;
+    color: black;
+    font-weight: bold;
+}
+
+#TOLERABLE {
+    background-color: #FFFF01;
+    color: black;
+    font-weight: bold;
+}
+
 .form-control {
     display: block;
     width: 100%;
@@ -56,18 +93,24 @@
 }
 
 .mdl-data-table__cell--non-numeric {
-    text-align:left !important;
+    text-align: left !important;
     height: 9px !important;
     padding: 0px 0px 0px 12px;
     max-width: 300px;
-    white-space: pre-wrap; /* css-3 */
-    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
-    white-space: -o-pre-wrap; /* Opera 7 */
-    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
     font-size: 11px;
 }
+
 thead th {
     position: sticky;
     position: -webkit-sticky;
@@ -78,31 +121,31 @@ thead th {
 }
 
 table th {
-  position: sticky;
-  background: white;
-  top: -1px;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-}
-thead tr:first-child th { 
-    position: sticky; 
+    position: sticky;
     background: white;
-    top: -1px; 
+    top: -1px;
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
 }
-#estatico{
-    position: sticky; 
+
+thead tr:first-child th {
+    position: sticky;
     background: white;
-    top: 25px; 
+    top: -1px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
 }
-.article-title{
+
+#estatico {
+    position: sticky;
+    background: white;
+    top: 25px;
+}
+
+.article-title {
     font-size: 14px;
     color: white;
     font-weight: bold;
 }
-h6{
-    
-        background-color:#175641
-        
+
+h6 {
+    background-color: #175641
 }
-
-

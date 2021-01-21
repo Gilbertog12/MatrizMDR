@@ -43,7 +43,7 @@
         </mat-dialog-actions>
 
     </div>
-    <!--<div *ngSwitchCase="'RECHAZADO'">
+    <div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
@@ -53,9 +53,9 @@
 
 
 
-    <!-- </mat-dialog-actions> -->
+        </mat-dialog-actions>
 
-    <!-- </div> -->
+    </div>
 
     <div *ngSwitchCase="'ENVIADO A APROBACION'">
         <mat-dialog-actions align="end">
@@ -154,16 +154,26 @@
                                 <input matInput type="text" name="tareaDescTipo" placeholder="" [(ngModel)]="tareaModel.tareaDescTipo" #tareaDescTipo="ngModel" readonly="true" />
                             </mat-form-field>
                         </div>
+
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="tareaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="tareaModel.tareaRiesgoPuroDesc" #tareaRiesgoPuroDesc="ngModel" readonly="true" />
+                                <input *ngIf="tareaModel.tareaRiesgoPuroDesc !==' '" matInput [class]="tareaModel.tareaRiesgoPuroDesc" type="text" name="tareaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="tareaModel.tareaRiesgoPuroDesc" #tareaRiesgoPuroDesc="ngModel" readonly="true"
+                                />
+                                <input *ngIf="tareaModel.tareaRiesgoPuroDesc ===' '" matInput [id]="tareaModel.tareaRiesgoPuroDesc" type="text" name="tareaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="tareaModel.tareaRiesgoPuroDesc" #tareaRiesgoPuroDesc="ngModel" readonly="true"
+                                />
                             </mat-form-field>
                         </div>
+
+
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="tareaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="tareaModel.tareaRiesgoResidualDesc" #tareaRiesgoResidualDesc="ngModel" readonly="true" />
+                                <input matInput *ngIf="tareaModel.tareaRiesgoResidualDesc !==' '" [class]="tareaModel.tareaRiesgoResidualDesc" type="text" name="tareaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="tareaModel.tareaRiesgoResidualDesc" #tareaRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="tareaModel.tareaRiesgoResidualDesc ===' '" [id]="tareaModel.tareaRiesgoResidualDesc" type="text" name="tareaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="tareaModel.tareaRiesgoResidualDesc" #tareaRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
                             </mat-form-field>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -187,25 +197,27 @@
                         <tbody>
                             <tr *ngFor="let item of dimensionesList">
                                 <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.estado ==="001"  && item.pendingDelete ==="Y" || item.estado ==="002" && item.pendingDelete ==="Y"||item.estado ==="003" && item.pendingDelete ==="Y"|| item.estado ==="006" && item.pendingDelete ==="Y"'
-                                    class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                    class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
                                 <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.estado ==="004" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
                                 <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.estado ==="007" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
-                                <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                                <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                                <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                                <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                                <!-- <td *ngIf='item.statusId !=="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
-                                <td *ngIf='item.estado ==="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
-
-                                <td *ngIf='item.estado ==="001"  && item.pendingDelete ==="N"|| item.estado ==="002"  && item.pendingDelete ==="N"||item.estado ==="003"  && item.pendingDelete ==="N" || item.estado ==="006"  && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
                                 <td *ngIf='item.estado ==="004" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
                                 <td *ngIf='item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
-                                <td *ngIf='item.estado ==="000" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                <!-- <td *ngIf='item.statusId !=="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
+                                <!-- <td *ngIf='item.estado ==="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td> -->
+
+                                <!-- <td *ngIf='item.estado ==="001"  && item.pendingDelete ==="N"|| item.estado ==="002"  && item.pendingDelete ==="N"||item.estado ==="003"  && item.pendingDelete ==="N" || item.estado ==="006"  && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                                <td *ngIf='item.estado ==="004" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                                <td *ngIf='item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                                <td *ngIf='item.estado ==="000" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td> -->
                                 <!-- <td *ngIf='item.statusId !=="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
                                 <td *ngIf='item.estado ==="008" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionRiesgoPuro}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionRiesgoResidual}}</td>
+                                <td class="mdl-data-table__cell--non-numeric" [id]="item.dimensionRiesgoPuro">{{item.dimensionRiesgoPuro}}</td>
+                                <td class="mdl-data-table__cell--non-numeric" [id]="item.dimensionRiesgoResidual">{{item.dimensionRiesgoResidual}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -222,15 +234,19 @@
                                     <div [ngSwitch]="canAdd">
                                         <div *ngSwitchCase="'N'">
 
-                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
+                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()" id="SinPermisos" disabled>
                               <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                           </button>
                                         </div>
                                         <div *ngSwitchCase="'Y'">
 
-                                            <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
-                              <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
-                          </button>
+
+                                            <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()" id="SinPermisos" disabled>
+                                                <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10p;" >
+                                            </button>
+                                            <button *ngIf="percreacion !=='Y'" class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
+                                                <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
+                                            </button>
                                         </div>
                                     </div>
                                 </th>
@@ -245,9 +261,22 @@
                             <tr *ngFor="let item of stdJobList; let indice = index">
                                 <td class="mdl-data-table__cell--non-numeric">{{indice+1}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">
-                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)">
-                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                            </button>
+                                    <div [ngSwitch]="canAdd">
+
+                                        <div *ngSwitchCase="'Y'">
+                                            <button *ngIf="percreacion !=='Y'" id="SinPermisos" class="btn btn-sm btn-light btn-round" disabled (click)="eliminarstdjob(item)">
+                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;" >
+                        </button>
+                                            <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)">
+                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                        </button>
+                                        </div>
+                                        <div *ngSwitchCase="'N'">
+                                            <button class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" id="SinPermisos" disabled>
+                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                        </button>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="mdl-data-table__cell--non-numeric">
                                     <button class="btn btn-sm btn-light btn-round" (click)="cargarequipo(item)">
@@ -317,8 +346,8 @@
 
                                 <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionRiesgoPuro}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionRiesgoResidual}}</td>
+                                <td class="mdl-data-table__cell--non-numeric" [id]="item.dimensionRiesgoPuro">{{item.dimensionRiesgoPuro}}</td>
+                                <td class="mdl-data-table__cell--non-numeric" [id]="item.dimensionRiesgoResidual">{{item.dimensionRiesgoResidual}}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -90,6 +90,7 @@ export class RkpendComponent implements OnInit {
   masterSelected = false;
   EnviarHijos: string;
   permi: boolean;
+  MostrarRestaurar: boolean = false;
   
 
   
@@ -207,6 +208,7 @@ export class RkpendComponent implements OnInit {
                         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
                         Swal2.fire('Registro Enviado a Validar','', 'success' )
+                        localStorage.setItem('isSendToValidate','1')
 
                         
                       } else {
@@ -352,110 +354,212 @@ export class RkpendComponent implements OnInit {
 
     //   });
 
-  MarcarJerarquia(Value,status?){
+    MarcarJerarquia(Value,status,chek){
 
-    let key = Value
-    let Istatus = status;
+      let key = Value
+      let Istatus = status;
 
-    // console.log(Istatus)
-    // let entidadActual
-    // console.log(key)
-    
-    // console.error('Entro al For')
-    for(let i = 0; i < this.pendList.length; i++){
+      if(Istatus === '006' && chek ){
+
+        this.MostrarRestaurar = true;
+      }else{
+        this.MostrarRestaurar = false;
+      }
+  
+      // console.log(Istatus)
+      // let entidadActual
       // console.log(key)
       
-
-      if(this.pendList[i]['key'].startsWith(key)){
-
-        console.error('Aqui')
-        // key =this.pendList[i]['key']
-
+      // console.error('Entro al For')
+      for(let i = 0; i < this.pendList.length; i++){
+        // console.log(key)
         
-
-        if(this.pendList[i]['key'] !== key){
+  
+        if(this.pendList[i]['key'].startsWith(key)){
+  
+          console.error('Aqui')
+          // key =this.pendList[i]['key']
+  
           
-          if(this.pendList[i]['check'] == false){
-             console.log('aqui estoy')
-             this.pendList[i]['check'] = true
-             this.pendList[i]['permiso'] = true
-             
-           }else{
-             this.pendList[i]['check'] = false
-             this.pendList[i]['permiso'] = false
-   
-           }
+  
+          if(this.pendList[i]['key'] !== key){
+            
+            if(this.pendList[i]['check'] == false){
+               console.log('aqui estoy')
+               this.pendList[i]['check'] = true
+               this.pendList[i]['permiso'] = true
+               
+             }else{
+               this.pendList[i]['check'] = false
+               this.pendList[i]['permiso'] = false
+     
+             }
+          }
+          
+          
+            // if(key.length == 31){
+            
+            // break;
+            //  key = key.substring(0,27)
+            //  console.log(key)
+            //  console.log(key.length)
+            // }
+  
         }
         
-        
-          // if(key.length == 31){
+       /* if(this.pendList[i]['key'].startsWith(key)){
           
-          // break;
-          //  key = key.substring(0,27)
-          //  console.log(key)
-          //  console.log(key.length)
-          // }
-
-      }
-      
-     /* if(this.pendList[i]['key'].startsWith(key)){
-        
-        // console.error()
-        // if(this.pendList[i]['check'] == false){
-        //   break;
-        // }
-        // key =this.pendList[i]['key']
-        
-        this.pendList[i]['check'] = true
-            
+          // console.error()
           // if(this.pendList[i]['check'] == false){
-          //   console.log('aqui estoy')
-          //   this.pendList[i]['check'] = true
-          //   this.pendList[i]['permiso'] = true
-            
-          // }else{
-          //   this.pendList[i]['check'] = false
-          //   this.pendList[i]['permiso'] = false
-  
+          //   break;
           // }
-        
-        // this.pendList[i]['permiso'] = true}
-        
-          // if(key.length == 31){
+          // key =this.pendList[i]['key']
           
-          // break;
-          //  key = key.substring(0,27)
-          //  console.log(key)
-          //  console.log(key.length)
-          // }
-
-      }*/
+          this.pendList[i]['check'] = true
+              
+            // if(this.pendList[i]['check'] == false){
+            //   console.log('aqui estoy')
+            //   this.pendList[i]['check'] = true
+            //   this.pendList[i]['permiso'] = true
+              
+            // }else{
+            //   this.pendList[i]['check'] = false
+            //   this.pendList[i]['permiso'] = false
+    
+            // }
+          
+          // this.pendList[i]['permiso'] = true}
+          
+            // if(key.length == 31){
+            
+            // break;
+            //  key = key.substring(0,27)
+            //  console.log(key)
+            //  console.log(key.length)
+            // }
+  
+        }*/
+      }
+  
     }
 
-  }
+    HabilitarRestaurar(status){
 
+    }
   
 
-  consola() {
-    this.valor = '';
-    this.version = '';
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.pendList.length; i++) {
-
-      if (this.pendList[i]['check'] === true) {
-        this.valor = this.valor + ',' + this.pendList[i]['key']  ;
-        this.version =  this.version+ ',' + this.pendList[i]['version'] ;
+    consola(opcion) {
+      this.valor = "";
+      for (let i = 0; i < this.pendList.length; i++) {
+  
+        if (this.pendList[i]["check"] === true) {
+          this.valor = this.valor + ',' + this.pendList[i]['key']  ;
+  
+          
+        }
+  
       }
-
+      console.log(this.valor = this.valor.slice(1));
+  
       
-
+      //AQUI COLOCA EL LLAMADO EL SRVICIIO
+      if(opcion ==='enviar a validar'){
+  
+        this.sendvalidate()
+      }else if(opcion === 'restaurar'){
+        
+        this.RestaurarItem()
+      }
+  
     }
-    // console.log(this.valor = this.valor.slice(1));
-    // AQUI COLOCA EL LLAMADO EL SRVICIIO
 
-    this.sendvalidate();
+  async RestaurarItem() {
 
+    if (this.valor === '' || this.valor === 'undefined') {
+      // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
+      Swal2.fire({
+        icon: 'info',
+        text: 'Debe Seleccionaar al menos 1 item',
+        
+      })
+      
+      return;
+    }
+  
+    const { value: accept } = await Swal2.fire({
+  
+      title:'Restaurar Registro',
+      text: '¿Desea Restaurar este Item ?',
+      icon:'question',
+      input:'checkbox',
+      inputValue:'',
+      inputPlaceholder:'Acepto',
+      showCancelButton: true,
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+      confirmButtonText:'Restaurar',
+      inputValidator: (result) => {
+      return !result && 'Debe Aceptar los Terminos'
   }
+    })
+  
+    if (accept) {
+  
+      let _atts = [];
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
+          _atts.push({ name: 'key', value: this.valor });
+          _atts.push({ name: 'accion', value: 'NM' });
+  
+  
+          const spinner = this.controlService.openSpinner();
+          const obj = await this.autentication.generic(_atts);
+  
+            obj.subscribe((data)=>{
+  
+              if (data.success === true) {
+                            if (data.data[0].atts[1]) {
+                              // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+  
+                              Swal2.fire(
+                                {
+                                  icon:'success',
+                                  text:'Registro Restaurado ',
+                                 
+                                }
+                              )
+                            }
+            
+                          }else {
+                            
+                              Swal2.fire(
+                                {
+                                  icon:'error',
+                                  text:data.message,
+                                 
+                                }
+                              )
+                                
+                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                            
+                          }  
+                          this.controlService.closeSpinner(spinner);
+                            
+                          
+  
+            },(error)=>{
+              this.controlService.closeSpinner(spinner);
+            })   
+           this.cerrar('falso');       
+       
+      
+    }
+  
+    
+  
+  
+  }
+
    recargar() {
 
     let _atts = [];
@@ -477,13 +581,13 @@ export class RkpendComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
-                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 3){
-                    var StatusTemp = 1
+                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
+                    var StatusTemp = 2
                   }else{
                     var StatusTemp = parseInt(element.atts[19].value.trim())
                   }
-                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 3){
-                    var StatusTempP = 1
+                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
+                    var StatusTempP = 2
                   }else{
                     var StatusTempP = parseInt(element.atts[20].value.trim())
                   }
@@ -516,6 +620,7 @@ export class RkpendComponent implements OnInit {
                     Comentarios : element.atts[18].value.trim(),
                     permiso: this.permi,
                     check: false,
+                    status:element.atts[19].value.trim()
                     
                     
                     
@@ -642,12 +747,12 @@ export class RkpendComponent implements OnInit {
     //alert(item.ruta.trim().length.toString());
     console.log(item)
     // for (let i = 0; i < this.pendList.length; i++) {
-
+  
     //   if (this.pendList[i]['key'] === item.key) {
     //     this.jerarquia  = this.pendList[i]['key'] 
         
     //   }
-
+  
     // }
     
     this.pendList.forEach((element)=>{
@@ -660,11 +765,11 @@ export class RkpendComponent implements OnInit {
     console.log(this.jerarquia)
     switch (this.jerarquia.trim().length.toString()) {
       
-
+  
       case '2':
       this.router.navigate(['/rkmain/rka/' + this.jerarquia]);
       this.cerrar(this.jerarquia) 
-
+  
       
       break;
     case '6':
@@ -715,7 +820,7 @@ export class RkpendComponent implements OnInit {
         break;
       case '31':
         this.router.navigate(['/rkmain/rky/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23) + '/' + item.substring(23, 27)]);
-        this.cerrar( this.jerarquia.substring(0,27)) 
+        this.cerrar( this.jerarquia) 
         
         break;
     }

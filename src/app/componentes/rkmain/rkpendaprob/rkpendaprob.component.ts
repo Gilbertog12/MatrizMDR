@@ -77,19 +77,19 @@ export class RkpendaprobComponent implements OnInit {
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log("RES:" + JSON.stringify(data));
+            console.log(data);
             const result = data.success;
             if (result) {
 
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
-                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 3){
+                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
                     var StatusTemp = 1
                   }else{
                     var StatusTemp = parseInt(element.atts[19].value.trim())
                   }
-                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 3){
+                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
                     var StatusTempP = 1
                   }else{
                     var StatusTempP = parseInt(element.atts[20].value.trim())
@@ -394,8 +394,8 @@ export class RkpendaprobComponent implements OnInit {
                                 {
                                   icon:'success',
                                   text:'Registro Archivado ',
-                                  showConfirmButton: false,
-                                  timer: 3000
+                                  // showConfirmButton: false,
+                                  // timer: 3000
                                 }
                               )
                             }
@@ -406,8 +406,8 @@ export class RkpendaprobComponent implements OnInit {
                                 {
                                   icon:'error',
                                   text:data.message,
-                                  showConfirmButton: false,
-                                  timer: 3000
+                                  // showConfirmButton: false,
+                                  // timer: 3000
                                 }
                               )
                                 
@@ -537,6 +537,7 @@ async RestaurarItem() {
         _atts.push({ name: 'scriptName', value: 'coemdr' });
         _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
         _atts.push({ name: 'key', value: this.valor });
+        _atts.push({ name: 'accion', value: 'Mod' });
 
 
         const spinner = this.controlService.openSpinner();
@@ -552,8 +553,7 @@ async RestaurarItem() {
                               {
                                 icon:'success',
                                 text:'Registro Restaurado ',
-                                showConfirmButton: false,
-                                timer: 3000
+                               
                               }
                             )
                           }
@@ -564,8 +564,7 @@ async RestaurarItem() {
                               {
                                 icon:'error',
                                 text:data.message,
-                                showConfirmButton: false,
-                                timer: 3000
+                               
                               }
                             )
                               

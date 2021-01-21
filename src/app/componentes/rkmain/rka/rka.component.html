@@ -43,7 +43,7 @@
         </mat-dialog-actions>
 
     </div>
-    <!--<div *ngSwitchCase="'RECHAZADO'">
+    <div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
@@ -53,9 +53,9 @@
 
 
 
-    <!-- </mat-dialog-actions> -->
+        </mat-dialog-actions>
 
-    <!-- </div> -->
+    </div>
 
     <div *ngSwitchCase="'ENVIADO A APROBACION'">
         <mat-dialog-actions align="end">
@@ -118,12 +118,28 @@
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="areaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="areaModel.areaRiesgoPuroDesc" #areaRiesgoPuroDesc="ngModel" readonly="true" />
+
+                                <!-- <input *ngIf="areaModel.areaRiesgoPuroDesc === 'INSIGNIFICANTE'" class="INSIGNIFICANTE" matInput type="text" name="areaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="areaModel.areaRiesgoPuroDesc" #areaRiesgoPuroDesc="ngModel" readonly="true" />
+                                <input *ngIf="areaModel.areaRiesgoPuroDesc === 'INTOLERABLE'" class="INTOLERABLE" matInput type="text" name="areaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="areaModel.areaRiesgoPuroDesc" #areaRiesgoPuroDesc="ngModel" readonly="true" />
+                                <input *ngIf="areaModel.areaRiesgoPuroDesc === 'TOLERABLE'" class="TOLERABLE" matInput type="text" name="areaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="areaModel.areaRiesgoPuroDesc" #areaRiesgoPuroDesc="ngModel" readonly="true" /> -->
+                                <input *ngIf="areaModel.areaRiesgoPuroDesc !== ' '" matInput [class]="areaModel.areaRiesgoPuroDesc" type="text" name="areaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="areaModel.areaRiesgoPuroDesc" #areaRiesgoPuroDesc="ngModel" readonly="true"
+                                />
+                                <input *ngIf="areaModel.areaRiesgoPuroDesc === ' '" matInput [id]="areaModel.areaRiesgoPuroDesc" type="text" name="areaRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="areaModel.areaRiesgoPuroDesc" #areaRiesgoPuroDesc="ngModel" readonly="true" />
+
+
                             </mat-form-field>
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="areaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="areaModel.areaRiesgoResidualDesc" #areaRiesgoResidualDesc="ngModel" readonly="true" />
+                                <!-- <input matInput *ngIf="areaModel.areaRiesgoResidualDesc === 'INSIGNIFICANTE'" class="INSIGNIFICANTE" type="text" name="areaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="areaModel.areaRiesgoResidualDesc" #areaRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="areaModel.areaRiesgoResidualDesc === 'INTOLERABLE'" class="INTOLERABLE" type="text" name="areaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="areaModel.areaRiesgoResidualDesc" #areaRiesgoResidualDesc="ngModel" readonly="true"
+                                />
+                                <input matInput *ngIf="areaModel.areaRiesgoResidualDesc === 'TOLERABLE'" type="text" name="areaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="areaModel.areaRiesgoResidualDesc" #areaRiesgoResidualDesc="ngModel" readonly="true" /> -->
+                                <input matInput *ngIf="areaModel.areaRiesgoPuroDesc !== ' '" [class]="areaModel.areaRiesgoResidualDesc" type="text" name="areaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="areaModel.areaRiesgoResidualDesc" #areaRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="areaModel.areaRiesgoPuroDesc === ' '" [id]="areaModel.areaRiesgoResidualDesc" type="text" name="areaRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="areaModel.areaRiesgoResidualDesc" #areaRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -160,7 +176,7 @@
                 <tbody>
                     <tr *ngFor="let item of procesosList">
                         <td title="Pendiente de eliminacion(Inactivacion)" *ngIf=' item.estado ==="001" && item.pendingDelete ==="Y" || item.estado ==="002" && item.pendingDelete ==="Y" || item.estado ==="003"  && item.pendingDelete ==="Y" || item.estado ==="006"  && item.pendingDelete ==="Y"'
-                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
 
                         <td title="Pendiente por enviar a Validar" *ngIf=' item.estado ==="001" && item.pendingDelete ==="N" || item.estado ==="002" && item.pendingDelete ==="N" || item.estado ==="003"  && item.pendingDelete ==="N" || item.estado ==="006"  && item.pendingDelete ==="N"'
                             class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
@@ -174,16 +190,16 @@
 
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
                         <td *ngIf='item.estado ==="008"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                         <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.Descripcion}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoPuroS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoResidualS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoPuroM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoResidualM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoPuroN}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoResidualN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoPuroS" style="min-height:10px;">{{item.procesoRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoResidualS" style="min-height:10px;">{{item.procesoRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoPuroM" style="min-height:10px;">{{item.procesoRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoResidualM" style="min-height:10px;">{{item.procesoRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoPuroN" style="min-height:10px;">{{item.procesoRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoResidualN" style="min-height:10px;">{{item.procesoRiesgoResidualN}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -224,12 +240,12 @@
 
                         <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                         <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.Descripcion}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoPuroS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoResidualS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoPuroM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoResidualM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoPuroN}}</td>
-                        <td class="mdl-data-table__cell--non-numeric" style="min-height:10px;">{{item.procesoRiesgoResidualN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoPuroS" style="min-height:10px;">{{item.procesoRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoResidualS" style="min-height:10px;">{{item.procesoRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoPuroM" style="min-height:10px;">{{item.procesoRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoResidualM" style="min-height:10px;">{{item.procesoRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoPuroN" style="min-height:10px;">{{item.procesoRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.procesoRiesgoResidualN" style="min-height:10px;">{{item.procesoRiesgoResidualN}}</td>
 
 
                     </tr>

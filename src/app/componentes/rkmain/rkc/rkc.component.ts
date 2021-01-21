@@ -70,6 +70,7 @@ public Razon : string
   fecha: any;
   EnviarHijos: string;
   permisoValidar: boolean;
+  percreacion: string;
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
     private controlService: ControlsService,
@@ -99,6 +100,8 @@ public Razon : string
     
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
+    this.percreacion = localStorage.getItem('NoCreador')
+
   }
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string) {

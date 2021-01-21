@@ -95,7 +95,7 @@
                     <!-- <button [style.display]='AgregarArea' *ngIf="fix !=='YN'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()" disabled>
             <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;"title="Agregar Area">
             </button> -->
-                    <button class="btn btn-sm btn-light btn-round" (click)="recargarArbol()">
+                    <button class="btn btn-sm btn-light btn-round" (click)="recargarArbol(true)">
         <img class="img-circle" src="assets/images/Refresh.png"  style="width: 10px; height: 10px;">
         Refrescar
         </button>
@@ -162,7 +162,7 @@
                                 <div [ngSwitch]="node.status">
                                     <div *ngSwitchCase="006">
 
-                                        <ng-template [ngIf]="node.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
+                                        <ng-template [ngIf]="node.pendingDelete === 'Y'   " [ngIfElse]="sinmarca">
                                             <button [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
                                             <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
                                             </button>
@@ -272,11 +272,17 @@
                                     <div *ngSwitchDefault>
 
 
-                                        <button [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                        <button *ngIf="percreacion !=='Y' " [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
                                         <img   class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px; ">
                                         </button>
-                                        <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)">
+                                        <button *ngIf="percreacion !=='Y' " [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)">
                                         <img   class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px; ">
+                                    </button>
+                                        <button *ngIf="percreacion ==='Y' " [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="nuevo(node)" disabled>
+                                        <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                        </button>
+                                        <button *ngIf="percreacion ==='Y' " [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                        <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
                                     </button>
                                     </div>
                                 </div>
@@ -373,9 +379,9 @@
                         <a *ngIf="node.level === 8" title="Consecuencia" style="background-color: #bdf987e6; font-size: 8px;">CS- </a>
                         <a *ngIf="node.level === 9" title="Control" style="background-color: #bdf987e6; font-size: 8px;">CT- </a>
                         <a *ngIf="node.status === '001' || node.status === '002' || node.status === '003'  " title="Ítem pendiente por enviar a validar." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a>
-                        <a *ngIf="node.status === '006' && node.pendingDelete ==='Y' " title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(**)</a></a>
+                        <a *ngIf="node.status === '006' && node.pendingDelete ==='Y' " title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a>
 
-                        <a *ngIf="node.status === '006' && node.pendingDelete ==='N' " title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(**)</a></a>
+                        <a *ngIf="node.status === '006' && node.pendingDelete ==='N' " title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a>
 
 
                         <a *ngIf="node.status === '008'" title="Aprobado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}</a>
@@ -397,7 +403,7 @@
             </div>
 
         </div>
-
+        <!--Dashboard-->
         <div class="col-xl-8" id="refrescar">
             <div class="box box-default" *ngIf="showDashboard === true">
                 <div class="box-body">

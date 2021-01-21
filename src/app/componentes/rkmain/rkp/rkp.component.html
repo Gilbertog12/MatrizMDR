@@ -41,7 +41,7 @@
         </mat-dialog-actions>
 
     </div>
-    <!--<div *ngSwitchCase="'RECHAZADO'">
+    <div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
@@ -51,9 +51,9 @@
 
 
 
-    <!-- </mat-dialog-actions> -->
+        </mat-dialog-actions>
 
-    <!-- </div> -->
+    </div>
 
     <div *ngSwitchCase="'ENVIADO A APROBACION'">
         <mat-dialog-actions align="end">
@@ -116,12 +116,20 @@
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="procesoRiesgoPuro" placeholder="Riesgo Puro" [(ngModel)]="procesoModel.procesoRiesgoPuro" #procesoRiesgoPuro="ngModel" readonly="true" />
+
+                                <input matInput *ngIf="procesoModel.procesoRiesgoPuro !==' '" [class]="procesoModel.procesoRiesgoPuro" type="text" name="procesoRiesgoPuro" placeholder="Riesgo Puro" [(ngModel)]="procesoModel.procesoRiesgoPuro" #procesoRiesgoPuro="ngModel" readonly="true"
+                                />
+                                <input matInput *ngIf="procesoModel.procesoRiesgoPuro ===' '" [id]="procesoModel.procesoRiesgoPuro" type="text" name="procesoRiesgoPuro" placeholder="Riesgo Puro" [(ngModel)]="procesoModel.procesoRiesgoPuro" #procesoRiesgoPuro="ngModel" readonly="true"
+                                />
                             </mat-form-field>
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <input matInput type="text" name="procesoRiesgoResidual" placeholder="Riesgo Residual" [(ngModel)]="procesoModel.procesoRiesgoResidual" #procesoRiesgoResidual="ngModel" readonly="true" />
+
+                                <input matInput *ngIf="procesoModel.procesoRiesgoResidual !==' '" [class]="procesoModel.procesoRiesgoResidual" type="text" name="procesoRiesgoResidual" placeholder="Riesgo Residual" [(ngModel)]="procesoModel.procesoRiesgoResidual" #procesoRiesgoResidual="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="procesoModel.procesoRiesgoResidual ===' '" [id]="procesoModel.procesoRiesgoResidual" type="text" name="procesoRiesgoResidual" placeholder="Riesgo Residual" [(ngModel)]="procesoModel.procesoRiesgoResidual" #procesoRiesgoResidual="ngModel"
+                                    readonly="true" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -158,7 +166,7 @@
                 <tbody>
                     <tr *ngFor="let item of subprocesosList">
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001"  && item.pendingDelete ==="Y"|| item.estado ==="002" && item.pendingDelete ==="Y"|| item.estado ==="003"  && item.pendingDelete ==="Y"|| item.estado ==="006" && item.pendingDelete ==="Y"'
-                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
                         <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
 
@@ -168,16 +176,16 @@
                         <td title="Ítem pendiente por Aprobar" *ngIf=' item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
                         <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                        <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
                         <td *ngIf='item.estado ==="008" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroN}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.subprocesoRiesgoPuroS">{{item.subprocesoRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.subprocesoRiesgoResidualS">{{item.subprocesoRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.subprocesoRiesgoPuroM">{{item.subprocesoRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.subprocesoRiesgoResidualM">{{item.subprocesoRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.subprocesoRiesgoPuroN">{{item.subprocesoRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.subprocesoRiesgoResidualN">{{item.subprocesoRiesgoResidualN}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -213,13 +221,12 @@
                     <tr *ngFor="let item of subprocesosListLectura">
 
                         <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualS}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualM}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoPuroN}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{item.subprocesoRiesgoResidualN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" id="item.subprocesoRiesgoPuroS">{{item.subprocesoRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" id="item.subprocesoRiesgoResidualS">{{item.subprocesoRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" id="item.subprocesoRiesgoPuroM">{{item.subprocesoRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" id="item.subprocesoRiesgoResidualM">{{item.subprocesoRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" id="item.subprocesoRiesgoPuroN">{{item.subprocesoRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" id="item.subprocesoRiesgoResidualN">{{item.subprocesoRiesgoResidualN}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -41,7 +41,7 @@
         </mat-dialog-actions>
 
     </div>
-    <!--<div *ngSwitchCase="'RECHAZADO'">
+    <div *ngSwitchCase="'RECHAZADO'">
 
         <mat-dialog-actions align="end" cdkDragHandle>
 
@@ -51,9 +51,9 @@
 
 
 
-    <!-- </mat-dialog-actions> -->
+        </mat-dialog-actions>
 
-    <!-- </div> -->
+    </div>
 
     <div *ngSwitchCase="'ENVIADO A APROBACION'">
         <mat-dialog-actions align="end">
@@ -348,12 +348,15 @@
                                         <div [ngSwitch]="canAdd">
                                             <div *ngSwitchCase="'N'">
 
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" disabled>
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" id="SinPermisos" disabled>
                                             <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                                     </button>
                                             </div>
                                             <div *ngSwitchCase="'Y'">
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()">
+                                                <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="guardarcblando()">
                                                     <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
                                             </button>
                                             </div>
@@ -374,21 +377,24 @@
                                         <div [ngSwitch]="canAdd">
                                             <div *ngSwitchCase="'N'">
 
-                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
                                         <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                     </button>
                                             </div>
                                             <div *ngSwitchCase="'Y'">
 
                                                 <ng-template [ngIf]="item.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
                                                     <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                 </button>
 
                                                 </ng-template>
                                                 <ng-template #sinmarca>
 
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
+                                                    <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                    <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
                                                     <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                                 </button>
 
@@ -404,7 +410,7 @@
                                         class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(*)</a></td>
 
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.cblandoStatus ==="001" && item.pendingDelete === "Y"|| item.cblandoStatus ==="002" && item.pendingDelete === "Y"||item.cblandoStatus ==="003" && item.pendingDelete === "Y" || item.cblandoStatus ==="006" && item.pendingDelete === "Y"'
-                                        class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+                                        class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(*)</a></td>
 
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.cblandoStatus === '004' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(**)</a></td>
 
@@ -416,10 +422,10 @@
 
                                     <td title="Ítem pendiente por Aprobar" *ngIf="item.cblandoStatus === '007'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(***)</a></td>
 
-                                    <td *ngIf=' item.cduroStatus ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                                    <td *ngIf=' item.cduroStatus ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                                    <td *ngIf=' item.cduroStatus ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                                    <td *ngIf=' item.cduroStatus ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                                    <td *ngIf=' item.cblandoStatus ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <td *ngIf=' item.cblandoStatus ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <!-- <td *ngIf=' item.cblandoStatus ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                    <!-- <td *ngIf=' item.cblandoStatus ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
                                     <!--<td *ngIf="item.cblandoStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
 
                                     <td title="Aprobado" *ngIf="item.cblandoStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}</td>
@@ -445,12 +451,15 @@
                                         <div [ngSwitch]="canAdd">
                                             <div *ngSwitchCase="'N'">
 
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" disabled>
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" id="SinPermisos" disabled>
                                             <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                                     </button>
                                             </div>
                                             <div *ngSwitchCase="'Y'">
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()">
+                                                <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="guardarcduro()">
                                                     <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
                                             </button>
                                             </div>
@@ -474,20 +483,23 @@
                                         <div [ngSwitch]="canAdd">
                                             <div *ngSwitchCase="'N'">
 
-                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" disabled>
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" id="SinPermisos" disabled>
                                         <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                     </button>
                                             </div>
                                             <div *ngSwitchCase="'Y'">
                                                 <ng-template [ngIf]="item.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
                                                     <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                 </button>
 
                                                 </ng-template>
                                                 <ng-template #sinmarca>
 
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
+                                                    <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                    <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
                                                     <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                                 </button>
 
@@ -500,7 +512,7 @@
                                         class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(*)</a></td>
 
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.cduroStatus ==="001" && item.pendingDelete === "Y"|| item.cduroStatus ==="002" && item.pendingDelete === "Y"||item.cduroStatus ==="003" && item.pendingDelete === "Y" || item.cduroStatus ==="006" && item.pendingDelete === "Y"'
-                                        class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+                                        class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(*)</a></td>
 
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.cduroStatus === '004' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(**)</a></td>
 
@@ -514,8 +526,8 @@
 
                                     <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
                                     <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
-                                    <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
-                                    <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td>
+                                    <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                    <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
                                     <!--<td *ngIf="item.cduroStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
 
                                     <td title="Aprobado" *ngIf="item.cduroStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
@@ -540,14 +552,17 @@
                                     <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
                                         <div [ngSwitch]="canAdd">
                                             <div *ngSwitchCase="'N'">
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" disabled>
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" id="SinPermisos" disabled>
                                         <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                                     </button>
 
                                             </div>
 
                                             <div *ngSwitchCase="'Y'">
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()">
+                                                <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="guardarepf()" id="SinPermisos" disabled>
+                                        <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+                                                <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="guardarepf()">
                                         <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
                                     </button>
 
@@ -569,21 +584,24 @@
                                         <div [ngSwitch]="canAdd">
 
                                             <div *ngSwitchCase="'N'">
-                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" id="SinPermisos" disabled>
                                                     <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                 </button>
                                             </div>
 
                                             <div *ngSwitchCase="'Y'">
                                                 <ng-template [ngIf]="item.pendingDelete === 'Y'  " [ngIfElse]="sinmarca">
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
                                                     <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                 </button>
 
                                                 </ng-template>
                                                 <ng-template #sinmarca>
 
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
+                                                    <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                    <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
                                                     <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                                 </button>
 
@@ -597,7 +615,7 @@
                                         class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(*)</a></td>
 
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.epfStatus ==="001" && item.pendingDelete === "Y"|| item.epfStatus ==="002" && item.pendingDelete === "Y"||item.epfStatus ==="003" && item.pendingDelete === "Y" || item.epfStatus ==="006" && item.pendingDelete === "Y"'
-                                        class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+                                        class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(*)</a></td>
 
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.epfStatus === '004' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(**)</a></td>
 
@@ -636,13 +654,16 @@
                                         <div [ngSwitch]="canAdd">
                                             <div *ngSwitchCase="'Y'">
 
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()">
+                                                <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="guardardoc()" id="SinPermisos" disabled>
+                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                </button>
+                                                <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="guardardoc()">
                                     <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
                                 </button>
                                             </div>
 
                                             <div *ngSwitchCase="'N'">
-                                                <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" disabled>
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" id="SinPermisos" disabled>
                                                     <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                                                 </button>
 
@@ -677,7 +698,10 @@
                                                 </ng-template>
                                                 <ng-template #sinmarca>
 
-                                                    <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
+                                                    <button *ngIf="percreacion ==='Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                    <button *ngIf="percreacion ==='N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
                                                     <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                                 </button>
 
@@ -688,8 +712,8 @@
                                     </td>
 
                                     <td class="mdl-data-table__cell--non-numeric" [innerHTML]="item.documentUrl"></td>
-                                    <td *ngIf="item.docStatus != '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}<a style="font-size: 11px;color: red;">(*)</a></td>
-                                    <td *ngIf="item.docStatus === '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td>
+                                    <!-- <td *ngIf="item.docStatus != '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td>
 
                                     <td class="mdl-data-table__cell--non-numeric">{{item.documentType}}</td>
 

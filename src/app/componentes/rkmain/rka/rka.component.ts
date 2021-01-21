@@ -59,7 +59,8 @@ public Razon : string
               private controlService: ControlsService,
               private confirm: MatDialog,
               private route: ActivatedRoute) {
-
+                
+                console.log('ante del obtener el perfil')
                 this.aperfil()
 
                 this.route.params.subscribe( params => {
@@ -94,12 +95,13 @@ public Razon : string
 
         (data) => {
           const result = data.success;
+          console.log(data)
           if (result) {
             // console.info('aqui esta el cambio')
-            console.log(data)
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
-                if ( element.atts[0].value === '0' ) {
+                console.log(element.atts[0].value)
+                if ( element.atts[0].value === '0'   ) {
 
                   this.areaModel = {
                     offset: data.data[0].atts[0].value,
@@ -114,9 +116,9 @@ public Razon : string
                     areaRiesgoResidualDesc: data.data[0].atts[9].value,
                     areaStatus: data.data[0].atts[10].value,
                     areaVersion: data.data[0].atts[11].value,
-                    areaNivel: data.data[0].atts[12].value,
-                    areaAtributos: data.data[0].atts[13].value,
-                    areaStatusId: data.data[0].atts[14].value,
+                    // areaNivel: data.data[0].atts[12].value,
+                    //areaAtributos: data.data[0].atts[13].value,
+                    // areaStatusId: data.data[0].atts[14].value,
                     key: data.data[0].atts[15].value,
                     statusParent: data.data[0].atts[16].value
                   };
@@ -146,6 +148,7 @@ public Razon : string
                   localStorage.setItem('statusSelected', this.areaModel.areaStatusId);
 
                 } else {
+                  console.log(data)
                   console.log(element.atts[9].value )
                   if( element.atts[9].value === '008' && this.btn === 'lectura'){
                     console.log('aqui')
@@ -163,6 +166,7 @@ public Razon : string
                     estado: element.atts[9].value
                   });
                   }else{
+                    console.log("No Soy SOLOLectura")
                     this.procesosList.push({
                     
                     offset: element.atts[0].value,
@@ -307,6 +311,8 @@ public Razon : string
       default:
         break;
     }
+
+    console.log(this.btn)
 
 
   }

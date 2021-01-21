@@ -68,6 +68,7 @@ public canAdd : string
   private tid : string;
   EnviarHijos: string;
   permisoValidar: boolean;
+  percreacion: string;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -98,6 +99,8 @@ public canAdd : string
   
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
+    this.percreacion = localStorage.getItem('NoCreador')
+
     
   }
 

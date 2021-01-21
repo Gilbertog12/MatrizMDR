@@ -237,7 +237,7 @@ export class RkycduroComponent implements OnInit {
 
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
-                  this.cDuroTipos1List.push({
+                  this.  cDuroTipos1List.push({
                     Id: element.atts[0].value,
                     Descripcion: element.atts[1].value
                   });

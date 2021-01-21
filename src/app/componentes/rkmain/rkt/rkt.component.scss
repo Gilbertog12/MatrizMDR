@@ -19,6 +19,45 @@
     padding-left: 9px;
 }
 
+.INSIGNIFICANTE {
+    background-color: #00B600;
+    color: white;
+    font-weight: bold;
+    border: 0px;
+}
+
+.INTOLERABLE {
+    background-color: #FF0000;
+    color: black;
+    font-weight: bold;
+    border: 0px;
+}
+
+.TOLERABLE {
+    background-color: #FFFF01;
+    color: black;
+    font-weight: bold;
+    border: 0px;
+}
+
+#INSIGNIFICANTE {
+    background-color: #00B600;
+    color: white;
+    font-weight: bold;
+}
+
+#INTOLERABLE {
+    background-color: #FF0000;
+    color: black;
+    font-weight: bold;
+}
+
+#TOLERABLE {
+    background-color: #FFFF01;
+    color: black;
+    font-weight: bold;
+}
+
 .mdl-data-table th {
     position: relative;
     vertical-align: bottom;
