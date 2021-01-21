@@ -33,7 +33,7 @@
                 <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
             </mat-option>
 
-            <mat-option *ngFor="let item of cBlandosList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+            <mat-option *ngFor="let item of cBlandosList |  filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>

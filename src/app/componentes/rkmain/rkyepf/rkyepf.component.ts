@@ -158,6 +158,7 @@ export class RkyepfComponent implements OnInit {
     } else {
       // this.autentication.showMessage(data.success, data.message, this.epfModel, data.redirect);
       Swal2.fire('',data.message,'error')
+      this.dialogRef.close(true);
     }
     this.controlService.closeSpinner(spinner);
     },

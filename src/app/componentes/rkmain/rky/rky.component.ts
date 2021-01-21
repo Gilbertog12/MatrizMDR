@@ -359,29 +359,7 @@ public Razon : string
     });
   }
 
-  getcolor(status) {
-    switch (status) {
-      case '001':
-        return 'underline #ffc107';
-
-      case '002':
-        return 'underline #ffc107';
-      case '003':
-        return 'underline #ffc107';
-      case '004':
-        return 'underline #EF5350';
-      case '005':
-        return 'underline #00BCD4';
-      case '007':
-        return 'underline #66BB6A';
-
-      case '008':
-        return 'black';
-
-      default:
-        break;
-    }
-  }
+  
 
   async guardarcblando() {
 
@@ -676,6 +654,7 @@ public Razon : string
               if (data.success === true) {
                 if (data.data[0].atts[1]) {
                 Swal2.fire('','Registro eliminado', 'success')
+                
                   
                 }
                 this.consecuenciaModel = {};

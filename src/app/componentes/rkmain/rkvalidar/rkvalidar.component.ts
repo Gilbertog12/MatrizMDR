@@ -6,6 +6,7 @@ import { ConfirmationComponent } from '../../../controls/confirmation/confirmati
 import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-reject.component';
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-rkvalidar',
@@ -188,42 +189,69 @@ export class RkvalidarComponent implements OnInit {
             // console.log("RES:" + JSON.stringify(data));
             const result = data.success;
             if (result) {
+              console.log(data)
+          data.data.forEach((element) => {
+            if (element.atts.length > 0) {
 
-              data.data.forEach((element) => {
-                if (element.atts.length > 0) {
-                  this.pendList.push({
-                    Accion: element.atts[1].value.trim(),
-                    Entidad: element.atts[2].value.trim(),
-                    Id: element.atts[3].value.trim(),
-                    Descripcion: element.atts[4].value.trim(),
-                    Area: element.atts[5].value.trim(),
-                    Proceso: element.atts[6].value.trim(),
-                    Subproceso: element.atts[7].value.trim(),
-                    Actividad: element.atts[8].value.trim(),
-                    Tarea: element.atts[9].value.trim(),
-                    Dimension: element.atts[10].value.trim(),
-                    Riesgo: element.atts[11].value.trim(),
-                    Consecuencia: element.atts[12].value.trim(),
-                    Controles : element.atts[13].value.trim(),
-                    Fecha: element.atts[15].value.trim(),
-                    key: element.atts[16].value.trim(),
-                    version : element.atts[17].value.trim(),
-                    Comentarios : element.atts[18].value.trim(),
-                    estado : parseInt(element.atts[19].value.trim()),
-                    statusParent:parseInt(element.atts[20].value.trim()),
-                    check: false,
+              if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
+                var StatusTemp = 1
+              }else{
+                var StatusTemp = parseInt(element.atts[19].value.trim())
+              }
+              if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
+                var StatusTempP = 1
+              }else{
+                var StatusTempP = parseInt(element.atts[20].value.trim())
+              }
 
-                  });
+              if(StatusTemp < StatusTempP){
+                this.permi = true
+                // console.log(this.permi)
+              }else{
+                this.permi= false
+                // console.log(this.permi)
 
-                }
+              }
+              this.pendList.push({
+                Accion: element.atts[1].value.trim(),
+                Entidad: element.atts[2].value.trim(),
+                Id: element.atts[3].value.trim(),
+                Descripcion: element.atts[4].value.trim(),
+                Area: element.atts[5].value.trim(),
+                Proceso: element.atts[6].value.trim(),
+                Subproceso: element.atts[7].value.trim(),
+                Actividad: element.atts[8].value.trim(),
+                Tarea: element.atts[9].value.trim(),
+                Dimension: element.atts[10].value.trim(),
+                Riesgo: element.atts[11].value.trim(),
+                Consecuencia: element.atts[12].value.trim(),
+                Controles : element.atts[13].value.trim(),
+                Fecha: element.atts[15].value.trim(),
+                key: element.atts[16].value.trim(),
+                version : element.atts[17].value.trim(),
+                Comentarios : element.atts[18].value.trim(),
+                permiso: this.permi,
+                check: false,
+                
+                
+                
               });
+            }
+            
+            
+            
+          }
+          
+          
+          );
+          console.log(this.pendList)
 
-              
+          // this.comprobarPadre()
+          
+          // this.TotalRegistros = this.pendList.length
 
-              this.controlService.closeSpinner(spinner);
-
-
-            } else {
+          this.controlService.closeSpinner(spinner);
+        } else {
               this.controlService.snackbarError(data.message);
             }
             return result;
@@ -727,7 +755,7 @@ verTable(item: any) {
     }).then((result)=>{
         if(result.value){
 
-          const conf1 = this.confirm.open(RkReasonRejectComponent,{
+          const conf = this.confirm.open(RkReasonRejectComponent,{
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
@@ -737,6 +765,10 @@ verTable(item: any) {
               button_close: 'Cancelar'
             }
           });
+
+          conf.afterClosed().subscribe(async(result)=>{
+            this.cerrar('falso');
+          })
 
         //   conf1.afterClosed().subscribe
         //   (async ( result1) =>{

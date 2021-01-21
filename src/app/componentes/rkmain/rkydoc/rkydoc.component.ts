@@ -208,6 +208,7 @@ export class RkydocComponent implements OnInit {
       } else {
         // this.autentication.showMessage(data.success, data.message, this.docModel, data.redirect);
         Swal2.fire('',data.data[0].atts[1].value,'success')
+        this.dialogRef.close(true);
       }
     }
     else {

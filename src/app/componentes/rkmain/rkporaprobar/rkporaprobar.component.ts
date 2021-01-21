@@ -741,7 +741,7 @@ verTable(item: any) {
     }).then((result)=>{
         if(result.value){
 
-          const conf1 = this.confirm.open(RkReasonRejectComponent,{
+          const conf = this.confirm.open(RkReasonRejectComponent,{
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
@@ -751,6 +751,9 @@ verTable(item: any) {
               button_close: 'Cancelar'
             }
           });
+          conf.afterClosed().subscribe(async(result)=>{
+            this.cerrar('falso');
+          })
 
           // conf1.afterClosed().subscribe
           // (async ( result1) =>{
