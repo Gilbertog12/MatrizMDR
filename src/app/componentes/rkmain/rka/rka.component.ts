@@ -52,7 +52,7 @@ public Razon : string
   private id : string;
   EnviarHijos: string;
   public papa:RkmainComponent;
-  permisoValidar: boolean;
+  permisoValidar: any;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -68,6 +68,8 @@ public Razon : string
                   this.areaModel = {};
                   this.procesosList = [];
                   this.ver(this.id);
+                  
+
 
                 });
 
@@ -81,7 +83,19 @@ public Razon : string
 
   
 
-  ver(areaId: string) {
+  async ver(areaId: string) {
+
+    this.permisoValidar = localStorage.getItem('canAdd')
+
+    if(this.permisoValidar === 'Y'){
+
+      this.permisoValidar = true
+    }else{
+      this.permisoValidar = false
+    }
+    console.log(this.permisoValidar)
+
+    
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'AREA_READ'});
@@ -120,8 +134,12 @@ public Razon : string
                     //areaAtributos: data.data[0].atts[13].value,
                     // areaStatusId: data.data[0].atts[14].value,
                     key: data.data[0].atts[15].value,
-                    statusParent: data.data[0].atts[16].value
+                    statusParent: data.data[0].atts[16].value,
+                    CanAdd:data.data[0].atts[17].value,
+                    CanModify:data.data[0].atts[18].value,
                   };
+
+                  
                   
                   if(parseInt(this.areaModel.areaStatusId) == 1 || parseInt(this.areaModel.areaStatusId) == 2 ||parseInt(this.areaModel.areaStatusId) == 6 ){
                     var StatusTemp = 1
@@ -133,15 +151,7 @@ public Razon : string
                   }else{
                     var StatusTempP = parseInt(this.areaModel.statusParent)
                   }
-                  console.log(StatusTemp)
-                  if(StatusTemp <StatusTempP){
-                    
-                    this.permisoValidar = true
-                  }else{
-                    this.permisoValidar= false
-
-                  }
-                  console.log(this.permisoValidar)
+                  
 
                   localStorage.setItem('keySelected', this.areaModel.key);
                   localStorage.setItem('versionSelected', this.areaModel.areaVersion);
@@ -150,7 +160,7 @@ public Razon : string
                 } else {
                   console.log(data)
                   console.log(element.atts[9].value )
-                  if( element.atts[9].value === '008' && this.btn === 'lectura'){
+                  if( element.atts[9].value === '008' && this.btn=== 'lectura' ){
                     console.log('aqui')
                     this.procesosListLectura.push({
                     
@@ -186,7 +196,7 @@ public Razon : string
                 }
               }
             });
-
+            console.log(this.procesosList)
             this.controlService.closeSpinner(spinner);
           } else {
             this.controlService.closeSpinner(spinner);
@@ -199,6 +209,7 @@ public Razon : string
         this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.areaModel, false);
       });
     });
+
   }
 
 
@@ -317,9 +328,14 @@ public Razon : string
 
   }
 
+
+  
+
   consola(accion : string){
 
-    this.key = this.areaModel.key
+    this.key = this.areaModel.key 
+
+    
     this.version = localStorage.getItem('versionSelected')
     
    
@@ -406,13 +422,13 @@ public Razon : string
       cancelButtonText: 'Cancelar',
       confirmButtonColor:'#3085d6',
       cancelButtonColor: '#d33',
-      input: 'radio',
-      inputOptions: inputOptions,
-      inputValidator: (value) => {
-      if (!value) {
-      return 'Debe Seleccionar una Opcion'
-      }
-    }
+    //   input: 'radio',
+    //   inputOptions: inputOptions,
+    //   inputValidator: (value) => {
+    //   if (!value) {
+    //   return 'Debe Seleccionar una Opcion'
+    //   }
+    // }
       
       
       
@@ -428,7 +444,8 @@ public Razon : string
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'VALIDATE' });
-      _atts.push({ name: 'onlyActualNode', value: color });
+      _atts.push({ name: 'onlyActualNode', value: 'Y' });
+      _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
       _atts.push({ name: 'approveInd', value: 'A' });
       _atts.push({ name: 'comments', value: '' });
       _atts.push({ name: 'key', value: this.key });
@@ -489,11 +506,12 @@ public Razon : string
       }
       console.log(this.areaModel.areaVersion)
      
-      this.key = this.areaModel.key + ','
-      this.version = this.areaModel.areaVersion + ','
+      this.key = this.areaModel.key 
+      this.version = this.areaModel.areaVersion 
 
       localStorage.setItem('Llave', this.key);
       localStorage.setItem('VersionL', this.version);
+      localStorage.setItem('isValidatingFromTree','Y')
   
       Swal2.fire({
   
@@ -516,7 +534,8 @@ public Razon : string
               data: {
                 title: 'Razon de Rechazo',
                 button_confirm: 'Aceptar',
-                button_close: 'Cancelar'
+                button_close: 'Cancelar',
+                
               }
             });
   
@@ -529,7 +548,10 @@ public Razon : string
       
   
       async sendvalidate() {
-  
+
+
+        
+        
         let title='Enviar a Validar'
         let resp= 'Enviado a Validar'
   
@@ -585,17 +607,18 @@ public Razon : string
       cancelButtonText: 'Cancelar',
       confirmButtonColor:'#3085d6',
       cancelButtonColor: '#d33',
-      input: 'radio',
-      inputOptions: inputOptions,
-      inputValidator: (value) => {
-      if (!value) {
-      return 'Debe Seleccionar una Opcion'
-      }
-    }
+    //   input: 'radio',
+    //   inputOptions: inputOptions,
+    //   inputValidator: (value) => {
+    //   if (!value) {
+    //   return 'Debe Seleccionar una Opcion'
+    //   }
+    // }
       
       
       
     })
+
     if(color ){
       // console.log(color)
      
@@ -607,7 +630,8 @@ public Razon : string
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-      _atts.push({ name: 'onlyActualNode', value: color });
+      _atts.push({ name: 'onlyActualNode', value: 'Y' });
+      _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
       _atts.push({ name: 'key', value: this.key });
 
       const spinner = this.controlService.openSpinner();

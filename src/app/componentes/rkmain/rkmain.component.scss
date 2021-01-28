@@ -272,6 +272,11 @@
   #SinPermisos {
       cursor: not-allowed;
   }
+  
+  .tabla {
+      max-width: 100%;
+      overflow-x: scroll;
+  }
   /*
 @media only screen and (max-width: 400px) {
   .foot{

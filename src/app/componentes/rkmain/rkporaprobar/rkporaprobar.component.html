@@ -12,10 +12,10 @@
             <input type="date" placeholder="Fecha Hasta" [(ngModel)]='FechaHasta' name="FechaHasta" required>Fecha Hasta
 
             <button *ngIf="FechaDesde ==='' || FechaHasta=== ''; else BotonActivado" (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons" disabled>
-                    search</button>
+                            search</button>
             <ng-template #BotonActivado>
                 <button (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons">
-                            search</button>
+                                    search</button>
             </ng-template>
         </div>
         <!-- <p>{{TotalRegistros}}</p> -->
@@ -50,17 +50,17 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of pendList">
-                    <td class="mdl-data-table__cell--non-numeric" style="text-align:left">
-                        <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" (change)="MarcarJerarquia(item.key)" [value]="item.check" [(ngModel)]="item.check">
+                    <td class="mdl-data-table__cell--non-numeric " style="text-align:left">
+                        <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                         <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
-    
-                            </ng-template>
-                            <ng-template #PadreMayor>
-                                <input readonly type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
-    
-                            </ng-template> -->
+            
+                                    </ng-template>
+                                    <ng-template #PadreMayor>
+                                        <input readonly type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
+            
+                                    </ng-template> -->
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Accion}}</td>
+                    <td class="mdl-data-table__cell--non-numeric ">{{item.Accion}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Comentarios}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Fecha}}</td>
                     <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
@@ -76,9 +76,9 @@
                     </ng-template>
 
                     <td class="mdl-data-table__cell--non-numeric"><a routerLink="" reload='true' (click)='verTable(item.key)'>
-                            {{item.Descripcion}}  </a></td>
+                                    {{item.Descripcion}}  </a></td>
 
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Area}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" id="controles">{{item.Area}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Proceso}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Subproceso}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Actividad}}</td>
@@ -86,7 +86,7 @@
                     <td class="mdl-data-table__cell--non-numeric">{{item.Dimension}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Riesgo}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Consecuencia}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Controles}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.TipoControl}}-{{item.Controles}}</td>
 
 
 

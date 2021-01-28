@@ -1,9 +1,12 @@
-.col-xl-8
-{
+.col-xl-8 {
     background-color: white;
 }
 
-.col-xl-4
-{
+.col-xl-4 {
     max-width: auto;
+}
+
+.tabla {
+    max-width: 100% !important;
+    overflow-x: scroll !important;
 }

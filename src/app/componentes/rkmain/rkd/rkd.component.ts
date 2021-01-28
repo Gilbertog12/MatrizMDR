@@ -213,7 +213,7 @@ public Razon : string
 
   consola(accion : string){
 
-    this.key = localStorage.getItem('keySelected')
+    this.key = this.dimensionModel.key 
     this.version = localStorage.getItem('versionSelected')
     
     
@@ -299,13 +299,13 @@ public Razon : string
     cancelButtonText: 'Cancelar',
     confirmButtonColor:'#3085d6',
     cancelButtonColor: '#d33',
-    input: 'radio',
-    inputOptions: inputOptions,
-    inputValidator: (value) => {
-    if (!value) {
-    return 'Debe Seleccionar una Opcion'
-    }
-  }
+  //   input: 'radio',
+  //   inputOptions: inputOptions,
+  //   inputValidator: (value) => {
+  //   if (!value) {
+  //   return 'Debe Seleccionar una Opcion'
+  //   }
+  // }
     
     
     
@@ -321,7 +321,8 @@ public Razon : string
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'VALIDATE' });
-    _atts.push({ name: 'onlyActualNode', value: color });
+    _atts.push({ name: 'onlyActualNode', value: 'Y' });
+    _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
     _atts.push({ name: 'approveInd', value: 'A' });
     _atts.push({ name: 'comments', value: '' });
     _atts.push({ name: 'key', value: this.key });
@@ -386,8 +387,9 @@ public Razon : string
       this.version = this.dimensionModel.dimensionVersion + ','
 
       localStorage.setItem('Llave', this.key);
+      
       localStorage.setItem('VersionL', this.version);
-  
+      localStorage.setItem('isValidatingFromTree', 'Y');
       Swal2.fire({
   
         title:'Rechazar '+title,
@@ -538,13 +540,13 @@ public Razon : string
       cancelButtonText: 'Cancelar',
       confirmButtonColor:'#3085d6',
       cancelButtonColor: '#d33',
-      input: 'radio',
-      inputOptions: inputOptions,
-      inputValidator: (value) => {
-      if (!value) {
-      return 'Debe Seleccionar una Opcion'
-      }
-    }
+    //   input: 'radio',
+    //   inputOptions: inputOptions,
+    //   inputValidator: (value) => {
+    //   if (!value) {
+    //   return 'Debe Seleccionar una Opcion'
+    //   }
+    // }
       
       
       
@@ -555,7 +557,9 @@ public Razon : string
       const _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-              _atts.push({ name: 'onlyActualNode', value: color });
+              _atts.push({ name: 'onlyActualNode', value: 'Y' });
+              _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
+
               _atts.push({ name: 'key', value: this.key });
     
               const spinner = this.controlService.openSpinner();

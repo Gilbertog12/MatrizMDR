@@ -44,6 +44,25 @@
     -webkit-user-drag: element;
 }
 
+.static {
+    position: absolute;
+    background-color: white;
+}
+
+#div1 {
+    overflow: scroll;
+    height: 500px;
+    width: 800px;
+}
+
+#controles :first-letter {
+    color: red !important;
+}
+
+.first-col {
+    padding-left: 74.5px!important;
+}
+
 thead th {
     position: sticky;
     position: -webkit-sticky;
@@ -75,4 +94,52 @@ a {
 
 #busqueda {
     background-color: gray;
+}
+
+.sticky {
+    position: sticky;
+    left: 0;
+}
+
+.sticky2 {
+    position: sticky;
+    left: 150px;
+}
+
+.cebra {
+    border-top: solid 1px #333;
+    border-spacing: 0;
+    padding-left: 0px;
+}
+
+.cebra thead th {
+    background: #333;
+    color: white;
+}
+
+.cebra th,
+.cebra td {
+    border-right: solid 1px #ccc;
+    min-width: 150px;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.cebra th:last-child,
+.cebra td:last-child {
+    border-right: 0;
+}
+
+.cebra td {
+    border-bottom: solid 1px #ccc;
+}
+
+.cebra tbody tr,
+.cebra tbody tr .sticky,
+.cebra tbody tr .sticky2 {
+    background-color: white;
+}
+
+.cebra tbody tr:nth-child(2n) .sticky .sticky2 {
+    background-color: #f2f2f2;
 }

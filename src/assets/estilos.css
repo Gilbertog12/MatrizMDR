@@ -1,19 +1,24 @@
-.aprobar{
-    color : #EF5350;
+.aprobar {
+    color: #EF5350;
     background: white;
 }
 
-.por_aprobar{
+.por_aprobar {
     color: #00BCD4;
- background: white;
+    background: white;
 }
 
-.por_validar{
+.por_validar {
     color: #ffc107;
-background: white;
+    background: white;
 }
 
-.validar{
+.validar {
     color: #66BB6A;
     background: white;
+}
+
+.tabla {
+    max-width: 100%;
+    overflow-x: scroll;
 }

@@ -180,8 +180,12 @@ export class LoginComponent implements OnInit {
             text:'Usuario o Contraseña Incorrectos',
             icon:'warning'
           })
-          this.positions = [];
+          this.model.username=''
+          this.model.password=''
+          this.model.position=''
+          this.model.district=''
           this.controlService.closeSpinner(spinner);
+          
 
         }
      },
@@ -198,6 +202,7 @@ export class LoginComponent implements OnInit {
     
     
   }
+  
 
   
 

@@ -119,6 +119,8 @@ export class RkporaprobarComponent implements OnInit {
                     Comentarios : element.atts[18].value.trim(),
                     permiso: this.permi,
                     check: false,
+                    status:element.atts[19].value.trim(),
+                    TipoControl:element.atts[21].value
                     
                     
                     
@@ -212,9 +214,10 @@ export class RkporaprobarComponent implements OnInit {
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
-                    estado : parseInt(element.atts[19].value.trim()),
-                    statusParent:parseInt(element.atts[20].value.trim()),
+                    permiso: this.permi,
                     check: false,
+                    status:element.atts[19].value.trim(),
+                    TipoControl:element.atts[21].value
 
                   });
 
@@ -263,11 +266,11 @@ export class RkporaprobarComponent implements OnInit {
           if(this.pendList[i]['check'] == false){
              console.log('aqui estoy')
              this.pendList[i]['check'] = true
-             this.pendList[i]['permiso'] = true
+            //  this.pendList[i]['permiso'] = true
              
            }else{
              this.pendList[i]['check'] = false
-             this.pendList[i]['permiso'] = false
+            //  this.pendList[i]['permiso'] = false
    
            }
         }
@@ -363,7 +366,7 @@ export class RkporaprobarComponent implements OnInit {
         const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'VALIDATE' });
-          _atts.push({ name: 'onlyActualNode', value: 'N' });
+          _atts.push({ name: 'onlyActualNode', value: 'Y' });
           _atts.push({ name: 'key', value: this.valor });
 
           const spinner = this.controlService.openSpinner();
@@ -694,15 +697,18 @@ verTable(item: any) {
     for (let i = 0; i < this.pendList.length; i++) {
 
       if (this.pendList[i]["check"] === true) {
-        this.valor = this.valor+ "," + this.pendList[i]["key"] ;
-        this.version = this.version+","+this.pendList[i]['version'];
+          this.valor = this.valor + ','+ this.pendList[i]['key']+','+'Y'  ;
+          this.version = this.version+","+this.pendList[i]['version'];
+      }else{
+        this.valor = this.valor + ','+ this.pendList[i]['key']+','+'N'  ;
+            
       }
 
     }
     console.log(this.valor = this.valor.slice(1));
     console.log(this.version = this.version.slice(1));
 
-    console.log(this.valor);
+    console.log(this.valor)
     //AQUI COLOCA EL LLAMADO EL SRVICIIO
 
     if(accion === 'aprobar'){

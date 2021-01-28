@@ -307,7 +307,7 @@ async mostrar()  {
 
 consola(accion : string){
 
-  this.key = localStorage.getItem('keySelected')
+  this.key = this.procesoModel.key 
   this.version = localStorage.getItem('versionSelected')
   
   
@@ -393,13 +393,13 @@ const { value: color } = await Swal2.fire({
   cancelButtonText: 'Cancelar',
   confirmButtonColor:'#3085d6',
   cancelButtonColor: '#d33',
-  input: 'radio',
-  inputOptions: inputOptions,
-  inputValidator: (value) => {
-  if (!value) {
-  return 'Debe Seleccionar una Opcion'
-  }
-}
+  // input: 'radio',
+  // inputOptions: inputOptions,
+  // inputValidator: (value) => {
+  // if (!value) {
+  // return 'Debe Seleccionar una Opcion'
+  // }
+//}
   
   
   
@@ -415,9 +415,10 @@ if(color ){
   const _atts = [];
   _atts.push({ name: 'scriptName', value: 'coemdr' });
   _atts.push({ name: 'action', value: 'VALIDATE' });
-  _atts.push({ name: 'onlyActualNode', value: color });
+  _atts.push({ name: 'onlyActualNode', value: 'Y' });
   _atts.push({ name: 'approveInd', value: 'A' });
   _atts.push({ name: 'comments', value: '' });
+  _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
   _atts.push({ name: 'key', value: this.key });
 
   const spinner = this.controlService.openSpinner();
@@ -481,6 +482,7 @@ if(color ){
 
     localStorage.setItem('Llave', this.key);
     localStorage.setItem('VersionL', this.version);
+    localStorage.setItem('isValidatingFromTree','Y')
 
     Swal2.fire({
 
@@ -556,13 +558,13 @@ if(color ){
     cancelButtonText: 'Cancelar',
     confirmButtonColor:'#3085d6',
     cancelButtonColor: '#d33',
-    input: 'radio',
-    inputOptions: inputOptions,
-    inputValidator: (value) => {
-    if (!value) {
-    return 'Debe Seleccionar una Opcion'
-    }
-  }
+  //   input: 'radio',
+  //   inputOptions: inputOptions,
+  //   inputValidator: (value) => {
+  //   if (!value) {
+  //   return 'Debe Seleccionar una Opcion'
+  //   }
+  // }
     
     
     
@@ -572,7 +574,8 @@ if(color ){
         const _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
             _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: color });
+            _atts.push({ name: 'onlyActualNode', value: 'Y' });
+            _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
             _atts.push({ name: 'key', value: this.key });
   
             const spinner = this.controlService.openSpinner();

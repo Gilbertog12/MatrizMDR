@@ -166,15 +166,16 @@ export class DynamicFlatNode {
                 var StatusPadre = false
               }
 
-            if(perfil === 'NNYNN'){
-              var lectura = 'Y'
+            if(value['atts'][18]['value'] === 'Y'){
+              var lectura = 'N'
 
             }else{
-              var lectura = 'N'
+              var lectura = 'Y'
             }
             let BloqueoDesdePadre = StatusPadre
             localStorage.setItem('StatusPadre',BloqueoDesdePadre.toString())
             let permiso = canAdd+lectura
+            //  let permiso = lectura
             localStorage.setItem('sololectura',permiso)
               
               localStorage.setItem('canAdd',canAdd)
@@ -2154,7 +2155,9 @@ export class RkmainComponent implements OnInit,OnChanges {
           button_confirm: 'Cerrar',
           button_close: 'Cerrar'
 
-        }
+        },
+        panelClass : 'tabla'
+
 
       });
       conf.afterClosed()
@@ -2425,7 +2428,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   async VerEnviarAprobar() {
 
     const conf = this.confirm.open(RkpendaprobComponent, {
-      hasBackdrop: false,
+      hasBackdrop: true,
       height: 'auto',
       width: 'auto',
 

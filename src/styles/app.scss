@@ -1,7 +1,5 @@
 @import "variables";
-
 @import "vendors/material2/material2";
-
 @import "pages/demo";
 @import "pages/auth";
 @import "pages/error";
@@ -15,3 +13,7 @@
 @import "pages/blog";
 @import "error";
 @import "pages/general";
+.tabla {
+    max-width: 100%;
+    overflow-x: scroll
+}

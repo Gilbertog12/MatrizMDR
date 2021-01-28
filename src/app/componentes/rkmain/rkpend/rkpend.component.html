@@ -3,7 +3,7 @@
     {{ data.title }} </h3>
 
 <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane">
-    <div class="box box-default table-box mdl-shadow--2dp">
+    <div>
 
         <div>
 
@@ -28,8 +28,8 @@
 
 
                 <tr>
-                    <th class="mdl-data-table__cell--non-numeric"><input type="checkbox" class="mdl-data-table__cell--non-numeric" style="padding-left: 0px;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Accion</b></th>
+                    <th class="mdl-data-table__cell--non-numeric estaticos"><input type="checkbox" class="mdl-data-table__cell--non-numeric" style="padding-left: 0px;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
+                    <th class="mdl-data-table__cell--non-numeric estaticos"><b>Accion</b></th>
                     <th class="mdl-data-table__cell--non-numeric"><b>Comentarios</b></th>
                     <th class="mdl-data-table__cell--non-numeric"><b>Fecha</b><br></th>
                     <th class="mdl-data-table__cell--non-numeric"><b>Entidad</b>
@@ -50,7 +50,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of pendList">
-                    <td class="mdl-data-table__cell--non-numeric" style="text-align:left">
+                    <td class="mdl-data-table__cell--non-numeric " style="text-align:left">
                         <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                         <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
         
@@ -60,8 +60,8 @@
         
                                 </ng-template> -->
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Accion}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Comentarios}}</td>
+                    <td class="mdl-data-table__cell--non-numeric estaticos">{{item.Accion}}</td>
+                    <td class="mdl-data-table__cell--non-numeric estaticos">{{item.Comentarios}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Fecha}}</td>
                     <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
@@ -78,7 +78,7 @@
                     <td class="mdl-data-table__cell--non-numeric"><a routerLink="" reload='true' (click)='verTable(item.key)'>
                                 {{item.Descripcion}}  </a></td>
 
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Area}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" id="controles">{{item.Area}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Proceso}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Subproceso}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Actividad}}</td>
@@ -86,7 +86,7 @@
                     <td class="mdl-data-table__cell--non-numeric">{{item.Dimension}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Riesgo}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Consecuencia}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Controles}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.TipoControl}}-{{item.Controles}}</td>
 
 
 

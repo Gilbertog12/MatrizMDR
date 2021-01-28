@@ -150,8 +150,11 @@ public canAdd : string
                     tareaRiesgoResidualDesc: element.atts[17].value,
                     key: data.data[0].atts[18].value,
                     statusParent: data.data[0].atts[19].value,
-                    tareaStatus: data.data[0].atts[20].value,
-                    tareaStatusId :data.data[0].atts[24].value,
+                    CanAdd:data.data[0].atts[20].value,
+                    CanModifydata:data.data[0].atts[21].value,
+                    Creador:data.data[0].atts[22].value,
+                    tareaStatus: data.data[0].atts[23].value,
+                    tareaStatusId :data.data[0].atts[27].value,
                   };
                   console.log(this.tareaModel.tareaStatusId)
                   if(parseInt(this.tareaModel.tareaStatusId) == 1 || parseInt(this.tareaModel.tareaStatusId) == 2 ||parseInt(this.tareaModel.tareaStatusId) == 6 ){
@@ -484,7 +487,7 @@ public canAdd : string
 
   consola(accion : string){
 
-    this.key = localStorage.getItem('keySelected')
+    this.key = this.tareaModel.key 
     this.version = localStorage.getItem('versionSelected')
     
     
@@ -569,13 +572,13 @@ public canAdd : string
     cancelButtonText: 'Cancelar',
     confirmButtonColor:'#3085d6',
     cancelButtonColor: '#d33',
-    input: 'radio',
-    inputOptions: inputOptions,
-    inputValidator: (value) => {
-    if (!value) {
-    return 'Debe Seleccionar una Opcion'
-    }
-  }
+  //   input: 'radio',
+  //   inputOptions: inputOptions,
+  //   inputValidator: (value) => {
+  //   if (!value) {
+  //   return 'Debe Seleccionar una Opcion'
+  //   }
+  // }
     
     
     
@@ -591,7 +594,8 @@ public canAdd : string
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'VALIDATE' });
-    _atts.push({ name: 'onlyActualNode', value: color });
+    _atts.push({ name: 'onlyActualNode', value: 'Y' });
+    _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
     _atts.push({ name: 'approveInd', value: 'A' });
     _atts.push({ name: 'comments', value: '' });
     _atts.push({ name: 'key', value: this.key });
@@ -657,6 +661,8 @@ public canAdd : string
 
       localStorage.setItem('Llave', this.key);
       localStorage.setItem('VersionL', this.version);
+      localStorage.setItem('isValidatingFromTree', 'Y');
+
   
       Swal2.fire({
   
@@ -808,13 +814,13 @@ public canAdd : string
       cancelButtonText: 'Cancelar',
       confirmButtonColor:'#3085d6',
       cancelButtonColor: '#d33',
-      input: 'radio',
-      inputOptions: inputOptions,
-      inputValidator: (value) => {
-      if (!value) {
-      return 'Debe Seleccionar una Opcion'
-      }
-    }
+    //   input: 'radio',
+    //   inputOptions: inputOptions,
+    //   inputValidator: (value) => {
+    //   if (!value) {
+    //   return 'Debe Seleccionar una Opcion'
+    //   }
+    // }
       
       
       
@@ -826,7 +832,8 @@ public canAdd : string
       const _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-              _atts.push({ name: 'onlyActualNode', value: color });
+              _atts.push({ name: 'onlyActualNode', value: 'Y' });
+              _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
               _atts.push({ name: 'key', value: this.key });
     
               const spinner = this.controlService.openSpinner();

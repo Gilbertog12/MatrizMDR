@@ -17,6 +17,7 @@ export class RkReasonRejectComponent implements OnInit {
   razon:string;
   valor:any;
   version : any;
+  isValidatingFromTree: string;
   constructor(public dialogRef: MatDialogRef<RkReasonRejectComponent>,
     // private controlService: ControlsService,
     private controlService: ControlsService,
@@ -53,6 +54,7 @@ export class RkReasonRejectComponent implements OnInit {
 
       this.valor =localStorage.getItem('Llave');
       this.version = localStorage.getItem('VersionL')
+      this.isValidatingFromTree = localStorage.getItem('isValidatingFromTree')
       console.log(this.razon)
       let _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr'});
@@ -60,6 +62,7 @@ export class RkReasonRejectComponent implements OnInit {
       _atts.push({ name: 'key', value: this.valor });
       _atts.push({ name: 'version', value: this.version});
       _atts.push({ name: 'approveInd', value: 'U' });
+      _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });      
       _atts.push({ name: 'comments', value: this.razon });
       const spinner = this.controlService.openSpinner();
       const obj = await this.autentication.generic(_atts);
@@ -72,8 +75,7 @@ export class RkReasonRejectComponent implements OnInit {
               Swal2.fire({
                 text:'Registro Rechazado',
                 icon:'success',
-                showConfirmButton: false,
-                timer: 3000
+                
               })
               this.cerrar()
       
@@ -84,9 +86,10 @@ export class RkReasonRejectComponent implements OnInit {
             Swal2.fire({
               text: data.message,
               icon:'error',
-              showConfirmButton: false,
-              timer: 3000
+              
             })
+            this.cerrar()
+
           }
           this.controlService.closeSpinner(spinner);
       

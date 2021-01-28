@@ -91,6 +91,7 @@ export class RkpendComponent implements OnInit {
   EnviarHijos: string;
   permi: boolean;
   MostrarRestaurar: boolean = false;
+  ArrAux: string = "";
   
 
   
@@ -174,6 +175,8 @@ export class RkpendComponent implements OnInit {
 
   async sendvalidate() {
 
+    console.log(this.valor)
+
     if (this.valor === '' || this.valor === 'undefined') {
       // this.autentication.showMessage(false, 'Debe Seleccionar al menos 1 item', {}, false);
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
@@ -192,11 +195,13 @@ export class RkpendComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+
+        console.log(this.valor)
         
         const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-          _atts.push({ name: 'onlyActualNode', value: 'N' });
+          _atts.push({ name: 'onlyActualNode', value: 'Y' });
           _atts.push({ name: 'key', value: this.valor });
 
           const spinner = this.controlService.openSpinner();
@@ -227,134 +232,19 @@ export class RkpendComponent implements OnInit {
                   }
                   
                 })
-              }
-
-    
 
 
-    
-    
-  
 
-//     const inputOptions = {
-     
-//       'Y': 'Solo Padre',
-//       'N': 'Padre e Hijos',
-      
-  
-// }
-
-// const { value: color } = await Swal2.fire({
-//   title: 'Enviar a Validar',
-//   text: '¿ Está seguro que desea Enviar a Validar este registro ?',
-  
-//   showCancelButton: true,
-  
-//   confirmButtonText: 'Aceptar',
-//   cancelButtonText: 'Cancelar',
-//   confirmButtonColor:'#3085d6',
-//   cancelButtonColor: '#d33',
-//   input: 'radio',
-//   inputOptions: inputOptions,
-//   inputValidator: (value) => {
-//   if (!value) {
-//   return 'Debe Seleccionar una Opcion'
-//   }
-// }
-  
-  
-  
-// })
-// if(color ){
-//         // console.log('Hola desde la alerta')
-        
-       
-//         const _atts = [];
-//           _atts.push({ name: 'scriptName', value: 'coemdr' });
-//           _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-//           _atts.push({ name: 'onlyActualNode', value: color });
-//           _atts.push({ name: 'key', value: this.valor });
-
-//           const spinner = this.controlService.openSpinner();
-//           const obj = this.autentication.generic(_atts);
-
-//                     obj.subscribe(
-//                     (data) => {
-//                       if (data.success === true) {
-//                         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-
-//                         Swal2.fire('Registro Enviado a Validar','', 'success' )
-
-                        
-//                       } else {
-//                         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-//                         Swal2.fire('',data.message,'error')
-//                       }
-        
-//                       this.controlService.closeSpinner(spinner);
-        
-//                     },
-//                     (error) => {
-//                       // if ( error.status === 401 ) { this.autentication.logout(); return; }
-//                       this.controlService.closeSpinner(spinner);
-//                     });
-//                 }
-        
-//                 this.cerrar('falso');
-//                 }
+  }
 
       
-        
-    
+  
 
-    
-    // const conf = this.confirm.open(ConfirmationComponent, {
-    //   hasBackdrop: true,
-    //   height: 'auto',
-    //   width: 'auto',
-    //   data: {
-    //     title: 'Enviar a Validar',
-    //     message: `¿ Está seguro que desea enviar a validar este item ?`,
-    //     button_confirm: 'Aceptar',
-    //     button_close: 'Cancelar',
-
-    //   }
-    // });
-
-    // conf.afterClosed()
-    //   .subscribe(async (result) => {
-    //     if (result) {
-
-    //       const _atts = [];
-    //       _atts.push({ name: 'scriptName', value: 'coemdr' });
-    //       _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-    //       _atts.push({ name: 'key', value: this.valor });
-
-    //       const spinner = this.controlService.openSpinner();
-    //       const obj = await this.autentication.generic(_atts);
-
-    //       obj.subscribe(
-    //         (data) => {
-    //           if (data.success === true) {
-    //             this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    //           } else {
-    //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-    //           }
-
-    //           this.controlService.closeSpinner(spinner);
-
-    //         },
-    //         (error) => {
-    //           // if ( error.status === 401 ) { this.autentication.logout(); return; }
-    //           this.controlService.closeSpinner(spinner);
-    //         });
-    //     }
-
-    //     this.cerrar();
-
-    //   });
+//  
 
     MarcarJerarquia(Value,status,chek){
+
+
 
       let key = Value
       let Istatus = status;
@@ -376,86 +266,53 @@ export class RkpendComponent implements OnInit {
         
   
         if(this.pendList[i]['key'].startsWith(key)){
-  
-          console.error('Aqui')
-          // key =this.pendList[i]['key']
-  
+
           
-  
+          
           if(this.pendList[i]['key'] !== key){
             
             if(this.pendList[i]['check'] == false){
-               console.log('aqui estoy')
-               this.pendList[i]['check'] = true
-               this.pendList[i]['permiso'] = true
+              
+              this.pendList[i]['check'] = true
+              // this.pendList[i]['permiso'] = true
                
-             }else{
+            }else{
                this.pendList[i]['check'] = false
-               this.pendList[i]['permiso'] = false
-     
-             }
-          }
-          
-          
-            // if(key.length == 31){
+               
+              }
+            }
             
-            // break;
-            //  key = key.substring(0,27)
-            //  console.log(key)
-            //  console.log(key.length)
-            // }
-  
+            
+            
+            
+           
+              
         }
         
-       /* if(this.pendList[i]['key'].startsWith(key)){
-          
-          // console.error()
-          // if(this.pendList[i]['check'] == false){
-          //   break;
-          // }
-          // key =this.pendList[i]['key']
-          
-          this.pendList[i]['check'] = true
-              
-            // if(this.pendList[i]['check'] == false){
-            //   console.log('aqui estoy')
-            //   this.pendList[i]['check'] = true
-            //   this.pendList[i]['permiso'] = true
-              
-            // }else{
-            //   this.pendList[i]['check'] = false
-            //   this.pendList[i]['permiso'] = false
-    
-            // }
-          
-          // this.pendList[i]['permiso'] = true}
-          
-            // if(key.length == 31){
-            
-            // break;
-            //  key = key.substring(0,27)
-            //  console.log(key)
-            //  console.log(key.length)
-            // }
+        
+        }
+        this.ArrAux.slice(1)
+
+        console.log(this.ArrAux.length)
+
+
   
-        }*/
       }
-  
-    }
 
-    HabilitarRestaurar(status){
+      
+      
 
-    }
-  
-
-    consola(opcion) {
+      consola(opcion) {
       this.valor = "";
       for (let i = 0; i < this.pendList.length; i++) {
-  
+        
         if (this.pendList[i]["check"] === true) {
-          this.valor = this.valor + ',' + this.pendList[i]['key']  ;
+          this.valor = this.valor + ','+ this.pendList[i]['key']+','+'Y'  ;
   
           
+        }else{
+          this.valor = this.valor + ','+ this.pendList[i]['key']+','+'N'  ;
+
         }
   
       }
@@ -620,7 +477,8 @@ export class RkpendComponent implements OnInit {
                     Comentarios : element.atts[18].value.trim(),
                     permiso: this.permi,
                     check: false,
-                    status:element.atts[19].value.trim()
+                    status:element.atts[19].value.trim(),
+                    TipoControl:element.atts[21].value
                     
                     
                     
@@ -676,24 +534,28 @@ export class RkpendComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
                   this.pendList.push({
-                    Accion: element.atts[1].value,
-                    Entidad: element.atts[2].value,
-                    Id: element.atts[3].value,
-                    Descripcion: element.atts[4].value,
-                    Area: element.atts[5].value,
-                    Proceso: element.atts[6].value,
-                    Subproceso: element.atts[7].value,
-                    Actividad: element.atts[8].value,
-                    Tarea: element.atts[9].value,
-                    Dimension: element.atts[10].value,
-                    Riesgo: element.atts[11].value,
-                    Consecuencia: element.atts[12].value,
-                    Fecha: element.atts[14].value,
-                    key: element.atts[15].value,
-
-                    version : console.info( element.atts[16].value),
-                    Comentarios : element.atts[17].value,
+                    Accion: element.atts[1].value.trim(),
+                    Entidad: element.atts[2].value.trim(),
+                    Id: element.atts[3].value.trim(),
+                    Descripcion: element.atts[4].value.trim(),
+                    Area: element.atts[5].value.trim(),
+                    Proceso: element.atts[6].value.trim(),
+                    Subproceso: element.atts[7].value.trim(),
+                    Actividad: element.atts[8].value.trim(),
+                    Tarea: element.atts[9].value.trim(),
+                    Dimension: element.atts[10].value.trim(),
+                    Riesgo: element.atts[11].value.trim(),
+                    Consecuencia: element.atts[12].value.trim(),
+                    Controles : element.atts[13].value.trim(),
+                    Fecha: element.atts[15].value.trim(),
+                    key: element.atts[16].value.trim(),
+                    version : element.atts[17].value.trim(),
+                    Comentarios : element.atts[18].value.trim(),
+                    permiso: this.permi,
                     check: false,
+                    status:element.atts[19].value.trim(),
+                    TipoControl:element.atts[21].value
+                    
                     
 
                   });

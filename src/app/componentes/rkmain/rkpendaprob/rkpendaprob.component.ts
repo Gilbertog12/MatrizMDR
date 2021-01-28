@@ -123,6 +123,9 @@ export class RkpendaprobComponent implements OnInit {
                     Comentarios : element.atts[18].value.trim(),
                     permiso: this.permi,
                     check: false,
+                    status:element.atts[19].value.trim(),
+                    TipoControl:element.atts[21].value
+                    
                     
                     
                     
@@ -180,11 +183,11 @@ export class RkpendaprobComponent implements OnInit {
           if(this.pendList[i]['check'] == false){
              console.log('aqui estoy')
              this.pendList[i]['check'] = true
-             this.pendList[i]['permiso'] = true
+            //  this.pendList[i]['permiso'] = true
              
            }else{
              this.pendList[i]['check'] = false
-             this.pendList[i]['permiso'] = false
+            //  this.pendList[i]['permiso'] = false
    
            }
         }
@@ -278,26 +281,28 @@ export class RkpendaprobComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
                   this.pendList.push({
-                    Accion: element.atts[1].value,
-                    Entidad: element.atts[2].value,
-                    Id: element.atts[3].value,
-                    Descripcion: element.atts[4].value,
-                    Area: element.atts[5].value,
-                    Proceso: element.atts[6].value,
-                    Subproceso: element.atts[7].value,
-                    Actividad: element.atts[8].value,
-                    Tarea: element.atts[9].value,
-                    Dimension: element.atts[10].value,
-                    Riesgo: element.atts[11].value,
-                    Consecuencia: element.atts[12].value,
-                    Fecha: element.atts[14].value,
-                    key: element.atts[15].value,
-
-                    version : console.info( element.atts[16].value),
-                    Comentarios : element.atts[17].value,
-                    Controles : element.atts[17].value,
-
+                    Accion: element.atts[1].value.trim(),
+                    Entidad: element.atts[2].value.trim(),
+                    Id: element.atts[3].value.trim(),
+                    Descripcion: element.atts[4].value.trim(),
+                    Area: element.atts[5].value.trim(),
+                    Proceso: element.atts[6].value.trim(),
+                    Subproceso: element.atts[7].value.trim(),
+                    Actividad: element.atts[8].value.trim(),
+                    Tarea: element.atts[9].value.trim(),
+                    Dimension: element.atts[10].value.trim(),
+                    Riesgo: element.atts[11].value.trim(),
+                    Consecuencia: element.atts[12].value.trim(),
+                    Controles : element.atts[13].value.trim(),
+                    Fecha: element.atts[15].value.trim(),
+                    key: element.atts[16].value.trim(),
+                    version : element.atts[17].value.trim(),
+                    Comentarios : element.atts[18].value.trim(),
+                    permiso: this.permi,
                     check: false,
+                    status:element.atts[19].value.trim(),
+                    TipoControl:element.atts[21].value
+                    
                     
 
                   });
@@ -745,8 +750,7 @@ async RestaurarItem() {
     for (let i = 0; i < this.pendList.length; i++) {
 
       if (this.pendList[i]["check"] === true) {
-        this.valor = this.valor + ',' + this.pendList[i]['key']  ;
-
+        this.valor = this.valor + ','+ this.pendList[i]['key'];
         
       }
 
