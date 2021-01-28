@@ -96,50 +96,42 @@ a {
     background-color: gray;
 }
 
-.sticky {
-    position: sticky;
-    left: 0;
-}
-
-.sticky2 {
-    position: sticky;
-    left: 150px;
-}
-
-.cebra {
-    border-top: solid 1px #333;
+.table-cebra {
+    border: solid 1px #ccc;
     border-spacing: 0;
-    padding-left: 0px;
 }
 
-.cebra thead th {
-    background: #333;
-    color: white;
+.table-cebra thead th {
+    background: #333 !important;
+    color: white !important;
 }
 
-.cebra th,
-.cebra td {
+.table-cebra th,
+.table-cebra td {
     border-right: solid 1px #ccc;
     min-width: 150px;
     padding: 0.5rem;
     text-align: left;
 }
 
-.cebra th:last-child,
-.cebra td:last-child {
+.table-cebra th :last-child,
+.table-cebra td :last-child {
     border-right: 0;
 }
 
-.cebra td {
+.table-cebra td {
     border-bottom: solid 1px #ccc;
 }
 
-.cebra tbody tr,
-.cebra tbody tr .sticky,
-.cebra tbody tr .sticky2 {
+.table-cebra tbody tr .sticky {
     background-color: white;
 }
 
-.cebra tbody tr:nth-child(2n) .sticky .sticky2 {
-    background-color: #f2f2f2;
+.table-cebra tbody tr:nth-child(2n) .sticky {
+    background: #f2f2f2;
+}
+
+.table-cebra .sticky {
+    position: sticky;
+    left: 0;
 }

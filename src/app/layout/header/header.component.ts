@@ -71,7 +71,28 @@ export class AppHeaderComponent implements OnInit {
 
 
   help(){
-    window.open( "assets/help/Help v1.0.pdf",'popup')
+
+    if(this.Ambiente.includes('DESARROLLO')){
+      var AmbienteEllipse = 'DESARROLLO'
+    }else if(this.Ambiente.includes('DESARROLLO')){
+        AmbienteEllipse = 'TST'
+    }else{
+      AmbienteEllipse = 'PRD'
+    }
+
+    switch(AmbienteEllipse){
+
+      case "DESARROLLO":
+        window.open( "https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home",'popup')
+      break;
+      case "TEST":
+        window.open( "https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home",'popup')
+      break;
+      case "PRD":
+        window.open( "https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home",'popup')
+      break;
+
+    }
   }
 
   Version() {

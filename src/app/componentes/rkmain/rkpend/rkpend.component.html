@@ -3,7 +3,7 @@
     {{ data.title }} </h3>
 
 <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane">
-    <div>
+    <div class="box box-default table-box mdl-shadow--2dp">
 
         <div>
 
@@ -12,10 +12,10 @@
             <input type="date" placeholder="Fecha Hasta" [(ngModel)]='FechaHasta' name="FechaHasta" required>Fecha Hasta
 
             <button *ngIf="FechaDesde ==='' || FechaHasta=== ''; else BotonActivado" (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons" disabled>
-                        search</button>
+                                search</button>
             <ng-template #BotonActivado>
                 <button (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons">
-                                search</button>
+                                        search</button>
             </ng-template>
         </div>
         <!-- <p>{{TotalRegistros}}</p> -->
@@ -28,8 +28,8 @@
 
 
                 <tr>
-                    <th class="mdl-data-table__cell--non-numeric estaticos"><input type="checkbox" class="mdl-data-table__cell--non-numeric" style="padding-left: 0px;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
-                    <th class="mdl-data-table__cell--non-numeric estaticos"><b>Accion</b></th>
+                    <th class="mdl-data-table__cell--non-numeric"><input type="checkbox" class="mdl-data-table__cell--non-numeric" style="padding-left: 0px;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
+                    <th class="mdl-data-table__cell--non-numeric"><b>Accion</b></th>
                     <th class="mdl-data-table__cell--non-numeric"><b>Comentarios</b></th>
                     <th class="mdl-data-table__cell--non-numeric"><b>Fecha</b><br></th>
                     <th class="mdl-data-table__cell--non-numeric"><b>Entidad</b>
@@ -53,15 +53,15 @@
                     <td class="mdl-data-table__cell--non-numeric " style="text-align:left">
                         <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                         <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
-        
-                                </ng-template>
-                                <ng-template #PadreMayor>
-                                    <input readonly type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
-        
-                                </ng-template> -->
+                
+                                        </ng-template>
+                                        <ng-template #PadreMayor>
+                                            <input readonly type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
+                
+                                        </ng-template> -->
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric estaticos">{{item.Accion}}</td>
-                    <td class="mdl-data-table__cell--non-numeric estaticos">{{item.Comentarios}}</td>
+                    <td class="mdl-data-table__cell--non-numeric ">{{item.Accion}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.Comentarios}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Fecha}}</td>
                     <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
@@ -76,7 +76,7 @@
                     </ng-template>
 
                     <td class="mdl-data-table__cell--non-numeric"><a routerLink="" reload='true' (click)='verTable(item.key)'>
-                                {{item.Descripcion}}  </a></td>
+                                        {{item.Descripcion}}  </a></td>
 
                     <td class="mdl-data-table__cell--non-numeric" id="controles">{{item.Area}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.Proceso}}</td>
@@ -96,6 +96,7 @@
         </table>
     </div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end" cdkDragHandle>
     <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button>
     <button *ngIf="btn === creacion || btn === administrador || btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola('enviar a validar')">Enviar a Validar</button>

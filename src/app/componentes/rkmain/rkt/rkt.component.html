@@ -1,67 +1,5 @@
 <h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea</h6>
-<div class="col-xl-12 text-right" align="end" [ngSwitch]="tareaModel.tareaStatus">
 
-
-    <div *ngSwitchCase="'CREADO'">
-
-        <mat-dialog-actions *ngIf="btn === creacion   || btn === administrador  || btn === creacionvalidacion   || btn === creacionaprobacion  " align="end" cdkDragHandle>
-            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
-        </mat-dialog-actions>
-    </div>
-    <div *ngSwitchCase="'PENDIENTE INACTIVACION'">
-
-        <button *ngIf="btn === creacion   || btn === administrador  || btn === creacionvalidacion   || btn === creacionaprobacion  " mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
-
-
-    </div>
-
-    <div *ngSwitchCase="'MODIFICADO'">
-
-
-        <mat-dialog-actions *ngIf="btn === creacion   || btn === administrador  || btn === creacionvalidacion   || btn === creacionaprobacion  " align="end" cdkDragHandle>
-            <button mat-raised-button color="accent" (click)="consola('aprobar')">Enviar a Validar</button>
-        </mat-dialog-actions>
-    </div>
-    <div *ngSwitchCase="'ENVIADO A VALIDACION'">
-        <mat-dialog-actions align="end">
-
-            <button *ngIf="btn === creacionvalidacion  || btn === validacion  || btn == creacionvalidacion || btn === validacionaprobacion  || btn === administrador " mat-raised-button color="accent" (click)="consola('validaraprobar')">Validar</button>
-            <button *ngIf="btn === creacionvalidacion  || btn === validacion  || btn == creacionvalidacion  || btn === validacionaprobacion  || btn === administrador " mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
-
-        </mat-dialog-actions>
-    </div>
-
-    <div *ngSwitchCase="'PENDIENTE DE APROBACION'">
-        <mat-dialog-actions align="end">
-            <button *ngIf="btn === aprobacion  || btn === validacionaprobacion  || btn === creacionaprobacion  || btn === administrador " mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
-            <button *ngIf="btn === aprobacion  || btn === validacionaprobacion   || btn === creacionaprobacion || btn === administrador " mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
-        </mat-dialog-actions>
-
-    </div>
-    <div *ngSwitchCase="'RECHAZADO'">
-
-        <mat-dialog-actions align="end" cdkDragHandle>
-
-            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="accent" (click)="consola('archivar')">Archivar</button>
-            <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion || btn === creacionaprobacion" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
-            <!-- <button *ngIf="btn === creacion || btn === administrador || btn === validacionaprobacion|| btn === creacionvalidacion" mat-raised-button color="accent" (click)="consola()">Re</button> -->
-
-
-
-        </mat-dialog-actions>
-
-    </div>
-
-    <div *ngSwitchCase="'ENVIADO A APROBACION'">
-        <mat-dialog-actions align="end">
-
-            <button *ngIf="btn === aprobacion  || btn === validacionaprobacion  || btn === creacionaprobacion  || btn === administrador " mat-raised-button color="accent" (click)="consola('validaraprobar')">Aprobar</button>
-            <button *ngIf="btn === aprobacion  || btn === validacionaprobacion   || btn === creacionaprobacion || btn === administrador " mat-raised-button color="warn" (click)="consola('rechazar')">Rechazar</button>
-        </mat-dialog-actions>
-    </div>
-
-</div>
-<br>
 
 <div class="row">
     <div class="col-xl-12">
@@ -238,7 +176,7 @@
 
                                             <ng-template [ngIf]="tareaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
 
-                                                <ng-template [ngIf]="tareaModel.tareaStatusId ==='001' || tareaModel.tareaStatusId ==='008'" [ngIfElse]='opcion2'>
+                                                <ng-template [ngIf]="tareaModel.tare ==='001' || tareaModel.tare ==='008'" [ngIfElse]='opcion2'>
 
                                                     <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
                                                         <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
