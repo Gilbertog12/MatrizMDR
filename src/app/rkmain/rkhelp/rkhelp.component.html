@@ -1,0 +1,59 @@
+<mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <span class="nav-link active">Help</span>
+                </li>
+            </ul>
+
+        </div>
+
+        <h5> HOW TO USING CUSTOM SCREEN: COEMDR</h5>
+
+
+    </div>
+
+    <div class="card text-center" style="max-height:60%; overflow-y: scroll;">
+
+        <table class="table">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th class="sticky-top"></th>
+                    <th class="sticky-top">N°</th>
+                    <th class="sticky-top">Nombre</th>
+                    <th class="sticky-top">Contents Descriptions </th>
+                    <th class="sticky-top">Link</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+                <tr *ngFor="let item of docsHelp; let indice = index">
+                    <td></td>
+                    <td>{{ indice+1}}</td>
+                    <td>{{item.DOCUMENT_NO}}</td>
+                    <td>{{item.DOCUMENT_NAME1}}</td>
+                    <td>
+                        <a href="{{item.ELEC_REF}}" target="_blank">
+                            <button class="btn btn-sm btn-light btn-round">
+                            <img   class="img-circle" [src]="item.icono" style="width: 30px; height: 30px;">
+                        </button>
+                        </a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button>
+
+</mat-dialog-actions>

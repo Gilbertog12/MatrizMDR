@@ -1,3 +1,5 @@
+
+  
 import { MatDialog } from '@angular/material';
 import { ModalCambiarClaveComponent } from './../../componentes/modals/';
 import { Component, OnInit } from '@angular/core';
@@ -6,6 +8,8 @@ import { AuthenticationService, ControlsService, HttpMethodService } from '../..
 import { Router } from '@angular/router';
 import { ConfirmationComponent } from '../../controls/confirmation/confirmation.component';
 import { AddrkaComponent } from '../../componentes/rkmain/addrka/addrka.component';
+import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
+
 
 @Component({
   selector: 'my-app-header',
@@ -105,12 +109,15 @@ export class AppHeaderComponent implements OnInit {
 
   cambiarClave() {
 
-    const modal = this.confirm.open(ModalCambiarClaveComponent, {
+    const modal = this.confirm.open(RkhelpComponent, {
       hasBackdrop: true,
       height: 'auto',
-      width: '400px',
+      width: '800px',
       data: {
-        model: {},
+        title: 'Agregar Área',
+        message: ``,
+        button_confirm: 'Guardar',
+        button_close: 'Cerrar'
       }
     });
 

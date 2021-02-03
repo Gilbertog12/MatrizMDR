@@ -407,6 +407,7 @@
                                     <!--<td *ngIf="item.cblandoStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
 
                                     <td title="Aprobado" *ngIf="item.cblandoStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}</td>
+                                    <td title="Aprobado" *ngIf="item.cblandoStatus === '008'  && item.pendingDelete === 'Y'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}</td>
 
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cblandoDescripcion}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cblandoFamiliaId}}</td>
@@ -555,6 +556,7 @@
                                     <!--<td *ngIf="item.cduroStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
 
                                     <td title="Aprobado" *ngIf="item.cduroStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
+                                    <td title="Aprobado" *ngIf="item.cduroStatus === '008'  && item.pendingDelete === 'Y'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cduroClasificacionDesc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.controlDuroDesc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo1Desc}}</td>
@@ -697,6 +699,7 @@
                                     <!--<td *ngIf="item.epfStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
 
                                     <td title="Aprobado" *ngIf="item.epfStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.epfId}}</td>
+                                    <td title="Aprobado" *ngIf="item.epfStatus === '008'  && item.pendingDelete === 'Y'" class="mdl-data-table__cell--non-numeric">{{item.epfId}}</td>
 
                                     <td class="mdl-data-table__cell--non-numeric">{{item.epfDesc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.controlId}}</td>
@@ -732,7 +735,7 @@
 
                                                     <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
                                                         <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()">
-                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                            <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
                                                         </button>
 
 
@@ -1073,13 +1076,13 @@
                                     <th class="mdl-data-table__cell--non-numeric"></th>
                                     <th class="mdl-data-table__cell--non-numeric">
                                         <div [ngSwitch]="canAdd">
-                                            <div *ngSwitchCase="'N'">
+                                            <div *ngSwitchCase="'false'">
 
                                                 <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" disabled>
                                             <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                                     </button>
                                             </div>
-                                            <div *ngSwitchCase="'Y'">
+                                            <div *ngSwitchCase="'true'">
                                                 <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" disabled>
                                                     <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
                                             </button>
@@ -1120,8 +1123,8 @@
 
 
 
-                                    <td class="mdl-data-table__cell--non-numeric">{{item.controlDuroDesc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.controlDuroDesc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cduroClasificacionDesc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo1Desc}}</td>
                                     <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo2Desc}}</td>

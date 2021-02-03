@@ -48,6 +48,7 @@ export class RkpendaprobComponent implements OnInit {
   FechaHasta= ''
   public jerarquia:any
   permi: boolean;
+  complete: boolean=false;
 
   constructor(public dialogRef: MatDialogRef<RkpendaprobComponent>,
     private controlService: ControlsService,
@@ -66,10 +67,19 @@ export class RkpendaprobComponent implements OnInit {
 
   async recargar() {
 
+    this.pendList=[]
+
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'RE' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }
     const spinner = this.controlService.openSpinner();
     
 
@@ -266,6 +276,13 @@ export class RkpendaprobComponent implements OnInit {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'RE' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }
     _atts.push({ name: 'startDate', value: this.FechaDesdeServicio });
     _atts.push({ name: 'endDate', value: this.FechaHastaServicio });
     

@@ -94,8 +94,10 @@ import { AddrkaModule } from './componentes/rkmain/addrka/addrka.module';
 
 import { FilterdataPipe } from './filterdata.pipe';
 import { LeyendaModule } from './leyenda/leyenda.module';
+import { RkhelpComponent } from './rkmain/rkhelp/rkhelp.component';
 
 // import { RkhelpComponent } from './rkhelp/rkhelp.component';
+import { rkHelpModule } from './rkmain/rkhelp/rkhelp.module';
 
 
 
@@ -149,8 +151,10 @@ import { LeyendaModule } from './leyenda/leyenda.module';
     InfoModule,
     ConfirmationModule,
     AddrkaModule,
+    rkHelpModule,
     NgxLoadingModule.forRoot({}),
     ReactiveFormsModule,
+    
     
     
   ],
@@ -187,6 +191,15 @@ import { LeyendaModule } from './leyenda/leyenda.module';
     
     
     FilterdataPipe,
+    
+    
+    
+    
+    
+    
+    
+    
+    
  
     
     

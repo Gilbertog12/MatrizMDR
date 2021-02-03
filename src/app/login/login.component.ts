@@ -184,6 +184,7 @@ export class LoginComponent implements OnInit {
           this.model.password=''
           this.model.position=''
           this.model.district=''
+          sessionStorage.clear();
           this.controlService.closeSpinner(spinner);
           
 

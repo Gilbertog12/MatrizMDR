@@ -10,6 +10,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { Rkarchivarmodule } from '../../../rkmain/rkarchivar/rkarchivar.module';
 import { FiltroPipe } from '../../filtro.pipe';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 
@@ -25,7 +26,8 @@ import { FiltroPipe } from '../../filtro.pipe';
     MatInputModule,
     MatButtonModule,
     DragDropModule,
-    Rkarchivarmodule
+    Rkarchivarmodule,
+    MatSlideToggleModule
   ],
   declarations: [RkpendaprobComponent,FiltroPipe],
   entryComponents: [RkpendaprobComponent],

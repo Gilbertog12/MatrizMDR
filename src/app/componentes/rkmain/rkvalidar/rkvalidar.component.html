@@ -1,100 +1,106 @@
 <h3 mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
 
     {{ data.title }} </h3>
-<mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane">
-    <div class="box box-default table-box mdl-shadow--2dp">
 
-        <div>
+<div>
 
-            <input type="date" placeholder="Fecha Desde" [(ngModel)]='FechaDesde' name="FechaDesde" required>Fecha Desde
+    Fecha Desde<input type="date" placeholder="Fecha Desde" [(ngModel)]='FechaDesde' name="FechaDesde" required> Fecha Hasta<input type="date" placeholder="Fecha Hasta" [(ngModel)]='FechaHasta' name="FechaHasta" required>
 
-            <input type="date" placeholder="Fecha Hasta" [(ngModel)]='FechaHasta' name="FechaHasta" required>Fecha Hasta
+    <button *ngIf="FechaDesde ==='' || FechaHasta=== ''; else BotonActivado" (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons" disabled>
+                        search</button>
+    <ng-template #BotonActivado>
+        <button (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons">
+                                search</button>
+    </ng-template>
+    <br>
+    <br>
+    <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items Completados</mat-slide-toggle>
+</div>
 
-            <button *ngIf="FechaDesde ==='' || FechaHasta=== ''; else BotonActivado" (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons" disabled>
-                            search</button>
-            <ng-template #BotonActivado>
-                <button (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons">
-                                    search</button>
-            </ng-template>
-        </div>
-        <!-- <p>{{TotalRegistros}}</p> -->
-        <br>
-        <br>
-        <table class="mdl-data-table table-bordered table-striped cf no-margin" style="height: 100px;">
+<br>
 
-
-            <thead>
+<mat-dialog-content style="padding-left: 0 !important;" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
 
 
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric"><input type="checkbox" class="mdl-data-table__cell--non-numeric" style="padding-left: 0px;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Accion</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Comentarios</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Fecha</b><br></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Entidad</b>
-                    </th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Descripcion</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Area</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Proceso</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>SubProceso</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Actividad</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Tarea</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Dimension</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Riesgo</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Consecuencia</b></th>
-                    <th class="mdl-data-table__cell--non-numeric"><b>Controles</b></th>
 
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of pendList">
-                    <td class="mdl-data-table__cell--non-numeric " style="text-align:left">
-                        <input type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
-                        <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
+    <table class="cebra">
+
+        <thead>
+
+
+            <tr>
+                <th class="sticky sticky-top "><input type="checkbox" style="background-color: green !important;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
+                <th class="sticky2 sticky-top"><b>Accion</b></th>
+                <th class="sticky-top"><b>Comentarios</b></th>
+                <th class="sticky-top"><b>Fecha</b><br></th>
+                <th class="sticky-top"><b>Entidad</b>
+                </th>
+                <th class="sticky-top"><b>Descripcion</b></th>
+                <th class="sticky-top"><b>Area</b></th>
+                <th class="sticky-top"><b>Proceso</b></th>
+                <th class="sticky-top"><b>SubProceso</b></th>
+                <th class="sticky-top"><b>Actividad</b></th>
+                <th class="sticky-top"><b>Tarea</b></th>
+                <th class="sticky-top"><b>Dimension</b></th>
+                <th class="sticky-top"><b>Riesgo</b></th>
+                <th class="sticky-top"><b>Consecuencia</b></th>
+                <th class="sticky-top"><b>Controles</b></th>
+
+
+            </tr>
+
+
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of pendList">
+                <td class="sticky">
+                    <input type="checkbox" class="checkmark" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
+                    <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
             
                                     </ng-template>
                                     <ng-template #PadreMayor>
-                                        <input readonly type="checkbox" style="align-items: left;" class="mdl-data-table__cell--non-numeric" [value]="item.check" [(ngModel)]="item.check">
+                                        <input readonly type="checkbox" style="align-items: left;" [value]="item.check" [(ngModel)]="item.check">
             
                                     </ng-template> -->
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric ">{{item.Accion}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Comentarios}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Fecha}}</td>
-                    <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
+                </td>
+                <td class="sticky2">{{item.Accion}}</td>
+                <td>{{item.Comentarios}}</td>
+                <td>{{item.Fecha}}</td>
+                <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
-                        <td class="mdl-data-table__cell--non-numeric" style="font-weight: bold;">{{item.Entidad}}</td>
+                    <td style="font-weight: bold;">{{item.Entidad}}</td>
 
-                    </ng-template>
+                </ng-template>
 
-                    <ng-template #Permitido>
+                <ng-template #Permitido>
 
-                        <td class="mdl-data-table__cell--non-numeric">{{item.Entidad}}</td>
+                    <td>{{item.Entidad}}</td>
 
-                    </ng-template>
+                </ng-template>
 
-                    <td class="mdl-data-table__cell--non-numeric"><a routerLink="" reload='true' (click)='verTable(item.key)'>
+                <td><a routerLink="" reload='true' (click)='verTable(item.key)'>
                                     {{item.Descripcion}}  </a></td>
 
-                    <td class="mdl-data-table__cell--non-numeric" id="controles">{{item.Area}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Proceso}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Subproceso}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Actividad}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Tarea}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Dimension}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Riesgo}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.Consecuencia}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.TipoControl}}-{{item.Controles}}</td>
+                <td>{{item.Area}}</td>
+                <td>{{item.Proceso}}</td>
+                <td>{{item.Subproceso}}</td>
+                <td>{{item.Actividad}}</td>
+                <td>{{item.Tarea}}</td>
+                <td>{{item.Dimension}}</td>
+                <td>{{item.Riesgo}}</td>
+                <td>{{item.Consecuencia}}</td>
+                <td>{{item.TipoControl}}-{{item.Controles}}</td>
 
 
 
-                </tr>
-            </tbody>
+            </tr>
+        </tbody>
+    </table>
 
-        </table>
-    </div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
     <button mat-raised-button color="primary" (click)="cerrar()">{{ data.button_close }}</button>
     <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('aprobar')">Validar</button>

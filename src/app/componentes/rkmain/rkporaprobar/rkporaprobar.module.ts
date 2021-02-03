@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FiltroPipe } from './filtro.pipe'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { FiltroPipe } from './filtro.pipe'
     MatButtonModule,
     MatDialogModule,
     MatCheckboxModule,
-    DragDropModule
+    DragDropModule,
+    MatSlideToggleModule
   ],
   declarations: [RkporaprobarComponent, FiltroPipe],
   entryComponents: [RkporaprobarComponent],

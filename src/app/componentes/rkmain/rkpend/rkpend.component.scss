@@ -1,85 +1,96 @@
-.mdl-data-table th {
-    position: sticky !important;
-    vertical-align: bottom;
-    text-overflow: ellipsis;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 12px;
-    letter-spacing: 0;
-    height: 28px;
-    color: black;
-    padding-bottom: 4px;
-    box-sizing: border-box;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-}
-
-#SinPermisos {
-    cursor: not-allowed;
-    input:checked {
-        background-color: #2196F3;
-    }
-}
-
-.mdl-data-table tbody tr {
-    font-size: 10px;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-    line-height: 12px;
+// .cebra {
+//     border-top: solid 1px #ccc;
+//     border-spacing: 0;
+// }
+// .cebra thead tr {
+//     background: #333;
+//     color: white;
+// }
+// .cebra thead,
+// .cebra tbody {
+//     border-right: solid 1px #ccc;
+//     min-width: 150px;
+//     padding: 0.5rem;
+//     text-align: left;
+// }
+// .cebra thead :last-child,
+// .cebra tbody :last-child {
+//     border-right: 0;
+// }
+// .cebra td {
+//     border-bottom: solid 1px #ccc;
+// }
+// .cebra tbody tr {
+//     background: white;
+// }
+// .cebra tbody tr :nth-child(2n) {
+//     background: #f2f2f2;
+// }
+// .cebra .sticky {
+//     position: sticky;
+//     left: 0;
+// }
+.cebra .sticky {
     position: sticky;
-    height: 28px;
-    padding-bottom: 4px;
-    transition-duration: 0.14s;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-property: background-color;
+    min-width: 60px !important;
+    left: 0;
 }
 
-.mdl-data-table__cell--non-numeric {
-    text-align: left !important;
-    height: 9px !important;
-    padding: 0px 12px 0px 12px;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-    font-size: 11px;
+.cebra .sticky2 {
+    position: sticky;
+    left: 60px;
 }
 
-.mat-dialog-container {
-    -webkit-user-drag: element;
+.cebra {
+    border-top: solid 1px #333;
+    border-spacing: 0;
 }
 
-.static {
-    position: absolute;
+.cebra thead th {
+    background: #333;
+    color: white;
+}
+
+.sticky-top {
+    position: sticky;
+    background: #333;
+    color: white;
+    left: 210px;
+}
+
+// .cebra thead th {
+//     position: sticky;
+//     top: 0;
+// }
+.cebra th,
+.cebra td {
+    border-right: solid 1px #ccc;
+    min-width: 150px;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.cebra th:last-child,
+.cebra td:last-child {
+    border-right: 0;
+}
+
+.cebra td {
+    border-bottom: solid 1px #ccc;
+}
+
+.cebra tbody tr .sticky,
+.cebra tbody tr .sticky2 {
     background-color: white;
 }
 
-#div1 {
-    overflow: scroll;
-    height: 500px;
-    width: 800px;
+.cebra tbody tr:nth-child(2n) .sticky,
+.cebra tbody tr:nth-child(2n) .sticky2 {
+    background-color: #f2f2f2;
 }
 
-#controles :first-letter {
-    color: red !important;
-}
-
-.first-col {
-    padding-left: 74.5px!important;
-}
-
-thead th {
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    background: white;
-    z-index: 10;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-}
-
-table th {
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-    position: sticky;
-    top: 0;
-}
-
-h3 {
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+.cebra tbody tr:nth-child(2n) {
+    background-color: #f2f2f2;
 }
 
 a {
@@ -88,50 +99,9 @@ a {
     cursor: pointer !important;
 }
 
-#check {
-    font-size: 10px;
-}
-
-#busqueda {
-    background-color: gray;
-}
-
-.table-cebra {
-    border: solid 1px #ccc;
-    border-spacing: 0;
-}
-
-.table-cebra thead th {
-    background: #333 !important;
-    color: white !important;
-}
-
-.table-cebra th,
-.table-cebra td {
-    border-right: solid 1px #ccc;
-    min-width: 150px;
-    padding: 0.5rem;
-    text-align: left;
-}
-
-.table-cebra th :last-child,
-.table-cebra td :last-child {
-    border-right: 0;
-}
-
-.table-cebra td {
-    border-bottom: solid 1px #ccc;
-}
-
-.table-cebra tbody tr .sticky {
-    background-color: white;
-}
-
-.table-cebra tbody tr:nth-child(2n) .sticky {
-    background: #f2f2f2;
-}
-
-.table-cebra .sticky {
-    position: sticky;
-    left: 0;
+// input:checked .checkmark {
+//     background-color: #21F329 !important;
+// }
+input:checked~.checkmark {
+    background-color: green;
 }

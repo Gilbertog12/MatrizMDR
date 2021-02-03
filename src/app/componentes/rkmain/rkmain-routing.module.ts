@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RkaComponent } from './rka/rka.component';
 
 
+
 const routes: Routes = [
   { path: '',
     component: RkmainComponent,
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'rky/:id/:pid/:sid/:cid/:tid/:did/:rid/:yid', loadChildren: './rky/rky.module#RkyModule'},
       { path: 'rkapprovals/:key/:status/:version', loadChildren: './rkapprovals/rkapprovals.module#RkapprovalsModule'},
       {path:'cargando',component:DashboardComponent},
+      
       // {path:'rka/:id',component:RkaComponent}
     ]
   }

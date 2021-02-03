@@ -11,7 +11,7 @@
 
 
 
-        <a [routerLink]="['/rkmain']"><img src="assets/images/Collahuasi.png" style="width: 120px; height: 40px;"></a>
+        <a (click)="goToDashboard()"><img src="assets/images/Collahuasi.png" style="width: 120px; height: 40px;"></a>
 
         <span class='bt'>
     
@@ -39,7 +39,7 @@
                     <button style="color: #175641 " (click)="logout()" mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 ">exit_to_app</mat-icon>Cerrar Sesion</button>
                 </li>
                 <li class="list-inline-item">
-                    <button style="color: #175641 " (click)="help()" mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>help</mat-icon></button>
+                    <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>help</mat-icon></button> </a>
                 </li>
 
 

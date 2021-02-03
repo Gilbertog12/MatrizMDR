@@ -136,7 +136,13 @@ export class DynamicFlatNode {
         
         let espacios = [];
         for (let _i = 0; _i < node.level + 1; _i++) {
-          espacios.push(_i+2);
+          if(node.level == 8){
+
+            espacios.push(_i+9);
+          }else{
+            espacios.push(_i+2);
+            
+          }
         }
         
         this.autentication.generic(params)
@@ -2173,6 +2179,9 @@ export class RkmainComponent implements OnInit,OnChanges {
             }, 3000);
          
         
+        }else{
+
+          this.cargarDashboard()
         }
       })
 
@@ -2397,7 +2406,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                       console.log(desplegable[i])
                       this.nivel8 = this.nivel7+i+1;
                       // console.log(this.nivel8)
-                      this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
+                      // this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
                       document.getElementById(consecuencia).click();
                       // this.ver(this.nivel8)
                       this.controlService.closeSpinner(spinner);
@@ -2456,6 +2465,8 @@ export class RkmainComponent implements OnInit,OnChanges {
         }, 3000);
 
         
+      }else{
+        this.cargarDashboard()
       }
     })
 
@@ -2494,6 +2505,8 @@ export class RkmainComponent implements OnInit,OnChanges {
             }, 3000);
                
         
+      }else{
+        this.cargarDashboard()
       }
     })
 
@@ -2530,6 +2543,8 @@ export class RkmainComponent implements OnInit,OnChanges {
             }, 3000);
        
         
+      }else{
+        this.cargarDashboard()
       }
     })
 

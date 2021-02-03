@@ -11,6 +11,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
 import { RkmainRoutingModule } from '../rkmain-routing.module';
 import { FreshPipe } from '../../../fresh.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 
@@ -28,6 +29,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker'
     DragDropModule,
     RkmainRoutingModule,
     MatDatepickerModule,
+    MatSlideToggleModule
     
     
     

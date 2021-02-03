@@ -43,7 +43,7 @@ export class RkpendComponent implements OnInit {
   FechaHastaServicio= ''
   FechaHasta= ''
   TotalRegistros :number 
- 
+  complete:boolean=false
   public jerarquia:any
   
 
@@ -120,6 +120,8 @@ export class RkpendComponent implements OnInit {
     // tslint:disable-next-line: no-empty
     ngOnInit() {
       // this.comprobarPadre()
+
+      console.log(this.complete)
       
       // this.MarcarJerarquia('01000200010001','')
 
@@ -418,11 +420,19 @@ export class RkpendComponent implements OnInit {
   }
 
    recargar() {
-
+    
+    this.pendList=[]
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'EV' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }
    
 
     const spinner = this.controlService.openSpinner();
@@ -508,6 +518,8 @@ export class RkpendComponent implements OnInit {
           });
     });
 
+    console.log(this.pendList)
+
   }
   
   // });
@@ -516,9 +528,17 @@ export class RkpendComponent implements OnInit {
     this.imprime()
 
     let _atts = [];
+    
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'EV' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }
     _atts.push({ name: 'startDate', value: this.FechaDesdeServicio });
     _atts.push({ name: 'endDate', value: this.FechaHastaServicio });
     

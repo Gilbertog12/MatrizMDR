@@ -46,6 +46,8 @@ export class RkvalidarComponent implements OnInit {
   public validador: string;
   public cargo: string;
   public btn: string;
+  complete:boolean=false
+
   //
   public administrador = 'administrador';
   public creacion = 'creacion' ;
@@ -61,11 +63,18 @@ export class RkvalidarComponent implements OnInit {
   public jerarquia:any
   
   async recargar() {
-
+    this.pendList = []
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IV' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }
     
     const spinner = this.controlService.openSpinner();
 
@@ -181,6 +190,13 @@ export class RkvalidarComponent implements OnInit {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IV' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }
     _atts.push({ name: 'startDate', value: this.FechaDesdeServicio });
     _atts.push({ name: 'endDate', value: this.FechaHastaServicio });
     
