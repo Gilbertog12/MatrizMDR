@@ -16,6 +16,9 @@ import { async } from '@angular/core/testing';
 export class RkvalidarComponent implements OnInit {
   EnviarHijos: string;
   permi: boolean;
+  rutaJerarquia: any;
+  soloControles: any;
+  controles: string;
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
@@ -69,10 +72,10 @@ export class RkvalidarComponent implements OnInit {
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IV' });
     if(this.complete == true){
-      _atts.push({ name: 'showCompleted', value: 'Y' });
+      _atts.push({ name: 'showCompleted', value: 'N' });
       
     }else{
-            _atts.push({ name: 'showCompleted', value: 'N' });
+            _atts.push({ name: 'showCompleted', value: 'Y' });
       
     }
     
@@ -90,25 +93,48 @@ export class RkvalidarComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
-                  if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
-                    var StatusTemp = 1
-                  }else{
-                    var StatusTemp = parseInt(element.atts[19].value.trim())
-                  }
-                  if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
-                    var StatusTempP = 1
-                  }else{
-                    var StatusTempP = parseInt(element.atts[20].value.trim())
-                  }
+                  let rutaLongitud = element.atts[16].value.trim().length
+                  let ruta = element.atts[16].value.trim()
+                  // console.log(ruta)
+                  console.group()
+                  console.log(rutaLongitud.toString())
+                  console.groupEnd()
+                  switch(rutaLongitud.toString()) {
 
-                  if(StatusTemp < StatusTempP){
-                    this.permi = true
-                    // console.log(this.permi)
-                  }else{
-                    this.permi= false
-                    // console.log(this.permi)
+                    case '2':
+                      this.rutaJerarquia = ruta
+                      console.log(this.rutaJerarquia)
+                      break;
+                    case '6':
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
+                      break;
+                    case '10':
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
+                      break;                      
+                      case '14':  
+                        
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
+                       break;
+                      case '18':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
+                        break;
+                      case '19':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
+                        break;
+                      case '23':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
+                        break;
+                      case '27':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
+                        break;
+                      case '31':
+                        
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
+                        break;
+                    }
 
-                  }
+                  
+
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
                     Entidad: element.atts[2].value.trim(),
@@ -127,28 +153,27 @@ export class RkvalidarComponent implements OnInit {
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
-                    permiso: this.permi,
+                    // permiso: this.permi,
                     check: false,
                     status:element.atts[19].value.trim(),
-                    TipoControl:element.atts[21].value
-                    
-                    
+                    TipoControl:element.atts[21].value,
+                    rutaJerarquia:this.rutaJerarquia 
                     
                     
                   });
+                  
                 }
+
                 
-                
-                
-              }
               
+              }
+
               
               );
-              console.log(this.pendList)
 
               // this.comprobarPadre()
+              console.log([this.pendList])
               
-              // this.TotalRegistros = this.pendList.length
 
               this.controlService.closeSpinner(spinner);
             } else {
@@ -191,10 +216,10 @@ export class RkvalidarComponent implements OnInit {
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IV' });
     if(this.complete == true){
-      _atts.push({ name: 'showCompleted', value: 'Y' });
+      _atts.push({ name: 'showCompleted', value: 'N' });
       
     }else{
-            _atts.push({ name: 'showCompleted', value: 'N' });
+            _atts.push({ name: 'showCompleted', value: 'Y' });
       
     }
     _atts.push({ name: 'startDate', value: this.FechaDesdeServicio });
@@ -212,25 +237,48 @@ export class RkvalidarComponent implements OnInit {
           data.data.forEach((element) => {
             if (element.atts.length > 0) {
 
-              if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
-                var StatusTemp = 1
-              }else{
-                var StatusTemp = parseInt(element.atts[19].value.trim())
-              }
-              if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
-                var StatusTempP = 1
-              }else{
-                var StatusTempP = parseInt(element.atts[20].value.trim())
-              }
+              let rutaLongitud = element.atts[16].value.trim().length
+              let ruta = element.atts[16].value.trim()
+              // console.log(ruta)
+              console.group()
+              console.log(rutaLongitud.toString())
+              console.groupEnd()
+              switch(rutaLongitud.toString()) {
 
-              if(StatusTemp < StatusTempP){
-                this.permi = true
-                // console.log(this.permi)
-              }else{
-                this.permi= false
-                // console.log(this.permi)
+                case '2':
+                  this.rutaJerarquia = ruta
+                  console.log(this.rutaJerarquia)
+                  break;
+                case '6':
+                  this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
+                  break;
+                case '10':
+                  this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
+                  break;                      
+                  case '14':  
+                    
+                  this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
+                   break;
+                  case '18':
+                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
+                    break;
+                  case '19':
+                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
+                    break;
+                  case '23':
+                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
+                    break;
+                  case '27':
+                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
+                    break;
+                  case '31':
+                    
+                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
+                    break;
+                }
 
-              }
+              
+
               this.pendList.push({
                 Accion: element.atts[1].value.trim(),
                 Entidad: element.atts[2].value.trim(),
@@ -249,38 +297,38 @@ export class RkvalidarComponent implements OnInit {
                 key: element.atts[16].value.trim(),
                 version : element.atts[17].value.trim(),
                 Comentarios : element.atts[18].value.trim(),
-                permiso: this.permi,
+                // permiso: this.permi,
                 check: false,
                 status:element.atts[19].value.trim(),
-                TipoControl:element.atts[21].value
-                
+                TipoControl:element.atts[21].value,
+                rutaJerarquia:this.rutaJerarquia 
                 
                 
               });
+              
             }
+
             
-            
-            
-          }
           
+          }
+
           
           );
-          console.log(this.pendList)
 
           // this.comprobarPadre()
+          console.log([this.pendList])
           
-          // this.TotalRegistros = this.pendList.length
 
           this.controlService.closeSpinner(spinner);
         } else {
-              this.controlService.snackbarError(data.message);
-            }
-            return result;
-          },
-          (error) => {
-            this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
-          });
-    });
+          this.controlService.snackbarError(data.message);
+        }
+        return result;
+      },
+      (error) => {
+        this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
+      });
+});
   }
 
   MarcarJerarquia(Value,status?){
@@ -494,52 +542,103 @@ verTable(item: any) {
       return;
     }
 
-    Swal2.fire({
-      title: 'Validar',
-      text: 'Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.',
-       icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+    if (this.soloControles) {
+      Swal2.fire({
+        title: 'Validar',
+        text: 'ESTA MODIFICANDO UN CONTROL',
+         icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+        
+      }).then((result) => {
+        if (result.value) {
+          
+          const _atts = [];
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'VALIDATE' });
+            _atts.push({ name: 'onlyActualNode', value: 'Y' });
+            _atts.push({ name: 'key', value: this.valor });
+  
+            const spinner = this.controlService.openSpinner();
+            const obj = this.autentication.generic(_atts);
+  
+                      obj.subscribe(
+                      (data) => {
+                        if (data.success === true) {
+                          // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+  
+                          Swal2.fire('Registro Enviado a Aprobar','', 'success' )
+  
+                          
+                        } else {
+                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                          Swal2.fire('',data.message,'error')
+                        }
+          
+                        this.controlService.closeSpinner(spinner);
+          
+                      },
+                      (error) => {
+                        // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                        this.controlService.closeSpinner(spinner);
+                      });
+                      this.cerrar('falso');
+                  }
+          
+        })  
+    } else {
       
-    }).then((result) => {
-      if (result.value) {
+      Swal2.fire({
+        title: 'Validar',
+        text: 'Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.',
+         icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
         
-        const _atts = [];
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'VALIDATE' });
-          _atts.push({ name: 'onlyActualNode', value: 'Y' });
-          _atts.push({ name: 'key', value: this.valor });
+      }).then((result) => {
+        if (result.value) {
+          
+          const _atts = [];
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'VALIDATE' });
+            _atts.push({ name: 'onlyActualNode', value: 'Y' });
+            _atts.push({ name: 'key', value: this.valor });
+  
+            const spinner = this.controlService.openSpinner();
+            const obj = this.autentication.generic(_atts);
+  
+                      obj.subscribe(
+                      (data) => {
+                        if (data.success === true) {
+                          // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+  
+                          Swal2.fire('Registro Enviado a Aprobar','', 'success' )
+  
+                          
+                        } else {
+                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                          Swal2.fire('',data.message,'error')
+                        }
+          
+                        this.controlService.closeSpinner(spinner);
+          
+                      },
+                      (error) => {
+                        // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                        this.controlService.closeSpinner(spinner);
+                      });
+                      this.cerrar('falso');
+                  }
+          
+        })
+    }
 
-          const spinner = this.controlService.openSpinner();
-          const obj = this.autentication.generic(_atts);
-
-                    obj.subscribe(
-                    (data) => {
-                      if (data.success === true) {
-                        // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-
-                        Swal2.fire('Registro Enviado a Aprobar','', 'success' )
-
-                        
-                      } else {
-                        // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                        Swal2.fire('',data.message,'error')
-                      }
-        
-                      this.controlService.closeSpinner(spinner);
-        
-                    },
-                    (error) => {
-                      // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                      this.controlService.closeSpinner(spinner);
-                    });
-                    this.cerrar('falso');
-                }
-        
-      })
 
 
 //     const inputOptions = {
@@ -722,16 +821,40 @@ verTable(item: any) {
 
 
   }
+  isOnlyControl(arreglo)
+      {
+        console.log(arreglo=arreglo.split(','))
+        
+
+
+        for(let i =0 ; i < arreglo.length; i++)
+        {
+
+          console.log(arreglo)
+          if(arreglo[i].includes('CONTROLES')){
+            // console.log('soy solo controles')
+
+            return true
+          }else{
+            return false
+          }
+
+        }
+        
+      }
 
   consola(accion : string) {
     this.valor = '';
     this.version = '';
+    this.controles ='';
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.pendList.length; i++) {
 
       if (this.pendList[i]['check'] === true) {
         this.valor = this.valor + ','+ this.pendList[i]['key']+','+'Y'  ;
         this.version = this.version+ ',' + this.pendList[i]['version'] ;
+        this.controles = this.controles + ','+ this.pendList[i]['Entidad']
+          this.soloControles = this.isOnlyControl(this.controles.slice(1))
       }else{
         this.valor = this.valor + ','+ this.pendList[i]['key']+','+'N'  ;
       }
@@ -767,91 +890,179 @@ verTable(item: any) {
 
     localStorage.setItem('Llave',this.valor)
     localStorage.setItem('VersionL',this.version)
-
-    Swal2.fire({
-
-      title:'Rechazar Validacion',
-      text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor:'#3085d6',
-      cancelButtonColor: '#d33'
-
-    }).then((result)=>{
-        if(result.value){
-
-          const conf = this.confirm.open(RkReasonRejectComponent,{
-            hasBackdrop: true,
-            height: 'auto',
-            width: 'auto',
-            data: {
-              title: 'Razon de Rechazo',
-              button_confirm: 'Aceptar',
-              button_close: 'Cancelar'
-            }
-          });
-
-          conf.afterClosed().subscribe(async(result)=>{
-            this.cerrar('falso');
-          })
-
-        //   conf1.afterClosed().subscribe
-        //   (async ( result1) =>{
-        //     console.log( result1)
-
-        //    if(result1){
-
-        //       this.Razon = localStorage.getItem('RazonRechazo')
-        //          let _atts = [];
-        //   _atts.push({ name: 'scriptName', value: 'coemdr'});
-        //   _atts.push({ name: 'action', value: 'VALIDATE'});
-        //   _atts.push({ name: 'key', value: this.valor });
-        //   _atts.push({ name: 'version', value: this.version});
-        //   _atts.push({ name: 'approveInd', value: 'U' });
-        //   _atts.push({ name: 'comments', value: this.Razon });
-
-        //   const spinner = this.controlService.openSpinner();
-        //   const obj = await this.autentication.generic(_atts);
-
-        //   obj.subscribe(
-        //     (data) => {
-        //       if (data.success === true) {
-        //         if (data.data[0].atts[1]) {
-        //           // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-        //           Swal2.fire({
-        //             text:'Registro Rechazado',
-        //             icon:'success',
-        //             showConfirmButton: false,
-        //             timer: 3000
-        //           })
-        //           localStorage.removeItem('RazonRechazo')
   
-        //         }
-
-        //       } else {
-        //         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-        //         Swal2.fire({
-        //           text:data.message,
-        //           icon:'error',
-        //           showConfirmButton: false,
-        //           timer: 3000
-        //         })
-        //       }
-        //       this.controlService.closeSpinner(spinner);
-
-        //     },
-        //     (error) => {
-        //       // if ( error.status === 401 ) { this.autentication.logout(); return; }
-        //       this.controlService.closeSpinner(spinner);
-        //     });
-
-        //     }
-        //   } )
-
-         }
-    })
+    if (this.soloControles) {
+      Swal2.fire({
+  
+        title:'Rechazar Validacion',
+        text:'ESTA MODIFICANDO UN CONTROL',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor:'#3085d6',
+        cancelButtonColor: '#d33'
+  
+      }).then((result)=>{
+          if(result.value){
+  
+            const conf = this.confirm.open(RkReasonRejectComponent,{
+              hasBackdrop: true,
+              height: 'auto',
+              width: 'auto',
+              data: {
+                title: 'Razon de Rechazo',
+                button_confirm: 'Aceptar',
+                button_close: 'Cancelar'
+              }
+            });
+  
+            conf.afterClosed().subscribe(async(result)=>{
+              this.cerrar('falso');
+            })
+  
+          //   conf1.afterClosed().subscribe
+          //   (async ( result1) =>{
+          //     console.log( result1)
+  
+          //    if(result1){
+  
+          //       this.Razon = localStorage.getItem('RazonRechazo')
+          //          let _atts = [];
+          //   _atts.push({ name: 'scriptName', value: 'coemdr'});
+          //   _atts.push({ name: 'action', value: 'VALIDATE'});
+          //   _atts.push({ name: 'key', value: this.valor });
+          //   _atts.push({ name: 'version', value: this.version});
+          //   _atts.push({ name: 'approveInd', value: 'U' });
+          //   _atts.push({ name: 'comments', value: this.Razon });
+  
+          //   const spinner = this.controlService.openSpinner();
+          //   const obj = await this.autentication.generic(_atts);
+  
+          //   obj.subscribe(
+          //     (data) => {
+          //       if (data.success === true) {
+          //         if (data.data[0].atts[1]) {
+          //           // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+          //           Swal2.fire({
+          //             text:'Registro Rechazado',
+          //             icon:'success',
+          //             showConfirmButton: false,
+          //             timer: 3000
+          //           })
+          //           localStorage.removeItem('RazonRechazo')
+    
+          //         }
+  
+          //       } else {
+          //         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+          //         Swal2.fire({
+          //           text:data.message,
+          //           icon:'error',
+          //           showConfirmButton: false,
+          //           timer: 3000
+          //         })
+          //       }
+          //       this.controlService.closeSpinner(spinner);
+  
+          //     },
+          //     (error) => {
+          //       // if ( error.status === 401 ) { this.autentication.logout(); return; }
+          //       this.controlService.closeSpinner(spinner);
+          //     });
+  
+          //     }
+          //   } )
+  
+           }
+      })
+    } else {
+      
+      Swal2.fire({
+  
+        title:'Rechazar Validacion',
+        text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor:'#3085d6',
+        cancelButtonColor: '#d33'
+  
+      }).then((result)=>{
+          if(result.value){
+  
+            const conf = this.confirm.open(RkReasonRejectComponent,{
+              hasBackdrop: true,
+              height: 'auto',
+              width: 'auto',
+              data: {
+                title: 'Razon de Rechazo',
+                button_confirm: 'Aceptar',
+                button_close: 'Cancelar'
+              }
+            });
+  
+            conf.afterClosed().subscribe(async(result)=>{
+              this.cerrar('falso');
+            })
+  
+          //   conf1.afterClosed().subscribe
+          //   (async ( result1) =>{
+          //     console.log( result1)
+  
+          //    if(result1){
+  
+          //       this.Razon = localStorage.getItem('RazonRechazo')
+          //          let _atts = [];
+          //   _atts.push({ name: 'scriptName', value: 'coemdr'});
+          //   _atts.push({ name: 'action', value: 'VALIDATE'});
+          //   _atts.push({ name: 'key', value: this.valor });
+          //   _atts.push({ name: 'version', value: this.version});
+          //   _atts.push({ name: 'approveInd', value: 'U' });
+          //   _atts.push({ name: 'comments', value: this.Razon });
+  
+          //   const spinner = this.controlService.openSpinner();
+          //   const obj = await this.autentication.generic(_atts);
+  
+          //   obj.subscribe(
+          //     (data) => {
+          //       if (data.success === true) {
+          //         if (data.data[0].atts[1]) {
+          //           // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+          //           Swal2.fire({
+          //             text:'Registro Rechazado',
+          //             icon:'success',
+          //             showConfirmButton: false,
+          //             timer: 3000
+          //           })
+          //           localStorage.removeItem('RazonRechazo')
+    
+          //         }
+  
+          //       } else {
+          //         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+          //         Swal2.fire({
+          //           text:data.message,
+          //           icon:'error',
+          //           showConfirmButton: false,
+          //           timer: 3000
+          //         })
+          //       }
+          //       this.controlService.closeSpinner(spinner);
+  
+          //     },
+          //     (error) => {
+          //       // if ( error.status === 401 ) { this.autentication.logout(); return; }
+          //       this.controlService.closeSpinner(spinner);
+          //     });
+  
+          //     }
+          //   } )
+  
+           }
+      })
+    }
 
 //     const conf = this.confirm.open(ConfirmationComponent, {
 //       hasBackdrop: true,

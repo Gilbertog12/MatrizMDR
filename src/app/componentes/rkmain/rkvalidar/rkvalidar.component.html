@@ -2,7 +2,7 @@
 
     {{ data.title }} </h3>
 
-<div>
+<form>
 
     Fecha Desde<input type="date" placeholder="Fecha Desde" [(ngModel)]='FechaDesde' name="FechaDesde" required> Fecha Hasta<input type="date" placeholder="Fecha Hasta" [(ngModel)]='FechaHasta' name="FechaHasta" required>
 
@@ -14,8 +14,8 @@
     </ng-template>
     <br>
     <br>
-    <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items Completados</mat-slide-toggle>
-</div>
+    <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items en Construcción</mat-slide-toggle>
+</form>
 
 <br>
 
@@ -58,30 +58,38 @@
                 <td class="sticky">
                     <input type="checkbox" class="checkmark" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
-            
-                                    </ng-template>
-                                    <ng-template #PadreMayor>
-                                        <input readonly type="checkbox" style="align-items: left;" [value]="item.check" [(ngModel)]="item.check">
-            
-                                    </ng-template> -->
+        
+                                </ng-template>
+                                <ng-template #PadreMayor>
+                                    <input readonly type="checkbox" style="align-items: left;" [value]="item.check" [(ngModel)]="item.check">
+        
+                                </ng-template> -->
                 </td>
                 <td class="sticky2">{{item.Accion}}</td>
                 <td>{{item.Comentarios}}</td>
                 <td>{{item.Fecha}}</td>
                 <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
-                    <td style="font-weight: bold;">{{item.Entidad}}</td>
+                    <td style="font-weight: bold; min-width: 220px;">{{item.Entidad}}
+                        <br>
+                        <span style="font-size: 9px;">{{item.rutaJerarquia}}</span>
+
+                    </td>
 
                 </ng-template>
 
                 <ng-template #Permitido>
 
-                    <td>{{item.Entidad}}</td>
+                    <td style="min-width: 220px;">{{item.Entidad}}
+                        <br>
+                        <span style="font-size: 9px; font-weight: bold">{{item.rutaJerarquia}}</span>
+
+                    </td>
 
                 </ng-template>
 
                 <td><a routerLink="" reload='true' (click)='verTable(item.key)'>
-                                    {{item.Descripcion}}  </a></td>
+                                {{item.Descripcion}}  </a></td>
 
                 <td>{{item.Area}}</td>
                 <td>{{item.Proceso}}</td>
@@ -102,8 +110,18 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-raised-button color="primary" (click)="cerrar()">{{ data.button_close }}</button>
-    <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('aprobar')">Validar</button>
-    <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
+    <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
+        <button mat-raised-button color="primary" (click)="cerrar()">{{ data.button_close }}</button>
+        <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola('aprobar')">Validar</button>
+        <button *ngIf="btn === creacionvalidacion || btn === validacion || btn == creacionvalidacion || btn === validacionaprobacion || btn === administrador" mat-raised-button color="warn" (click)="consola('rechazar')"> Rechazar</button>
+
+    </ng-template>
+
+    <ng-template #incompletos>
+        <button mat-raised-button color="primary" (click)="cerrar()">{{ data.button_close }}</button>
+
+    </ng-template>
+
 
 </mat-dialog-actions>

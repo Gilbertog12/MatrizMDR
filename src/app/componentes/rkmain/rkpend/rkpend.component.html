@@ -1,6 +1,10 @@
-<h3 mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+<h3 *ngIf="complete" mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
 
     {{ data.title }} </h3>
+
+<h3 *ngIf="!complete" mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+    Items pendientes por Enviar a Validar </h3>
 
 <div>
 
@@ -14,7 +18,7 @@
     </ng-template>
     <br>
     <br>
-    <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items Completados</mat-slide-toggle>
+    <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items en Construcción</mat-slide-toggle>
 </div>
 
 <br>
@@ -70,13 +74,21 @@
                 <td>{{item.Fecha}}</td>
                 <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
-                    <td style="font-weight: bold;">{{item.Entidad}}</td>
+                    <td style="font-weight: bold; min-width: 220px;">{{item.Entidad}}
+                        <br>
+                        <span style="font-size: 9px;">{{item.rutaJerarquia}}</span>
+
+                    </td>
 
                 </ng-template>
 
                 <ng-template #Permitido>
 
-                    <td>{{item.Entidad}}</td>
+                    <td style="min-width: 220px;">{{item.Entidad}}
+                        <br>
+                        <span style="font-size: 9px; font-weight: bold">{{item.rutaJerarquia}}</span>
+
+                    </td>
 
                 </ng-template>
 
@@ -103,8 +115,16 @@
 
 <mat-dialog-actions align="end" cdkDragHandle>
     <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button>
-    <button *ngIf="btn === creacion || btn === administrador || btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola('enviar a validar')">Enviar a Validar</button>
-    <button *ngIf="btn === creacion  && MostrarRestaurar || btn === administrador  && MostrarRestaurar|| btn === creacionvalidacion  && MostrarRestaurar || btn ===  creacionaprobacion && MostrarRestaurar" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
+    <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
+        <button *ngIf="btn === creacion || btn === administrador || btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola('enviar a validar')">Enviar a Validar</button>
+        <button *ngIf="btn === creacion  && MostrarRestaurar || btn === administrador  && MostrarRestaurar|| btn === creacionvalidacion  && MostrarRestaurar || btn ===  creacionaprobacion && MostrarRestaurar" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
+
+    </ng-template>
+
+    <ng-template #incompletos>
+        <button *ngIf="btn === creacion  && MostrarRestaurar || btn === administrador  && MostrarRestaurar|| btn === creacionvalidacion  && MostrarRestaurar || btn ===  creacionaprobacion && MostrarRestaurar" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
+
+    </ng-template>
 
 
 

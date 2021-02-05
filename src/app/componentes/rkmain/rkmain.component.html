@@ -252,6 +252,7 @@
                                         </ng-template>
 
                                         <ng-template #sinmarca>
+
                                             <button *ngIf="node.level !=8" [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
                                                 <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
                                             </button>
@@ -282,16 +283,32 @@
 
                                         <ng-template #sinmarca>
 
-                                            <button *ngIf="node.level !=8" [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
-                                                <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
-                                            </button>
+                                            <ng-template [ngIf]="node.level == 4" [ngIfElse]="SinCreacion">
 
-                                            <button *ngIf="node.level ==8" [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
-                                                <img   class="img-circle" src="assets/images/botn_blanco.jng" style="width: 10px; height: 10px; ">
-                                                 </button>
-                                            <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
-                                                <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
-                                            </button>
+                                                <button *ngIf="percreacion !=='Y' " [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                                    <img   class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px; ">
+                                                    </button>
+
+                                                <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                    <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+
+                                            </ng-template>
+
+                                            <ng-template #SinCreacion>
+
+                                                <button *ngIf="node.level !=8" [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                                    <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+
+                                                <button *ngIf="node.level ==8" [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                    <img   class="img-circle" src="assets/images/botn_blanco.jng" style="width: 10px; height: 10px; ">
+                                                     </button>
+                                                <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                    <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+                                            </ng-template>
+
 
                                         </ng-template>
                                     </div>
@@ -312,16 +329,32 @@
 
                                         <ng-template #sinmarca>
 
-                                            <button *ngIf="node.level !=8" [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
-                                                <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
-                                            </button>
+                                            <ng-template [ngIf]="node.level == 4" [ngIfElse]="SinCreacion">
 
-                                            <button *ngIf="node.level ==8" [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
-                                                <img   class="img-circle" src="assets/images/botn_blanco.jng" style="width: 10px; height: 10px; ">
-                                                 </button>
-                                            <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
-                                                <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
-                                            </button>
+                                                <button *ngIf="percreacion !=='Y' " [style.display]='AgregarNodo' class="btn btn-sm btn-light btn-round" (click)="nuevo(node)">
+                                                    <img   class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px; ">
+                                                    </button>
+
+                                                <button [style.display]='EliminarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                    <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+
+                                            </ng-template>
+
+                                            <ng-template #SinCreacion>
+
+                                                <button *ngIf="node.level !=8" [style.display]='AgregarNodo' id="SinPermisos" class="btn btn-sm btn-light btn-round" (click)="SinPermisos()" disabled>
+                                                    <img   class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+
+                                                <button *ngIf="node.level ==8" [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                    <img   class="img-circle" src="assets/images/botn_blanco.jng" style="width: 10px; height: 10px; ">
+                                                     </button>
+                                                <button [style.display]='EliminarNodo' class="btn btn-sm btn-light btn-round" (click)="eliminar(node)" disabled>
+                                                    <img   class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px; ">
+                                                </button>
+                                            </ng-template>
+
                                         </ng-template>
                                     </div>
                                     <div *ngSwitchDefault>
