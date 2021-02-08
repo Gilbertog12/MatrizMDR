@@ -455,9 +455,11 @@ export class RkpendaprobComponent implements OnInit {
     if (this.soloControles) {
       const { value: accept } = await Swal2.fire({
 
-        title:'Enviar a Archivar',
-        text: 'ESTA MODIFICANDO UN CONTROL',
-        icon:'question',
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
         input:'checkbox',
         inputValue:'',
         showCancelButton: true,
@@ -662,9 +664,11 @@ async RestaurarItem() {
   if (this.soloControles) {
     const { value: accept } = await Swal2.fire({
 
-      title:'Restaurar Registro',
-      text: 'ESTA MODIFICANDO UN CONTROL',
-      icon:'question',
+      title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
       input:'checkbox',
       inputValue:'',
       inputPlaceholder:'Acepto',

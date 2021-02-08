@@ -110,3 +110,8 @@ span:hover {
     transform: scale(1.5);
     /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
+
+.swal2-icon.swal2-warning {
+    border-color: red !important;
+    color: #f8bb86;
+}

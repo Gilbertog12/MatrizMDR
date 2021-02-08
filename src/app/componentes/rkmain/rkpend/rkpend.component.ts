@@ -193,9 +193,11 @@ export class RkpendComponent implements OnInit {
     if(this.soloControles){
 
       Swal2.fire({
-        title: 'Enviar a Validar',
-        text: "ESTA MODIFICANDO UN CONTROL",
-        icon: 'info',
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',

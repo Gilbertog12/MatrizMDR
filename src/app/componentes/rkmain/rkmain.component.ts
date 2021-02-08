@@ -43,7 +43,7 @@ import { NgClass } from '@angular/common';
 
 export class DynamicFlatNode {
   constructor(public item: string, public level = 1, public expandable = false,
-    public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string,public pendingDelete:string ,public StatusPadre:boolean) { }
+    public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string,public pendingDelete:string ,public StatusPadre:boolean, public displayDeleteIcon:string) { }
     
     
     
@@ -164,6 +164,7 @@ export class DynamicFlatNode {
               let pendingDelete = value['atts'][20]['value'];
 
               let statusParent = value['atts'][22]['value'];
+              let displayDeleteIcon = value['atts'][23]['value'];
               let flag
               if(parseInt(status)< parseInt(statusParent)){
                 var StatusPadre = true
@@ -212,7 +213,7 @@ export class DynamicFlatNode {
                     route = 'rky/' + key.substring(0, 2) + '/' + key.substring(2, 6) + '/' + key.substring(6, 10) + '/' + key.substring(10, 14) + '/' + key.substring(14, 18) + '/' + key.substring(18, 19) + '/' + key.substring(19, 23) + '/' + key.substring(23, 27);
                     break;
                 }
-                response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios,hijo,canAdd,permiso,pendingDelete,StatusPadre));
+              response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios,hijo,canAdd,permiso,pendingDelete,StatusPadre,displayDeleteIcon));
               });
               
               
@@ -261,7 +262,9 @@ export class DynamicFlatNode {
       canAdd:'',
       permiso: '',
       pendingDelete: '',
-      StatusPadre: false
+      StatusPadre: false,
+      displayDeleteIcon: ''
+
       
     }
     this.data.splice(index + 1, 0, ...[dfn]);
@@ -288,7 +291,8 @@ export class DynamicFlatNode {
       canAdd:'',
       permiso: '',
       pendingDelete: '',
-      StatusPadre: false
+      StatusPadre: false,
+      displayDeleteIcon: ''
       
     }
     this.data.splice(index + 1, 0, ...[dfn]);
@@ -786,6 +790,8 @@ export class RkmainComponent implements OnInit,OnChanges {
             let perfil = value['atts'][15]['value']+value['atts'][16]['value']+value['atts'][17]['value']+value['atts'][18]['value']+value['atts'][19]['value']
             let pendingDelete = value['atts'][20]['value'];
             let statusParent = value['atts'][22]['value'];
+            let displayDeleteIcon = value['atts'][23]['value'];
+
             
             if(parseInt(status)< parseInt(statusParent)){
               var StatusPadre = true
@@ -856,7 +862,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             // console.log(localStorage.getItem('canAdd'))
             
             
-            response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [],hijo,canAdd,permiso,pendingDelete,StatusPadre));
+            response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [],hijo,canAdd,permiso,pendingDelete,StatusPadre,displayDeleteIcon));
             
           });
           // console.log(prueba);
@@ -1123,7 +1129,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       Swal2.fire({
         title: 'Eliminar Registro',
         text: '¿Esta Seguro que desea Inactivar este Registro que se encuentra Aprobado?',
-        icon: 'warning',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
@@ -1242,7 +1248,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       Swal2.fire({
         title: 'Eliminar Registro',
         text: '¿Desea eliminar este registro?',
-        icon: 'warning',
+        icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
@@ -1989,7 +1995,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     if (localStorage.getItem('isSelectedNode') === 'false') {
       // this.autentication.showMessage(false, 'Por favor seleccione el nivel que desea enviar', {}, false);
       Swal2.fire({
-        icon:'warning',
+        icon:'question',
         text:'Por favor seleccione el nivel que desea enviar a Validar'
       })
       this.router.navigate(['/rkmain']);

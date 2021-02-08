@@ -446,9 +446,11 @@ export class RkporaprobarComponent implements OnInit {
     if (this.soloControles) {
 
       Swal2.fire({
-        title: 'Aprobar',
-          text: 'ESTA MODIFICANDO UN CONTROL',
-        icon: 'question',
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -906,9 +908,11 @@ isOnlyControl(arreglo)
 
       Swal2.fire({
 
-        title:'Rechazar Aprobacion',
-        text:'ESTA MODIFICANDO UN CONTROL',
-        icon: 'question',
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',

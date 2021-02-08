@@ -544,9 +544,11 @@ verTable(item: any) {
 
     if (this.soloControles) {
       Swal2.fire({
-        title: 'Validar',
-        text: 'ESTA MODIFICANDO UN CONTROL',
-         icon: 'question',
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -894,9 +896,11 @@ verTable(item: any) {
     if (this.soloControles) {
       Swal2.fire({
   
-        title:'Rechazar Validacion',
-        text:'ESTA MODIFICANDO UN CONTROL',
-        icon: 'question',
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea Enviar a Validar ?</b>',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
