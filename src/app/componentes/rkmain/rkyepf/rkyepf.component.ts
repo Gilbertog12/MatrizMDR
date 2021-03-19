@@ -153,12 +153,12 @@ export class RkyepfComponent implements OnInit {
       if ( data.data[0].atts[1] ) {
         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.epfModel, data.redirect);
         Swal2.fire('','Control de EPF Agregado','success')
-        // this.dialogRef.close(true);
+        this.dialogRef.close(true);
       }
     } else {
       // this.autentication.showMessage(data.success, data.message, this.epfModel, data.redirect);
       Swal2.fire('',data.message,'error')
-      this.dialogRef.close(true);
+      // this.dialogRef.close(true);  
     }
     this.controlService.closeSpinner(spinner);
     },

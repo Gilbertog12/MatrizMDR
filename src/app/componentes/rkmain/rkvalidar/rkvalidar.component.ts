@@ -19,6 +19,7 @@ export class RkvalidarComponent implements OnInit {
   rutaJerarquia: any;
   soloControles: any;
   controles: string;
+  comments='';
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
@@ -26,6 +27,8 @@ export class RkvalidarComponent implements OnInit {
     private confirm: MatDialog,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.data.key,
+      this.data.status
     this.recargar();
     this.aperfil();
   }
@@ -51,6 +54,7 @@ export class RkvalidarComponent implements OnInit {
   public btn: string;
   complete:boolean=false
 
+  public comentarios 
   //
   public administrador = 'administrador';
   public creacion = 'creacion' ;
@@ -64,37 +68,30 @@ export class RkvalidarComponent implements OnInit {
   FechaHastaServicio= ''
   FechaHasta= ''
   public jerarquia:any
-  
-  async recargar() {
-    this.pendList = []
-    let _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr' });
-    _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
-    _atts.push({ name: 'status', value: 'IV' });
-    if(this.complete == true){
-      _atts.push({ name: 'showCompleted', value: 'N' });
-      
-    }else{
-            _atts.push({ name: 'showCompleted', value: 'Y' });
-      
-    }
-    
-    const spinner = this.controlService.openSpinner();
+  TotalRegistros :number =0
+  totalMarcados: number = 0;
 
-    const promiseView = new Promise((resolve, reject) => {
-      this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            // console.log("RES:" + JSON.stringify(data));
-            const result = data.success;
-            
-            if (result) {
-                  console.log(data)
-              data.data.forEach((element) => {
-                if (element.atts.length > 0) {
 
-                  let rutaLongitud = element.atts[16].value.trim().length
-                  let ruta = element.atts[16].value.trim()
+  convertiFechaYhora(valor){
+
+    let year =valor.substring(0,4);
+    let mes =valor.substring(4,6);
+    let dia =valor.substring(6,8);
+    let hora =valor.substring(9,11);
+    let min =valor.substring(11,13);
+                  
+
+    let fecha= `${mes}/${dia}/${year}`;
+    let time = `${hora}:${min}`
+
+    return `${fecha} ${time}`
+
+  }
+
+  obtenerRuta(rutaJerarquia){
+
+                  let rutaLongitud = rutaJerarquia.length
+                  let ruta = rutaJerarquia
                   // console.log(ruta)
                   console.group()
                   console.log(rutaLongitud.toString())
@@ -129,9 +126,46 @@ export class RkvalidarComponent implements OnInit {
                         break;
                       case '31':
                         
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +ruta.substring(27, 31);
                         break;
                     }
+    
+  }
+  
+   recargar() {
+    this.pendList = []
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
+    _atts.push({ name: 'status', value: 'IV' });
+    _atts.push({ name: 'key', value: this.data.id });
+    _atts.push({ name: 'statusItem', value: this.data.status });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    }
+    
+    const spinner = this.controlService.openSpinner();
+
+    const promiseView = new Promise((resolve, reject) => {
+      this.autentication.generic(_atts)
+        .subscribe(
+          (data) => {
+            // console.log("RES:" + JSON.stringify(data));
+            const result = data.success;
+            
+            if (result) {
+                  console.log(data)
+              data.data.forEach((element) => {
+                if (element.atts.length > 0) {
+
+                  let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
+                  
+                  this.obtenerRuta(element.atts[16].value.trim())
+                  
 
                   
 
@@ -149,7 +183,7 @@ export class RkvalidarComponent implements OnInit {
                     Riesgo: element.atts[11].value.trim(),
                     Consecuencia: element.atts[12].value.trim(),
                     Controles : element.atts[13].value.trim(),
-                    Fecha: element.atts[15].value.trim(),
+                    Fecha: fecha,
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
@@ -174,8 +208,9 @@ export class RkvalidarComponent implements OnInit {
               // this.comprobarPadre()
               console.log([this.pendList])
               
-
+              this.TotalRegistros = this.pendList.length
               this.controlService.closeSpinner(spinner);
+
             } else {
               this.controlService.snackbarError(data.message);
             }
@@ -189,21 +224,24 @@ export class RkvalidarComponent implements OnInit {
   }
 
   imprime(){
-    
+    console.log(this.FechaDesde=this.FechaDesde.split('-').join(''))  
+    console.log(this.FechaHasta=this.FechaHasta.split('-').join('') )
 
-    let a = this.FechaDesde.substring(0,4);
-    let b = this.FechaDesde.substring(7,5);
-    let c = this.FechaDesde.substring(8,10);
-    let d = this.FechaHasta.substring(0,4);
-    let e = this.FechaHasta.substring(7,5);
-    let f = this.FechaHasta.substring(8,10);
-    let total=a+b+c
+    // let a = this.FechaDesde.substring(0,4);
+    // console.log(a)
+    // let b = this.FechaDesde.substring(7,5);
+    // console.log
+    // let c = this.FechaDesde.substring(8,10);
+    // let d = this.FechaHasta.substring(0,4);
+    // let e = this.FechaHasta.substring(7,5);
+    // let f = this.FechaHasta.substring(8,10);
+    // let total=a+b+c
     
-    
-    this.FechaDesdeServicio =total
-    this.FechaHastaServicio = d+e+f
-
-    
+  
+    this.FechaDesdeServicio =this.FechaDesde
+   
+    this.FechaHastaServicio = this.FechaHasta
+        
 
   }
 
@@ -317,8 +355,7 @@ export class RkvalidarComponent implements OnInit {
 
           // this.comprobarPadre()
           console.log([this.pendList])
-          
-
+              this.TotalRegistros = this.pendList.length
           this.controlService.closeSpinner(spinner);
         } else {
           this.controlService.snackbarError(data.message);
@@ -331,10 +368,14 @@ export class RkvalidarComponent implements OnInit {
 });
   }
 
-  MarcarJerarquia(Value,status?){
+  MarcarJerarquia(Value,status,chek){
 
+
+      
     let key = Value
     let Istatus = status;
+
+    
 
     // console.log(Istatus)
     // let entidadActual
@@ -344,74 +385,58 @@ export class RkvalidarComponent implements OnInit {
     for(let i = 0; i < this.pendList.length; i++){
       // console.log(key)
       
-
+      // console.log(i)
       if(this.pendList[i]['key'].startsWith(key)){
-
-        console.error('Aqui')
-        // key =this.pendList[i]['key']
-
         
-
+        
+        
         if(this.pendList[i]['key'] !== key){
           
           if(this.pendList[i]['check'] == false){
-             console.log('aqui estoy')
-             this.pendList[i]['check'] = true
-            //  this.pendList[i]['permiso'] = true
-             
-           }else{
-             this.pendList[i]['check'] = false
-            //  this.pendList[i]['permiso'] = false
-   
-           }
-        }
-        
-        
-          // if(key.length == 31){
+            
+            this.pendList[i]['check'] = true
+            
+            // this.totalMarcados = this.totalMarcados +1;
+            
+            // console.log(this.totalMarcados)
+            
+            
+            // this.pendList[i]['permiso'] = true
+            
+          }else{
+            this.pendList[i]['check'] = false
+            if(this.pendList[i]['check'] ==false && this.totalMarcados >=0 ){
+              
+              
+            }
+            
+            }
+          }
           
-          // break;
-          //  key = key.substring(0,27)
-          //  console.log(key)
-          //  console.log(key.length)
-          // }
+          if(this.pendList[i]['check'] == true){
+            this.totalMarcados = this.totalMarcados+1
+            
+          }else if(this.pendList[i]['check'] == false && this.totalMarcados>0){
 
+            this.totalMarcados = this.totalMarcados-1
+          }
+          
+          
+         
+            
       }
       
-     /* if(this.pendList[i]['key'].startsWith(key)){
-        
-        // console.error()
-        // if(this.pendList[i]['check'] == false){
-        //   break;
-        // }
-        // key =this.pendList[i]['key']
-        
-        this.pendList[i]['check'] = true
-            
-          // if(this.pendList[i]['check'] == false){
-          //   console.log('aqui estoy')
-          //   this.pendList[i]['check'] = true
-          //   this.pendList[i]['permiso'] = true
-            
-          // }else{
-          //   this.pendList[i]['check'] = false
-          //   this.pendList[i]['permiso'] = false
-  
-          // }
-        
-        // this.pendList[i]['permiso'] = true}
-        
-          // if(key.length == 31){
-          
-          // break;
-          //  key = key.substring(0,27)
-          //  console.log(key)
-          //  console.log(key.length)
-          // }
+      
+      }
 
-      }*/
+
+      
+
+      console.log(this.totalMarcados)
+
+      
     }
 
-  }
 
   cerrar(mensaje:any) {
     console.log(mensaje)
@@ -518,13 +543,20 @@ verTable(item: any) {
   }
 }
 
-
-  checkUncheckAll() {
-    for (var i = 0; i < this.pendList.length; i++) {
-      this.pendList[i].check = this.masterSelected;
+checkUncheckAll() {
+  // tslint:disable-next-line: prefer-for-of
+  for (let i = 0; i < this.pendList.length; i++) {
+    this.pendList[i].check = this.masterSelected;
+    if(this.masterSelected == true){
+      this.totalMarcados = this.pendList.length
+      
+    }else{
+      this.totalMarcados = 0
+      
     }
-
   }
+
+}
   EnviarRazon(event:string){
 
     console.log( event)
@@ -536,185 +568,115 @@ verTable(item: any) {
 
   async sendvalidate() {
 
-    if (this.valor === '' || this.valor === 'undefined') {
+    if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionar al menos 1 item', {}, false);
+      if (this.soloControles) {
+        Swal2.fire({
+          title: '<strong style="color:red">ADVERTENCIA !</strong>',
+          html:
+            'La modificación de los controles afecta al Riesgo Residual. ' +
+            '<b>Está seguro que desea continuar?</b>',
+          icon: 'warning',
+  
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar'
+          
+        }).then((result) => {
+          if (result.value) {
+            
+            const _atts = [];
+              _atts.push({ name: 'scriptName', value: 'coemdr' });
+              _atts.push({ name: 'action', value: 'VALIDATE' });
+              _atts.push({ name: 'onlyActualNode', value: 'Y' });
+              _atts.push({ name: 'key', value: this.valor });
+    
+              const spinner = this.controlService.openSpinner();
+              const obj = this.autentication.generic(_atts);
+    
+                        obj.subscribe(
+                        (data) => {
+                          if (data.success === true) {
+                            // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+    
+                            Swal2.fire('Registro Enviado a Aprobar','', 'success' )
+                            this.cerrar('falso');
+    
+                            
+                          } else {
+                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                            Swal2.fire('',data.message,'error')
+                          }
+            
+                          this.controlService.closeSpinner(spinner);
+            
+                        },
+                        (error) => {
+                          // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                          this.controlService.closeSpinner(spinner);
+                        });
+                    }
+            
+          })  
+      } else {
+        
+        Swal2.fire({
+          
+          html: '<h3><strong>Validar</strong></h3>',
+           icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar'
+          
+        }).then((result) => {
+          if (result.value) {
+            
+            const _atts = [];
+              _atts.push({ name: 'scriptName', value: 'coemdr' });
+              _atts.push({ name: 'action', value: 'VALIDATE' });
+              _atts.push({ name: 'onlyActualNode', value: 'Y' });
+              _atts.push({ name: 'key', value: this.valor });
+    
+              const spinner = this.controlService.openSpinner();
+              const obj = this.autentication.generic(_atts);
+    
+                        obj.subscribe(
+                        (data) => {
+                          if (data.success === true) {
+                            // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+    
+                            Swal2.fire('Registro Enviado a Aprobar','', 'success' )
+                            this.cerrar('falso');
+    
+                            
+                          } else {
+                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                            Swal2.fire('',data.message,'error')
+                          }
+            
+                          this.controlService.closeSpinner(spinner);
+            
+                        },
+                        (error) => {
+                          // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                          this.controlService.closeSpinner(spinner);
+                        });
+                    }
+            
+          })
+      }
+  
+    }else{
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
       return;
+
     }
 
-    if (this.soloControles) {
-      Swal2.fire({
-        title: '<strong style="color:red">ADVERTENCIA !</strong>',
-        html:
-          'La modificación de los controles afecta al Riesgo Residual. ' +
-          '<b>Está seguro que desea Enviar a Validar ?</b>',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-        
-      }).then((result) => {
-        if (result.value) {
-          
-          const _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: 'Y' });
-            _atts.push({ name: 'key', value: this.valor });
-  
-            const spinner = this.controlService.openSpinner();
-            const obj = this.autentication.generic(_atts);
-  
-                      obj.subscribe(
-                      (data) => {
-                        if (data.success === true) {
-                          // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                          Swal2.fire('Registro Enviado a Aprobar','', 'success' )
-  
-                          
-                        } else {
-                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                          Swal2.fire('',data.message,'error')
-                        }
-          
-                        this.controlService.closeSpinner(spinner);
-          
-                      },
-                      (error) => {
-                        // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                        this.controlService.closeSpinner(spinner);
-                      });
-                      this.cerrar('falso');
-                  }
-          
-        })  
-    } else {
-      
-      Swal2.fire({
-        title: 'Validar',
-        text: 'Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.',
-         icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-        
-      }).then((result) => {
-        if (result.value) {
-          
-          const _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: 'Y' });
-            _atts.push({ name: 'key', value: this.valor });
-  
-            const spinner = this.controlService.openSpinner();
-            const obj = this.autentication.generic(_atts);
-  
-                      obj.subscribe(
-                      (data) => {
-                        if (data.success === true) {
-                          // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                          Swal2.fire('Registro Enviado a Aprobar','', 'success' )
-  
-                          
-                        } else {
-                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                          Swal2.fire('',data.message,'error')
-                        }
-          
-                        this.controlService.closeSpinner(spinner);
-          
-                      },
-                      (error) => {
-                        // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                        this.controlService.closeSpinner(spinner);
-                      });
-                      this.cerrar('falso');
-                  }
-          
-        })
-    }
-
-
-
-//     const inputOptions = {
-     
-//       'Y': 'Solo Padre',
-//       'N': 'Padre e Hijos',
-      
-  
-// }
-
-// const { value: color } = await Swal2.fire({
-//   title: 'Validar',
-//   text: '¿ Está seguro que desea  Validar este registro ?',
-  
-//   showCancelButton: true,
-  
-//   confirmButtonText: 'Aceptar',
-//   cancelButtonText: 'Cancelar',
-//   confirmButtonColor:'#3085d6',
-//   cancelButtonColor: '#d33',
-//   input: 'radio',
-//   inputOptions: inputOptions,
-//   inputValidator: (value) => {
-//   if (!value) {
-//   return 'Debe Seleccionar una Opcion'
-//   }
-// }
-  
-  
-  
-// })
-// if(color ){
- 
-  
-//    const _atts = [];
-//           _atts.push({ name: 'scriptName', value: 'coemdr' });
-//           _atts.push({ name: 'action', value: 'VALIDATE' });
-//           _atts.push({ name: 'onlyActualNode', value: color });
-//           _atts.push({ name: 'approveInd', value: 'A' });
-//           _atts.push({ name: 'comments', value: '' });
-//           _atts.push({ name: 'key', value: this.valor });
-
-
-//           const spinner = this.controlService.openSpinner();
-//           const obj = this.autentication.generic(_atts);
-
-//           obj.subscribe(
-//                     (data) => {
-//                       if (data.success === true) {
-//                         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-
-//                         Swal2.fire('Registro Enviado a Aprobar','', 'success' )
-
-                        
-//                       } else {
-//                         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-//                         Swal2.fire('',data.message,'error')
-//                       }
-        
-//                       this.controlService.closeSpinner(spinner);
-        
-//                     },
-//                     (error) => {
-//                       // if ( error.status === 401 ) { this.autentication.logout(); return; }
-//                       this.controlService.closeSpinner(spinner);
-//                     });
-
-
-//                     this.cerrar('falso');
-        
-
-// }
-
-
+   
   }
   aperfil() {
     let _atts = [];
@@ -854,6 +816,8 @@ verTable(item: any) {
 
       if (this.pendList[i]['check'] === true) {
         this.valor = this.valor + ','+ this.pendList[i]['key']+','+'Y'  ;
+        
+        this.comments= this.comments+'^~|'+ this.pendList[i]['Comentarios']
         this.version = this.version+ ',' + this.pendList[i]['version'] ;
         this.controles = this.controles + ','+ this.pendList[i]['Entidad']
           this.soloControles = this.isOnlyControl(this.controles.slice(1))
@@ -865,6 +829,8 @@ verTable(item: any) {
     
     this.valor= this.valor.slice(1);
     this.version= this.version.slice(1);
+    this.comments = this.comments.slice(3)
+
     console.log(this.valor);
     // localStorage.setItem('Llave',this.valor)
     // localStorage.setItem('VersionL',this.version)
@@ -874,276 +840,181 @@ verTable(item: any) {
       this.sendvalidate()
       
     }else{
-      
+
       this.Rechazar();
     }
 
   }
 
-  Rechazar(){
+ async Rechazar(){
 
     
 
-    if (this.valor === '' || this.valor === 'undefined') {
+    if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
+
+      localStorage.setItem('Llave',this.valor)
+      localStorage.setItem('VersionL',this.version)
+
+      if (this.soloControles) {
+        Swal2.fire({
+    
+          title: '<strong style="color:red">ADVERTENCIA !</strong>',
+          html:
+          'La modificación de los controles afecta al Riesgo Residual. ' +
+          '<b>Está seguro que desea continuar?</b>',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor:'#3085d6',
+          cancelButtonColor: '#d33'
+    
+        }).then(async (result)=>{
+            if(result.value){
+    
+            //  const conf = this.confirm.open(RkReasonRejectComponent,{
+            //     hasBackdrop: true,
+            //     height: 'auto',
+            //     width: 'auto',
+            //     data: {
+            //       title: 'Razón de Rechazo',
+            //       button_confirm: 'Aceptar',
+            //       button_close: 'Cancelar'
+            //     }
+            //   });
+
+              let _atts = [];
+      _atts.push({ name: 'scriptName', value: 'coemdr'});
+      _atts.push({ name: 'action', value: 'VALIDATE'});
+      _atts.push({ name: 'key', value: this.valor });
+      _atts.push({ name: 'version', value: this.version});
+      _atts.push({ name: 'approveInd', value: 'U' });
+      // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });      
+      _atts.push({ name: 'comments', value: this.comments });
+      const spinner = this.controlService.openSpinner();
+      const obj = await this.autentication.generic(_atts);
+    
+      obj.subscribe(
+        
+        (data) => {
+          if (data.success === true) {
+            if (data.data[0].atts[1]) {
+              Swal2.fire({
+                text:'Registro Rechazado',
+                icon:'success',
+                
+              })
+              this.cerrar('falso')
+      
+            }
+      
+          } else {
+            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+            Swal2.fire({
+              text: data.message,
+              icon:'error',
+              
+            })
+            // this.cerrar()
+
+          }
+          this.controlService.closeSpinner(spinner);
+      
+        },(error) =>{
+          this.controlService.closeSpinner(spinner);
+          }
+      )
+        
+       }
+        })
+      } else {
+        
+        Swal2.fire({
+    
+          title:'Rechazar Validacion',
+          text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor:'#3085d6',
+          cancelButtonColor: '#d33'
+    
+        }).then(async (result)=>{
+            if(result.value){
+    
+             /* const conf = this.confirm.open(RkReasonRejectComponent,{
+                hasBackdrop: true,
+                height: 'auto',
+                width: 'auto',
+                data: {
+                  title: 'Razón de Rechazo',
+                  button_confirm: 'Aceptar',
+                  button_close: 'Cancelar'
+                }
+              });
+    
+              conf.afterClosed().subscribe(async(result)=>{
+                // this.cerrar('falso');
+              })*/
+              let _atts = [];
+              _atts.push({ name: 'scriptName', value: 'coemdr'});
+              _atts.push({ name: 'action', value: 'VALIDATE'});
+              _atts.push({ name: 'key', value: this.valor });
+              _atts.push({ name: 'version', value: this.version});
+              _atts.push({ name: 'approveInd', value: 'U' });
+              // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });      
+              _atts.push({ name: 'comments', value: this.comments });
+              const spinner = this.controlService.openSpinner();
+              const obj = await this.autentication.generic(_atts);
+
+              obj.subscribe(
+        
+                (data) => {
+                  if (data.success === true) {
+                    if (data.data[0].atts[1]) {
+                      Swal2.fire({
+                        text:'Registro Rechazado',
+                        icon:'success',
+                        
+                      })
+                      this.cerrar('falso')
+              
+                    }
+              
+                  } else {
+                    // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                    Swal2.fire({
+                      text: data.message,
+                      icon:'error',
+                      
+                    })
+                    // this.cerrar()
+        
+                  }
+                  this.controlService.closeSpinner(spinner);
+              
+                },(error) =>{
+                  this.controlService.closeSpinner(spinner);
+                  }
+              )
+                
+    
+           
+             }
+        })
+      }
+      
+    }else{
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
       return;
     }
 
-    localStorage.setItem('Llave',this.valor)
-    localStorage.setItem('VersionL',this.version)
-  
-    if (this.soloControles) {
-      Swal2.fire({
-  
-        title: '<strong style="color:red">ADVERTENCIA !</strong>',
-        html:
-          'La modificación de los controles afecta al Riesgo Residual. ' +
-          '<b>Está seguro que desea Enviar a Validar ?</b>',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor:'#3085d6',
-        cancelButtonColor: '#d33'
-  
-      }).then((result)=>{
-          if(result.value){
-  
-            const conf = this.confirm.open(RkReasonRejectComponent,{
-              hasBackdrop: true,
-              height: 'auto',
-              width: 'auto',
-              data: {
-                title: 'Razon de Rechazo',
-                button_confirm: 'Aceptar',
-                button_close: 'Cancelar'
-              }
-            });
-  
-            conf.afterClosed().subscribe(async(result)=>{
-              this.cerrar('falso');
-            })
-  
-          //   conf1.afterClosed().subscribe
-          //   (async ( result1) =>{
-          //     console.log( result1)
-  
-          //    if(result1){
-  
-          //       this.Razon = localStorage.getItem('RazonRechazo')
-          //          let _atts = [];
-          //   _atts.push({ name: 'scriptName', value: 'coemdr'});
-          //   _atts.push({ name: 'action', value: 'VALIDATE'});
-          //   _atts.push({ name: 'key', value: this.valor });
-          //   _atts.push({ name: 'version', value: this.version});
-          //   _atts.push({ name: 'approveInd', value: 'U' });
-          //   _atts.push({ name: 'comments', value: this.Razon });
-  
-          //   const spinner = this.controlService.openSpinner();
-          //   const obj = await this.autentication.generic(_atts);
-  
-          //   obj.subscribe(
-          //     (data) => {
-          //       if (data.success === true) {
-          //         if (data.data[0].atts[1]) {
-          //           // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-          //           Swal2.fire({
-          //             text:'Registro Rechazado',
-          //             icon:'success',
-          //             showConfirmButton: false,
-          //             timer: 3000
-          //           })
-          //           localStorage.removeItem('RazonRechazo')
     
-          //         }
   
-          //       } else {
-          //         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-          //         Swal2.fire({
-          //           text:data.message,
-          //           icon:'error',
-          //           showConfirmButton: false,
-          //           timer: 3000
-          //         })
-          //       }
-          //       this.controlService.closeSpinner(spinner);
-  
-          //     },
-          //     (error) => {
-          //       // if ( error.status === 401 ) { this.autentication.logout(); return; }
-          //       this.controlService.closeSpinner(spinner);
-          //     });
-  
-          //     }
-          //   } )
-  
-           }
-      })
-    } else {
-      
-      Swal2.fire({
-  
-        title:'Rechazar Validacion',
-        text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor:'#3085d6',
-        cancelButtonColor: '#d33'
-  
-      }).then((result)=>{
-          if(result.value){
-  
-            const conf = this.confirm.open(RkReasonRejectComponent,{
-              hasBackdrop: true,
-              height: 'auto',
-              width: 'auto',
-              data: {
-                title: 'Razon de Rechazo',
-                button_confirm: 'Aceptar',
-                button_close: 'Cancelar'
-              }
-            });
-  
-            conf.afterClosed().subscribe(async(result)=>{
-              this.cerrar('falso');
-            })
-  
-          //   conf1.afterClosed().subscribe
-          //   (async ( result1) =>{
-          //     console.log( result1)
-  
-          //    if(result1){
-  
-          //       this.Razon = localStorage.getItem('RazonRechazo')
-          //          let _atts = [];
-          //   _atts.push({ name: 'scriptName', value: 'coemdr'});
-          //   _atts.push({ name: 'action', value: 'VALIDATE'});
-          //   _atts.push({ name: 'key', value: this.valor });
-          //   _atts.push({ name: 'version', value: this.version});
-          //   _atts.push({ name: 'approveInd', value: 'U' });
-          //   _atts.push({ name: 'comments', value: this.Razon });
-  
-          //   const spinner = this.controlService.openSpinner();
-          //   const obj = await this.autentication.generic(_atts);
-  
-          //   obj.subscribe(
-          //     (data) => {
-          //       if (data.success === true) {
-          //         if (data.data[0].atts[1]) {
-          //           // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-          //           Swal2.fire({
-          //             text:'Registro Rechazado',
-          //             icon:'success',
-          //             showConfirmButton: false,
-          //             timer: 3000
-          //           })
-          //           localStorage.removeItem('RazonRechazo')
-    
-          //         }
-  
-          //       } else {
-          //         // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-          //         Swal2.fire({
-          //           text:data.message,
-          //           icon:'error',
-          //           showConfirmButton: false,
-          //           timer: 3000
-          //         })
-          //       }
-          //       this.controlService.closeSpinner(spinner);
-  
-          //     },
-          //     (error) => {
-          //       // if ( error.status === 401 ) { this.autentication.logout(); return; }
-          //       this.controlService.closeSpinner(spinner);
-          //     });
-  
-          //     }
-          //   } )
-  
-           }
-      })
-    }
+   
 
-//     const conf = this.confirm.open(ConfirmationComponent, {
-//       hasBackdrop: true,
-//       height: 'auto',
-//       width: 'auto',
-//       data: {
-//         title: 'Rechazar Aprobacion',
-//         message: `Se procederá a RECHAZAR el (los) item (s) seleccionados
-// `,
-//         button_confirm: 'Aceptar',
-//         button_close: 'Cancelar'
-//       }
-//     });
-
-//     conf.afterClosed()
-//       .subscribe(async (result) => {
-  //       if (result) {
-
-  //         const conf1 = this.confirm.open(RkReasonRejectComponent,{
-  //           hasBackdrop: true,
-  //           height: 'auto',
-  //           width: 'auto',
-  //           data: {
-  //             title: 'Razon de Rechazo',
-  //             button_confirm: 'Aceptar',
-  //             button_close: 'Cancelar'
-  //           }
-  //         });
-
-  //         conf1.afterClosed().subscribe
-  //         (async ( result1) =>{
-  //           console.log( result1)
-
-  //          if(result1){
-
-  //             this.Razon = localStorage.getItem('RazonRechazo')
-  //                let _atts = [];
-  //         _atts.push({ name: 'scriptName', value: 'coemdr'});
-  //         _atts.push({ name: 'action', value: 'VALIDATE'});
-  //         _atts.push({ name: 'key', value: this.valor });
-  //         _atts.push({ name: 'version', value: this.version});
-  //         _atts.push({ name: 'approveInd', value: 'U' });
-  //         _atts.push({ name: 'comments', value: this.Razon });
-
-  //         const spinner = this.controlService.openSpinner();
-  //         const obj = await this.autentication.generic(_atts);
-
-  //         obj.subscribe(
-  //           (data) => {
-  //             if (data.success === true) {
-  //               if (data.data[0].atts[1]) {
-  //                 this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  //                 localStorage.removeItem('RazonRechazo')
-  
-  //               }
-
-  //             } else {
-  //               this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-  //             }
-  //             this.controlService.closeSpinner(spinner);
-
-  //           },
-  //           (error) => {
-  //             // if ( error.status === 401 ) { this.autentication.logout(); return; }
-  //             this.controlService.closeSpinner(spinner);
-  //           });
-
-  //           }
-  //         } )
-
-       
-  //       //   console.log('Aqui Estoy..!')
-  //       }
-        // this.cerrar('falso');
-          
-        
-  //     });
   }
   
 

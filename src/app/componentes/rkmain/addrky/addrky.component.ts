@@ -36,6 +36,7 @@ export class AddrkyComponent implements OnInit {
     riesgoResidualC: '',
     name:''
   };
+  
 
   public consecuenciasList: any[] = [];
   public descripcion: string
@@ -51,6 +52,8 @@ export class AddrkyComponent implements OnInit {
   riesgoResidualSControl = new FormControl('', [Validators.required]);
   riesgoResidualCControl = new FormControl('', [Validators.required]);
   bankMultiFilterCtrl = new FormControl()
+  criticidadLevel: any[] = [];
+  
 
     constructor(public dialogRef: MatDialogRef<AddrkyComponent>,
                 private controlService: ControlsService,
@@ -301,91 +304,58 @@ export class AddrkyComponent implements OnInit {
 		}
 	})
 
-    // const conf = this.confirm.open(ConfirmationComponent, {
-    //   hasBackdrop: true,
-    //   height: 'auto',
-    //   width: 'auto',
-    //   data: {
-    //     title: 'Crear consecuencia',
-    //     message: `¿Desea guardar esta consecuencia?`,
-    //     button_confirm: 'Si',
-    //     button_close: 'No'
-    //   }
-    // });
 
-    // conf.afterClosed()
-    // .subscribe(async (result) => {
-    // if (result) {
+
     
-    //   let ids = this.consecuenciaModel.consecuenciaId.toString();
+
+  }
+
+  Criticidad(){
+
+    if(this.consecuenciaModel.riesgoPuroP !="" && this.consecuenciaModel.riesgoPuroS !=""){
       
-    //   let _atts = [];
-    //   _atts.push({ name: 'scriptName', value: 'coemdr'});
-    //   _atts.push({ name: 'action', value: 'CONSECUENCIA_CREATE'});
-    //   _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
-    //   _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
-    //   _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
-    //   _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
-    //   _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
-    //   _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
-    //   _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-    //   _atts.push({ name: 'consecuenciaId', value: ids });
-    //   _atts.push({ name: 'riesgoPuroP', value: this.consecuenciaModel.riesgoPuroP });
-    //   _atts.push({ name: 'riesgoPuroS', value: this.consecuenciaModel.riesgoPuroS });
-    //   _atts.push({ name: 'riesgoPuroC', value: this.consecuenciaModel.riesgoPuroC });
-    //   _atts.push({ name: 'riesgoResidualP', value: this.consecuenciaModel.riesgoResidualP });
-    //   _atts.push({ name: 'riesgoResidualS', value: this.consecuenciaModel.riesgoResidualS });
-    //   _atts.push({ name: 'riesgoResidualC', value: this.consecuenciaModel.riesgoResidualC });
-  
-    //   const spinner = this.controlService.openSpinner();
-    //   const obj = await this.autentication.generic(_atts);
-  
-    //   obj.subscribe(
-    //   (data) => {
-    //   if (data.success === true) {
-    //     if ( data.data[0].atts[1] ) {
-    //       Swal('',data.data[0].atts[1].value,'success')
-    //       // this.autentication.showMessage(data.data[0].atts[0].value, data.data[0].atts[1].value, this.consecuenciaModel, data.redirect);
-    //       this.consecuenciaModel = {
-    //         areaId: this.data.areaId,
-    //         procesoId: this.data.procesoId,
-    //         subprocesoId: this.data.subprocesoId,
-    //         actividadId: this.data.actividadId,
-    //         tareaId: this.data.tareaId,
-    //         dimensionId: this.data.dimensionId,
-    //         riesgoId: this.data.riesgoId,
-    //         consecuenciaId: '',
-    //         consecuenciaDescripcion: '',
-    //         riesgoPuroP: '',
-    //         riesgoPuroS: '',
-    //         riesgoResidualP: '',
-    //         riesgoResidualS: ''
-    //       };
-    //       this.consecuenciasList = [];
-    //       this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-          
-    //       this.cancelar();
-    //     } 
-    //     else {
-    //       // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
-    //       Swal('',data.message,'error')
-    //       this.consecuenciaModel.consecuenciaId = '';
-    //     }
-    //   } else {
-    //     Swal('',data.message,'error')
-    //     // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
-    //     this.consecuenciaModel.consecuenciaId = '';
-    //   }
-    //   this.controlService.closeSpinner(spinner);
-    //   },
-    //   (error) => {
-    //     this.controlService.closeSpinner(spinner);
-    //     this.consecuenciaModel.consecuenciaId = '';
-    //   });
-    // }
-    
-    // });
+      this.criticidadLevel=[]
 
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr'});
+    _atts.push({ name: 'action', value: 'READ_CRITICIDAD'});
+    _atts.push({ name: 'severidadId', value: this.consecuenciaModel.riesgoPuroP });
+    _atts.push({ name: 'probabilidadId', value: this.consecuenciaModel.riesgoPuroS });
+
+
+    const promiseView = new Promise((resolve, reject) => {
+      this.autentication.generic(_atts)
+      .subscribe(
+        (data) => {
+          const result = data.success;
+          if (result) {
+
+            data.data.forEach( (element) => {
+              if ( element.atts.length > 0) {
+                  this.criticidadLevel.push({
+                    Id: element.atts[0].value,
+                    Descripcion: element.atts[1].value
+                  });
+              }
+            });
+
+            console.log(this.criticidadLevel)
+
+          } else {
+
+            this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
+          }
+          return result;
+      },
+      (error) => {
+        this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.consecuenciaModel, false);
+      });
+    });
+    }
+
+    
+
+    
   }
 
   cancelar() {

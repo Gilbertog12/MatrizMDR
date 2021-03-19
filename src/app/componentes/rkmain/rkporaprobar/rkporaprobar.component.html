@@ -1,25 +1,14 @@
-<h3 mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+<h4 mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
 
-    {{ data.title }} </h3>
+    {{ data.title }} </h4>
 
-<div>
 
-    Fecha Desde<input type="date" placeholder="Fecha Desde" [(ngModel)]='FechaDesde' name="FechaDesde" required> Fecha Hasta<input type="date" placeholder="Fecha Hasta" [(ngModel)]='FechaHasta' name="FechaHasta" required>
 
-    <button *ngIf="FechaDesde ==='' || FechaHasta=== ''; else BotonActivado" (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons" disabled>
-                        search</button>
-    <ng-template #BotonActivado>
-        <button (click)='Filtrar()' style="padding-left: 5px; padding-top: 1px;" class="material-icons">
-                                search</button>
-    </ng-template>
-    <br>
-    <br>
-    <!-- <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items en Construcción</mat-slide-toggle> -->
-</div>
+
 
 <br>
 
-<mat-dialog-content style="padding-left: 0 !important;" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+<mat-dialog-content style="padding-left: 0 !important;">
 
 
 
@@ -33,7 +22,7 @@
                 <th class="sticky sticky-top "><input type="checkbox" style="background-color: green !important;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
                 <th class="sticky2 sticky-top"><b>Accion</b></th>
                 <th class="sticky-top"><b>Comentarios</b></th>
-                <th class="sticky-top"><b>Fecha</b><br></th>
+                <th class="sticky-top fecha"><b>Fecha</b><br></th>
                 <th class="sticky-top"><b>Entidad</b>
                 </th>
                 <th class="sticky-top"><b>Descripcion</b></th>
@@ -54,7 +43,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let item of pendList">
+            <tr *ngFor="let item of pendList; let indice= index">
                 <td class="sticky">
                     <input type="checkbox" class="checkmark" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
@@ -66,8 +55,10 @@
                                 </ng-template> -->
                 </td>
                 <td class="sticky2">{{item.Accion}}</td>
-                <td>{{item.Comentarios}}</td>
-                <td>{{item.Fecha}}</td>
+                <td><textarea [(ngModel)]="item.Comentarios">{{item.Comentarios}}
+                </textarea> </td>
+
+                <td class="fecha">{{item.Fecha}}</td>
                 <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
                     <td style="font-weight: bold; min-width: 220px;">{{item.Entidad}}
@@ -108,6 +99,7 @@
     </table>
 
 </mat-dialog-content>
+<span class="contador">{{totalMarcados}}/{{TotalRegistros}}</span>
 <mat-dialog-actions align="end">
     <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
 

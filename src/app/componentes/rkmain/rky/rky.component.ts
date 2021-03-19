@@ -15,8 +15,12 @@ import { RkyriesgoresidualtableComponent } from '../rkyriesgoresidualtable/rkyri
 import { RkyriesgoresidualtablerComponent } from '../rkyriesgoresidualtabler/rkyriesgoresidualtabler.component';
 import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-reject.component';
 import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.component';
+
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
+import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
+import { RkporaprobarComponent } from '../rkporaprobar/rkporaprobar.component';
+import { RkvalidarComponent } from '../rkvalidar/rkvalidar.component';
 
 
 @Component({
@@ -72,6 +76,7 @@ public Razon : string
   EnviarHijos: string;
   permisoValidar: boolean;
   percreacion: string;
+  dialogRef: any;
   
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
@@ -106,6 +111,11 @@ public Razon : string
     this.percreacion = localStorage.getItem('NoCreador')
   }
 
+
+
+  negrita(){
+    console.log('hello ')
+  }
   
   
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string, dimensionId: string, riesgoId: string, consecuenciaId: string) {
@@ -215,20 +225,25 @@ public Razon : string
                     let _s: string;
                     _s = element.atts[0].value;
 
-                    if (_s.includes('controlEpf')) {
+                    if (_s.includes('epf')) {
+
+                      // console.log(element.atts[2].value.trim().toString().bold())
 
                       if(element.atts[5].value === '008' && this.btn==='lectura'){
                         this.epfListLectura.push({
                         
                           offset: element.atts[0].value,
                           controlId: element.atts[1].value.trim(),
-                          controlDesc: element.atts[2].value.trim(),
+                          controlDesc:  element.atts[2].value.trim(),
                           epfId: element.atts[3].value.trim(),
                           epfDesc: element.atts[4].value.trim(),
                           epfStatus: element.atts[5].value.trim(),
                           epfversion: element.atts[6].value.trim(),
                           seqNum: element.atts[7].value.trim(),
-                          pendingDelete:element.atts[8].value.trim()
+                          pendingDelete:element.atts[8].value.trim(),
+                          displayDeleteIcon:element.atts[9].value.trim(),
+                          controlDescExt:element.atts[10].value.trim()
+
 
                         });
 
@@ -236,17 +251,22 @@ public Razon : string
 
                       }else{
 
+                        let a = element.atts[2].value.trim();
+
                         this.epfList.push({
-                        
+                          
                           offset: element.atts[0].value,
                           controlId: element.atts[1].value.trim(),
-                          controlDesc: element.atts[2].value.trim(),
+                          controlDesc:  element.atts[2].value.trim(),
                           epfId: element.atts[3].value.trim(),
                           epfDesc: element.atts[4].value.trim(),
                           epfStatus: element.atts[5].value.trim(),
                           epfversion: element.atts[6].value.trim(),
                           seqNum: element.atts[7].value.trim(),
-                          pendingDelete:element.atts[8].value.trim()
+                          pendingDelete:element.atts[8].value.trim(),
+                          displayDeleteIcon:element.atts[9].value.trim(),
+                          controlDescExt:element.atts[10].value.trim()
+
                         });
                       }
                       
@@ -265,7 +285,11 @@ public Razon : string
                           cblandoFamiliaDesc: element.atts[4].value.trim(),
                           cblandoStatus: element.atts[5].value.trim(),
                           cblandoVersion: element.atts[6].value.trim(),
-                          pendingDelete:element.atts[7].value.trim()
+                          pendingDelete:element.atts[7].value.trim(),
+                          displayDeleteIcon:element.atts[8].value.trim(),
+                          cblandoDescripcionExt:element.atts[9].value.trim()
+
+
   
                         });
 
@@ -278,7 +302,10 @@ public Razon : string
                           cblandoFamiliaDesc: element.atts[4].value.trim(),
                           cblandoStatus: element.atts[5].value.trim(),
                           cblandoVersion: element.atts[6].value.trim(),
-                          pendingDelete:element.atts[7].value.trim()
+                          pendingDelete:element.atts[7].value.trim(),
+                          displayDeleteIcon:element.atts[8].value.trim(),
+                          cblandoDescripcionExt:element.atts[9].value.trim()
+
   
                         });
                       }
@@ -297,7 +324,9 @@ public Razon : string
                           cduroEfectividad: element.atts[6].value.trim(),
                           cduroStatus: element.atts[7].value.trim(),
                           cduroVersion: element.atts[8].value.trim(),
-                          pendingDelete:element.atts[9].value.trim()
+                          pendingDelete:element.atts[9].value.trim(),
+                          displayDeleteIcon:element.atts[10].value.trim()
+
                         });
 
                       }else{
@@ -311,7 +340,9 @@ public Razon : string
                         cduroEfectividad: element.atts[6].value.trim(),
                         cduroStatus: element.atts[7].value.trim(),
                         cduroVersion: element.atts[8].value.trim(),
-                        pendingDelete:element.atts[9].value.trim()
+                        pendingDelete:element.atts[9].value.trim(),
+                          displayDeleteIcon:element.atts[10].value.trim()
+
                       });
                     }
                     }
@@ -328,7 +359,9 @@ public Razon : string
                           documentVersion: element.atts[5].value.trim(),
                           docStatus: element.atts[6].value.trim(),
                           docVersion: element.atts[7].value.trim(),
-                          seqNum: element.atts[8].value.trim()
+                          seqNum: element.atts[8].value.trim(),
+                          displayDeleteIcon:element.atts[9].value.trim()
+
                         });
 
                       }else{
@@ -342,7 +375,9 @@ public Razon : string
                           documentVersion: element.atts[5].value.trim(),
                           docStatus: element.atts[6].value.trim(),
                           docVersion: element.atts[7].value.trim(),
-                          seqNum: element.atts[8].value.trim()
+                          seqNum: element.atts[8].value.trim(),
+                          displayDeleteIcon:element.atts[9].value.trim()
+
                         });
                       }
                     }
@@ -611,6 +646,16 @@ public Razon : string
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        
+        
+      }else{
+        this.consecuenciaModel = {};
+        this.epfList = [];
+        this.cBlandosList = [];
+        this.cDurosList = [];
+        this.docsList = [];
+        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        this.dialogRef.close(true);
       }
     });
 
@@ -670,6 +715,12 @@ public Razon : string
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
                 Swal2.fire('',data.message, 'error')
+                this.consecuenciaModel = {};
+                this.epfList = [];
+                this.cBlandosList = [];
+                this.cDurosList = [];
+                this.docsList = [];
+                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
 
               }
               this.controlService.closeSpinner(spinner);
@@ -714,6 +765,13 @@ public Razon : string
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+      }else{
+        this.consecuenciaModel = {};
+        this.epfList = [];
+        this.cBlandosList = [];
+        this.cDurosList = [];
+        this.docsList = [];
+        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
       }
     });
 
@@ -736,7 +794,7 @@ public Razon : string
     conf.afterClosed()
       .subscribe(async (result) => {
         if (result) {
-
+  
           let _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'DOCUMENTO_DELETE' });
@@ -1695,6 +1753,146 @@ public Razon : string
       }
     
     
+    }
+    Caja(key,status){
+
+      switch(status){
+       case  '001' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '002' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '003' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '006' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+  
+        case '004':
+          this.confirm.open(RkvalidarComponent, {
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+            data:
+            {
+              title: 'Items pendientes de validación',
+              message: '',
+              button_confirm: 'Cerrar',
+              button_close: 'Cerrar',
+              id: key,
+              status: status
+      
+            }
+      
+          });
+              
+          break;
+          
+        case '007':
+          this.confirm.open(RkporaprobarComponent, {
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+      
+            data:
+            {
+              title: 'Items Pendientes por Aprobar',
+              message: '',
+              button_confirm: 'Cerrar',
+              button_close: 'Cerrar',
+              id: key,
+              status: status
+      
+            }
+      
+          });
+          break;
+        
+  
+      }
+      
     }
   
 

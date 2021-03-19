@@ -88,7 +88,7 @@ export class RkReasonRejectComponent implements OnInit {
               icon:'error',
               
             })
-            this.cerrar()
+            // this.cerrar()
 
           }
           this.controlService.closeSpinner(spinner);

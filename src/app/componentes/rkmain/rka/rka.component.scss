@@ -1,8 +1,3 @@
-@font-face {
-    font-family: 'collahuasi';
-    src: url("assets/eurostyle.ttf")
-}
-
 .titulo {
     text-emphasis-color: #175641;
     font-weight: bold;
@@ -158,6 +153,16 @@ thead tr:first-child th {
     top: 60px;
     background-color: #175641;
     display: inline-block;
+    width: 100%;
+}
+
+.article-title-button {
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 60px;
+    background-color: #175641;
     width: 100%;
 }
 

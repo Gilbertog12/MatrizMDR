@@ -11,16 +11,22 @@
 
 
 
-        <a (click)="goToDashboard()"><img src="assets/images/Collahuasi.png" style="width: 120px; height: 40px;"></a>
+        <a (click)="goToDashboard()"><img src="assets/images/Collahuasi.png" id="dashboard" style="width: 120px; height: 40px;"></a>
 
         <span class='bt'>
     
-      {{Ambiente}} <sub style="
+      {{Ambiente}} <sub *ngIf="VersionCoemdr.Version" style="
         position: relative;
         font-size: 50%;
         line-height: 0;
         vertical-align: text-bottom;
-    " >{{ver}}</sub>   
+    " >{{VersionCoemdr.Version}}</sub>   
+      <sub *ngIf="VersionCoemdr.Version ===''" style="
+        position: relative;
+        font-size: 50%;
+        line-height: 0;
+        vertical-align: text-bottom;
+    " >{{version}}</sub>   
     <!-- <a style="font-size: 10px; color:#175641; text-align:center" >{{ver}}</a> -->
     </span>
 
@@ -28,10 +34,10 @@
         <div class="top-nav-right">
 
             <ul class="list-unstyled list-inline">
-                <li class="list-inline-item">
+                <!-- <li class="list-inline-item">
                     <button [style.display]='propiedad' *ngIf="!propiedad" mat-button class="mat-button header-btn" myOpenSearchOverlay (click)="goToDashboard()" style="color: #175641;font-family:'collahuasi'"><mat-icon mat-list-icon style="color: #175641 ">dashboard</mat-icon>Dashboard</button>
                     <button [style.display]='propiedad' *ngIf="propiedad" mat-button class="mat-button header-btn" myOpenSearchOverlay (click)="goToDashboard()" style="color: #175641;font-family:'collahuasi'"><mat-icon mat-list-icon style="color: #175641 ">dashboard</mat-icon>Inicio</button>
-                </li>
+                </li> -->
                 <li style="font-size: 11px; color: #175641; padding-top: 9px; ">
                     {{informacion}}
                 </li>

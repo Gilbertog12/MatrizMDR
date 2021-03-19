@@ -33,11 +33,17 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string
+  public version: string ='Version: 3.1.X'
   public posicion:string
   public distrito:string
   public usuario2:string
   public informacion:string
  
+  public VersionCoemdr: any = {
+    Fecha :'',
+    Version : ''
+    
+  };
 
 
   constructor(private authenticationService: AuthenticationService,
@@ -47,7 +53,7 @@ export class AppHeaderComponent implements OnInit {
     private controlService: ControlsService,
     private confirm: MatDialog
     ) {
-
+      this.ObtenerVersionCoemdr()
       this.aperfil()
      }
 
@@ -71,6 +77,31 @@ export class AppHeaderComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout();
+  }
+
+  ObtenerVersionCoemdr(){
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    // _atts.push({ name: 'stdJobNo1', value: '' });
+    _atts.push({ name: 'action', value: 'VERSION' });
+
+
+    const promiseView = new Promise((resolve, reject) => {
+      this.autentication.generic(_atts)
+      .subscribe((data)=>{
+        const result = data.success;
+        // console.log(data)
+        if (result) {
+          this.VersionCoemdr = {
+            Fecha : data.data[0].atts[1].value.trim(),
+            Version : `${this.version} - ${data.data[0].atts[1].value.trim()}` 
+           
+          };
+        }
+        return result;
+      })
+
+    })
   }
 
 
@@ -125,6 +156,7 @@ export class AppHeaderComponent implements OnInit {
 
   goToDashboard() {
     this.router.navigate(['/rkmain']);
+    localStorage.setItem('cargartablero','2')
   }
 
   sendValidate() {
@@ -226,7 +258,7 @@ export class AppHeaderComponent implements OnInit {
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log("RES:" + JSON.stringify(data));
+            // console.log("RES:" + JSON.stringify(data));
             const result = data.success;
             if (result) {
 

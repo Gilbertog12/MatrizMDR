@@ -1,4 +1,8 @@
-<h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea > Dimension</h6>
+<h6 class="article-title">
+    Area > Proceso > Subproceso > Actividad > Tarea > Dimension
+    <button *ngIf="dimensionModel.dimensionStatusId !=='008'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+
+</h6>
 
 <div class="row">
     <div class="col-xl-12">
@@ -125,7 +129,7 @@
                         <th></th>
                         <th colspan=2 style="text-align: center;">Seguridad y Salud Ocupacional</th>
                         <th colspan=2 style="text-align: center;">Medio ambiente</th>
-                        <th colspan=2 style="text-align: center;">Negocio</th>
+                        <th colspan=2 style="text-align: center;">Operacional</th>
                     </tr>
                     <tr>
                         <th class="mdl-data-table__cell--non-numeric">
@@ -179,7 +183,7 @@
                         <th></th>
                         <th colspan=2 style="text-align: center;">Seguridad y Salud Ocupacional</th>
                         <th colspan=2 style="text-align: center;">Medio ambiente</th>
-                        <th colspan=2 style="text-align: center;">Negocio</th>
+                        <th colspan=2 style="text-align: center;">Operacional</th>
                     </tr>
                     <tr>
                         <th class="mdl-data-table__cell--non-numeric">

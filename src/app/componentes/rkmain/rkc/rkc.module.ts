@@ -15,6 +15,8 @@ import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
+
 
 
 
@@ -36,6 +38,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     Rkvalidarmodule,
     RkpendaprobModule,
     DragDropModule,
+    cajadashboardModule
     
 
     

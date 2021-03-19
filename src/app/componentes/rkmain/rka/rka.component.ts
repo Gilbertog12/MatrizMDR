@@ -13,6 +13,7 @@ import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import { MatDialog } from '@angular/material';
 import { RkmainComponent } from '../rkmain.component';
+import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
 
 
 @Component({
@@ -60,7 +61,7 @@ public Razon : string
               private confirm: MatDialog,
               private route: ActivatedRoute) {
                 
-                console.log('ante del obtener el perfil')
+                // console.log('ante del obtener el perfil')
                 this.aperfil()
 
                 this.route.params.subscribe( params => {
@@ -93,7 +94,7 @@ public Razon : string
     }else{
       this.permisoValidar = false
     }
-    console.log(this.permisoValidar)
+    // console.log(this.permisoValidar)
 
     
     let _atts = [];
@@ -114,7 +115,7 @@ public Razon : string
             // console.info('aqui esta el cambio')
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
-                console.log(element.atts[0].value)
+                // console.log(element.atts[0].value)
                 if ( element.atts[0].value === '0'   ) {
 
                   this.areaModel = {
@@ -132,7 +133,7 @@ public Razon : string
                     areaVersion: data.data[0].atts[11].value,
                     // areaNivel: data.data[0].atts[12].value,
                     //areaAtributos: data.data[0].atts[13].value,
-                    // areaStatusId: data.data[0].atts[14].value,
+                    areaStatusId: data.data[0].atts[14].value,
                     key: data.data[0].atts[15].value,
                     statusParent: data.data[0].atts[16].value,
                     CanAdd:data.data[0].atts[17].value,
@@ -158,8 +159,8 @@ public Razon : string
                   localStorage.setItem('statusSelected', this.areaModel.areaStatusId);
 
                 } else {
-                  console.log(data)
-                  console.log(element.atts[9].value )
+                  // console.log(data)
+                  // console.log(element.atts[9].value )
                   if( element.atts[9].value === '008' && this.btn=== 'lectura' ){
                     console.log('aqui')
                     this.procesosListLectura.push({
@@ -176,7 +177,7 @@ public Razon : string
                     estado: element.atts[9].value
                   });
                   }else{
-                    console.log("No Soy SOLOLectura")
+                    // console.log("No Soy SOLOLectura")
                     this.procesosList.push({
                     
                     offset: element.atts[0].value,
@@ -196,7 +197,7 @@ public Razon : string
                 }
               }
             });
-            console.log(this.procesosList)
+            // console.log(this.procesosList)
             this.controlService.closeSpinner(spinner);
           } else {
             this.controlService.closeSpinner(spinner);
@@ -855,6 +856,147 @@ public Razon : string
       }
     
     
+    }
+
+    Caja(key,status){
+
+      switch(status){
+       case  '001' :
+
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '002' :
+
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '003' :
+
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '006' :
+
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+
+        case '004':
+          this.confirm.open(RkvalidarComponent, {
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+            data:
+            {
+              title: 'Items pendientes de validación',
+              message: '',
+              button_confirm: 'Cerrar',
+              button_close: 'Cerrar',
+              id: key,
+              status: status
+      
+            }
+      
+          });
+              
+          break;
+          
+        case '007':
+          this.confirm.open(RkporaprobarComponent, {
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+      
+            data:
+            {
+              title: 'Items Pendientes por Aprobar',
+              message: '',
+              button_confirm: 'Cerrar',
+              button_close: 'Cerrar',
+              id: key,
+              status: status
+      
+            }
+      
+          });
+          break;
+        
+
+      }
+      
     }
   
 

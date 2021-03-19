@@ -29,7 +29,7 @@
                             <div class="col-md-9">
                                 <mat-form-field>
                                     <mat-label>Probabilidad</mat-label>
-                                    <mat-select [formControl]="riesgoPuroPControl" required [(ngModel)]="consecuenciaModel.riesgoPuroP" #riesgoPuroP>
+                                    <mat-select [formControl]="riesgoPuroPControl" (selectionChange)="Criticidad()" required [(ngModel)]="consecuenciaModel.riesgoPuroP" #riesgoPuroP>
 
                                         <mat-option *ngFor="let item of probabilidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
                                     </mat-select>
@@ -47,7 +47,7 @@
                             <div class="col-md-9">
                                 <mat-form-field>
                                     <mat-label>Severidad</mat-label>
-                                    <mat-select [formControl]="riesgoPuroSControl" required [(ngModel)]="consecuenciaModel.riesgoPuroS" #riesgoPuroS>
+                                    <mat-select [formControl]="riesgoPuroSControl" (selectionChange)="Criticidad()" required [(ngModel)]="consecuenciaModel.riesgoPuroS" #riesgoPuroS>
 
                                         <mat-option *ngFor="let item of severidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
                                     </mat-select>
@@ -60,6 +60,8 @@
                                 </button>
                             </div>
                         </div>
+
+                        <input *ngFor="let item of criticidadLevel" type="text" readonly [value]="item.Id" [ngStyle]="{'background-color': item.Descripcion}">
                     </div>
                 </div>
             </div>
@@ -93,7 +95,7 @@
                             <div class="col-md-9">
                                 <mat-form-field>
                                     <mat-label>Severidad</mat-label>
-                                    <mat-select [formControl]="riesgoResidualSControl" disabled='true' [(ngModel)]="consecuenciaModel.riesgoResidualS" #riesgoResidualS>
+                                    <mat-select [formControl]="riesgoResidualSControl" disabled='true' [(ngModel)]="consecuenciaModel.riesgoResidualS" (change)="Criticidad()" #riesgoResidualS>
 
                                         <mat-option *ngFor="let item of severidadList" [value]="">{{item.Descripcion}}</mat-option>
                                     </mat-select>
@@ -106,6 +108,9 @@
                                     </button>
                             </div>
                         </div>
+                        <!-- <input *ngFor="let item of criticidadLevel" type="text" readonly [value]="item.Id" [ngStyle]="{'background-color': item.Descripcion}"> -->
+
+
                     </div>
                 </div>
             </div>

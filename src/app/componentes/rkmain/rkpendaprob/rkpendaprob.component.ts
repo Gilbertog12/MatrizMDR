@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.component';
 import { FreshPipe } from '../../../fresh.pipe';
 import Swal2 from 'sweetalert2';
+import { includes } from 'core-js/fn/array';
 
 
 @Component({
@@ -52,6 +53,8 @@ export class RkpendaprobComponent implements OnInit {
   rutaJerarquia: any;
   controles: string;
   soloControles: boolean;
+  TotalRegistros :number =0
+  totalMarcados: number = 0;
 
   constructor(public dialogRef: MatDialogRef<RkpendaprobComponent>,
     private controlService: ControlsService,
@@ -68,37 +71,27 @@ export class RkpendaprobComponent implements OnInit {
   }
   masterSelected = false;
 
-  async recargar() {
 
-    this.pendList=[]
+  convertiFechaYhora(valor){
 
-    let _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr' });
-    _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
-    _atts.push({ name: 'status', value: 'RE' });
-    // if(this.complete == true){
-    //   _atts.push({ name: 'showCompleted', value: 'N' });
-      
-    // }else{
-    //         _atts.push({ name: 'showCompleted', value: 'Y' });
-      
-    // }
-    const spinner = this.controlService.openSpinner();
-    
+    let year =valor.substring(0,4);
+    let mes =valor.substring(4,6);
+    let dia =valor.substring(6,8);
+    let hora =valor.substring(9,11);
+    let min =valor.substring(11,13);
+                  
 
-    const promiseView = new Promise((resolve, reject) => {
-      this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            console.log(data);
-            const result = data.success;
-            if (result) {
+    let fecha= `${mes}/${dia}/${year}`;
+    let time = `${hora}:${min}`
 
-              data.data.forEach((element) => {
-                if (element.atts.length > 0) {
+    return `${fecha} ${time}`
 
-                  let rutaLongitud = element.atts[16].value.trim().length
-                  let ruta = element.atts[16].value.trim()
+  }
+
+  obtenerRuta(rutaJerarquia){
+
+                  let rutaLongitud = rutaJerarquia.length
+                  let ruta = rutaJerarquia
                   // console.log(ruta)
                   console.group()
                   console.log(rutaLongitud.toString())
@@ -133,12 +126,47 @@ export class RkpendaprobComponent implements OnInit {
                         break;
                       case '31':
                         
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +ruta.substring(27, 31);
                         break;
                     }
+    
+  }
+
+
+   recargar() {
+
+    this.pendList=[]
+
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
+    _atts.push({ name: 'status', value: 'RE' });
+    // if(this.complete == true){
+    //   _atts.push({ name: 'showCompleted', value: 'N' });
+      
+    // }else{
+    //         _atts.push({ name: 'showCompleted', value: 'Y' });
+      
+    // }
+    const spinner = this.controlService.openSpinner();
+    
+
+    const promiseView = new Promise((resolve, reject) => {
+      this.autentication.generic(_atts)
+        .subscribe(
+          (data) => {
+            console.log(data);
+            const result = data.success;
+            if (result) {
+
+              data.data.forEach((element) => {
+                if (element.atts.length > 0) {
+
+                  let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
+                  
+                  this.obtenerRuta(element.atts[16].value.trim())
 
                   
-
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
                     Entidad: element.atts[2].value.trim(),
@@ -153,7 +181,7 @@ export class RkpendaprobComponent implements OnInit {
                     Riesgo: element.atts[11].value.trim(),
                     Consecuencia: element.atts[12].value.trim(),
                     Controles : element.atts[13].value.trim(),
-                    Fecha: element.atts[15].value.trim(),
+                    Fecha: fecha,
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
@@ -178,7 +206,7 @@ export class RkpendaprobComponent implements OnInit {
               // this.comprobarPadre()
               console.log([this.pendList])
               
-
+              this.TotalRegistros = this.pendList.length
               this.controlService.closeSpinner(spinner);
             } else {
               this.controlService.snackbarError(data.message);
@@ -192,10 +220,14 @@ export class RkpendaprobComponent implements OnInit {
     
   }
 
-  MarcarJerarquia(Value,status?){
+  MarcarJerarquia(Value,status,chek){
 
+
+      
     let key = Value
     let Istatus = status;
+
+    
 
     // console.log(Istatus)
     // let entidadActual
@@ -205,91 +237,77 @@ export class RkpendaprobComponent implements OnInit {
     for(let i = 0; i < this.pendList.length; i++){
       // console.log(key)
       
-
+      // console.log(i)
       if(this.pendList[i]['key'].startsWith(key)){
-
-        console.error('Aqui')
-        // key =this.pendList[i]['key']
-
         
-
+        
+        
         if(this.pendList[i]['key'] !== key){
           
           if(this.pendList[i]['check'] == false){
-             console.log('aqui estoy')
-             this.pendList[i]['check'] = true
-            //  this.pendList[i]['permiso'] = true
-             
-           }else{
-             this.pendList[i]['check'] = false
-            //  this.pendList[i]['permiso'] = false
-   
-           }
-        }
-        
-        
-          // if(key.length == 31){
+            
+            this.pendList[i]['check'] = true
+            
+            // this.totalMarcados = this.totalMarcados +1;
+            
+            // console.log(this.totalMarcados)
+            
+            
+            // this.pendList[i]['permiso'] = true
+            
+          }else{
+            this.pendList[i]['check'] = false
+            if(this.pendList[i]['check'] ==false && this.totalMarcados >=0 ){
+              
+              
+            }
+            
+            }
+          }
           
-          // break;
-          //  key = key.substring(0,27)
-          //  console.log(key)
-          //  console.log(key.length)
-          // }
+          if(this.pendList[i]['check'] == true){
+            this.totalMarcados = this.totalMarcados+1
+            
+          }else if(this.pendList[i]['check'] == false && this.totalMarcados>0){
 
+            this.totalMarcados = this.totalMarcados-1
+          }
+          
+          
+         
+            
       }
       
-     /* if(this.pendList[i]['key'].startsWith(key)){
-        
-        // console.error()
-        // if(this.pendList[i]['check'] == false){
-        //   break;
-        // }
-        // key =this.pendList[i]['key']
-        
-        this.pendList[i]['check'] = true
-            
-          // if(this.pendList[i]['check'] == false){
-          //   console.log('aqui estoy')
-          //   this.pendList[i]['check'] = true
-          //   this.pendList[i]['permiso'] = true
-            
-          // }else{
-          //   this.pendList[i]['check'] = false
-          //   this.pendList[i]['permiso'] = false
-  
-          // }
-        
-        // this.pendList[i]['permiso'] = true}
-        
-          // if(key.length == 31){
-          
-          // break;
-          //  key = key.substring(0,27)
-          //  console.log(key)
-          //  console.log(key.length)
-          // }
+      
+      }
 
-      }*/
+
+      
+
+      console.log(this.totalMarcados)
+
+      
     }
 
-  }
-
   imprime(){
-    
+    console.log(this.FechaDesde=this.FechaDesde.split('-').join(''))  
+    console.log(this.FechaHasta=this.FechaHasta.split('-').join('') )
 
-    let a = this.FechaDesde.substring(0,4);
-    let b = this.FechaDesde.substring(7,5);
-    let c = this.FechaDesde.substring(8,10);
-    let d = this.FechaHasta.substring(0,4);
-    let e = this.FechaHasta.substring(7,5);
-    let f = this.FechaHasta.substring(8,10);
-    let total=a+b+c
+    // let a = this.FechaDesde.substring(0,4);
+    // console.log(a)
+    // let b = this.FechaDesde.substring(7,5);
+    // console.log
+    // let c = this.FechaDesde.substring(8,10);
+    // let d = this.FechaHasta.substring(0,4);
+    // let e = this.FechaHasta.substring(7,5);
+    // let f = this.FechaHasta.substring(8,10);
+    // let total=a+b+c
     
-    
-    this.FechaDesdeServicio =total
-    this.FechaHastaServicio = d+e+f
-
-    
+  
+    this.FechaDesdeServicio =this.FechaDesde
+   
+    this.FechaHastaServicio = this.FechaHasta
+        
 
   }
 
@@ -403,7 +421,7 @@ export class RkpendaprobComponent implements OnInit {
               // this.comprobarPadre()
               console.log([this.pendList])
               
-
+              this.TotalRegistros = this.pendList.length
               this.controlService.closeSpinner(spinner);
             } else {
               this.controlService.snackbarError(data.message);
@@ -433,16 +451,194 @@ export class RkpendaprobComponent implements OnInit {
   }
 
   checkUncheckAll() {
-    for (var i = 0; i < this.pendList.length; i++) {
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
+      if(this.masterSelected == true){
+        this.totalMarcados = this.pendList.length
+        
+      }else{
+        this.totalMarcados = 0
+        
+      }
     }
 
   }
 
   async sendvalidate() {
 
-    if (this.valor === '' || this.valor === 'undefined') {
+    if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
+      
+          if (this.soloControles) {
+            const { value: accept } = await Swal2.fire({
+      
+              title: '<strong style="color:red">ADVERTENCIA !</strong>',
+              html:
+                'La modificación de los controles afecta al Riesgo Residual. ' +
+                '<b>Está seguro que desea continuar?</b>',
+              icon: 'warning',
+              input:'checkbox',
+              inputValue:'',
+              showCancelButton: true,
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'Cancelar',
+              inputPlaceholder:'Acepto',
+              confirmButtonText:'Archivar',
+              inputValidator: (result) => {
+              return !result && 'Debe Aceptar los Terminos'
+          }
+            })
+        
+            if (accept) {
+        
+              let _atts = [];
+                  _atts.push({ name: 'scriptName', value: 'coemdr' });
+                  _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
+                  _atts.push({ name: 'key', value: this.valor });
+        
+        
+                  const spinner = this.controlService.openSpinner();
+                  const obj = await this.autentication.generic(_atts);
+        
+                    obj.subscribe((data)=>{
+        
+                      if (data.success === true) {
+                                    if (data.data[0].atts[1]) {
+                                      // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+        
+                                      Swal2.fire(
+                                        {
+                                          icon:'success',
+                                          text:'Registro Archivado ',
+                                          // showConfirmButton: false,
+                                          // timer: 3000
+                                        }
+                                        )
+                                        this.cerrar('falso');       
+                                      }
+                    
+                                  }else {
+                                    
+                                      Swal2.fire(
+                                        {
+                                          icon:'error',
+                                          text:data.message,
+                                          // showConfirmButton: false,
+                                          // timer: 3000
+                                        }
+                                      )
+                                        
+                                  // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                                    
+                                  }  
+                                  this.controlService.closeSpinner(spinner);
+                                    
+                                  
+        
+                    },(error)=>{
+                      this.controlService.closeSpinner(spinner);
+                    })   
+              
+        
+              
+            }  
+          } else {
+          
+            const { value: accept } = await Swal2.fire({
+      
+              title:'Enviar a Archivar',
+              text: 'Tenga en cuenta que una vez archivado no podrá visualizar ni utilizar más éste Registro',
+              icon:'info',
+              input:'checkbox',
+              inputValue:'',
+              showCancelButton: true,
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'Cancelar',
+              inputPlaceholder:'Acepto',
+              confirmButtonText:'Archivar',
+              inputValidator: (result) => {
+              return !result && 'Debe Aceptar los Terminos'
+          }
+            })
+        
+            if (accept) {
+        
+              let _atts = [];
+                  _atts.push({ name: 'scriptName', value: 'coemdr' });
+                  _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
+                  _atts.push({ name: 'key', value: this.valor });
+        
+        
+                  const spinner = this.controlService.openSpinner();
+                  const obj = await this.autentication.generic(_atts);
+        
+                    obj.subscribe((data)=>{
+        
+                      if (data.success === true) {
+                                    if (data.data[0].atts[1]) {
+                                      // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+        
+                                      Swal2.fire(
+                                        {
+                                          icon:'success',
+                                          text:'Registro Archivado ',
+                                          // showConfirmButton: false,
+                                          // timer: 3000
+                                        }
+                                        )
+                                        this.cerrar('falso');       
+                                      }
+                    
+                                  }else {
+                                    
+                                      Swal2.fire(
+                                        {
+                                          icon:'error',
+                                          text:data.message,
+                                          // showConfirmButton: false,
+                                          // timer: 3000
+                                        }
+                                      )
+                                        
+                                  // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                                    
+                                  }  
+                                  this.controlService.closeSpinner(spinner);
+                                    
+                                  
+        
+                    },(error)=>{
+                      this.controlService.closeSpinner(spinner);
+                    })   
+            //       obj.subscribe(
+            //         (data) => {
+            //           if (data.success === true) {
+            //             if (data.data[0].atts[1]) {
+            //               this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+            //             }
+        
+            //           } else {
+            //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+            //           }
+            //           this.controlService.closeSpinner(spinner);
+        
+            //         },
+            //         (error) => {
+            //           // if ( error.status === 401 ) { this.autentication.logout(); return; }
+            //           this.controlService.closeSpinner(spinner);
+            //         });
+            //     }
+            //     this.cerrar();
+            //   });
+        
+              
+        
+              
+            }
+          }
+
+    }else{
       Swal2.fire({
         icon: 'info',
         text: 'Debe Seleccionaar al menos 1 item',
@@ -450,195 +646,7 @@ export class RkpendaprobComponent implements OnInit {
       })
       
       return;
-    }
-
-    if (this.soloControles) {
-      const { value: accept } = await Swal2.fire({
-
-        title: '<strong style="color:red">ADVERTENCIA !</strong>',
-        html:
-          'La modificación de los controles afecta al Riesgo Residual. ' +
-          '<b>Está seguro que desea Enviar a Validar ?</b>',
-        icon: 'warning',
-        input:'checkbox',
-        inputValue:'',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        inputPlaceholder:'Acepto',
-        confirmButtonText:'Archivar',
-        inputValidator: (result) => {
-        return !result && 'Debe Aceptar los Terminos'
-    }
-      })
-  
-      if (accept) {
-  
-        let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
-            _atts.push({ name: 'key', value: this.valor });
-  
-  
-            const spinner = this.controlService.openSpinner();
-            const obj = await this.autentication.generic(_atts);
-  
-              obj.subscribe((data)=>{
-  
-                if (data.success === true) {
-                              if (data.data[0].atts[1]) {
-                                // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                                Swal2.fire(
-                                  {
-                                    icon:'success',
-                                    text:'Registro Archivado ',
-                                    // showConfirmButton: false,
-                                    // timer: 3000
-                                  }
-                                )
-                              }
-              
-                            }else {
-                              
-                                Swal2.fire(
-                                  {
-                                    icon:'error',
-                                    text:data.message,
-                                    // showConfirmButton: false,
-                                    // timer: 3000
-                                  }
-                                )
-                                  
-                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                              
-                            }  
-                            this.controlService.closeSpinner(spinner);
-                              
-                            
-  
-              },(error)=>{
-                this.controlService.closeSpinner(spinner);
-              })   
-             this.cerrar('falso');       
-      //       obj.subscribe(
-      //         (data) => {
-      //           if (data.success === true) {
-      //             if (data.data[0].atts[1]) {
-      //               this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-      //             }
-  
-      //           } else {
-      //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-      //           }
-      //           this.controlService.closeSpinner(spinner);
-  
-      //         },
-      //         (error) => {
-      //           // if ( error.status === 401 ) { this.autentication.logout(); return; }
-      //           this.controlService.closeSpinner(spinner);
-      //         });
-      //     }
-      //     this.cerrar();
-      //   });
-  
-        
-  
-        
-      }  
-    } else {
-    
-      const { value: accept } = await Swal2.fire({
-
-        title:'Enviar a Archivar',
-        text: 'Tenga en cuenta que una vez archivado no podrá visualizar ni utilizar más éste Registro',
-        icon:'question',
-        input:'checkbox',
-        inputValue:'',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        inputPlaceholder:'Acepto',
-        confirmButtonText:'Archivar',
-        inputValidator: (result) => {
-        return !result && 'Debe Aceptar los Terminos'
-    }
-      })
-  
-      if (accept) {
-  
-        let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
-            _atts.push({ name: 'key', value: this.valor });
-  
-  
-            const spinner = this.controlService.openSpinner();
-            const obj = await this.autentication.generic(_atts);
-  
-              obj.subscribe((data)=>{
-  
-                if (data.success === true) {
-                              if (data.data[0].atts[1]) {
-                                // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                                Swal2.fire(
-                                  {
-                                    icon:'success',
-                                    text:'Registro Archivado ',
-                                    // showConfirmButton: false,
-                                    // timer: 3000
-                                  }
-                                )
-                              }
-              
-                            }else {
-                              
-                                Swal2.fire(
-                                  {
-                                    icon:'error',
-                                    text:data.message,
-                                    // showConfirmButton: false,
-                                    // timer: 3000
-                                  }
-                                )
-                                  
-                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                              
-                            }  
-                            this.controlService.closeSpinner(spinner);
-                              
-                            
-  
-              },(error)=>{
-                this.controlService.closeSpinner(spinner);
-              })   
-             this.cerrar('falso');       
-      //       obj.subscribe(
-      //         (data) => {
-      //           if (data.success === true) {
-      //             if (data.data[0].atts[1]) {
-      //               this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-      //             }
-  
-      //           } else {
-      //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-      //           }
-      //           this.controlService.closeSpinner(spinner);
-  
-      //         },
-      //         (error) => {
-      //           // if ( error.status === 401 ) { this.autentication.logout(); return; }
-      //           this.controlService.closeSpinner(spinner);
-      //         });
-      //     }
-      //     this.cerrar();
-      //   });
-  
-        
-  
-        
-      }
+      
     }
 
     
@@ -650,8 +658,151 @@ export class RkpendaprobComponent implements OnInit {
 
 async RestaurarItem() {
 
-  if (this.valor === '' || this.valor === 'undefined') {
+  if (this.valor.includes('Y')) {
     // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
+    if (this.soloControles) {
+      const { value: accept } = await Swal2.fire({
+  
+        title: '<strong style="color:red">ADVERTENCIA !</strong>',
+        html:
+        'La modificación de los controles afecta al Riesgo Residual. ' +
+        '<b>Está seguro que desea continuar?</b>',
+          icon: 'warning',
+        input:'checkbox',
+        inputValue:'',
+        inputPlaceholder:'Acepto',
+        showCancelButton: true,
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+        confirmButtonText:'Restaurar',
+        inputValidator: (result) => {
+        return !result && 'Debe Aceptar los Terminos'
+    }
+      })
+    
+      if (accept) {
+    
+        let _atts = [];
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
+            _atts.push({ name: 'key', value: this.valor });
+            _atts.push({ name: 'accion', value: 'Mod' });
+    
+    
+            const spinner = this.controlService.openSpinner();
+            const obj = await this.autentication.generic(_atts);
+    
+              obj.subscribe((data)=>{
+    
+                if (data.success === true) {
+                              if (data.data[0].atts[1]) {
+                                // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+    
+                                Swal2.fire(
+                                  {
+                                    icon:'success',
+                                    text:'Registro Restaurado ',
+                                   
+                                  }
+                                )
+                              }
+              
+                            }else {
+                              
+                                Swal2.fire(
+                                  {
+                                    icon:'error',
+                                    text:data.message,
+                                   
+                                  }
+                                )
+                                  
+                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                              
+                            }  
+                            this.controlService.closeSpinner(spinner);
+                              
+                            
+    
+              },(error)=>{
+                this.controlService.closeSpinner(spinner);
+              })   
+             this.cerrar('falso');       
+         
+        
+      } 
+    } else {
+        
+      const { value: accept } = await Swal2.fire({
+    
+        title:'Restaurar Registro',
+        text: '¿Desea Restaurar este Item ?',
+        icon:'info',
+        input:'checkbox',
+        inputValue:'',
+        inputPlaceholder:'Acepto',
+        showCancelButton: true,
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancelar',
+        confirmButtonText:'Restaurar',
+        inputValidator: (result) => {
+        return !result && 'Debe Aceptar los Terminos'
+    }
+      })
+    
+      if (accept) {
+    
+        let _atts = [];
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
+            _atts.push({ name: 'key', value: this.valor });
+            _atts.push({ name: 'accion', value: 'Mod' });
+    
+    
+            const spinner = this.controlService.openSpinner();
+            const obj = await this.autentication.generic(_atts);
+    
+              obj.subscribe((data)=>{
+    
+                if (data.success === true) {
+                              if (data.data[0].atts[1]) {
+                                // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+    
+                                Swal2.fire(
+                                  {
+                                    icon:'success',
+                                    text:'Registro Restaurado ',
+                                   
+                                  }
+                                )
+                              }
+              
+                            }else {
+                              
+                                Swal2.fire(
+                                  {
+                                    icon:'error',
+                                    text:data.message,
+                                   
+                                  }
+                                )
+                                  
+                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                              
+                            }  
+                            this.controlService.closeSpinner(spinner);
+                              
+                            
+    
+              },(error)=>{
+                this.controlService.closeSpinner(spinner);
+              })   
+             this.cerrar('falso');       
+         
+        
+      }
+    }
+  }else{
     Swal2.fire({
       icon: 'info',
       text: 'Debe Seleccionaar al menos 1 item',
@@ -659,150 +810,9 @@ async RestaurarItem() {
     })
     
     return;
+
   }
 
-  if (this.soloControles) {
-    const { value: accept } = await Swal2.fire({
-
-      title: '<strong style="color:red">ADVERTENCIA !</strong>',
-        html:
-          'La modificación de los controles afecta al Riesgo Residual. ' +
-          '<b>Está seguro que desea Enviar a Validar ?</b>',
-        icon: 'warning',
-      input:'checkbox',
-      inputValue:'',
-      inputPlaceholder:'Acepto',
-      showCancelButton: true,
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-      confirmButtonText:'Restaurar',
-      inputValidator: (result) => {
-      return !result && 'Debe Aceptar los Terminos'
-  }
-    })
-  
-    if (accept) {
-  
-      let _atts = [];
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
-          _atts.push({ name: 'key', value: this.valor });
-          _atts.push({ name: 'accion', value: 'Mod' });
-  
-  
-          const spinner = this.controlService.openSpinner();
-          const obj = await this.autentication.generic(_atts);
-  
-            obj.subscribe((data)=>{
-  
-              if (data.success === true) {
-                            if (data.data[0].atts[1]) {
-                              // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                              Swal2.fire(
-                                {
-                                  icon:'success',
-                                  text:'Registro Restaurado ',
-                                 
-                                }
-                              )
-                            }
-            
-                          }else {
-                            
-                              Swal2.fire(
-                                {
-                                  icon:'error',
-                                  text:data.message,
-                                 
-                                }
-                              )
-                                
-                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                            
-                          }  
-                          this.controlService.closeSpinner(spinner);
-                            
-                          
-  
-            },(error)=>{
-              this.controlService.closeSpinner(spinner);
-            })   
-           this.cerrar('falso');       
-       
-      
-    } 
-  } else {
-      
-    const { value: accept } = await Swal2.fire({
-  
-      title:'Restaurar Registro',
-      text: '¿Desea Restaurar este Item ?',
-      icon:'question',
-      input:'checkbox',
-      inputValue:'',
-      inputPlaceholder:'Acepto',
-      showCancelButton: true,
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-      confirmButtonText:'Restaurar',
-      inputValidator: (result) => {
-      return !result && 'Debe Aceptar los Terminos'
-  }
-    })
-  
-    if (accept) {
-  
-      let _atts = [];
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
-          _atts.push({ name: 'key', value: this.valor });
-          _atts.push({ name: 'accion', value: 'Mod' });
-  
-  
-          const spinner = this.controlService.openSpinner();
-          const obj = await this.autentication.generic(_atts);
-  
-            obj.subscribe((data)=>{
-  
-              if (data.success === true) {
-                            if (data.data[0].atts[1]) {
-                              // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                              Swal2.fire(
-                                {
-                                  icon:'success',
-                                  text:'Registro Restaurado ',
-                                 
-                                }
-                              )
-                            }
-            
-                          }else {
-                            
-                              Swal2.fire(
-                                {
-                                  icon:'error',
-                                  text:data.message,
-                                 
-                                }
-                              )
-                                
-                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                            
-                          }  
-                          this.controlService.closeSpinner(spinner);
-                            
-                          
-  
-            },(error)=>{
-              this.controlService.closeSpinner(spinner);
-            })   
-           this.cerrar('falso');       
-       
-      
-    }
-  }
 
 
   
@@ -833,23 +843,7 @@ async RestaurarItem() {
 
    
  }
-  async VerEnviarAprobar() {
-
-    this.confirm.open(RkpendaprobComponent, {
-      hasBackdrop: true,
-      height: 'auto',
-      width: 'auto',
-      data:
-      {
-        title: 'Items Rechazados',
-        message: '',
-        button_confirm: 'Cerrar',
-        button_close: 'Cerrar'
-      }
-
-    });
-
-  }
+  
   aperfil() {
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });

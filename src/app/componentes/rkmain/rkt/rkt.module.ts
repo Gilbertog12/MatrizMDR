@@ -16,6 +16,8 @@ import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { Rkarchivarmodule } from '../../../rkmain/rkarchivar/rkarchivar.module';
+import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
+
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { Rkarchivarmodule } from '../../../rkmain/rkarchivar/rkarchivar.module';
     RkpendaprobModule,
     Rkvalidarmodule,
     RkpendaprobModule,
-    Rkarchivarmodule
+    Rkarchivarmodule,
+    cajadashboardModule
+    
   ],
   declarations: [RktComponent]
 })

@@ -35,6 +35,7 @@ import { RkhelpComponent } from '../../rkhelp/rkhelp.component';
 import { rkHelpModule } from '../../rkhelp/rkhelp.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RkpendaprobModule } from './rkpendaprob/rkpendaprob.module';
+// import { cajadashboardModule } from '../../rkmain/cajasdashboard/cajasdashboard.module';
 
 //
 
@@ -68,6 +69,7 @@ import { RkpendaprobModule } from './rkpendaprob/rkpendaprob.module';
     RkpendaprobModule,
     LeyendaModule,
     PdfViewerModule,
+    // cajadashboardModule
     
 
     

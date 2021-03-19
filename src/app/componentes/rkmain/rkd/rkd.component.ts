@@ -5,9 +5,13 @@ import { ConfirmationComponent } from '../../../controls/confirmation/confirmati
 import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-reject.component';
 import { MatDialog } from '@angular/material';
 import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.component';
+import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
+
 import echarts from 'echarts';
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
+import { RkporaprobarComponent } from '../rkporaprobar/rkporaprobar.component';
+import { RkvalidarComponent } from '../rkvalidar/rkvalidar.component';
 
 
 @Component({
@@ -889,5 +893,146 @@ public Razon : string
       }
   
   
+    }
+
+    Caja(key,status){
+
+      switch(status){
+       case  '001' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '002' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '003' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '006' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+  
+        case '004':
+          this.confirm.open(RkvalidarComponent, {
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+            data:
+            {
+              title: 'Items pendientes de validación',
+              message: '',
+              button_confirm: 'Cerrar',
+              button_close: 'Cerrar',
+              id: key,
+              status: status
+      
+            }
+      
+          });
+              
+          break;
+          
+        case '007':
+          this.confirm.open(RkporaprobarComponent, {
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+      
+            data:
+            {
+              title: 'Items Pendientes por Aprobar',
+              message: '',
+              button_confirm: 'Cerrar',
+              button_close: 'Cerrar',
+              id: key,
+              status: status
+      
+            }
+      
+          });
+          break;
+        
+  
+      }
+      
     }
 }

@@ -27,9 +27,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatDialogModule,
     MatCheckboxModule,
     DragDropModule,
-    RkmainRoutingModule,
     MatDatepickerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    RkmainRoutingModule,
     
     
     

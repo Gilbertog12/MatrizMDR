@@ -3,6 +3,8 @@ import { Component, OnInit, Inject, Injectable, Output, EventEmitter, Input, Hos
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../../../shared';
 import { Router } from '@angular/router';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { ConfirmationComponent } from '../../../controls/confirmation/confirmation.component';
 
 import { NgxLoadingService } from 'ngx-loading';
@@ -11,10 +13,22 @@ import { NgxLoadingService } from 'ngx-loading';
 import Swal from 'sweetAlert';
 import { RkmainComponent } from '../rkmain.component';
 import Swal2 from 'sweetalert2';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
 
 
-
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'YYYY-MM-DD',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 
 
@@ -24,7 +38,15 @@ import Swal2 from 'sweetalert2';
 @Component({
   selector: 'app-rkcequip',
   templateUrl: './rkpend.component.html',
-  styleUrls: ['./rkpend.component.scss'],  
+  styleUrls: ['./rkpend.component.scss'],
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],  
   
 })
 
@@ -38,11 +60,12 @@ export class RkpendComponent implements OnInit {
 
   
 
-  FechaDesde= ''
+  
+  FechaDesde = ''
+  FechaHasta = ''
   FechaDesdeServicio= ''
   FechaHastaServicio= ''
-  FechaHasta= ''
-  TotalRegistros :number 
+  TotalRegistros :number =0
   complete:boolean=false
   public jerarquia:any
   
@@ -59,6 +82,11 @@ export class RkpendComponent implements OnInit {
     Consecuencia: '',
 
   };
+
+  range = new FormGroup({
+    FechaDesde: new FormControl(),
+    FechaHasta: new FormControl()
+  });
 
   public href: any = '';
   public aprobacionesList: any[] = [];
@@ -95,6 +123,7 @@ export class RkpendComponent implements OnInit {
   ArrAux: string = "";
   rutaJerarquia: any;
   soloControles: boolean;
+  totalMarcados: number= 0;
   
 
   
@@ -111,11 +140,13 @@ export class RkpendComponent implements OnInit {
     
     
     
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private cajas:ServiciocajasService) {
+      this.data.key,
+      this.data.status
       this.recargar();
       
       this.aperfil();  
-      
+      console.log(this.cajas.caja1)
     }
     
     
@@ -152,21 +183,24 @@ export class RkpendComponent implements OnInit {
   }
 
   imprime(){
-    
+    console.log(this.FechaDesde=this.FechaDesde.split('-').join(''))  
+    console.log(this.FechaHasta=this.FechaHasta.split('-').join('') )
 
-    let a = this.FechaDesde.substring(0,4);
-    let b = this.FechaDesde.substring(7,5);
-    let c = this.FechaDesde.substring(8,10);
-    let d = this.FechaHasta.substring(0,4);
-    let e = this.FechaHasta.substring(7,5);
-    let f = this.FechaHasta.substring(8,10);
-    let total=a+b+c
+    // let a = this.FechaDesde.substring(0,4);
+    // console.log(a)
+    // let b = this.FechaDesde.substring(7,5);
+    // console.log
+    // let c = this.FechaDesde.substring(8,10);
+    // let d = this.FechaHasta.substring(0,4);
+    // let e = this.FechaHasta.substring(7,5);
+    // let f = this.FechaHasta.substring(8,10);
+    // let total=a+b+c
     
-    
-    this.FechaDesdeServicio =total
-    this.FechaHastaServicio = d+e+f
-
-    
+  
+    this.FechaDesdeServicio =this.FechaDesde
+   
+    this.FechaHastaServicio = this.FechaHasta
+        
 
   }
 
@@ -174,141 +208,150 @@ export class RkpendComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
+      if(this.masterSelected == true){
+        this.totalMarcados = this.pendList.length
+        
+      }else{
+        this.totalMarcados = 0
+        
+      }
     }
 
   }
 
  
-  async sendvalidate() {
+   sendvalidate() {
 
     console.log(this.valor)
 
-    if (this.valor === '' || this.valor === 'undefined') {
+    if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionar al menos 1 item', {}, false);
+      if(this.soloControles){
+  
+        Swal2.fire({
+          title: '<strong style="color:red">ADVERTENCIA !</strong>',
+          html:
+            'La modificación de los controles afecta al Riesgo Residual. ' +
+            '<b>Está seguro que desea Enviar a Validar ?</b>',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+    
+            console.log(this.valor)
+            
+            const _atts = [];
+              _atts.push({ name: 'scriptName', value: 'coemdr' });
+              _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+              _atts.push({ name: 'onlyActualNode', value: 'Y' });
+              _atts.push({ name: 'key', value: this.valor });
+    
+              const spinner = this.controlService.openSpinner();
+              const obj = this.autentication.generic(_atts);
+    
+                        obj.subscribe(
+                        (data) => {
+                          if (data.success === true) {
+                            // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+    
+                            Swal2.fire('Registro Enviado a Validar','', 'success' )
+                            localStorage.setItem('isSendToValidate','1')
+                            this.cerrar('falso');
+    
+                            
+                          } else {
+                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                            Swal2.fire('',data.message,'error')
+                          }
+            
+                          this.controlService.closeSpinner(spinner);
+                          
+                        },
+                        (error) => {
+                          // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                          this.controlService.closeSpinner(spinner);
+                        });
+                      }
+                      
+                    })
+  
+      }else{
+        
+        Swal2.fire({
+          html: '<h3><strong>Enviar a Validar</strong></h3>',
+          
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+    
+            console.log(this.valor)
+            
+            const _atts = [];
+              _atts.push({ name: 'scriptName', value: 'coemdr' });
+              _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+              _atts.push({ name: 'onlyActualNode', value: 'Y' });
+              _atts.push({ name: 'key', value: this.valor });
+    
+              const spinner = this.controlService.openSpinner();
+              const obj = this.autentication.generic(_atts);
+    
+                        obj.subscribe(
+                        (data) => {
+                          if (data.success === true) {
+                            // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+    
+                            Swal2.fire('Registro Enviado a Validar','', 'success' )
+                            localStorage.setItem('isSendToValidate','1')
+                            this.cerrar('falso');
+    
+                            
+                          } else {
+                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                            Swal2.fire('',data.message,'error')
+                          }
+            
+                          this.controlService.closeSpinner(spinner);
+                          
+                        },
+                        (error) => {
+                          // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                          this.controlService.closeSpinner(spinner);
+                        });
+                      }
+                      
+                    })
+      }
+
+    }else{
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
       return;
+      
     }
 
     
-    if(this.soloControles){
-
-      Swal2.fire({
-        title: '<strong style="color:red">ADVERTENCIA !</strong>',
-        html:
-          'La modificación de los controles afecta al Riesgo Residual. ' +
-          '<b>Está seguro que desea Enviar a Validar ?</b>',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.value) {
-  
-          console.log(this.valor)
-          
-          const _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: 'Y' });
-            _atts.push({ name: 'key', value: this.valor });
-  
-            const spinner = this.controlService.openSpinner();
-            const obj = this.autentication.generic(_atts);
-  
-                      obj.subscribe(
-                      (data) => {
-                        if (data.success === true) {
-                          // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                          Swal2.fire('Registro Enviado a Validar','', 'success' )
-                          localStorage.setItem('isSendToValidate','1')
-  
-                          
-                        } else {
-                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                          Swal2.fire('',data.message,'error')
-                        }
-          
-                        this.controlService.closeSpinner(spinner);
-                        
-                      },
-                      (error) => {
-                        // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                        this.controlService.closeSpinner(spinner);
-                      });
-                      this.cerrar('falso');
-                    }
-                    
-                  })
-
-    }else{
-      
-      Swal2.fire({
-        title: 'Enviar a Validar',
-        text: "Ud. está enviando a Validar, Validando o Aprobando el ITEM seleccionado y todos sus hijos.",
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.value) {
-  
-          console.log(this.valor)
-          
-          const _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: 'Y' });
-            _atts.push({ name: 'key', value: this.valor });
-  
-            const spinner = this.controlService.openSpinner();
-            const obj = this.autentication.generic(_atts);
-  
-                      obj.subscribe(
-                      (data) => {
-                        if (data.success === true) {
-                          // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
-                          Swal2.fire('Registro Enviado a Validar','', 'success' )
-                          localStorage.setItem('isSendToValidate','1')
-  
-                          
-                        } else {
-                          // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                          Swal2.fire('',data.message,'error')
-                        }
-          
-                        this.controlService.closeSpinner(spinner);
-                        
-                      },
-                      (error) => {
-                        // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                        this.controlService.closeSpinner(spinner);
-                      });
-                      this.cerrar('falso');
-                    }
-                    
-                  })
-    }
 
 
 
 
   }
 
-      
-  
+     
 
 //  
 
     MarcarJerarquia(Value,status,chek){
 
 
-
+      
       let key = Value
       let Istatus = status;
 
@@ -327,9 +370,9 @@ export class RkpendComponent implements OnInit {
       for(let i = 0; i < this.pendList.length; i++){
         // console.log(key)
         
-  
+        // console.log(i)
         if(this.pendList[i]['key'].startsWith(key)){
-
+          
           
           
           if(this.pendList[i]['key'] !== key){
@@ -337,15 +380,31 @@ export class RkpendComponent implements OnInit {
             if(this.pendList[i]['check'] == false){
               
               this.pendList[i]['check'] = true
+              
+              // this.totalMarcados = this.totalMarcados +1;
+              
+              // console.log(this.totalMarcados)
+              
+              
               // this.pendList[i]['permiso'] = true
-               
+              
             }else{
-               this.pendList[i]['check'] = false
-               
+              this.pendList[i]['check'] = false
+              if(this.pendList[i]['check'] ==false && this.totalMarcados >=0 ){
+                
+                
+              }
+              
               }
             }
             
-            
+            if(this.pendList[i]['check'] == true){
+              this.totalMarcados = this.totalMarcados+1
+              
+            }else if(this.pendList[i]['check'] == false && this.totalMarcados>0){
+
+              this.totalMarcados = this.totalMarcados-1
+            }
             
             
            
@@ -354,10 +413,16 @@ export class RkpendComponent implements OnInit {
         
         
         }
+
+
+        
+
+        console.log(this.totalMarcados)
+
         this.ArrAux.slice(1)
 
-        console.log(this.ArrAux.length)
-
+        
+        
 
   
       }
@@ -386,6 +451,7 @@ export class RkpendComponent implements OnInit {
       }
 
       consola(opcion) {
+        let total
       this.valor = "";
       this.controles ="";
       for (let i = 0; i < this.pendList.length; i++) {
@@ -395,16 +461,16 @@ export class RkpendComponent implements OnInit {
           this.valor = this.valor + ','+ this.pendList[i]['key']+','+'Y'  ;
           this.controles = this.controles + ','+ this.pendList[i]['Entidad']
           this.soloControles = this.isOnlyControl(this.controles.slice(1))
-
+          
           
           
         }else{
           this.valor = this.valor + ','+ this.pendList[i]['key']+','+'N'  ;
-
+          
         }
-  
+        
       }
-      console.log(this.valor = this.valor.slice(1));
+      this.valor = this.valor.slice(1)
       console.log(this.soloControles)
   
       
@@ -423,7 +489,7 @@ export class RkpendComponent implements OnInit {
 
   async RestaurarItem() {
 
-    if (this.valor === '' || this.valor === 'undefined') {
+    if (this.valor === '' || this.valor === 'undefined'  ) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
       Swal2.fire({
         icon: 'info',
@@ -507,6 +573,68 @@ export class RkpendComponent implements OnInit {
   
   
   }
+    
+
+  convertiFechaYhora(valor){
+
+    let year =valor.substring(0,4);
+    let mes =valor.substring(4,6);
+    let dia =valor.substring(6,8);
+    let hora =valor.substring(9,11);
+    let min =valor.substring(11,13);
+                  
+
+    let fecha= `${mes}/${dia}/${year}`;
+    let time = `${hora}:${min}`
+
+    return `${fecha} ${time}`
+
+  }
+
+  obtenerRuta(rutaJerarquia){
+
+                  let rutaLongitud = rutaJerarquia.length
+                  let ruta = rutaJerarquia
+                  // console.log(ruta)
+                  console.group()
+                  console.log(rutaLongitud.toString())
+                  console.groupEnd()
+                  switch(rutaLongitud.toString()) {
+
+                    case '2':
+                      this.rutaJerarquia = ruta
+                      console.log(this.rutaJerarquia)
+                      break;
+                    case '6':
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
+                      break;
+                    case '10':
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
+                      break;                      
+                      case '14':  
+                        
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
+                       break;
+                      case '18':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
+                        break;
+                      case '19':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
+                        break;
+                      case '23':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
+                        break;
+                      case '27':
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
+                        break;
+                      case '31':
+                        
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +ruta.substring(27, 31);
+                        break;
+                    }
+    
+  }
+  
 
    recargar() {
     
@@ -515,6 +643,8 @@ export class RkpendComponent implements OnInit {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'EV' });
+    _atts.push({ name: 'key', value: this.data.id });
+    _atts.push({ name: 'statusItem', value: this.data.status });
     if(this.complete == true){
       _atts.push({ name: 'showCompleted', value: 'N' });
       
@@ -558,45 +688,10 @@ export class RkpendComponent implements OnInit {
 
                   // }
 
-                  let rutaLongitud = element.atts[16].value.trim().length
-                  let ruta = element.atts[16].value.trim()
-                  // console.log(ruta)
-                  console.group()
-                  console.log(rutaLongitud.toString())
-                  console.groupEnd()
-                  switch(rutaLongitud.toString()) {
-
-                    case '2':
-                      this.rutaJerarquia = ruta
-                      console.log(this.rutaJerarquia)
-                      break;
-                    case '6':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
-                      break;
-                    case '10':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
-                      break;                      
-                      case '14':  
-                        
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
-                       break;
-                      case '18':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
-                        break;
-                      case '19':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
-                        break;
-                      case '23':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
-                        break;
-                      case '27':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
-                        break;
-                      case '31':
-                        
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
-                        break;
-                    }
+                  let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
+                  
+                  this.obtenerRuta(element.atts[16].value.trim())
+                  
 
                   
 
@@ -614,7 +709,7 @@ export class RkpendComponent implements OnInit {
                     Riesgo: element.atts[11].value.trim(),
                     Consecuencia: element.atts[12].value.trim(),
                     Controles : element.atts[13].value.trim(),
-                    Fecha: element.atts[15].value.trim(),
+                    Fecha: fecha,
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
@@ -686,45 +781,11 @@ export class RkpendComponent implements OnInit {
 
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
-                  let rutaLongitud = element.atts[16].value.trim().length
-                  let ruta = element.atts[16].value.trim()
-                  // console.log(ruta)
-                  console.group()
-                  console.log(rutaLongitud.toString())
-                  console.groupEnd()
-                  switch(rutaLongitud.toString()) {
 
-                    case '2':
-                      this.rutaJerarquia = ruta
-                      console.log(this.rutaJerarquia)
-                      break;
-                    case '6':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
-                      break;
-                    case '10':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
-                      break;                      
-                      case '14':  
-                        
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
-                       break;
-                      case '18':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
-                        break;
-                      case '19':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
-                        break;
-                      case '23':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
-                        break;
-                      case '27':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
-                        break;
-                      case '31':
-                        
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
-                        break;
-                    }
+                  let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
+                  
+                  this.obtenerRuta(element.atts[16].value.trim())
+                  
 
                   
 
@@ -742,7 +803,7 @@ export class RkpendComponent implements OnInit {
                     Riesgo: element.atts[11].value.trim(),
                     Consecuencia: element.atts[12].value.trim(),
                     Controles : element.atts[13].value.trim(),
-                    Fecha: element.atts[15].value.trim(),
+                    Fecha: fecha,
                     key: element.atts[16].value.trim(),
                     version : element.atts[17].value.trim(),
                     Comentarios : element.atts[18].value.trim(),
@@ -781,29 +842,6 @@ export class RkpendComponent implements OnInit {
     
     }
 
-  
-   
- 
- 
-
-    ActivarFuncion(){
-      
-      setTimeout(function recargarf(){ location.reload(); }, 1000);
-         
-  }
-
-
-
-  RefrescarPantalla(ruta:any){
-    const currentRoute = this.router.url;
-              setTimeout(() => {
-                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                    this.router.navigate([currentRoute]); // navigate to same route
-                }); 
-                
-              }, 2000);
-  }
-  
   
   
   verTable(item: any) {

@@ -1,4 +1,8 @@
-<h6 class="article-title">Area > Proceso > Subproceso > Actividad</h6>
+<h6 class="article-title">
+    Area > Proceso > Subproceso > Actividad
+    <button *ngIf="actividadModel.actividadStatusId !=='008'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+
+</h6>
 
 <div class="row">
     <div class="col-xl-12">
@@ -174,7 +178,7 @@
 
                                 <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
                                     <div [ngSwitch]="actividadModel.CanAdd">
-                                        <div *ngSwitchCase="false">
+                                        <div *ngSwitchCase="'false'">
 
                                             <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()" id="SinPermisos" disabled>
                               <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
@@ -184,7 +188,7 @@
 
                                             <ng-template [ngIf]="actividadModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
 
-                                                <ng-template [ngIf]="actividadModel.actividadStatusId ==='001' || actividadModel.actividadStatusId ==='008'" [ngIfElse]='opcion2'>
+                                                <ng-template [ngIf]="actividadModel.actividadStatusId ==='001' || actividadModel.actividadStatusId ==='002' || actividadModel.actividadStatusId ==='008'" [ngIfElse]='opcion2'>
 
                                                     <button class="btn btn-sm btn-light btn-round" (click)="guardarstdjob()">
                                                         <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
@@ -226,12 +230,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of stdJobList; let indice=i ndex ">
+                            <tr *ngFor="let item of stdJobList; let indice=index ">
                                 <td>{{indice+1}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">
                                     <div [ngSwitch]="actividadModel.CanAdd ">
 
-                                        <div *ngSwitchCase=" true ">
+                                        <div *ngSwitchCase=" 'true' ">
 
                                             <ng-template [ngIf]="actividadModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
 
@@ -262,7 +266,7 @@
                                             </ng-template>
 
                                         </div>
-                                        <div *ngSwitchCase=" false ">
+                                        <div *ngSwitchCase=" 'false' ">
                                             <button class="btn btn-sm btn-light btn-round " (click)="eliminarstdjob(item) " id="SinPermisos " disabled>
                             <img class="img-circle " src="assets/images/Delete_Disabled.png " style="width: 10px; height: 10px; ">
                         </button>
@@ -274,12 +278,13 @@
                         <img class="img-circle " src="assets/images/Help.png " style="width: 10px; height: 10px; ">
                     </button>
                                 </td>
-                                <td *ngIf='item.statusId ==="001 " || item.statusId ==="002 "||item.statusId ==="003 "|| item.statusId ==="006 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (*)</a></td>
-                                <td *ngIf='item.statusId ==="004 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (**)</a></td>
-                                <td *ngIf='item.statusId ==="007 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (***)</a></td>
-                                <td *ngIf='item.statusId ==="000 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                <td *ngIf='item.statusId ==="001" || item.statusId ==="002"||item.statusId ==="003"|| item.statusId ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (*)</a></td>
+                                <td *ngIf='item.statusId ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (**)</a></td>
+                                <td *ngIf='item.statusId ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (***)</a></td>
+                                <td *ngIf='item.statusId ==="000"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                <td *ngIf='item.statusId ==="010"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (R)</a></td>
                                 <!-- <td *ngIf='item.statusId !=="008 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; ">(*)</a></td> -->
-                                <td *ngIf='item.statusId ==="008 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}</td>
+                                <td *ngIf='item.statusId === "008"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobDesc}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobTaskNo}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobTaskDesc}}</td>
@@ -298,7 +303,7 @@
                                 <th colspan="2 " rowspan="2 " style="text-align: center; ">Consecuencia</th>
                                 <th colspan=2 style="text-align: center; "> Seguridad y Salud Ocupacional</th>
                                 <th colspan=2 style="text-align: center; ">Medio ambiente</th>
-                                <th colspan=2 style="text-align: center; ">Negocio</th>
+                                <th colspan=2 style="text-align: center; ">Operacional</th>
                             </tr>
                             <tr>
                                 <th style="text-align: left; " id="estatico ">Puro</th>
@@ -404,12 +409,12 @@
                         <tbody>
                             <tbody cdkDropList (cdkDropListDropped)="drop($event) ">
                                 <tr *ngFor="let item of tareasListLectura " cdkDrag>
-                                    <td *ngIf=' item.estado ==="001 " || item.estado ==="002 " || item.estado ==="003 " || item.estado ==="006 "' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (*)</a></td>
-                                    <td *ngIf=' item.estado ==="004 "' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (**)</a></td>
-                                    <td *ngIf=' item.estado ==="007 "' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (***)</a></td>
-                                    <td *ngIf=' item.estado ==="000 "' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                    <!-- <td *ngIf=' item.estado ==="001" || item.estado ==="002" || item.estado ==="003" || item.estado ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (*)</a></td>
+                                    <td *ngIf=' item.estado ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (**)</a></td>
+                                    <td *ngIf=' item.estado ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (***)</a></td>
+                                    <td *ngIf=' item.estado ==="000"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (R)</a></td> -->
                                     <!-- <td *ngIf=' item.estado ==="010 "' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (AR)</a></td> -->
-                                    <td *ngIf='item.estado ==="008 "' class="mdl-data-table__cell--non-numeric ">{{item.Id}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric ">{{item.Id}}</td>
 
                                     <td class="mdl-data-table__cell--non-numeric ">{{item.Descripcion}}</td>
                                     <td class="mdl-data-table__cell--non-numeric " [id]="item.tareaRiesgoPuroS ">{{item.tareaRiesgoPuroS}}</td>
@@ -430,7 +435,7 @@
                             <tr>
                                 <th style="text-align: left; height: 30px; "></th>
                                 <th class="mdl-data-table__cell--non-numeric " style="width: 30px; ">
-                                    <div [ngSwitch]="canAdd ">
+                                    <div [ngSwitch]="actividadModel.CanAdd ">
                                         <div *ngSwitchCase=" 'N' ">
 
                                             <button class="btn btn-sm btn-light btn-round " (click)="guardarstdjob() " disabled>
@@ -457,7 +462,7 @@
                                 <td>{{indice+1}}</td>
 
                                 <td class="mdl-data-table__cell--non-numeric ">
-                                    <div [ngSwitch]="canAdd ">
+                                    <div [ngSwitch]="actividadModel.CanAdd ">
 
                                         <div *ngSwitchCase=" 'Y' ">
                                             <button class="btn btn-sm btn-light btn-round " (click)="eliminarstdjob(item) ">
@@ -497,7 +502,7 @@
                                 <th colspan="2 " rowspan="2 " style="text-align: center; ">Consecuencia</th>
                                 <th colspan=2 style="text-align: center; "> Seguridad y Salud Ocupacional</th>
                                 <th colspan=2 style="text-align: center; ">Medio ambiente</th>
-                                <th colspan=2 style="text-align: center; ">Negocio</th>
+                                <th colspan=2 style="text-align: center; ">Operacional</th>
                             </tr>
                             <tr>
                                 <th style="text-align: left; " id="estatico ">Puro</th>

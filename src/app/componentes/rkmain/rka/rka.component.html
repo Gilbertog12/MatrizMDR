@@ -1,7 +1,9 @@
 <h6 class="article-title">
-    Area</h6>
+    Area
+    <button *ngIf="areaModel.areaStatusId !=='008'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
 
-
+</h6>
+<!-- <p>{{areaModel.areaStatusId}}</p> -->
 <div class="row">
     <div class="col-xl-12">
         <div class="box box-default">
@@ -92,7 +94,7 @@
                         <th></th>
                         <th colspan=2 style="text-align: center"><b>Seguridad y Salud Ocupacional</b></th>
                         <th colspan=2 style="text-align: center"><b>Medio ambiente</b></th>
-                        <th colspan=2 style="text-align: center"><b>Negocio</b></th>
+                        <th colspan=2 style="text-align: center"><b>Operacional</b></th>
                     </tr>
                     <tr>
                         <th style="text-align: left;" id="estatico">
@@ -150,7 +152,7 @@
                         <th></th>
                         <th colspan=2 style="text-align: center"><b>Seguridad y Salud Ocupacional</b></th>
                         <th colspan=2 style="text-align: center"><b>Medio ambiente</b></th>
-                        <th colspan=2 style="text-align: center"><b>Negocio</b></th>
+                        <th colspan=2 style="text-align: center"><b>Operacional</b></th>
                     </tr>
                     <tr>
                         <th style="text-align: left;" id="estatico">

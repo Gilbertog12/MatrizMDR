@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
+import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
+
 
 
 @NgModule({
@@ -27,6 +29,7 @@ import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
     RkpendaprobModule,
     Rkvalidarmodule,
     RkpendaprobModule,
+    cajadashboardModule
   ],
   declarations: [RkdComponent]
 })

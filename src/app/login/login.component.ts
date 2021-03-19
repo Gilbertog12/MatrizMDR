@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { isNullOrUndefined } from 'util';
 import Swal2 from 'sweetalert2';
+import { FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -27,10 +28,16 @@ export class LoginComponent implements OnInit {
               private controlService: ControlsService,
               private route: ActivatedRoute,
               private router: Router,
+              private FormBuilder:FormBuilder
               ) {
     this.Version();
-    this.prueba();
+    // this.prueba();
               }
+
+    LoginForm = this.FormBuilder.group({
+      username : [''],
+      password : [''],
+        })
 
   public model: any = {};
   returnUrl: string;
@@ -54,12 +61,12 @@ export class LoginComponent implements OnInit {
   array2 = [];
 
 
-  prueba(){
+  // prueba(){
 
-    this.methodService.Ambiente(this.Ambiente,this.pass)
-    console.info(this.Ambiente +' '+ this.pass)
+  //   this.methodService.Ambiente(this.Ambiente,this.pass)
+  //   console.info(this.Ambiente +' '+ this.pass)
     
-  }
+  // }
 
   login() {
     localStorage.setItem('isLoggedinApp', 'false');
@@ -106,7 +113,7 @@ export class LoginComponent implements OnInit {
      },
      (error) => {
        this.controlService.closeSpinner(spinner);
-       this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
+       this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet ');
      });
 
   }
@@ -213,8 +220,18 @@ export class LoginComponent implements OnInit {
         
         this.methodService.getAPI().subscribe(
           (data2) => {
+
+            // console.log(data['text'])
+
+          let cadena1 = data['text']
+          let cadena2 = cadena1.slice(65,80)
+          let nuevaversion = ' version 3.1.1 '
+          let nuevaleyenda = cadena1.replace(cadena2,nuevaversion)
+
+          // console.log(nuevaleyenda)
+          
             
-            this.autentication.showInfo(true, data['text'] + data2[0], {}, false);
+            this.autentication.showInfo(true, nuevaleyenda + data2[0], {}, false);
         });
     });
   }
