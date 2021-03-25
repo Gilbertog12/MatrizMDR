@@ -10,6 +10,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
 import { rkReasonRejectModule } from '../../../rk-reason-reject/rkReasonReject.module';
 import { FiltroPipe } from '../rkvalidar/filtro.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -17,6 +18,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   imports: [
     CommonModule,
+    HttpClientModule,
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,

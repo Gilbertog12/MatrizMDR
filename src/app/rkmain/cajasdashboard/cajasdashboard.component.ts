@@ -14,24 +14,24 @@ export class CajasdashboardComponent implements OnInit {
 
   public dashboardData: any = {
     ENVIAR_A_VALIDAR: 0,
+    ENVIAR_A_VALIDAR_CONSTRUCCION: 0,
+    RECHAZADO: 0,
     POR_VALIDAR: 0,
-    Rechazados: 0,
-    POR_APROBAR: 0,
-    En_Construccion:0
+    POR_APROBAR:0
   };
+  prueba: any;
 
   constructor(private autentication: AuthenticationService, 
     private confirm: MatDialog ,
     public dialogRef: MatDialogRef<CajasdashboardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data)
+      // console.log(data)
       this.data.id,
-      this.data.status,
+      this.data.status
+    }
+    
+    ngOnInit() {
     this.cargarDashboard()
-   }
-
-  ngOnInit() {
-
     
   }
 
@@ -52,13 +52,59 @@ export class CajasdashboardComponent implements OnInit {
             const result = data.success;
             if (result) {
               // this.Cajas.caja1 = data.data[0].atts[1].value.trim()
-              this.dashboardData = {
-                ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
-                POR_VALIDAR: data.data[0].atts[2].value.trim(),
-                Rechazados: data.data[0].atts[3].value.trim(),
-                POR_APROBAR: data.data[0].atts[4].value.trim(),
-                En_Construccion: data.data[0].atts[5].value.trim()
-              };
+              // this.prueba = data.data[0].atts[3].value.trim()
+              // debugger
+              
+              if(this.data.status === '001' || this.data.status === '002'||this.data.status === '003'||this.data.status === '006'){
+                this.dashboardData = {
+
+                  ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
+                  ENVIAR_A_VALIDAR_CONSTRUCCION: data.data[0].atts[2].value.trim(),
+                  RECHAZADO: data.data[0].atts[3].value.trim(),
+                  // POR_VALIDAR: data.data[0].atts[4].value.trim(),
+                  // POR_APROBAR:data.data[0].atts[5].value.trim()
+  
+                 /* ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
+                  POR_VALIDAR: data.data[0].atts[2].value.trim(),
+                  Rechazados: data.data[0].atts[3].value.trim(),
+                  POR_APROBAR: data.data[0].atts[4].value.trim(),
+                  En_Construccion: data.data[0].atts[5].value.trim()*/
+                };
+              }else if(this.data.status === '004'){
+                this.dashboardData = {
+
+                  POR_VALIDAR: data.data[0].atts[1].value.trim(),
+                  
+                  // POR_VALIDAR: data.data[0].atts[4].value.trim(),
+                  // POR_APROBAR:data.data[0].atts[5].value.trim()
+  
+                 /* ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
+                  POR_VALIDAR: data.data[0].atts[2].value.trim(),
+                  Rechazados: data.data[0].atts[3].value.trim(),
+                  POR_APROBAR: data.data[0].atts[4].value.trim(),
+                  En_Construccion: data.data[0].atts[5].value.trim()*/
+                };
+                
+
+              }else{
+                this.dashboardData = {
+
+                  POR_VALIDAR: data.data[0].atts[1].value.trim(),
+                  
+                  // POR_VALIDAR: data.data[0].atts[4].value.trim(),
+                  // POR_APROBAR:data.data[0].atts[5].value.trim()
+  
+                 /* ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
+                  POR_VALIDAR: data.data[0].atts[2].value.trim(),
+                  Rechazados: data.data[0].atts[3].value.trim(),
+                  POR_APROBAR: data.data[0].atts[4].value.trim(),
+                  En_Construccion: data.data[0].atts[5].value.trim()*/
+                };
+              }
+              
+
+            // console.log(this.dashboardData)
+
             } else {
               // this.controlService.closeSpinner(spinner);
 
@@ -91,6 +137,16 @@ export class CajasdashboardComponent implements OnInit {
         // panelClass : 'tabla'
 
 
+      });
+      conf.afterClosed()
+      .subscribe(async (result) => {
+        if(result === 'undefined' || !result){
+
+          this.cargarDashboard()
+        }else{
+          this.cargarDashboard()
+
+        }
       })
     }
 
@@ -112,7 +168,18 @@ export class CajasdashboardComponent implements OnInit {
       },
 
 
+
     })
+    conf.afterClosed()
+      .subscribe(async (result) => {
+        if(result === 'undefined' || !result){
+
+          this.cargarDashboard()
+        }else{
+          this.cargarDashboard()
+
+        }
+      })
   }
 
   cancelar() {

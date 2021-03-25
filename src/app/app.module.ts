@@ -99,6 +99,8 @@ import { RkhelpComponent } from './rkmain/rkhelp/rkhelp.component';
 // import { RkhelpComponent } from './rkhelp/rkhelp.component';
 import { rkHelpModule } from './rkmain/rkhelp/rkhelp.module';
 import { CajasdashboardComponent } from './rkmain/cajasdashboard/cajasdashboard.component';
+import { CajaslinkComponent } from './cajaslink/cajaslink.component';
+import { ChartsModule } from './charts/charts.module';
 
 
 
@@ -192,6 +194,9 @@ import { CajasdashboardComponent } from './rkmain/cajasdashboard/cajasdashboard.
     
     
     FilterdataPipe,
+    
+    
+    // CajaslinkComponent,
     
     
     // CajasdashboardComponent,

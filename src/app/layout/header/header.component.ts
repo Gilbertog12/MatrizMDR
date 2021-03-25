@@ -33,7 +33,7 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string
-  public version: string ='Version: 3.1.X'
+  public version: string ='Version: 4.1.0'
   public posicion:string
   public distrito:string
   public usuario2:string

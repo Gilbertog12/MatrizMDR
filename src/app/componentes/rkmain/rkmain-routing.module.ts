@@ -3,6 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { RkmainComponent } from './rkmain.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RkaComponent } from './rka/rka.component';
+import { CajaslinkModule } from '../../cajaslink/cajaslink.module';
+import { CajaslinkComponent } from '../../cajaslink/cajaslink.component';
+
 
 
 
@@ -18,12 +21,15 @@ const routes: Routes = [
       { path: 'rkd/:id/:pid/:sid/:cid/:tid/:did', loadChildren: './rkd/rkd.module#RkdModule'},
       { path: 'rkr/:id/:pid/:sid/:cid/:tid/:did/:rid', loadChildren: './rkr/rkr.module#RkrModule'},
       { path: 'rky/:id/:pid/:sid/:cid/:tid/:did/:rid/:yid', loadChildren: './rky/rky.module#RkyModule'},
-      { path: 'rkapprovals/:key/:status/:version', loadChildren: './rkapprovals/rkapprovals.module#RkapprovalsModule'},
-      {path:'cargando',component:DashboardComponent},
+      { path: 'rkapprovals/:cj/:key/:status', loadChildren: './rkapprovals/rkapprovals.module#RkapprovalsModule'},
+      // { path: 'validar/:key', loadChildren: './rkvalidar/rkvalidar.module#Rkvalidarmodule'},
+      
+      // {path:'caja/:cj',loadChildren: ''},
+      
       
       // {path:'rka/:id',component:RkaComponent}
     ]
-  }
+  },
 ];
 
 @NgModule({

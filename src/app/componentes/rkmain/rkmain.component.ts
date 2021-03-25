@@ -4,7 +4,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeNode } from '@angular/material/tree';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { expand, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService, HttpMethodService, ControlsService } from '../../shared';
 
 import { ConfirmationComponent } from '../../controls/confirmation/confirmation.component';
@@ -28,6 +28,8 @@ import Swal from 'sweetalert'
 // import Swal2 from 
 
 import Swal2 from 'sweetalert2'
+import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
+import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, Colors, Color } from 'ng2-charts';
 
 // import 'jqueryui';
 import { RkhelpComponent } from '../../rkhelp/rkhelp.component';
@@ -454,6 +456,47 @@ export class RkmainComponent implements OnInit,OnChanges {
   bandera= false;
   StatusPadre: string;
   Vcompilacion: string;
+  rutaCjas: any;
+  cj: any;
+
+   // PolarArea
+  
+   public barChartData: ChartDataSets[] = [
+    { data: [300, 500, 100, 40, 120] }
+  ];
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+
+    legend: {
+  display: false,
+ }
+  };
+   
+  public barChartLabels: Label[] = ['ITEMS PENDIENTES DE VALIDAR',
+                                    'ITEMS EN CONSTRUCCION', 
+                                    'ITEMS PENDIENTES DE VALIDAR',
+                                     'ITEMS RECHAZADOS', 
+                                     'ITEMS PENDIENTES POR APROBAR'];
+
+  
+   public chartColors: Array<any> = [
+    {
+      backgroundColor: [
+        "rgba(233, 217, 11, 0.8)",
+        "rgba(145, 145, 145, 0.8)",
+        "rgba(235, 104, 100, 0.8)",
+        "rgba(28, 146, 62, 0.8)",
+        "rgba(59, 133, 205, 0.8)"
+      ]
+    },
+    
+  ];
+
+  
+ 
+   public barChartType: ChartType = 'bar';
+
   constructor(
     private autentication: AuthenticationService,
     private methodService: HttpMethodService,
@@ -462,8 +505,14 @@ export class RkmainComponent implements OnInit,OnChanges {
     private router: Router,
     private renderer: Renderer2,
     public dialog: MatDialog,
-    public Cajas:ServiciocajasService) {
+    public Cajas:ServiciocajasService,
+    public rutas:ActivatedRoute) {
       // consola.log(this.comparador)
+
+      this.rutas.params.subscribe( parametros => {
+        console.log(parametros)
+        this.cj = parametros
+      })
     
     
    
@@ -478,29 +527,29 @@ export class RkmainComponent implements OnInit,OnChanges {
     
     ngOnInit() {
 
-    //   this.href = this.router.url;
-    // var $: any;
+      this.href = this.router.url;
+    var $: any;
 
-    //   const a =  this.router.events.subscribe((val) => {
-    //     if (val['url'] !== undefined) {
-    //       this.href = val['url'];
-    //       if (this.href === '/rkmain') {
-    //         this.showDashboard = true;
-    //         // debugger
-    //         this.cargarDashboard();
-    //         // console.log("epa la arepa")
-    //         // a.unsubscribe()
+      const a =  this.router.events.subscribe((val) => {
+        if (val['url'] !== undefined) {
+          this.href = val['url'];
+          if (this.href === '/rkmain') {
+            this.showDashboard = true;
+            // debugger
+            // this.cargarDashboard();
+            // console.log("epa la arepa")
+            // a.unsubscribe()
                     
-    //       }
-    //       else {
-    //         this.showDashboard = false;
-    //       }
+          }
+          else {
+            this.showDashboard = false;
+          }
           
-    //     }
-    //   });
+        }
+      });
       
       // this.cargarDashboard()
-      this.Vcompilacion = '3.1.'
+      this.Vcompilacion = '4.1.0'
     var  mensaje = 
     `    ======================================
               Version ${this.Vcompilacion}     
@@ -1080,15 +1129,15 @@ export class RkmainComponent implements OnInit,OnChanges {
     
 
   }
-
+  
+  // debugger;
   verTable(item: any) {
     //alert(item.ruta.trim().length.toString());
     switch (item.key.trim().length.toString()) {
       case '2':
         this.router.navigate(['/rka/' + item.key]);
         console.log(item.key + 'hola')
-
-        
+                
         break;
       case '6':
         this.router.navigate(['/rkmain/rkp/' + item.key.substring(0, 2) + '/' + item.key.substring(2, 6)]);
@@ -1111,6 +1160,11 @@ export class RkmainComponent implements OnInit,OnChanges {
       case '27':
         this.router.navigate(['/rkmain/rky/' + item.key.substring(0, 2) + '/' + item.key.substring(2, 6) + '/' + item.key.substring(6, 10) + '/' + item.key.substring(10, 14) + '/' + item.key.substring(14, 18) + '/' + item.key.substring(18, 19) + '/' + item.key.substring(19, 23) + '/' + item.key.substring(23, 27)]);
         break;
+        
+      default:
+        this.rutaCjas = '/rkmain/rkapprovals/'+this.cj
+        this.router.navigate([this.rutaCjas])
+      
     }
   }
 
@@ -2925,6 +2979,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   @HostListener('window:beforeunload', ['$event'])
 beforeunloadHandler(event) {
+  // debugger
     localStorage.clear();
 }
 

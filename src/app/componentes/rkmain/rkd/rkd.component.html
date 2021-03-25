@@ -1,6 +1,6 @@
 <h6 class="article-title">
     Area > Proceso > Subproceso > Actividad > Tarea > Dimension
-    <button *ngIf="dimensionModel.dimensionStatusId !=='008'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="dimensionModel.dimensionStatusId !=='008' && dimensionModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
 
 </h6>
 

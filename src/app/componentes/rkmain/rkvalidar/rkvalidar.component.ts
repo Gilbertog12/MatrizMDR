@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject,Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { AuthenticationService, ControlsService } from '../../../shared';
+import { AuthenticationService, ControlsService, HttpMethodService } from '../../../shared';
 import { Router } from '@angular/router';
 import { ConfirmationComponent } from '../../../controls/confirmation/confirmation.component';
 import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-reject.component';
@@ -23,6 +23,7 @@ export class RkvalidarComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
+    private methodService: HttpMethodService,
     private autentication: AuthenticationService,
     private confirm: MatDialog,
     private router: Router,

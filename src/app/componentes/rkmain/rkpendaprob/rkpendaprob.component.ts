@@ -141,13 +141,13 @@ export class RkpendaprobComponent implements OnInit {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'RE' });
-    // if(this.complete == true){
-    //   _atts.push({ name: 'showCompleted', value: 'N' });
+    if(this.complete == true){
+      _atts.push({ name: 'showCompleted', value: 'N' });
       
-    // }else{
-    //         _atts.push({ name: 'showCompleted', value: 'Y' });
+    }else{
+            _atts.push({ name: 'showCompleted', value: 'Y' });
       
-    // }
+    }
     const spinner = this.controlService.openSpinner();
     
 
@@ -702,9 +702,11 @@ async RestaurarItem() {
                                   {
                                     icon:'success',
                                     text:'Registro Restaurado ',
-                                   
+                                    
+                                    
                                   }
-                                )
+                                  )
+                                  this.cerrar('falso');       
                               }
               
                             }else {
@@ -774,7 +776,10 @@ async RestaurarItem() {
                                     text:'Registro Restaurado ',
                                    
                                   }
+                                  
                                 )
+                                this.cerrar('falso');       
+
                               }
               
                             }else {

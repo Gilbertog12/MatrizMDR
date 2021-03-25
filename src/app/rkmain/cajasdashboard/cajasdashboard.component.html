@@ -1,9 +1,10 @@
-<div class="box box-default">
+<div class="box box-default" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
     <div class="box-body">
         <div class="form-group">
             <div class="row">
                 <div class="col-xl-12 text-center">
                     <h4>Transacciones pendientes</h4>
+                    <!-- {{prueba}} -->
                 </div>
                 <div class="col-xl-2"></div>
                 <div class="col-xl-4 text-center">
@@ -17,7 +18,7 @@
           </a>
                             </p>
 
-                            <p style="font-weight: bold">ITEMS EN CONSTRUCCION {{dashboardData.En_Construccion}}</p>
+                            <p style="font-weight: bold">ITEMS EN CONSTRUCCION {{dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION}}</p>
                             <!-- <a style="font-size: 11px;">(Items en fase de creación, modificación o borrado)</a> -->
                         </div>
                     </div>
@@ -27,7 +28,7 @@
                     <div class="card bg-color-success">
                         <!-- <a class='pasos'>Paso 2</a> -->
                         <div class="card-content">
-                            <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.Rechazados}}</span>
+                            <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.RECHAZADO}}</span>
                             <p><a style="color: black; font-size: 13px;" [routerLink]="" (click)="VerEnviarAprobar()"> ITEMS RECHAZADOS</a></p>
                         </div>
                     </div>
@@ -70,5 +71,3 @@
             <button mat-raised-button color="warn" (click)="cancelar()">Cerrar</button>
         </mat-dialog-actions>
     </div>
-
-</div>

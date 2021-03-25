@@ -36,6 +36,10 @@ import { rkHelpModule } from '../../rkhelp/rkhelp.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RkpendaprobModule } from './rkpendaprob/rkpendaprob.module';
 // import { cajadashboardModule } from '../../rkmain/cajasdashboard/cajasdashboard.module';
+import { CajaslinkModule } from '../../cajaslink/cajaslink.module';
+import { CajaslinkComponent } from '../../cajaslink/cajaslink.component';
+import { ChartsModule } from 'ng2-charts';
+
 
 //
 
@@ -63,18 +67,20 @@ import { RkpendaprobModule } from './rkpendaprob/rkpendaprob.module';
     AddrkrModule,
     AddrkyModule,
     RkpendModule,
-    
     Rkvalidarmodule,
     RKporaprobarmodule,
     RkpendaprobModule,
     LeyendaModule,
     PdfViewerModule,
+    ChartsModule
+
+    // CajaslinkModule,    
     // cajadashboardModule
     
 
     
   ],
-  declarations: [RkmainComponent,  DashboardComponent],
+  declarations: [RkmainComponent,  DashboardComponent,CajaslinkComponent],
 
   exports:[
     RkmainComponent

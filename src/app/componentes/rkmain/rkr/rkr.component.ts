@@ -145,7 +145,8 @@ public Razon : string
                     riesgoAributos: element.atts[25].value,
                     riesgoStatusId: element.atts[26].value,
                     key: element.atts[27].value,
-                    statusParent:element.atts[28].value
+                    statusParent:element.atts[28].value,
+                    CanAdd:element.atts[29].value.trim()
                   };
 
                   if(parseInt(this.riesgoModel.riesgoStatusId) == 1 || parseInt(this.riesgoModel.riesgoStatusId) == 2 ||parseInt(this.riesgoModel.riesgoStatusId) == 6 ){

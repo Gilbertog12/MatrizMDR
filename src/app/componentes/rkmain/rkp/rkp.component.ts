@@ -118,7 +118,8 @@ ver(areaId: string, procesoId: string) {
                   procesoAtributos: element.atts[13].value,
                   procesoStatusId: data.data[0].atts[14].value,
                   key: data.data[0].atts[15].value,
-                  statusParent: data.data[0].atts[16].value
+                  statusParent: data.data[0].atts[16].value,
+                  CanAdd: data.data[0].atts[17].value
 
                 };
                 if(parseInt(this.procesoModel.procesoStatusId) == 1 || parseInt(this.procesoModel.procesoStatusId) == 2 ||parseInt(this.procesoModel.procesoStatusId) == 6 ){

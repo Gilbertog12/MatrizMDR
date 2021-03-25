@@ -138,7 +138,8 @@ public Razon : string
                     dimensionAtributos: element.atts[21].value,
                     dimensionStatusId: element.atts[22].value,
                     key: element.atts[23].value,
-                    statusParent:element.atts[24].value
+                    statusParent:element.atts[24].value,
+                    CanAdd:element.atts[25].value.trim()
                   };
 
                   if(parseInt(this.dimensionModel.dimensionStatusId) == 1 || parseInt(this.dimensionModel.dimensionStatusId) == 2 ||parseInt(this.dimensionModel.dimensionStatusId) == 6 ){

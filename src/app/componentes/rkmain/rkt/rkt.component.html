@@ -1,6 +1,6 @@
 <h6 class="article-title">
     Area > Proceso > Subproceso > Actividad > Tarea
-    <button *ngIf="tareaModel.tareaStatusId !=='008'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(tareaModel.key,tareaModel.tareaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="tareaModel.tareaStatusId !=='008' && tareaModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(tareaModel.key,tareaModel.tareaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
 
 </h6>
 

@@ -119,7 +119,8 @@ public Razon : string
                     subprocesoAtributos: element.atts[15].value,
                     subprocesoStatusId: data.data[0].atts[16].value,
                     key: data.data[0].atts[17].value,
-                    statusParent: data.data[0].atts[18].value
+                    statusParent: data.data[0].atts[18].value,
+                    CanAdd: data.data[0].atts[19].value,
                   };
 
                   if(parseInt(this.subprocesoModel.subprocesoStatusId) == 1 || parseInt(this.subprocesoModel.subprocesoStatusId) == 2 ||parseInt(this.subprocesoModel.subprocesoStatusId) == 6 ){

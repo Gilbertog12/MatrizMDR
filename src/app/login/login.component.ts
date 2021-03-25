@@ -225,7 +225,7 @@ export class LoginComponent implements OnInit {
 
           let cadena1 = data['text']
           let cadena2 = cadena1.slice(65,80)
-          let nuevaversion = ' version 3.1.1 '
+          let nuevaversion = ' version 4.1.0 '
           let nuevaleyenda = cadena1.replace(cadena2,nuevaversion)
 
           // console.log(nuevaleyenda)

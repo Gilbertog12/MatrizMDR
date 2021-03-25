@@ -21,6 +21,8 @@ import swal from 'sweetalert';
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
 import { RkporaprobarComponent } from '../rkporaprobar/rkporaprobar.component';
 import { RkvalidarComponent } from '../rkvalidar/rkvalidar.component';
+import { includes } from 'core-js/fn/array';
+import { ignoreElements } from 'rxjs/operators';
 
 
 @Component({
@@ -77,6 +79,9 @@ public Razon : string
   permisoValidar: boolean;
   percreacion: string;
   dialogRef: any;
+  controlesstatus: any ='';
+  statusc: any = '';
+  controlesstatusa: boolean;
   
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
@@ -101,21 +106,23 @@ public Razon : string
       this.cDurosList = [];
       this.docsList = [];
       this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+      
     });
     
   }
 
   ngOnInit() {
+    this.mostrar()
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
     this.percreacion = localStorage.getItem('NoCreador')
+    // console.log(this.controlesstatus)
+    this.controlesstatus = ''
+
   }
 
 
 
-  negrita(){
-    console.log('hello ')
-  }
   
   
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string, dimensionId: string, riesgoId: string, consecuenciaId: string) {
@@ -246,6 +253,7 @@ public Razon : string
 
 
                         });
+                        
 
                         console.log(this.epfListLectura);
 
@@ -268,6 +276,31 @@ public Razon : string
                           controlDescExt:element.atts[10].value.trim()
 
                         });
+        
+                        // if(element.atts[5].value.trim() !== '008'){
+                            
+
+                          
+
+                        //     this.statusc = element.atts[5].value.trim()
+                          
+                        // }
+                        if(element.atts[5].value.trim() !== '008'){
+
+                          // if(this.controlesstatus !== ''){
+                          //   this.controlesstatus = ''
+                          // }
+
+                          this.controlesstatus = this.controlesstatus+" "+element.atts[5].value.trim();
+
+                        }
+                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
+
+                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
+                        
+
+                       
+                        
                       }
                       
                       
@@ -308,6 +341,16 @@ public Razon : string
 
   
                         });
+                        // if(element.atts[5].value.trim() !== '008'){
+                        //   this.statusc = element.atts[5].value.trim()
+                        // }
+                        if(element.atts[5].value.trim() !== '008'){
+
+                          this.controlesstatus = this.controlesstatus+" "+element.atts[5].value.trim();
+                        }
+                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
+
+                        console.log(this.controlesstatus)
                       }
                       
                     }
@@ -344,6 +387,19 @@ public Razon : string
                           displayDeleteIcon:element.atts[10].value.trim()
 
                       });
+                      // if(element.atts[5].value.trim() !== '008'){
+                      //   if(this.statusc !== '006'){
+
+                      //     this.statusc = element.atts[5].value.trim()
+                      //   }
+                      // }
+                      if(element.atts[7].value.trim() !== '008'){
+
+                        this.controlesstatus = this.controlesstatus+" "+element.atts[7].value.trim();
+                      }
+                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
+
+                        console.log(this.controlesstatus)
                     }
                     }
                     else if (_s.includes('doc')) {
@@ -379,11 +435,25 @@ public Razon : string
                           displayDeleteIcon:element.atts[9].value.trim()
 
                         });
+                        // if(element.atts[5].value.trim() !== '008'){
+                        //   if(this.statusc !== '006'){
+
+                        //     this.statusc = element.atts[5].value.trim()
+                        //   }
+                        // }
+                        if(element.atts[6].value.trim() !== '008'){
+
+                          this.controlesstatus = this.controlesstatus+" "+element.atts[6].value.trim();
+                        }
+                        console.log(this.controlesstatus)
                       }
                     }
                   }
                 }
               });
+              
+              this.controlesstatusa = this.validarcontroles(this.controlesstatus)
+              this.controlesstatus = ''
               this.controlService.closeSpinner(spinner);
             } else {
               this.controlService.closeSpinner(spinner);
@@ -396,6 +466,193 @@ public Razon : string
             this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.consecuenciaModel, false);
           });
     });
+
+    // this.controlesstatus = !this.controlesstatus.includes('008')
+    // console.log(this.controlesstatus)
+
+    // this.validarcontroles(this.controlesstatus)
+  }
+  
+  validarcontroles(string:string){
+
+    
+    
+    if(string !==''){  
+      var arry = string.split(' ')
+    switch (this.btn) {
+      
+      
+      case 'creacion'://LECTURA Y CREACION 
+      
+        arry = arry.sort()
+        arry.filter(status => {
+
+          if(this.statusc === ''){
+
+            if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
+                  
+              this.statusc = status
+
+              
+
+        }else if(status === '004'){
+              this.statusc = status
+              
+                
+        }else{
+
+          if(status === '007'){
+            this.statusc = status
+            
+          }
+
+        } }       
+          
+        }                   
+          )
+          
+        break;        
+        case 'Validacion'://LECTURA Y VALIDACION 
+        
+        // var arry = string.split(' ')
+        arry = arry.sort();
+        arry.filter(status => {
+
+          if(this.statusc === '000' && status === '004' ||this.statusc === '001' &&  status === '004' ||this.statusc === '002' && status === '004' ||this.statusc === '003' && status === '004'||this.statusc === '006' && status === '004'){
+            this.statusc = status
+              
+          }
+          if(this.statusc === '000' && status === '007' ||this.statusc === '001' &&  status === '007' ||this.statusc === '002' && status === '007' ||this.statusc === '003' && status === '007'||this.statusc === '006' && status === '007'){
+            this.statusc = status
+              
+          }
+
+          if(this.statusc ===''){
+
+            if(status === '004'){
+            
+              this.statusc = status
+              
+              }else{
+                if(status === '007'){
+                  
+                  this.statusc = status
+                }else{
+                  if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
+                    this.statusc = status
+  
+                  }
+              }
+            }
+          }  
+          
+          
+      }                   
+      )
+        
+      break;
+
+    /*  case 'validacionaprobacion'://LECTURA Y VALIDACION 
+      
+      var arry = string.split(' ')
+      arry.filter(status => {
+        
+        if(status === '004'){
+          
+          this.statusc = status
+          
+        }else{
+          if(status === '007'){
+            
+            this.statusc = status
+          }else{
+            if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
+              this.statusc = status
+
+            }
+          }
+        }
+      }                   
+      )
+        
+      return !string.includes('008');*/
+      
+     /* case 'creacionvalidacion'://LECTURA Y VALIDACION 
+      
+      var arry = string.split(' ')
+      arry.filter(status => {
+        
+        if(status === '004'){
+          
+          this.statusc = status
+          
+        }else{
+          if(status === '007'){
+            
+            this.statusc = status
+          }else{
+            if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
+              this.statusc = status
+              
+          }
+        }
+    }
+  }                   
+        )
+        
+      return !string.includes('008');*/
+      
+      case 'aprobacion'://LECTURA Y APROBACION
+      
+
+      // var arry = string.split(' ')
+      arry = arry.sort().reverse()
+      arry.filter(status => {
+
+        if(this.statusc === '004' && status === '000' ||this.statusc === '004' &&  status === '001' ||this.statusc === '004' && status === '002' ||this.statusc === '004' && status === '003'||this.statusc === '004' && status === '006'){
+          this.statusc = status
+            
+        }
+
+
+        if(this.statusc === '' ){
+
+        
+
+          if(status === '007'){
+                  
+            this.statusc = '007'
+  
+          }else{
+
+            if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
+              this.statusc = status
+              
+          }else{
+
+            if(status === '004'){
+              this.statusc = '004'
+            }
+          }
+
+          }
+        }
+        
+      }                   
+      )
+      break;   
+      
+      default:
+        break;
+        
+      }
+      return !string.includes('008');
+    
+  }
+
+
+    // return !string.includes('008')
+
   }
 
   
@@ -1754,7 +2011,12 @@ public Razon : string
     
     
     }
-    Caja(key,status){
+    Caja(key,status,statusc?){
+      // debugger
+
+      if(status === '008'){
+        status = statusc
+      }
 
       switch(status){
        case  '001' :
@@ -1773,6 +2035,29 @@ public Razon : string
                 button_close: 'Cerrar',
                 id: key,
                 status: status
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+       case  '000' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: '001'
       
               },
               // panelClass : 'tabla'

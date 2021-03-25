@@ -1,6 +1,7 @@
 <h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea >Dimension > Riesgo > Consecuencia
-    <button *ngIf="consecuenciaModel.consecuenciaStatusId !=='008'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="consecuenciaModel.consecuenciaStatusId !=='008' && consecuenciaModel.CanAdd==='true'|| controlesstatusa && consecuenciaModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId,statusc)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
 </h6>
+
 
 <div class="row">
     <div class="col-xl-12">
@@ -370,13 +371,25 @@
                                                                 <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                             </button>
 
-                                                        <button *ngIf="item.cblandoStatus !=='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
+                                                        <button *ngIf="item.cblandoStatus ==='007' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' ||item.cblandoStatus ==='004' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)"
+                                                            disabled>
+                                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                            </button>
+                                                        <button *ngIf="item.cblandoStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                                        ||item.cblandoStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                                        ||item.cblandoStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                                        ||item.cblandoStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                                        ||item.cblandoStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                                            </button>
+                                                        <button *ngIf="item.cblandoStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                                        ||item.cblandoStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                                        ||item.cblandoStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                                        ||item.cblandoStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                                        ||item.cblandoStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
                                                                 <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                                             </button>
 
-                                                        <button *ngIf="item.cblandoStatus !=='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
-                                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                            </button>
 
 
                                                     </ng-template>
@@ -542,13 +555,20 @@
                                                             <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                         </button>
 
-                                                        <button *ngIf="item.cduroStatus !=='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)">
-                                                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
-                                                        <button *ngIf="item.cduroStatus !=='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)">
-                                                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                        </button>
+                                                        <button *ngIf="item.cduroStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.cduroStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                        <button *ngIf="item.cduroStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.cduroStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
 
 
                                                     </ng-template>
@@ -705,17 +725,20 @@
                                                         <button *ngIf="item.epfStatus !=='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" disabled>
                                                             <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                         </button>
-                                                        <button *ngIf="item.epfStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" disabled>
-                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
-                                                        <button *ngIf="item.epfStatus !=='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)">
-                                                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
-                                                        <!-- <button *ngIf="item.epfStatus !=='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)">
-                                                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                        </button> -->
+                                                        <button *ngIf="item.epfStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.epfStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                        <button *ngIf="item.epfStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.epfStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
 
 
                                                     </ng-template>
@@ -872,14 +895,20 @@
                                                             <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                         </button>
 
-                                                        <button *ngIf="item.docStatus !=='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)">
-                                                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
-                                                        <button *ngIf="item.docStatus !=='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)">
-                                                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
+                                                        <button *ngIf="item.docStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.docStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.docStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.docStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.docStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                        <button *ngIf="item.docStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.docStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.docStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.docStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.docStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
 
                                                     </ng-template>
 
