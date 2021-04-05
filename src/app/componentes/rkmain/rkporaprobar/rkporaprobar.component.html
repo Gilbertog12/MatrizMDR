@@ -24,6 +24,8 @@
                 <th class="sticky-top"><b>Comentarios</b></th>
                 <th class="sticky-top fecha"><b>Fecha</b><br></th>
                 <th class="sticky-top"><b>Entidad</b>
+                    <br>
+                    <input type="text" id="filtro" name="entidadfiltro" [(ngModel)]="entidadfiltro">
                 </th>
                 <th class="sticky-top"><b>Descripcion</b></th>
                 <th class="sticky-top"><b>Area</b></th>
@@ -43,7 +45,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let item of pendList; let indice= index">
+            <tr *ngFor="let item of pendList | filtro:entidadfiltro">
                 <td class="sticky">
                     <input type="checkbox" class="checkmark" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">

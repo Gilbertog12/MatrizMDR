@@ -7,6 +7,7 @@ import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.compo
 import { FreshPipe } from '../../../fresh.pipe';
 import Swal2 from 'sweetalert2';
 import { includes } from 'core-js/fn/array';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class RkpendaprobComponent implements OnInit {
   FechaDesde= ''
   FechaDesdeServicio= ''
   FechaHastaServicio= ''
+  entidadfiltro= ''
   FechaHasta= ''
   public jerarquia:any
   permi: boolean;
@@ -61,6 +63,7 @@ export class RkpendaprobComponent implements OnInit {
     private autentication: AuthenticationService,
     private confirm: MatDialog,
     private router: Router,
+    private _Recargarble:ServiciocajasService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.recargar();
     this.aperfil()
@@ -437,15 +440,24 @@ export class RkpendaprobComponent implements OnInit {
     
     
 
+  ejecutar(){
+    this._Recargarble.Recargar$.emit(true)
+  }
+  
+
+
   cerrar(mensaje:any) {
-    console.log(mensaje)
+    // console.log(mensaje)
 
     if(mensaje !==''){
-
+      this.ejecutar()
       this.dialogRef.close(mensaje);
     }else{
 
+      this.ejecutar()
       this.dialogRef.close(false);
+      
+      
     }
 
   }
@@ -515,7 +527,10 @@ export class RkpendaprobComponent implements OnInit {
                                           // timer: 3000
                                         }
                                         )
-                                        this.cerrar('falso');       
+                                        // this.cerrar('falso');  
+                                        this.totalMarcados = 0
+                                        this.recargar()
+  
                                       }
                     
                                   }else {
@@ -587,7 +602,10 @@ export class RkpendaprobComponent implements OnInit {
                                           // timer: 3000
                                         }
                                         )
-                                        this.cerrar('falso');       
+                                        // this.cerrar('falso'); 
+                                        this.totalMarcados = 0  
+                            this.recargar()
+
                                       }
                     
                                   }else {
@@ -706,7 +724,10 @@ async RestaurarItem() {
                                     
                                   }
                                   )
-                                  this.cerrar('falso');       
+                                  // this.cerrar('falso'); 
+                                  this.totalMarcados = 0
+                                  this.recargar()
+
                               }
               
                             }else {
@@ -729,7 +750,7 @@ async RestaurarItem() {
               },(error)=>{
                 this.controlService.closeSpinner(spinner);
               })   
-             this.cerrar('falso');       
+            //  this.cerrar('falso');       
          
         
       } 
@@ -778,7 +799,10 @@ async RestaurarItem() {
                                   }
                                   
                                 )
-                                this.cerrar('falso');       
+                                // this.cerrar('falso');
+                                this.totalMarcados = 0
+                              this.recargar()
+
 
                               }
               
@@ -802,7 +826,7 @@ async RestaurarItem() {
               },(error)=>{
                 this.controlService.closeSpinner(spinner);
               })   
-             this.cerrar('falso');       
+            //  this.cerrar('falso');       
          
         
       }

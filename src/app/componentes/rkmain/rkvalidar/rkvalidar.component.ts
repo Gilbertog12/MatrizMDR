@@ -7,6 +7,8 @@ import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-rej
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import { async } from '@angular/core/testing';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
+
 
 @Component({
   selector: 'app-rkvalidar',
@@ -20,6 +22,7 @@ export class RkvalidarComponent implements OnInit {
   soloControles: any;
   controles: string;
   comments='';
+  entidadfiltro='';
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
@@ -27,6 +30,7 @@ export class RkvalidarComponent implements OnInit {
     private autentication: AuthenticationService,
     private confirm: MatDialog,
     private router: Router,
+    private _Recargarble:ServiciocajasService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.data.key,
       this.data.status
@@ -439,18 +443,27 @@ export class RkvalidarComponent implements OnInit {
     }
 
 
-  cerrar(mensaje:any) {
-    console.log(mensaje)
-
-    if(mensaje !==''){
-
-      this.dialogRef.close(mensaje);
-    }else{
-
-      this.dialogRef.close(false);
+    ejecutar(){
+      this._Recargarble.Recargar$.emit(true)
     }
-
-  }
+    
+  
+  
+    cerrar(mensaje:any) {
+      // console.log(mensaje)
+  
+      if(mensaje !==''){
+        this.ejecutar()
+        this.dialogRef.close(mensaje);
+      }else{
+  
+        this.ejecutar()
+        this.dialogRef.close(false);
+        
+        
+      }
+  
+    }
 
   ActivarFuncion(){
       
@@ -603,7 +616,10 @@ checkUncheckAll() {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
                             Swal2.fire('Registro Enviado a Aprobar','', 'success' )
-                            this.cerrar('falso');
+                            // this.cerrar('falso');
+                            this.totalMarcados = 0
+                            this.recargar()
+
     
                             
                           } else {
@@ -651,7 +667,10 @@ checkUncheckAll() {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
                             Swal2.fire('Registro Enviado a Aprobar','', 'success' )
-                            this.cerrar('falso');
+                            // this.cerrar('falso');
+                            this.totalMarcados = 0
+                            this.recargar()
+
     
                             
                           } else {
@@ -906,7 +925,10 @@ checkUncheckAll() {
                 icon:'success',
                 
               })
-              this.cerrar('falso')
+              // this.cerrar('falso')
+              this.totalMarcados = 0
+              this.recargar()
+
       
             }
       
@@ -980,7 +1002,10 @@ checkUncheckAll() {
                         icon:'success',
                         
                       })
-                      this.cerrar('falso')
+                      // this.cerrar('falso')
+                      this.totalMarcados = 0
+                      this.recargar()
+
               
                     }
               

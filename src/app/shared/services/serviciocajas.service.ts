@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiciocajasService {
+
+
+  Recargar$ = new EventEmitter<boolean>()
 
   constructor() { }
 

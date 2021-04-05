@@ -122,8 +122,10 @@ export class RkpendComponent implements OnInit {
   MostrarRestaurar: boolean = false;
   ArrAux: string = "";
   rutaJerarquia: any;
+  entidadfiltro: any = '';
   soloControles: boolean;
   totalMarcados: number= 0;
+  buscar: boolean = false;
   
 
   
@@ -135,6 +137,7 @@ export class RkpendComponent implements OnInit {
     private autentication: AuthenticationService,
     private confirm: MatDialog,
     private router: Router,
+    private _Recargarble:ServiciocajasService,
     
     // public papa :RkmainComponent,
     
@@ -165,19 +168,36 @@ export class RkpendComponent implements OnInit {
 
   }
 
-  
+  Mostrarbarra(){
+
+    if(this.buscar){
+      this.buscar= true
+     }else{
+
+      this.buscar= true
+    }
+  }
+
+  ejecutar(){
+    this._Recargarble.Recargar$.emit(true)
+  }
   
 
 
   cerrar(mensaje:any) {
-    // console.log(mensaje)
+    console.log(mensaje)
 
+    // debugger
     if(mensaje !==''){
 
+      this.ejecutar()
       this.dialogRef.close(mensaje);
     }else{
-
-      this.dialogRef.close(false);
+        // if(mensaje === 'undefined'){
+          this.dialogRef.close(false);
+        // }
+      
+      
     }
 
   }
@@ -260,7 +280,11 @@ export class RkpendComponent implements OnInit {
     
                             Swal2.fire('Registro Enviado a Validar','', 'success' )
                             localStorage.setItem('isSendToValidate','1')
-                            this.cerrar('falso');
+                            // this.cerrar('falso');
+                            this.totalMarcados = 0
+
+                            this.recargar()
+                          
     
                             
                           } else {
@@ -311,7 +335,10 @@ export class RkpendComponent implements OnInit {
     
                             Swal2.fire('Registro Enviado a Validar','', 'success' )
                             localStorage.setItem('isSendToValidate','1')
-                            this.cerrar('falso');
+                            // this.cerrar('falso');
+                            this.totalMarcados = 0
+                            this.recargar()
+
     
                             
                           } else {
@@ -542,6 +569,7 @@ export class RkpendComponent implements OnInit {
                                  
                                 }
                               )
+                              this.recargar
                             }
             
                           }else {
@@ -564,7 +592,7 @@ export class RkpendComponent implements OnInit {
             },(error)=>{
               this.controlService.closeSpinner(spinner);
             })   
-           this.cerrar('falso');       
+          //  this.cerrar('falso');       
        
       
     }

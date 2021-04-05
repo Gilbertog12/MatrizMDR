@@ -528,7 +528,7 @@
             <router-outlet></router-outlet>
         </div> -->
         <div class="col-xl-8" id="refrescar">
-            <div class="box box-default" *ngIf="showDashboard === true">
+            <div *ngIf="showDashboard === true">
                 <div class="row">
                     <div *ngIf="showDashboard === true && !sololectura" class="col-xl-2"></div>
                     <div *ngIf="showDashboard === true && !sololectura" class="col-xl-2"></div>
@@ -537,10 +537,13 @@
                         <img src="assets/images/Mdr.png" alt="" class="img-fluid">
                     </div>
                 </div>
-                <div style="display: block;" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+                <!-- <br>
+                <div>
+
                     <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [colors]="chartColors" [chartType]="barChartType">
-                 </canvas>
-                </div>
+                     </canvas>
+                </div> -->
+
             </div>
 
             <router-outlet></router-outlet>

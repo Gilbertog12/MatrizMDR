@@ -416,7 +416,8 @@ public Razon : string
                           docStatus: element.atts[6].value.trim(),
                           docVersion: element.atts[7].value.trim(),
                           seqNum: element.atts[8].value.trim(),
-                          displayDeleteIcon:element.atts[9].value.trim()
+                          displayDeleteIcon:element.atts[9].value.trim(),
+                          pendingDelete:element.atts[10].value.trim(),
 
                         });
 

@@ -239,7 +239,7 @@
 
                                             <ng-template [ngIf]="actividadModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
 
-                                                <ng-template [ngIf]="actividadModel.actividadStatusId ==='001' || actividadModel.actividadStatusId ==='008'" [ngIfElse]='opcion2'>
+                                                <ng-template [ngIf]="actividadModel.actividadStatusId ==='001' || actividadModel.actividadStatusId ==='002'|| actividadModel.actividadStatusId ==='008'" [ngIfElse]='opcion2'>
 
                                                     <button class="btn btn-sm btn-light btn-round " (click)="eliminarstdjob(item)">
                                                         <img class="img-circle " src="assets/images/Delete.png " style="width: 10px; height: 10px; ">
@@ -278,13 +278,14 @@
                         <img class="img-circle " src="assets/images/Help.png " style="width: 10px; height: 10px; ">
                     </button>
                                 </td>
-                                <td *ngIf='item.statusId ==="001" || item.statusId ==="002"||item.statusId ==="003"|| item.statusId ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (*)</a></td>
+                                <!-- <td *ngIf='item.statusId ==="001" || item.statusId ==="002"||item.statusId ==="003"|| item.statusId ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (*)</a></td>
                                 <td *ngIf='item.statusId ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (**)</a></td>
                                 <td *ngIf='item.statusId ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (***)</a></td>
                                 <td *ngIf='item.statusId ==="000"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (R)</a></td>
-                                <td *ngIf='item.statusId ==="010"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                <td *ngIf='item.statusId ==="010"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; "> (R)</a></td> -->
                                 <!-- <td *ngIf='item.statusId !=="008 "' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}<a style="font-size: 11px;color: red; ">(*)</a></td> -->
-                                <td *ngIf='item.statusId === "008"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}</td>
+                                <!-- <td *ngIf=' item.statusId ==="008"' class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}</td> -->
+                                <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobNo}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobDesc}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobTaskNo}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobTaskDesc}}</td>

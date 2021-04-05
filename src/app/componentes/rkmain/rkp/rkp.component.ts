@@ -777,6 +777,30 @@ if(color ){
   Caja(key,status){
 
     switch(status){
+      case  '000' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: '001'
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+        
      case  '001' :
 
         this.confirm.open(CajasdashboardComponent,

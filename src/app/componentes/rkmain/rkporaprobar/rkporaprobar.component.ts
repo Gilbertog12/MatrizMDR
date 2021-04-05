@@ -7,6 +7,8 @@ import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-rej
 import Swal2 from 'sweetalert2';
 import Swal from 'sweetalert';
 import { includes } from 'core-js/fn/array';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
+  
 
 @Component({
   selector: 'app-rkporaprobar',
@@ -31,6 +33,7 @@ export class RkporaprobarComponent implements OnInit {
   controles: string;
   soloControles: boolean;
   comments: string ='';
+  entidadfiltro: string ='';
   TotalRegistros :number =0
   totalMarcados: number = 0;
 
@@ -39,6 +42,7 @@ export class RkporaprobarComponent implements OnInit {
     private autentication: AuthenticationService,
     private confirm: MatDialog,
     private router: Router,
+    private _Recargarble:ServiciocajasService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.data.key,
       this.data.status
@@ -440,19 +444,27 @@ export class RkporaprobarComponent implements OnInit {
     }
 
 
-  cerrar(mensaje:any) {
-    console.log(mensaje)
-
-    if(mensaje !==''){
-
-      this.dialogRef.close(mensaje);
-    }else{
-
-      this.dialogRef.close(false);
+    ejecutar(){
+      this._Recargarble.Recargar$.emit(true)
     }
-
-  }
-
+    
+  
+  
+    cerrar(mensaje:any) {
+      // console.log(mensaje)
+  
+      if(mensaje !==''){
+        this.ejecutar()
+        this.dialogRef.close(mensaje);
+      }else{
+  
+        this.ejecutar()
+        this.dialogRef.close(false);
+        
+        
+      }
+  
+    }
 
   checkUncheckAll() {
     // tslint:disable-next-line: prefer-for-of
@@ -505,7 +517,10 @@ export class RkporaprobarComponent implements OnInit {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
                             Swal2.fire('Registro Aprobado','', 'success' )
-                            this.cerrar('falso');
+                            // this.cerrar('falso');
+                            this.totalMarcados = 0
+                            this.recargar()
+
     
                             
                           } else {
@@ -552,7 +567,10 @@ export class RkporaprobarComponent implements OnInit {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
                             Swal2.fire('Registro Aprobado','', 'success' )
-                            this.cerrar('falso');
+                            // this.cerrar('falso');
+                            this.totalMarcados = 0
+                            this.recargar()
+
     
                             
                           } else {
@@ -910,7 +928,10 @@ isOnlyControl(arreglo)
                         icon:'success',
                         
                       })
-                      this.cerrar('falso')
+                      // this.cerrar('falso')
+                      this.totalMarcados = 0
+                      this.recargar()
+
               
                     }
               
@@ -985,7 +1006,10 @@ isOnlyControl(arreglo)
                 icon:'success',
                 
               })
-              this.cerrar('falso')
+              // this.cerrar('falso')
+              this.totalMarcados = 0
+              this.recargar()
+
       
             }
       

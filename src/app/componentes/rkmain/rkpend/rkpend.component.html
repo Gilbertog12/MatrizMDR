@@ -53,6 +53,10 @@
                 <th class="sticky-top"><b>Comentarios</b></th>
                 <th class="sticky-top fecha"><b>Fecha</b><br></th>
                 <th class="sticky-top"><b>Entidad</b>
+
+                    <br>
+                    <input type="text" id="filtro" name="entidadfiltro" [(ngModel)]="entidadfiltro">
+                    <!-- <button (click)="Mostrarbarra()"><i class="fa fa-search"></i></button> -->
                 </th>
                 <th class="sticky-top"><b>Descripcion</b></th>
                 <th class="sticky-top"><b>Area</b></th>
@@ -72,7 +76,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let item of pendList">
+            <tr *ngFor="let item of pendList | filtro: entidadfiltro">
                 <td class="sticky">
                     <input type="checkbox" class="checkmark" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
@@ -129,8 +133,11 @@
 </mat-dialog-content>
 <span class="contador">{{totalMarcados}}/{{TotalRegistros}}</span>
 
+
 <mat-dialog-actions align="end" cdkDragHandle>
+
     <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button>
+    <!-- <button mat-raised-button color="warn" (click)="ejecutar()">{{ data.button_close }}</button> -->
     <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
         <button *ngIf="btn === creacion || btn === administrador || btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola('enviar a validar')">Enviar a Validar</button>
         <button *ngIf="btn === creacion  && MostrarRestaurar || btn === administrador  && MostrarRestaurar|| btn === creacionvalidacion  && MostrarRestaurar || btn ===  creacionaprobacion && MostrarRestaurar" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>

@@ -12,7 +12,7 @@ export class FiltroPipe implements PipeTransform {
       
         
         for( const pendList of value){
-            if(pendList.Fecha.indexOf(arg) > -1 ){
+            if(pendList.rutaJerarquia.indexOf(arg.toUpperCase()) > -1 ){
               resultPost.push(pendList);
             }
         }

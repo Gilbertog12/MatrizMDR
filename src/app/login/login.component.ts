@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   user:string
   distrito:string
   posicion: string
+  recordar: boolean;
   
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -49,6 +50,8 @@ export class LoginComponent implements OnInit {
      //get return url from route parameters or default to '/'
      this.returnUrl = isNullOrUndefined(this.route.snapshot.queryParams['returnUrl']) || this.route.snapshot.queryParams['returnUrl'] === '/' || this.route.snapshot.queryParams['returnUrl'] === '' ? '/rkmain' : this.route.snapshot.queryParams['returnUrl'];
     
+    
+      
 
     
     
@@ -77,6 +80,8 @@ export class LoginComponent implements OnInit {
      
 
     this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
+
+    
     
     this.autentication.login_token(this.model.username, this.model.password, this.model.district, this.model.position)
      .subscribe(
@@ -92,7 +97,7 @@ export class LoginComponent implements OnInit {
              localStorage.setItem('showDashboard', 'true');*/
 
              
-             console.log(result);
+            //  console.log(result);
              localStorage.setItem('isLoggedinApp', 'true');
              localStorage.setItem('tk', result);
              this.router.navigate([this.returnUrl]);
@@ -139,9 +144,9 @@ export class LoginComponent implements OnInit {
           
           for(var key in data['data'][0]['atts']){
             
-            if(data['data'][0]['atts'].hasOwnProperty(key)){
-              // console.log(JSON.stringify(data['data'][0]['atts'][key]));
-            }
+            // if(data['data'][0]['atts'].hasOwnProperty(key)){
+            //   // console.log(JSON.stringify(data['data'][0]['atts'][key]));
+            // }
             
             this.array1.push(data['data'][0]['atts'][key]);
             
@@ -175,9 +180,15 @@ export class LoginComponent implements OnInit {
             }
             
             this.array2.push(data['data'][0]['atts'][key]);
-            this.positions = this.array2;           
+            this.positions = this.array2; 
+            
+            
             
           }
+          // console.log(this.positions[0])
+          // if(this.positions.length == 1){
+          // this.model.position= this.positions
+          // }
           
           
           this.controlService.closeSpinner(spinner);
@@ -215,25 +226,32 @@ export class LoginComponent implements OnInit {
   
 
   copyright() {
-    this.methodService.getJSON().subscribe(
-      (data) => {
+    // this.methodService.getJSON().subscribe(
+    //   (data) => {
         
-        this.methodService.getAPI().subscribe(
-          (data2) => {
+    //     this.methodService.getAPI().subscribe(
+    //       (data2) => {
 
-            // console.log(data['text'])
+    //         // console.log(data['text'])
 
-          let cadena1 = data['text']
-          let cadena2 = cadena1.slice(65,80)
-          let nuevaversion = ' version 4.1.0 '
-          let nuevaleyenda = cadena1.replace(cadena2,nuevaversion)
+    //       let cadena1 = data['text']
+    //       let cadena2 = cadena1.slice(65,80)
+    //       let nuevaversion = ' version 4.1.2 '
+    //       let nuevaleyenda = cadena1.replace(cadena2,nuevaversion)
 
-          // console.log(nuevaleyenda)
+    //       // console.log(nuevaleyenda)
           
             
-            this.autentication.showInfo(true, nuevaleyenda + data2[0], {}, false);
-        });
-    });
+    //         this.autentication.showInfo(true, nuevaleyenda + data2[0], {}, false);
+    //     });
+    // });
+
+    Swal2.fire({
+      icon:'info',
+      html:"Matriz de riesgos, Copyright 2019. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.1.4 <br />Fecha de compilación: 2021-03-30 <br />",
+      showCloseButton: true
+      
+    })
   }
 
   Version() {

@@ -30,6 +30,10 @@
 //     position: sticky;
 //     left: 0;
 // }
+#filtro {
+    min-width: 200px;
+}
+
 .cebra .sticky {
     position: sticky;
     min-width: 60px !important;
@@ -73,9 +77,8 @@
     min-width: 200px;
     padding: 0.5rem;
     text-align: left;
-    cursor:text;
+    cursor: text;
 }
-
 
 .cebra th:last-child,
 .cebra td:last-child {

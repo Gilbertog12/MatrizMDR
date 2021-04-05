@@ -1125,7 +1125,11 @@ public canAdd : string
     (data) => {
     if (data.success === true) {
       if ( data.data[0].atts[1] ) {
-        this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.tareaModel, data.redirect);
+        // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.tareaModel, data.redirect);
+        Swal2.fire({
+          icon:'success',
+          text:data.data[0].atts[1].value
+        })
       }
       this.tareaModel = {};
       this.dimensionesList = [];
@@ -1134,7 +1138,11 @@ public canAdd : string
       this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
 
     } else {
-      this.autentication.showMessage(data.success, data.message, this.tareaModel, data.redirect);
+      // this.autentication.showMessage(data.success, data.message, this.tareaModel, data.redirect);
+      Swal2.fire({
+        icon:'error',
+        text:data.message
+      })
     }
     this.controlService.closeSpinner(spinner);
     },
@@ -1166,6 +1174,32 @@ public canAdd : string
   Caja(key,status){
 
     switch(status){
+
+      case  '000' :
+  
+          this.confirm.open(CajasdashboardComponent,
+            {
+              hasBackdrop: true,
+              id: 'drag',
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items en fase de creacion, modificacion o eliminacion',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: '001'
+      
+              },
+              // panelClass : 'tabla'
+      
+      
+            });
+        break;
+
+        
      case  '001' :
 
         this.confirm.open(CajasdashboardComponent,

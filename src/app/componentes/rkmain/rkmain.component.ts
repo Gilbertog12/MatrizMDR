@@ -108,6 +108,7 @@ export class DynamicFlatNode {
       change.removed.slice().reverse().forEach(node => this.toggleNode(node, false));
     }
   }
+  
 
   
   /**
@@ -345,7 +346,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   
   
   public href: any = '';
-  public showDashboard: Boolean = true;
+  public showDashboard: Boolean = false;
   public color = 'accent';
   public checked = false;
   public tittle = 'Validar/Aprobar';
@@ -462,11 +463,42 @@ export class RkmainComponent implements OnInit,OnChanges {
    // PolarArea
   
    public barChartData: ChartDataSets[] = [
-    { data: [300, 500, 100, 40, 120] }
+    { data: [300, 100, 40, 120] }
   ];
 
   public barChartOptions: ChartOptions = {
     responsive: true,
+
+    tooltips: {
+      enabled: false
+   },
+
+    title: {
+      display: true,
+      text: "Transacciones Pendientes",
+      fontSize: 30
+    },
+
+    animation: {
+      onComplete: function () {
+        var ctx = this.chart.ctx;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        var chart = this;
+        var datasets = this.config.data.datasets;
+
+        datasets.forEach(function (dataset: Array<any>, i: number) {
+          ctx.font = "10px Arial";
+
+
+          ctx.fillStyle = "Black";
+          chart.getDatasetMeta(i).data.forEach(function (p: any, j: any) {
+            ctx.fillText(datasets[i].data[j], p._model.x, p._model.y -5);
+          });
+
+        });
+      }
+    },
 
     legend: {
   display: false,
@@ -474,7 +506,6 @@ export class RkmainComponent implements OnInit,OnChanges {
   };
    
   public barChartLabels: Label[] = ['ITEMS PENDIENTES DE VALIDAR',
-                                    'ITEMS EN CONSTRUCCION', 
                                     'ITEMS PENDIENTES DE VALIDAR',
                                      'ITEMS RECHAZADOS', 
                                      'ITEMS PENDIENTES POR APROBAR'];
@@ -484,7 +515,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     {
       backgroundColor: [
         "rgba(233, 217, 11, 0.8)",
-        "rgba(145, 145, 145, 0.8)",
+        // "rgba(145, 145, 145, 0.8)",
         "rgba(235, 104, 100, 0.8)",
         "rgba(28, 146, 62, 0.8)",
         "rgba(59, 133, 205, 0.8)"
@@ -549,7 +580,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       });
       
       // this.cargarDashboard()
-      this.Vcompilacion = '4.1.0'
+      this.Vcompilacion = '4.1.4'
     var  mensaje = 
     `    ======================================
               Version ${this.Vcompilacion}     
@@ -569,6 +600,17 @@ export class RkmainComponent implements OnInit,OnChanges {
     // this.cargarDashboardData(); 
     
     // console.log(this.SL)
+
+    this.Cajas.Recargar$.subscribe(resp=>{
+      if(resp){
+       
+
+      this.recargarPadre()
+        
+      }
+    })
+
+
 
     this.usuario = localStorage.getItem('Usuario')
     this.posicion = localStorage.getItem('Posicion')
@@ -590,8 +632,8 @@ export class RkmainComponent implements OnInit,OnChanges {
         
 
           // this.abrirNodoYSeleccionar();
-          this.recargarArbol();
-          this.router.navigate(['/rkmain/']); 
+          this.recargarPadre();
+          // this.router.navigate(['/rkmain/']); 
 
         
       }
@@ -646,6 +688,8 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
 
   }*/
+
+  
 
   cargarDashboard() {
     let _atts = [];
@@ -775,12 +819,21 @@ export class RkmainComponent implements OnInit,OnChanges {
   }
 
   abrirNodo() {
+    
     this.treeControl.collapse(this.getSelection);
     this.treeControl.expand(this.getSelection);
+    this.getSelection= this.getSelection
     console.log(this.getSelection)
     // localStorage.setItem('seleccion',this.getSelection)
     
   };
+
+
+  superMetodo(){
+    this.treeControl.collapse(this.getSelection);
+    this.treeControl.expand(this.getSelection);
+    console.log(this.getSelection)
+  }
 
   //tema del refresh/
   abrirNodoYSeleccionar() {
@@ -794,7 +847,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         document.getElementById(key).style.backgroundColor= '#cff5e9';
     }else{
       
-      console.log('estoy aqui')
+      // console.log('estoy aqui')
       console.log(key)
       console.log(this.getSelection)
       this.treeControl.collapse(JSON.parse(localStorage.getItem('comparar')));
@@ -822,8 +875,17 @@ export class RkmainComponent implements OnInit,OnChanges {
     // this.ver(localStorage.getItem('keySelected'))
   };
 
-  recargarPadre() {
-    let getParent = this.dataSource.getParent(this.getSelection);
+  recargarPadre(ruta?) {
+    let getParent
+    debugger;
+    if(ruta){
+
+       getParent = this.dataSource.getParent(ruta);
+    }else{
+
+     getParent = this.dataSource.getParent(this.getSelection);
+    }
+    console.log(this.getSelection)
     this.getSelection = getParent;
     if (typeof (this.getSelection) === 'undefined') {
       this.recargarArbol();
@@ -1059,13 +1121,9 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   ver(nodo: any) {
     
-    if(document.getElementById(localStorage.getItem('UltimoEnviado')))
-    {
-      document.getElementById(localStorage.getItem('UltimoEnviado')).style.backgroundColor= '#ffff';
-      // document.getElementById(localStorage.getItem('UltimoEnviado')).className= 'background-highlight';
-      
+    // localStorage.setItem('nodo',JSON.stringify(nodo))
 
-    }
+    this.getSelection= nodo
 
     this.router.navigate(['/rkmain/' + nodo.route]);
     localStorage.setItem('isSelectedNode', 'true');
@@ -1258,13 +1316,15 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   }	   
 
+  
+
   async eliminar(node) {
 
     //console.log(node);
     // this.mensajes(node.key)
     this.getSelection = node;
 
-        
+    // console.log(this.getSelection)
 
     if(node.status === '008'){
 
@@ -1351,7 +1411,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             obj.subscribe(
               (data) => {
                 if (data.success === true) {
-                  if (data.data[0].atts[0] === 'E' ) {
+                  if (data.data[0].atts[0].value === 'I' ) {
 
                     console.log(data.data[0].atts[1])
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, node, data.redirect);
@@ -1610,8 +1670,11 @@ export class RkmainComponent implements OnInit,OnChanges {
   
             obj.subscribe(
               (data) => {
+                debugger;
                 if (data.success === true) {
-                  if (data.data[0].atts[1]) {
+                  if (data.data[0].atts[0].value === 'I' ) {
+
+                    console.log(data.data[0].atts[1])
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, node, data.redirect);
                     Swal2.fire({
                       html:'Registro Eliminado',
@@ -1623,17 +1686,150 @@ export class RkmainComponent implements OnInit,OnChanges {
                     
        
                     
+				   
+				 
+                  }else{
+																									 
+                    
+                    console.log(data.data[0].atts[0])
+                    console.log(data.data[0].atts[1])
+                  Swal2.fire({
+                    html: data.data[0].atts[1].value,
+                    icon: 'error',
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor:'#3085d6',
+                    cancelButtonColor: '#d33'
+                    // timer: 3500
+                    
+                  }).then((result)=>{
+                    if(result.value){
+                      let re = '/\,/gi'
+                      var Responsables = data.data[0].atts[2].value
+                      var responsables = Responsables.split(',')
+                      var texto = '';
+                      for(let i =0 ; i < responsables.length ; i++){
+                         texto = texto + `${responsables[i]}<br>` 
+                      }
+                      
+
+                      Swal2.fire({
+                        title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
+                        
+                        html:  texto,
+                        showCancelButton: true,
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor:'#3085d6',
+                        cancelButtonColor: '#d33'
+                        
+                      }).then((result)=>{
+                        if(result.value){
+
+                          let _atts = [];
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+  
+            let _ids = [];
+            _ids = node.route.substring(4, node.route.length).split('/');
+  
+            switch (_ids.length) {
+              case 1:
+                _atts.push({ name: 'action', value: 'AREA_DELETE' });
+                break;
+              case 2:
+                _atts.push({ name: 'action', value: 'PROCESO_DELETE' });
+                break;
+              case 3:
+                _atts.push({ name: 'action', value: 'SUBPROCESO_DELETE' });
+                break;
+              case 4:
+                _atts.push({ name: 'action', value: 'ACTIVIDAD_DELETE' });
+                break;
+              case 5:
+                _atts.push({ name: 'action', value: 'TAREA_DELETE' });
+                break;
+              case 6:
+                _atts.push({ name: 'action', value: 'DIMENSION_DELETE' });
+                break;
+              case 7:
+                _atts.push({ name: 'action', value: 'RIESGO_DELETE' });
+                break;
+              case 8:
+                _atts.push({ name: 'action', value: 'CONSECUENCIA_DELETE' });
+                break;
+            }
+  
+            if (_ids[0]) {
+              _atts.push({ name: 'areaId', value: _ids[0] });
+            }
+            if (_ids[1]) {
+              _atts.push({ name: 'procesoId', value: _ids[1] });
+            }
+            if (_ids[2]) {
+              _atts.push({ name: 'subprocesoId', value: _ids[2] });
+            }
+            if (_ids[3]) {
+              _atts.push({ name: 'actividadId', value: _ids[3] });
+            }
+            if (_ids[4]) {
+              _atts.push({ name: 'tareaId', value: _ids[4] });
+            }
+            if (_ids[5]) {
+              _atts.push({ name: 'dimensionId', value: _ids[5] });
+            }
+            if (_ids[6]) {
+              _atts.push({ name: 'riesgoId', value: _ids[6] });
+            }
+            if (_ids[7]) {
+              _atts.push({ name: 'consecuenciaId', value: _ids[7] });
+            }
+  
+            _atts.push({ name: 'versionId', value: node.version });
+            _atts.push({ name: 'statusId', value: node.status });
+            _atts.push({ name: 'warning', value: 'Y' });
+  
+            const spinner = this.controlService.openSpinner();
+            const obj =  this.autentication.generic(_atts);
+
+            obj.subscribe((data) => {
+
+              if(data.success === true){
+
+                Swal2.fire({
+                  html:'Notificaciones Enviadas',
+                  icon: 'success',
+                  // timer: 3500
+                  
+                })
+                this.recargarPadre();
+
+              }else{
+
+                Swal2.fire({
+                  icon:'error',
+                  text: data.message
+                })
+
+              }
+              this.controlService.closeSpinner(spinner);
+
+            })
+
+                        }
+                      })
+                    }
+                  })
+
                   }
                 }
                 else {
                   // this.autentication.showMessage(data.success, data.message, node, data.redirect);
-                  console.log(data.message)
                   Swal2.fire({
-                    text: data.message,
-                    icon: 'error',
-                    // timer: 3500
-                    
+                    icon:'error',
+                    text: data.message
                   })
+                  
                 }
                 this.controlService.closeSpinner(spinner);
               },

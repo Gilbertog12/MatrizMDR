@@ -8,7 +8,7 @@ import { MatCheckboxModule }  from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DragDropModule } from '@angular/cdk/drag-drop'
 import { rkReasonRejectModule } from '../../../rk-reason-reject/rkReasonReject.module';
-import { FiltroPipe } from '../rkvalidar/filtro.pipe';
+import { FiltroPipe } from './filtro.pipe'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 

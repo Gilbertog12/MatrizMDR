@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { Rkarchivarmodule } from '../../../rkmain/rkarchivar/rkarchivar.module';
-import { FiltroPipe } from '../../filtro.pipe';
+import { FiltroPipe } from './filtro.pipe'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 

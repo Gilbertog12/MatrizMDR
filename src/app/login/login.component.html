@@ -46,11 +46,16 @@
                                 <!-- <mat-icon matSuffix class="material-icons">all_out</mat-icon> -->
                                 <label for="position">Posicion</label>
                                 <!-- <input required matInput type="text" name="position" placeholder="Posición" [(ngModel)]="model.position" #position="ngModel"> -->
-                                <mat-select class="full-width" name="position" [(value)]='posicion' [(ngModel)]="model.position" #position="ngModel" required>
-                                    <mat-option *ngFor="let item of positions" value="{{item.name}}">{{item.name}} - {{item.value}}</mat-option>
+                                <mat-select class="full-width" name="position" (value)='Posicion' [(ngModel)]="model.position" #position="ngModel" required>
+                                    <mat-option *ngFor="let item of positions" [value]="item.name">{{item.name}} - {{item.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
+
+                        <!-- <div class="form-group">
+
+                            <input type="checkbox" [(ngModel)]="recordar"><label>Remember me</label>
+                        </div> -->
 
 
 
