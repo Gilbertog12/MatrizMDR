@@ -15,6 +15,16 @@ export class ServiciocajasService {
   caja12: any []= [];
   caja3: any []= [];
   caja4: any []= [];
+  Posiciones: any []= [];
+  valores: any []= [];
+
+  obtenerPosiciones(){
+
+    this.Posiciones.forEach(elemento =>{
+      return this.valores.push(elemento)
+    })
+  }
+  
   
 
 }

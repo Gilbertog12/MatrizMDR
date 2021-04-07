@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material';
 import { isNullOrUndefined } from 'util';
 import Swal2 from 'sweetalert2';
 import { FormBuilder } from '@angular/forms';
+import { ServiciocajasService } from '../shared/services/serviciocajas.service';
 
 
 @Component({
@@ -22,14 +23,17 @@ export class LoginComponent implements OnInit {
   user:string
   distrito:string
   posicion: string
-  recordar: boolean;
+  recordar: boolean = true;
+  posDefault: any ='';
+  disDefault: any;
   
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
               private controlService: ControlsService,
               private route: ActivatedRoute,
               private router: Router,
-              private FormBuilder:FormBuilder
+              private FormBuilder:FormBuilder,
+              private posiciones: ServiciocajasService,
               ) {
     this.Version();
     // this.prueba();
@@ -50,9 +54,18 @@ export class LoginComponent implements OnInit {
      //get return url from route parameters or default to '/'
      this.returnUrl = isNullOrUndefined(this.route.snapshot.queryParams['returnUrl']) || this.route.snapshot.queryParams['returnUrl'] === '/' || this.route.snapshot.queryParams['returnUrl'] === '' ? '/rkmain' : this.route.snapshot.queryParams['returnUrl'];
     
-    
-      
+    if(localStorage.getItem('recordar') === 'true'){
 
+        this.model.username = localStorage.getItem('Usuario')
+        this.recordar = true
+        this.model.recordar = this.recordar
+        console.log('epa la arepa')
+    }else{
+      this.recordar = false
+      this.model.recordar = this.recordar 
+    }
+    
+    console.log(this.recordar)
     
     
      
@@ -63,7 +76,9 @@ export class LoginComponent implements OnInit {
   array1 = [];
   array2 = [];
 
-
+  cambio(){
+    console.log(this.recordar)
+  }
   // prueba(){
 
   //   this.methodService.Ambiente(this.Ambiente,this.pass)
@@ -76,7 +91,7 @@ export class LoginComponent implements OnInit {
     const spinner = this.controlService.openSpinner();
 
     
-
+    this.model.position = this.posDefault
      
 
     this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
@@ -103,6 +118,13 @@ export class LoginComponent implements OnInit {
              this.router.navigate([this.returnUrl]);
              this.controlService.closeSpinner(spinner);
              localStorage.setItem('show Dashboard', 'true');
+             if(this.recordar){
+
+               localStorage.setItem('recordar','true')
+              }else{
+               localStorage.setItem('recordar','false')
+               
+             }
 
              
 
@@ -141,6 +163,7 @@ export class LoginComponent implements OnInit {
         this.array1 = [];
         this.array2 = [];  
         if (data['success'] === true){
+          console.log(data)
           
           for(var key in data['data'][0]['atts']){
             
@@ -153,6 +176,13 @@ export class LoginComponent implements OnInit {
             this.districts = this.array1;
                     
           }
+            this.districts.forEach(element => {
+              this.disDefault = element.name
+            });
+
+            console.log(this.disDefault)
+            this.model.district = this.disDefault
+
           this.controlService.closeSpinner(spinner);
           return data;
         } else {
@@ -172,6 +202,7 @@ export class LoginComponent implements OnInit {
      .subscribe(
        (data) => {
         
+         console.log(data)
         if (data['success'] === true){
           
           for(var key in data['data'][0]['atts']){
@@ -181,51 +212,75 @@ export class LoginComponent implements OnInit {
             
             this.array2.push(data['data'][0]['atts'][key]);
             this.positions = this.array2; 
+            this.posiciones.Posiciones = this.positions
             
             
             
           }
           // console.log(this.positions[0])
           // if(this.positions.length == 1){
-          // this.model.position= this.positions
-          // }
-          
-          
-          this.controlService.closeSpinner(spinner);
-          return data;
-        } else {
-          Swal2.fire({
-            text:'Usuario o Contraseña Incorrectos',
-            icon:'warning'
-          })
-          this.model.username=''
+            // this.model.position= this.positions
+            // }
+            
+            this.controlService.closeSpinner(spinner);
+
+            
+
+            this.positions.forEach((element,index) => {
+              
+              if(index == 0){
+               this.posDefault = element.name
+              }
+            
+              
+            });
+            console.log( this.posDefault)
+
+            // this.model.position =this.posDefault;
+
+            console.log(data)
+            return data;
+          } else {
+            Swal2.fire({
+              text:'Usuario o Contraseña Incorrectos',
+              icon:'warning'
+            })
+            this.model.username=''
           this.model.password=''
           this.model.position=''
           this.model.district=''
           sessionStorage.clear();
           this.controlService.closeSpinner(spinner);
           
-
-        }
-     },
-     (error) => {
-       this.controlService.closeSpinner(spinner);
-       this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
-       alert(error.error);
-     });
-
      
+          
+        }
+      },
+      (error) => {
+        this.controlService.closeSpinner(spinner);
+        this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
+        alert(error.error);
+      });
+      // this.login()
+      
+      // debugger;
+      
+      // this.model.district =this.districts[0].value
+      // console.log(this.model.position)
+      // console.log(this.model.district)
+
+      
+      
+      
+      
+      
+      
+    }
+    
 
     
-    
-    
-    
-  }
-  
 
-  
-
-  copyright() {
+    copyright() {
     // this.methodService.getJSON().subscribe(
     //   (data) => {
         
@@ -248,7 +303,7 @@ export class LoginComponent implements OnInit {
 
     Swal2.fire({
       icon:'info',
-      html:"Matriz de riesgos, Copyright 2019. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.1.4 <br />Fecha de compilación: 2021-03-30 <br />",
+      html:"Matriz de riesgos, Copyright 2019. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.1.5 <br />Fecha de compilación: 2021-04-07 <br />",
       showCloseButton: true
       
     })

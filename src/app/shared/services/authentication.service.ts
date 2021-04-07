@@ -215,11 +215,34 @@ export class AuthenticationService {
 
   }
 
+  BorrarStorage(){
+
+    
+    localStorage.removeItem('statusSelected')
+    localStorage.removeItem('urlApi')
+    localStorage.removeItem('canAdd')
+    localStorage.removeItem('show Dashboard')
+    localStorage.removeItem('itemseleccionado')
+    localStorage.removeItem('NoCreador')
+    localStorage.removeItem('versionSelected')
+    localStorage.removeItem('StatusPadre')
+    localStorage.removeItem('keySelected')
+    localStorage.removeItem('sololectura')
+    localStorage.removeItem('seleccionado')
+    localStorage.removeItem('tk')
+    localStorage.removeItem('isSendToValidate')
+    localStorage.removeItem('Distrito')
+    localStorage.removeItem('UltimoEnviado')
+    localStorage.removeItem('isSelectedNode')
+    localStorage.removeItem('noCreador')
+    localStorage.removeItem('isLoggedinApp')
+  }
+
   logout() {
     localStorage.removeItem('isLoggedinApp');
     this.router.navigate(['/login']);
 
-    localStorage.clear()
+    this.BorrarStorage()
 
     
 

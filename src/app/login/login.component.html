@@ -24,38 +24,25 @@
                         <div class="form-group">
                             <mat-form-field class="full-width">
                                 <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
-                                <input matInput type="password" name="password" (change)="defaultvalues()" placeholder="Contraseña" [(ngModel)]="model.password" #password="ngModel" required>
+                                <input matInput type="password" name="password" placeholder="Contraseña" (change)="defaultvalues()" [(ngModel)]="model.password" #password="ngModel" required>
 
 
                             </mat-form-field>
                         </div>
-                        <div class="form-group">
-                            <mat-form-field class="full-width">
 
-                                <!-- <mat-icon matSuffix class="material-icons">account_balance</mat-icon> -->
-                                <!-- <input required matInput type="text" name="district" placeholder="Distrito" [(ngModel)]="model.district" #district="ngModel"> -->
-                                <label for="district">Distrito</label>
-                                <mat-select class="full-width" name="district" placeholder="Distrito" [(ngModel)]="model.district" #district="ngModel" required>
-                                    <mat-option *ngFor="let item of districts" value="{{item.name}}">{{item.name}} - {{item.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
                         <div class="form-group">
 
                             <mat-form-field class="full-width">
                                 <!-- <mat-icon matSuffix class="material-icons">all_out</mat-icon> -->
                                 <label for="position">Posicion</label>
                                 <!-- <input required matInput type="text" name="position" placeholder="Posición" [(ngModel)]="model.position" #position="ngModel"> -->
-                                <mat-select class="full-width" name="position" (value)='Posicion' [(ngModel)]="model.position" #position="ngModel" required>
+                                <mat-select class="full-width" name="position" [(ngModel)]="posDefault" required>
                                     <mat-option *ngFor="let item of positions" [value]="item.name">{{item.name}} - {{item.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
 
-                        <!-- <div class="form-group">
 
-                            <input type="checkbox" [(ngModel)]="recordar"><label>Remember me</label>
-                        </div> -->
 
 
 
@@ -66,6 +53,10 @@
                     </fieldset>
                 </form>
 
+            </div>
+            <div class="form-group">
+                <!-- (change)="defaultvalues()" -->
+                <input type="checkbox" [(ngModel)]="recordar"><label><b>Remember me</b></label>
             </div>
         </div>
     </div>

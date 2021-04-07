@@ -557,14 +557,16 @@ export class RkmainComponent implements OnInit,OnChanges {
     
     
     ngOnInit() {
-
+      // this.showDashboard = true
       this.href = this.router.url;
     var $: any;
 
       const a =  this.router.events.subscribe((val) => {
+          console.log(val)
+          // debugger;
         if (val['url'] !== undefined) {
           this.href = val['url'];
-          if (this.href === '/rkmain') {
+          if (this.href === '/rkmain' && this.showDashboard === false) {
             this.showDashboard = true;
             // debugger
             // this.cargarDashboard();
@@ -580,7 +582,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       });
       
       // this.cargarDashboard()
-      this.Vcompilacion = '4.1.4'
+      this.Vcompilacion = '4.1.5'
     var  mensaje = 
     `    ======================================
               Version ${this.Vcompilacion}     
@@ -3173,10 +3175,35 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   //cerrar Session al cerrar pestaña
 
+  BorrarStorage(){
+
+    
+    localStorage.removeItem('statusSelected')
+    localStorage.removeItem('urlApi')
+    localStorage.removeItem('canAdd')
+    localStorage.removeItem('show Dashboard')
+    localStorage.removeItem('itemseleccionado')
+    localStorage.removeItem('NoCreador')
+    localStorage.removeItem('versionSelected')
+    localStorage.removeItem('StatusPadre')
+    localStorage.removeItem('keySelected')
+    localStorage.removeItem('sololectura')
+    localStorage.removeItem('seleccionado')
+    localStorage.removeItem('tk')
+    localStorage.removeItem('isSendToValidate')
+    localStorage.removeItem('Distrito')
+    localStorage.removeItem('UltimoEnviado')
+    localStorage.removeItem('isSelectedNode')
+    localStorage.removeItem('noCreador')
+    localStorage.removeItem('isLoggedinApp')
+  }
+
   @HostListener('window:beforeunload', ['$event'])
 beforeunloadHandler(event) {
   // debugger
-    localStorage.clear();
+    this.showDashboard = false
+    // localStorage.clear();
+    this.BorrarStorage()
 }
 
 
