@@ -945,7 +945,12 @@
 
                                     <td class="mdl-data-table__cell--non-numeric" [innerHTML]="item.documentUrl"></td>
                                     <!-- <td *ngIf="item.docStatus != '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
-                                    <td class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td>
+                                    <td *ngIf='item.docStatus ==="001" || item.docStatus ==="002"||item.docStatus ==="003"|| item.docStatus ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (*)</a></td>
+                                    <td *ngIf='item.docStatus ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (**)</a></td>
+                                    <td *ngIf='item.docStatus ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (***)</a></td>
+                                    <td *ngIf='item.docStatus ==="000"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                    <td *ngIf='item.docStatus ==="010"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                    <!-- <td class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td> -->
 
                                     <td class="mdl-data-table__cell--non-numeric">{{item.documentType}}</td>
 

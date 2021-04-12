@@ -440,13 +440,18 @@
                         <div *ngIf="treeControl.isExpanded(node)">
 
                             <div [ngSwitch]="node.hijo">
-                                <div *ngSwitchCase="'N'"></div>
-                                <div *ngSwitchDefault>
-                                    <div>
-                                        <button class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
+                                <div *ngSwitchCase="'N'">
+                                    <button *ngIf="node.level !== 8 " class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
 
-				<img  *ngIf="node.level !== 8" class="img-circle" src="assets/images/ArrowDown.png"  style="width: 10px; height: 10px; " >
-				</button>
+					                    <img  *ngIf="node.level !== 8 " class="img-circle" src="assets/images/SinFondo.png"  style="width: 10px; height: 10px; " disabled >
+				                     </button>
+                                </div>
+                                <div *ngSwitchCase="'Y'">
+                                    <div>
+                                        <button *ngIf="node.level !== 8 " class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
+
+				                        <img  *ngIf="node.level !== 8" class="img-circle" src="assets/images/ArrowDown.png"  style="width: 10px; height: 10px; " >
+				                        </button>
                                     </div>
 
                                 </div>
@@ -459,18 +464,18 @@
                         <div *ngIf="!treeControl.isExpanded(node) ">
 
                             <div [ngSwitch]="node.hijo">
-                                <div *ngSwitchCase="'N'" disabled>
-                                    <button class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle disabled>
+                                <div *ngSwitchCase="'N'">
+                                    <button *ngIf="node.level !== 8 " class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
 
-					<img  *ngIf="node.level !== 8 " class="img-circle" src="assets/images/SinFondo.png"  style="width: 10px; height: 10px; " disabled >
-				</button>
+					                    <img  *ngIf="node.level !== 8 " class="img-circle" src="assets/images/SinFondo.png"  style="width: 10px; height: 10px; " disabled >
+				                     </button>
                                 </div>
-                                <div *ngSwitchDefault>
+                                <div *ngSwitchCase="'Y'">
                                     <div>
-                                        <button id='click' class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
+                                        <button *ngIf="node.level !== 8 " class="btn btn-sm btn-light btn-round" mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
 
-				<img *ngIf="node.level !== 8 && node.hijo==='Y'" class="img-circle" src="assets/images/ArrowRigth.png" style="width: 10px; height: 10px; ">
-				</button>
+				                        <img *ngIf="node.level !== 8 && node.hijo==='Y'" class="img-circle" src="assets/images/ArrowRigth.png" style="width: 10px; height: 10px; ">
+				                        </button>
                                     </div>
                                 </div>
                             </div>

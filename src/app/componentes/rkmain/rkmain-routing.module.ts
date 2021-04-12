@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RkmainComponent } from './rkmain.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RkaComponent } from './rka/rka.component';
-import { CajaslinkModule } from '../../cajaslink/cajaslink.module';
+
 import { CajaslinkComponent } from '../../cajaslink/cajaslink.component';
 
 
@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: 'rkapprovals/:cj/:key/:status', loadChildren: './rkapprovals/rkapprovals.module#RkapprovalsModule'},
       // { path: 'validar/:key', loadChildren: './rkvalidar/rkvalidar.module#Rkvalidarmodule'},
       
-      // {path:'caja/:cj',loadChildren: ''},
+      {path:'cargando', component:DashboardComponent},
       
       
       // {path:'rka/:id',component:RkaComponent}

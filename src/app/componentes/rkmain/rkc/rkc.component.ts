@@ -16,6 +16,7 @@ import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
 
 
@@ -78,7 +79,9 @@ public Razon : string
     private methodService: HttpMethodService,
     private controlService: ControlsService,
     private confirm: MatDialog,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private Cajas:ServiciocajasService
+    ) {
 
       this.aperfil()
 
@@ -104,6 +107,11 @@ public Razon : string
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
     this.percreacion = localStorage.getItem('NoCreador')
+    this.Cajas.Recargar$.subscribe(resp=>{
+      if(resp){         
+        this.ver(this.id, this.pid, this.sid, this.cid);        
+      }
+    })
 
   }
 
@@ -244,7 +252,9 @@ public Razon : string
                           stdJobTaskDesc: element.atts[4].value,
                           statusId: element.atts[5].value,
                           versionId: element.atts[6].value,
-                          seqNum: element.atts[7].value
+                          seqNum: element.atts[7].value,
+                          pendingDelete: element.atts[8].value,
+                          DeleteIcon: element.atts[9].value
                         });
 
                       }else{
@@ -257,7 +267,9 @@ public Razon : string
                           stdJobTaskDesc: element.atts[4].value,
                           statusId: element.atts[5].value,
                           versionId: element.atts[6].value,
-                          seqNum: element.atts[7].value
+                          seqNum: element.atts[7].value,
+                          pendingDelete: element.atts[8].value,
+                          DeleteIcon: element.atts[9].value
                         });
                       }
                     }
@@ -852,7 +864,7 @@ public Razon : string
   
                   Swal2.fire('Registro'+' '+resp,'', 'success' )
                   this.ver(this.id, this.pid,this.sid,this.cid);
-                //  console.log('estoy aqui')
+                  //  console.log('estoy aqui')
                   localStorage.setItem('isSendToValidate', '1');
                   
                   
@@ -860,7 +872,7 @@ public Razon : string
                   // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
                   Swal2.fire('',data.message,'error')
                 }
-  
+                
                 this.controlService.closeSpinner(spinner);
   
               },
@@ -868,18 +880,18 @@ public Razon : string
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
                 this.controlService.closeSpinner(spinner);
               });
-  
-  }
+              
+            }
     
+            
   
-  
-  
-    }
-    async sendvalidate() {
-
+            
+          }
+          async sendvalidate() {
+            
       let title=''
       let resp= ''
-
+      
       switch (this.actividadModel.actividadStatus) {
         case 'CREADO':
           title= 'Enviar a Validar'
@@ -887,27 +899,27 @@ public Razon : string
           
           break;
        
-        case 'MODIFICADO':
-          title= 'Enviar a Validar'
-          resp = 'Enviado a Validar'
+          case 'MODIFICADO':
+            title= 'Enviar a Validar'
+            resp = 'Enviado a Validar'
           
-          break;
-       
+            break;
+            
       
-        default:
-          break;
-      }
+            default:
+              break;
+            }
 
-      const inputOptions = {
-   
-        'Y': 'Solo Padre',
-        'N': 'Padre e Hijos',
+            const inputOptions = {
+              
+              'Y': 'Solo Padre',
+              'N': 'Padre e Hijos',
         
-    
-  }
-  
-  const { value: color } = await Swal2.fire({
-    title: title,
+              
+            }
+            
+            const { value: color } = await Swal2.fire({
+              title: title,
     text: '¿ Está seguro que desea'+' '+ title +' ' + 'este registro ?',
     
     showCancelButton: true,
@@ -916,16 +928,16 @@ public Razon : string
     cancelButtonText: 'Cancelar',
     confirmButtonColor:'#3085d6',
     cancelButtonColor: '#d33',
-  //   input: 'radio',
+    //   input: 'radio',
   //   inputOptions: inputOptions,
   //   inputValidator: (value) => {
   //   if (!value) {
-  //   return 'Debe Seleccionar una Opcion'
-  //   }
+    //   return 'Debe Seleccionar una Opcion'
+    //   }
   // }
     
-    
-    
+  
+  
   })
   if(color ){
    
@@ -940,10 +952,10 @@ public Razon : string
             const obj = this.autentication.generic(_atts);
   
             obj.subscribe(
-                      (data) => {
+              (data) => {
                         if (data.success === true) {
                           // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
+                          
                           Swal2.fire('Registro'+' '+resp,'', 'success' )
                           this.ver(this.id, this.pid, this.sid, this.cid);
                           localStorage.setItem('isSendToValidate', '1');
@@ -956,53 +968,53 @@ public Razon : string
                         }
                         
                         this.controlService.closeSpinner(spinner);
-          
+                        
                       },
                       (error) => {
                         // if ( error.status === 401 ) { this.autentication.logout(); return; }
                         this.controlService.closeSpinner(spinner);
                       });
-          
-
-  } 
+                      
+                      
+                    } 
       
-     
+                    
 
-    }
-
+                  }
+                  
     Rechazar(){
       
       let title=''
       let resp=''
       switch (this.actividadModel.actividadStatus) {
-       
+        
         case 'ENVIADO A VALIDACION':
           title= 'Validacion'
           resp = 'Validado'
           
           break;
-        case 'PENDIENTE DE APROBACION':
-          title= 'AprobacionS'
+          case 'PENDIENTE DE APROBACION':
+            title= 'AprobacionS'
           resp = 'Aprobado'
           
-        
+          
       
-        default:
-          break;
-      }
-      // console.log(this.actividadModel.acticidadVersion)
+          default:
+            break;
+          }
+          // console.log(this.actividadModel.acticidadVersion)
      
-      this.key = this.actividadModel.key + ','
+          this.key = this.actividadModel.key + ','
       this.version = this.actividadModel.acticidadVersion + ','
 
       localStorage.setItem('Llave', this.key);
       localStorage.setItem('VersionL', this.version);
       localStorage.setItem('isValidatingFromTree', 'Y');
       
-
+      
   
       Swal2.fire({
-  
+        
         title:'Rechazar '+title,
         text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
         icon: 'question',
@@ -1011,39 +1023,39 @@ public Razon : string
         cancelButtonText: 'Cancelar',
         confirmButtonColor:'#3085d6',
         cancelButtonColor: '#d33'
-  
+        
       }).then((result)=>{
-          if(result.value){
+        if(result.value){
   
-            const conf1 = this.confirm.open(RkReasonRejectComponent,{
-              hasBackdrop: true,
-              height: 'auto',
-              width: 'auto',
-              data: {
+          const conf1 = this.confirm.open(RkReasonRejectComponent,{
+            hasBackdrop: true,
+            height: 'auto',
+            width: 'auto',
+            data: {
                 title: 'Razon de Rechazo',
                 button_confirm: 'Aceptar',
                 button_close: 'Cancelar'
               }
             });
-  
-           
+            
+            
             this.ver(this.id, this.pid, this.sid, this.cid);
           }
       })
   
- 
-    }
       
+    }
+    
   
+    
   
+    async Archivar() {
+      
+      
+      const { value: accept } = await Swal2.fire({
   
-      async Archivar() {
-  
-        
-        const { value: accept } = await Swal2.fire({
-  
-          title:'Enviar a Archivar',
-          text: 'Tenga en cuenta que una vez archivado no podrá visualizar ni utilizar más éste Registro',
+        title:'Enviar a Archivar',
+        text: 'Tenga en cuenta que una vez archivado no podrá visualizar ni utilizar más éste Registro',
           icon:'question',
           input:'checkbox',
           inputValue:'',
@@ -1053,39 +1065,39 @@ public Razon : string
           inputPlaceholder:'Acepto',
           confirmButtonText:'Archivar',
           inputValidator: (result) => {
-          return !result && 'Debe Aceptar los Terminos'
-      }
+            return !result && 'Debe Aceptar los Terminos'
+          }
         })
-    
+        
         if (accept) {
-
+          
           // console.log(this.actividadModel.key)
           this.key =this.key+ ','
           // console.log(this.key)
-    
+          
           let _atts = [];
-              _atts.push({ name: 'scriptName', value: 'coemdr' });
-              _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
               _atts.push({ name: 'key', value: this.key });
-    
-    
+              
+              
               const spinner = this.controlService.openSpinner();
               const obj = await this.autentication.generic(_atts);
     
-                obj.subscribe((data)=>{
-    
+              obj.subscribe((data)=>{
+                
                   if (data.success === true) {
-                                if (data.data[0].atts[1]) {
-                                  // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+                    if (data.data[0].atts[1]) {
+                      // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
-                                  Swal2.fire(
+                      Swal2.fire(
                                     {
                                       icon:'success',
                                       text:'Registro Archivado ',
                                       showConfirmButton: false,
                                       timer: 3000
                                     }
-                                  )
+                                    )
                                   this.ver(this.id, this.pid, this.sid, this.cid);
                                   localStorage.setItem('isSendToValidate', '1');
                                 }
@@ -1099,31 +1111,31 @@ public Razon : string
                                       showConfirmButton: false,
                                       timer: 3000
                                     }
-                                  )
+                                    )
                                     
                               // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                                
+                              
                               }  
                               this.controlService.closeSpinner(spinner);
                                 
                               
     
-                },(error)=>{
+                            },(error)=>{
                   this.controlService.closeSpinner(spinner);
                 })   
               //  this.cerrar();       
         //       obj.subscribe(
-        //         (data) => {
+          //         (data) => {
         //           if (data.success === true) {
-        //             if (data.data[0].atts[1]) {
-        //               this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+          //             if (data.data[0].atts[1]) {
+            //               this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
         //             }
-    
+        
         //           } else {
-        //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-        //           }
+          //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+          //           }
         //           this.controlService.closeSpinner(spinner);
-    
+        
         //         },
         //         (error) => {
         //           // if ( error.status === 401 ) { this.autentication.logout(); return; }
@@ -1132,19 +1144,19 @@ public Razon : string
         //     }
         //     this.cerrar();
         //   });
-    
-          
-    
+        
+        
+        
           
         }
+        
+      }
       
-    }
-    
     async RestaurarItem() {
-
-
       
-    
+      
+      
+      
       const { value: accept } = await Swal2.fire({
   
         title:'Restaurar Registro',
@@ -1154,35 +1166,35 @@ public Razon : string
         inputValue:'',
         inputPlaceholder:'Acepto',
         showCancelButton: true,
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
         confirmButtonText:'Restaurar',
         inputValidator: (result) => {
         return !result && 'Debe Aceptar los Terminos'
-    }
-      })
+      }
+    })
     
       if (accept) {
 
         console.log(this.actividadModel.key)
         this.key =this.key+ ','
         // console.log(this.key)
-    
+        
         let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
             _atts.push({ name: 'key', value: this.key});
-    
-    
+            
+            
             const spinner = this.controlService.openSpinner();
             const obj = await this.autentication.generic(_atts);
-    
-              obj.subscribe((data)=>{
-    
-                if (data.success === true) {
-                              if (data.data[0].atts[1]) {
+            
+            obj.subscribe((data)=>{
+              
+              if (data.success === true) {
+                if (data.data[0].atts[1]) {
                                 // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    
+                                
                                 Swal2.fire(
                                   {
                                     icon:'success',
@@ -1190,205 +1202,152 @@ public Razon : string
                                     showConfirmButton: false,
                                     timer: 3000
                                   }
-                                )
-                                this.ver(this.id, this.pid, this.sid, this.cid);
+                                  )
+                                  this.ver(this.id, this.pid, this.sid, this.cid);
                                 localStorage.setItem('isSendToValidate', '1');
                                 
                               }
               
                             }else {
                               
-                                Swal2.fire(
+                              Swal2.fire(
                                   {
                                     icon:'error',
                                     text:data.message,
                                     showConfirmButton: false,
                                     timer: 3000
                                   }
-                                )
+                                  )
                                   
-                            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+                                  // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
                               
-                            }  
+                                }  
                             this.controlService.closeSpinner(spinner);
-                              
                             
-    
+                            
+                            
               },(error)=>{
                 this.controlService.closeSpinner(spinner);
               })   
-            //  this.cerrar();       
-         
-        
-      }
-    
-    
-    }
-
-    Caja(key,status){
-
-      switch(status){
-       case  '000' :
-  
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: '001'
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
-        break;
-       case  '001' :
-  
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
-        break;
-       case  '002' :
-  
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
-        break;
-       case  '003' :
-  
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
-        break;
-       case  '006' :
-  
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
-        break;
-  
-        case '004':
-          this.confirm.open(RkvalidarComponent, {
-            hasBackdrop: true,
-            height: 'auto',
-            width: 'auto',
-            data:
-            {
-              title: 'Items pendientes de validación',
-              message: '',
-              button_confirm: 'Cerrar',
-              button_close: 'Cerrar',
-              id: key,
-              status: status
-      
-            }
-      
-          });
+              //  this.cerrar();       
               
-          break;
-          
-        case '007':
-          this.confirm.open(RkporaprobarComponent, {
-            hasBackdrop: true,
-            height: 'auto',
-            width: 'auto',
-      
-            data:
-            {
-              title: 'Items Pendientes por Aprobar',
-              message: '',
-              button_confirm: 'Cerrar',
-              button_close: 'Cerrar',
-              id: key,
-              status: status
-      
+              
             }
+            
+            
+          }
+          
+          
+          async Caja(key,status){
+
       
-          });
-          break;
+            switch(status){
+              
+              case  '000' :
+                  this.VerCajasdashboard(key)
+                          
+              break;
+             case  '001' :
         
-  
-      }
-      
-    }
-   
+              this.VerCajasdashboard(key)
+                  
+        
+              break;
+             case  '002' :
+        
+              this.VerCajasdashboard(key)
+                  
+              break;
+             case  '003' :
+        
+              this.VerCajasdashboard(key)
+             case  '006' :
+        
+              this.VerCajasdashboard(key)
+                 
+              break;
+        
+              case '004':
+                
+                    this.VerRkvalidarC(key)
+                break;
+                
+              case '007':
+                this.VerRkporaprobar(key)
+               
+                break;
+              
+        
+            }
+           
+            
+          }
+        
+         async VerCajasdashboard(key){
+        
+            const conf = this.confirm.open(CajasdashboardComponent,
+              {
+                hasBackdrop: true,
+                id: 'drag',
+                height: 'auto',
+                width: 'auto',
+                data:
+                {
+                  title: 'Items en fase de creacion, modificacion o eliminacion',
+                  message: '',
+                  button_confirm: 'Cerrar',
+                  button_close: 'Cerrar',
+                  id: key,
+                  status: '001'
+        
+                },
+                // panelClass : 'tabla'
+                
+        
+              });
+             
+          }
+        
+         async VerRkvalidarC(key){
+            const conf5 = this.confirm.open(RkvalidarComponent, {
+              hasBackdrop: true,
+              height: 'auto',
+              width: 'auto',
+              data:
+              {
+                title: 'Items pendientes de validación',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+        
+              }
+        
+            });
+           
+          }
+          
+         async VerRkporaprobar(key){
+            const conf6 = this.confirm.open(RkporaprobarComponent, {
+              hasBackdrop: true,
+              height: 'auto',
+              width: 'auto',
+        
+              data:
+              {
+                title: 'Items Pendientes por Aprobar',
+                message: '',
+                button_confirm: 'Cerrar',
+                button_close: 'Cerrar',
+                id: key,
+                status: status
+        
+              }
+        
+            });
+           
+          }
     
   }
 

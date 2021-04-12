@@ -15,14 +15,15 @@ import { RkyriesgoresidualtableComponent } from '../rkyriesgoresidualtable/rkyri
 import { RkyriesgoresidualtablerComponent } from '../rkyriesgoresidualtabler/rkyriesgoresidualtabler.component';
 import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-reject.component';
 import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.component';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
+
 
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
 import { RkporaprobarComponent } from '../rkporaprobar/rkporaprobar.component';
 import { RkvalidarComponent } from '../rkvalidar/rkvalidar.component';
-import { includes } from 'core-js/fn/array';
-import { ignoreElements } from 'rxjs/operators';
+
 
 
 @Component({
@@ -87,7 +88,8 @@ public Razon : string
     private methodService: HttpMethodService,
     private controlService: ControlsService,
     private confirm: MatDialog,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private Cajas:ServiciocajasService) {
       
       this.aperfil()
       this.canAdd=localStorage.getItem('canAdd')
@@ -118,6 +120,21 @@ public Razon : string
     this.percreacion = localStorage.getItem('NoCreador')
     // console.log(this.controlesstatus)
     this.controlesstatus = ''
+    this.Cajas.Recargar$.subscribe(resp=>{
+      if(resp){
+       
+  
+        
+        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+
+
+
+     
+        
+      }
+    })
+
+  
 
   }
 
@@ -2012,8 +2029,11 @@ public Razon : string
     
     
     }
+    
     Caja(key,status,statusc?){
       // debugger
+
+      let conf;
 
       if(status === '008'){
         status = statusc
@@ -2022,7 +2042,7 @@ public Razon : string
       switch(status){
        case  '001' :
   
-          this.confirm.open(CajasdashboardComponent,
+        conf=this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2042,10 +2062,17 @@ public Razon : string
       
       
             });
+            conf.afterClosed().suscribe(async (result) => {
+            
+              if(result === 'undefined' || result === 'falso'){
+  
+                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              }
+            })
         break;
        case  '000' :
   
-          this.confirm.open(CajasdashboardComponent,
+        conf= this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2065,10 +2092,17 @@ public Razon : string
       
       
             });
+            conf.afterClosed().suscribe(async (result) => {
+            
+              if(result === 'undefined' || result === 'falso'){
+  
+                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              }
+            })
         break;
        case  '002' :
   
-          this.confirm.open(CajasdashboardComponent,
+        conf= this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2088,10 +2122,17 @@ public Razon : string
       
       
             });
+            conf.afterClosed().suscribe(async (result) => {
+            
+              if(result === 'undefined' || result === 'falso'){
+  
+                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              }
+            })
         break;
        case  '003' :
   
-          this.confirm.open(CajasdashboardComponent,
+        conf =this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2111,10 +2152,17 @@ public Razon : string
       
       
             });
+            conf.afterClosed().suscribe(async (result) => {
+            
+              if(result === 'undefined' || result === 'falso'){
+  
+                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              }
+            })
         break;
        case  '006' :
   
-          this.confirm.open(CajasdashboardComponent,
+        conf=  this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2134,10 +2182,17 @@ public Razon : string
       
       
             });
+            conf.afterClosed().suscribe(async (result) => {
+            
+              if(result === 'undefined' || result === 'falso'){
+  
+                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              }
+            })
         break;
   
         case '004':
-          this.confirm.open(RkvalidarComponent, {
+          conf= this.confirm.open(RkvalidarComponent, {
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
@@ -2153,11 +2208,18 @@ public Razon : string
             }
       
           });
+          conf.afterClosed().suscribe(async (result) => {
+            
+            if(result === 'undefined' || result === 'falso'){
+
+              this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+            }
+          })
               
           break;
           
         case '007':
-          this.confirm.open(RkporaprobarComponent, {
+          conf= this.confirm.open(RkporaprobarComponent, {
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
@@ -2174,6 +2236,14 @@ public Razon : string
             }
       
           });
+
+          conf.afterClosed().suscribe(async (result) => {
+            
+            if(result === 'undefined' || result === 'falso'){
+
+              this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+            }
+          })
           break;
         
   

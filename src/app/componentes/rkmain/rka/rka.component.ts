@@ -14,7 +14,8 @@ import swal from 'sweetalert';
 import { MatDialog } from '@angular/material';
 import { RkmainComponent } from '../rkmain.component';
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
-
+import { async } from '@angular/core/testing';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
 @Component({
   selector: 'app-rka',
@@ -59,7 +60,8 @@ public Razon : string
               private methodService: HttpMethodService,
               private controlService: ControlsService,
               private confirm: MatDialog,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private Cajas:ServiciocajasService) {
                 
                 // console.log('ante del obtener el perfil')
                 this.aperfil()
@@ -70,15 +72,23 @@ public Razon : string
                   this.procesosList = [];
                   this.ver(this.id);
                   
-
-
+                  
+                  
                 });
-
+                
               }
 
   ngOnInit() {
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', this.id)
+
+    this.Cajas.Recargar$.subscribe(resp=>{
+      if(resp){
+        this.areaModel = {};
+        this.ver(this.id);             
+        
+      }
+    })
     
   }
 
@@ -858,170 +868,115 @@ public Razon : string
     
     }
 
-    Caja(key,status){
+   async Caja(key,status){
 
+      
       switch(status){
-      
+        
         case  '000' :
-  
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: '001'
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
+            this.VerCajasdashboard(key)
+                    
         break;
        case  '001' :
 
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
+        this.VerCajasdashboard(key)
+            
+
         break;
        case  '002' :
 
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
+        this.VerCajasdashboard(key)
+            
         break;
        case  '003' :
 
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
-        break;
+        this.VerCajasdashboard(key)
        case  '006' :
 
-          this.confirm.open(CajasdashboardComponent,
-            {
-              hasBackdrop: true,
-              id: 'drag',
-              height: 'auto',
-              width: 'auto',
-              data:
-              {
-                title: 'Items en fase de creacion, modificacion o eliminacion',
-                message: '',
-                button_confirm: 'Cerrar',
-                button_close: 'Cerrar',
-                id: key,
-                status: status
-      
-              },
-              // panelClass : 'tabla'
-      
-      
-            });
+        this.VerCajasdashboard(key)
+           
         break;
 
         case '004':
-          this.confirm.open(RkvalidarComponent, {
-            hasBackdrop: true,
-            height: 'auto',
-            width: 'auto',
-            data:
-            {
-              title: 'Items pendientes de validación',
-              message: '',
-              button_confirm: 'Cerrar',
-              button_close: 'Cerrar',
-              id: key,
-              status: status
-      
-            }
-      
-          });
-              
+          
+              this.VerRkvalidarC(key)
           break;
           
         case '007':
-          this.confirm.open(RkporaprobarComponent, {
-            hasBackdrop: true,
-            height: 'auto',
-            width: 'auto',
-      
-            data:
-            {
-              title: 'Items Pendientes por Aprobar',
-              message: '',
-              button_confirm: 'Cerrar',
-              button_close: 'Cerrar',
-              id: key,
-              status: status
-      
-            }
-      
-          });
+          this.VerRkporaprobar(key)
+         
           break;
         
 
       }
+     
       
     }
+
+   async VerCajasdashboard(key){
+
+      const conf = this.confirm.open(CajasdashboardComponent,
+        {
+          hasBackdrop: true,
+          id: 'drag',
+          height: 'auto',
+          width: 'auto',
+          data:
+          {
+            title: 'Items en fase de creacion, modificacion o eliminacion',
+            message: '',
+            button_confirm: 'Cerrar',
+            button_close: 'Cerrar',
+            id: key,
+            status: '001'
   
+          },
+          // panelClass : 'tabla'
+          
+  
+        });
+       
+    }
+
+   async VerRkvalidarC(key){
+      const conf5 = this.confirm.open(RkvalidarComponent, {
+        hasBackdrop: true,
+        height: 'auto',
+        width: 'auto',
+        data:
+        {
+          title: 'Items pendientes de validación',
+          message: '',
+          button_confirm: 'Cerrar',
+          button_close: 'Cerrar',
+          id: key,
+          status: status
+  
+        }
+  
+      });
+     
+    }
+    
+   async VerRkporaprobar(key){
+      const conf6 = this.confirm.open(RkporaprobarComponent, {
+        hasBackdrop: true,
+        height: 'auto',
+        width: 'auto',
+  
+        data:
+        {
+          title: 'Items Pendientes por Aprobar',
+          message: '',
+          button_confirm: 'Cerrar',
+          button_close: 'Cerrar',
+          id: key,
+          status: status
+  
+        }
+  
+      });
+     
+    } 
 
 }

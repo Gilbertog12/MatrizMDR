@@ -189,7 +189,7 @@ export class RkpendComponent implements OnInit {
 
     // debugger
     if(mensaje !==''){
-
+      debugger
       this.ejecutar()
       this.dialogRef.close(mensaje);
     }else{
@@ -279,7 +279,7 @@ export class RkpendComponent implements OnInit {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
                             Swal2.fire('Registro Enviado a Validar','', 'success' )
-                            localStorage.setItem('isSendToValidate','1')
+                            // localStorage.setItem('isSendToValidate','1')
                             // this.cerrar('falso');
                             this.totalMarcados = 0
 
@@ -334,7 +334,7 @@ export class RkpendComponent implements OnInit {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     
                             Swal2.fire('Registro Enviado a Validar','', 'success' )
-                            localStorage.setItem('isSendToValidate','1')
+                            // localStorage.setItem('isSendToValidate','1')
                             // this.cerrar('falso');
                             this.totalMarcados = 0
                             this.recargar()
@@ -569,7 +569,7 @@ export class RkpendComponent implements OnInit {
                                  
                                 }
                               )
-                              this.recargar
+                              this.recargar()
                             }
             
                           }else {

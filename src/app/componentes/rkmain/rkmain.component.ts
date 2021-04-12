@@ -116,13 +116,13 @@ export class DynamicFlatNode {
    */
   toggleNode(node: DynamicFlatNode, expand: boolean) 
   {
-      console.log(this.data.indexOf(node))
+      // console.log(this.data.indexOf(node))
       const index = this.data.indexOf(node);
       if (!expand) {
         let count = 0;
         for (let i = index + 1; i < this.data.length
           && this.data[i].level > node.level; i++ , count++) {
-            console.log(this.data[i].level)
+            // console.log(this.data[i].level)
           }
           this.data.splice(index + 1, count);
           this.dataChange.next(this.data);
@@ -151,7 +151,7 @@ export class DynamicFlatNode {
         
         this.autentication.generic(params)
         .subscribe(data => {
-          console.log(data)
+          // console.log(data)
           let jsonObject: JSON = data as JSON;
           
           if (data['success'] === true) {
@@ -541,7 +541,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       // consola.log(this.comparador)
 
       this.rutas.params.subscribe( parametros => {
-        console.log(parametros)
+        // console.log(parametros)
         this.cj = parametros
       })
     
@@ -562,7 +562,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     var $: any;
 
       const a =  this.router.events.subscribe((val) => {
-          console.log(val)
+          // console.log(val)
           // debugger;
         if (val['url'] !== undefined) {
           this.href = val['url'];
@@ -608,6 +608,7 @@ export class RkmainComponent implements OnInit,OnChanges {
        
 
       this.recargarPadre()
+     
         
       }
     })
@@ -656,11 +657,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   ngOnChanges(){
 
-    if(this.refresh !=='false'){
-        console.log('aqui toy')
-
-        this.switchToTree();
-    }
 
     
   }
@@ -704,7 +700,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log(data)
+            // console.log(data)
             const result = data.success;
             if (result) {
               this.Cajas.caja1 = data.data[0].atts[1].value.trim()
@@ -822,10 +818,14 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   abrirNodo() {
     
+    // this.treeControl.collapseAll()
+
+    // this.treeControl.expandAll()
+    
     this.treeControl.collapse(this.getSelection);
     this.treeControl.expand(this.getSelection);
     this.getSelection= this.getSelection
-    console.log(this.getSelection)
+    // console.log(this.getSelection)
     // localStorage.setItem('seleccion',this.getSelection)
     
   };
@@ -834,14 +834,15 @@ export class RkmainComponent implements OnInit,OnChanges {
   superMetodo(){
     this.treeControl.collapse(this.getSelection);
     this.treeControl.expand(this.getSelection);
-    console.log(this.getSelection)
+    this.treeControl.getDescendants(this.getSelection)
+    // console.log(this.getSelection)
   }
 
   //tema del refresh/
   abrirNodoYSeleccionar() {
     // console.log(this.getSelection);
     let key = localStorage.getItem('UltimoEnviado')
-    console.log(key)
+    // console.log(key)
 
     if(key.length == 2){
       
@@ -850,11 +851,11 @@ export class RkmainComponent implements OnInit,OnChanges {
     }else{
       
       // console.log('estoy aqui')
-      console.log(key)
-      console.log(this.getSelection)
+      // console.log(key)
+      // console.log(this.getSelection)
       this.treeControl.collapse(JSON.parse(localStorage.getItem('comparar')));
       this.treeControl.expand(JSON.parse(localStorage.getItem('comparar')));
-      console.log(JSON.parse(localStorage.getItem('comparar')))
+      // console.log(JSON.parse(localStorage.getItem('comparar')))
      
     }
     // this.abrirNodo()
@@ -879,7 +880,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   recargarPadre(ruta?) {
     let getParent
-    debugger;
+    // debugger;
     if(ruta){
 
        getParent = this.dataSource.getParent(ruta);
@@ -887,7 +888,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
      getParent = this.dataSource.getParent(this.getSelection);
     }
-    console.log(this.getSelection)
+    // console.log(this.getSelection)
     this.getSelection = getParent;
     if (typeof (this.getSelection) === 'undefined') {
       this.recargarArbol();
@@ -928,8 +929,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             let name: string = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
             let status = value['atts'][3]['value'];
             let version = value['atts'][4]['value'];
-            let hijo = value['atts'][9]['value'];
-            
+            let hijo = value['atts'][9]['value'];           
 
             let canAdd = value['atts'][12]['value']
             let perfil = value['atts'][15]['value']+value['atts'][16]['value']+value['atts'][17]['value']+value['atts'][18]['value']+value['atts'][19]['value']
@@ -1127,6 +1127,8 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     this.getSelection= nodo
 
+    
+
     this.router.navigate(['/rkmain/' + nodo.route]);
     localStorage.setItem('isSelectedNode', 'true');
     localStorage.setItem('keySelected', '');
@@ -1171,7 +1173,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]+a[7] 
     }*/
 
-    console.log(this.nodoseleccionado)
+    // console.log(this.nodoseleccionado)
 
     
     
@@ -1196,7 +1198,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     switch (item.key.trim().length.toString()) {
       case '2':
         this.router.navigate(['/rka/' + item.key]);
-        console.log(item.key + 'hola')
+        // console.log(item.key + 'hola')
                 
         break;
       case '6':
@@ -1305,7 +1307,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         // return this.PendientesNodo
       // }
 
-          console.log(this.PendientesNodo)
+          // console.log(this.PendientesNodo)
         }
     
 
@@ -1415,7 +1417,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 if (data.success === true) {
                   if (data.data[0].atts[0].value === 'I' ) {
 
-                    console.log(data.data[0].atts[1])
+                    // console.log(data.data[0].atts[1])
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, node, data.redirect);
                     Swal2.fire({
                       html:'Registro Eliminado',
@@ -1432,8 +1434,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                   }else{
 																									 
 
-                    console.log(data.data[0].atts[0])
-                    console.log(data.data[0].atts[1])
+                    // console.log(data.data[0].atts[0])
+                    // console.log(data.data[0].atts[1])
                   Swal2.fire({
                     html: data.data[0].atts[1].value,
                     icon: 'error',
@@ -1693,8 +1695,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                   }else{
 																									 
                     
-                    console.log(data.data[0].atts[0])
-                    console.log(data.data[0].atts[1])
+                    // console.log(data.data[0].atts[0])
+                    // console.log(data.data[0].atts[1])
                   Swal2.fire({
                     html: data.data[0].atts[1].value,
                     icon: 'error',
@@ -1927,7 +1929,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           conf.afterClosed()
           .subscribe(async (result) => {
 
-            console.log(result)  
+            // console.log(result)  
             
             if(!result){
                 
@@ -1937,44 +1939,15 @@ export class RkmainComponent implements OnInit,OnChanges {
               if(recargable !==''){
                 
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
-                  console.log('nodo');
+                  // console.log('nodo');
                   this.abrirNodo();
                   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                   //this.ver(this.nodoseleccionado); 
                 }, 1000 );
                 
     
-
-                // this.router.navigate(['/rkmain']);  
-                // this.router.navigate(['/rkmain/' +this.nodoseleccionado]); 
-                
-                // console.log(this.nodoseleccionado)
-                // this.abrirNodo();
-                // this.RefrescarPantalla()
-                // this.abrirNodo()
-                
-                // console.log(recargable);
-                // this.ver(recargable);
-
-  
-                // this.RefrescarPantalla()
-                // setTimeout(() => {
-                  
-                //   this.ExpandirNodos('F3MP01SU01')
-                // }, 5000);
-                //  location. = '#refrescar';
-                // var container = document.getElementById("refrescar");
-                // var content = container.innerHTML;
-                // container.innerHTML= content; 
-                
-                //this line is to watch the result in console , you can remove it later	
-                // console.log("tengo flojera"); 
-                // document.getElementById('refrescar').Location.reload
-                // location.reload()
-                // document.getElementById("click").click();
-                // console.info(recargable)
                 
               }else{
                 
@@ -2036,9 +2009,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                 // this.abrirNodo();
 
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
-                  console.log('nodo');
+                  // console.log('nodo');
                   this.abrirNodo();
                   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                   //this.ver(this.nodoseleccionado); 
@@ -2133,7 +2106,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 // this.abrirNodo();
 
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
                   console.log('nodo');
                   this.abrirNodo();
@@ -2212,9 +2185,9 @@ export class RkmainComponent implements OnInit,OnChanges {
             // this.ver(recargable);
 
             this.router.navigate(['/rkmain/cargando']);  
-            console.log('main');
+            // console.log('main');
             setTimeout( () => {  
-              console.log('nodo');
+              // console.log('nodo');
               this.abrirNodo();
               this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
               //this.ver(this.nodoseleccionado); 
@@ -2290,9 +2263,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                 // this.abrirNodo();
 
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
-                  console.log('nodo');
+                  // console.log('nodo');
                   this.abrirNodo();
                   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                   //this.ver(this.nodoseleccionado); 
@@ -2356,7 +2329,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         conf.afterClosed()
           .subscribe(async (result) => {
 
-            console.log(result)
+            // console.log(result)
             if(!result){
               let recargable = localStorage.getItem('keySelected')
             
@@ -2367,9 +2340,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                 // this.abrirNodo();
 
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
-                  console.log('nodo');
+                  // console.log('nodo');
                   this.abrirNodo();
                   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                   //this.ver(this.nodoseleccionado); 
@@ -2439,15 +2412,15 @@ export class RkmainComponent implements OnInit,OnChanges {
             if(!result){
               let recargable = localStorage.getItem('keySelected')
             
-              console.log(recargable);
+              // console.log(recargable);
 
             if(recargable !==''){
               
                 //aqui*
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
-                  console.log('nodo');
+                  // console.log('nodo');
                   this.abrirNodo();
                   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                   //this.ver(this.nodoseleccionado); 
@@ -2603,9 +2576,9 @@ export class RkmainComponent implements OnInit,OnChanges {
               if(recargable !==''){
                 
                 this.router.navigate(['/rkmain/cargando']);  
-                console.log('main');
+                // console.log('main');
                 setTimeout( () => {  
-                  console.log('nodo');
+                  // console.log('nodo');
                   this.recargarArbol();
                   this.router.navigate(['/rkmain/' ]);
                   //this.ver(this.nodoseleccionado); 
@@ -2677,7 +2650,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           if(result){
         
 
-            this.recargarArbol()
+            // this.recargarArbol()
                 setTimeout(() => {
                   this.ExpandirNodos(result)
                   
@@ -2698,7 +2671,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
  ExpandirNodos(key:any){
 
-  console.log(key)
+  // console.log(key)
   // const spinner = this.controlService.openSpinner()
 
    let area = key.substring(0,2)
@@ -2944,6 +2917,8 @@ export class RkmainComponent implements OnInit,OnChanges {
 
  }
 
+ 
+
 
   async VerEnviarAprobar() {
 
@@ -2975,7 +2950,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         if(result){
       
 
-          this.recargarArbol()
+          // this.recargarArbol()
               setTimeout(() => {
                 this.ExpandirNodos(result)
                 
@@ -3020,7 +2995,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         if(result){
       
 
-          this.recargarArbol()
+          // this.recargarArbol()
               setTimeout(() => {
                 this.ExpandirNodos(result)
                 
@@ -3064,7 +3039,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           if(result){
         
 
-            this.recargarArbol()
+            // this.recargarArbol()
                 setTimeout(() => {
                   this.ExpandirNodos(result)
                   

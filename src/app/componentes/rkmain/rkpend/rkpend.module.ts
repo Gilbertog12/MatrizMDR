@@ -8,7 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { DragDropModule } from '@angular/cdk/drag-drop'
-import { RkmainRoutingModule } from '../rkmain-routing.module';
+// import { RkmainRoutingModule } from '../rkmain-routing.module';
 import { FiltroPipe } from './filtro.pipe'
 import {MatDatepickerModule} from '@angular/material/datepicker'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -29,7 +29,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     DragDropModule,
     MatDatepickerModule,
     MatSlideToggleModule,
-    RkmainRoutingModule,
+
     
     
     
