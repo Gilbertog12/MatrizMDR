@@ -84,7 +84,8 @@ public Razon : string
 
     this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){       
-  
+        this.subprocesoModel = {};
+        this.actividadesList = [];
         this.ver(this.id, this.pid, this.sid);
         
       }

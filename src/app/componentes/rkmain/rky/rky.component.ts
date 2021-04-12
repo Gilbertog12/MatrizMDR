@@ -124,7 +124,11 @@ public Razon : string
       if(resp){
        
   
-        
+        this.consecuenciaModel = {};
+      this.epfList = [];
+      this.cBlandosList = [];
+      this.cDurosList = [];
+      this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
 
 

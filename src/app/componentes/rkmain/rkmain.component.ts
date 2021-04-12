@@ -1425,7 +1425,27 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // timer: 3500
                       
                     })
-                    this.recargarPadre();
+                    let recargable = localStorage.getItem('keySelected')
+              
+                    if(recargable !==''){
+                      
+                      this.router.navigate(['/rkmain/cargando']);  
+                      // console.log('main');
+                      setTimeout( () => {  
+                        // console.log('nodo');
+                        this.recargarPadre();
+
+                        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+                        //this.ver(this.nodoseleccionado); 
+                      }, 1000 );
+                      
+          
+                      
+                    }else{
+                      
+                      this.recargarPadre();
+                        
+                    }
                     
        
                     
@@ -1545,7 +1565,29 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // timer: 3500
                   
                 })
-                this.recargarPadre();
+                // this.recargarPadre();
+
+                let recargable = localStorage.getItem('keySelected')
+              
+                    if(recargable !==''){
+                      
+                      this.router.navigate(['/rkmain/cargando']);  
+                      // console.log('main');
+                      setTimeout( () => {  
+                        // console.log('nodo');
+                        this.recargarPadre();
+
+                        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+                        //this.ver(this.nodoseleccionado); 
+                      }, 1000 );
+                      
+          
+                      
+                    }else{
+                      
+                      this.recargarPadre();
+                        
+                    }
 
               }else{
 
@@ -1572,6 +1614,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
+
                   
                 }
                 this.controlService.closeSpinner(spinner);
@@ -1686,7 +1729,28 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // timer: 3500
                       
                     })
-                    this.recargarPadre();
+                    // this.recargarPadre();
+                    let recargable = localStorage.getItem('keySelected')
+              
+                    if(recargable !==''){
+                      
+                      this.router.navigate(['/rkmain/cargando']);  
+                      // console.log('main');
+                      setTimeout( () => {  
+                        // console.log('nodo');
+                        this.recargarPadre();
+
+                        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+                        //this.ver(this.nodoseleccionado); 
+                      }, 1000 );
+                      
+          
+                      
+                    }else{
+                      
+                      this.recargarPadre();
+                        
+                    }
                     
        
                     
@@ -1806,7 +1870,28 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // timer: 3500
                   
                 })
-                this.recargarPadre();
+                // this.recargarPadre();
+                let recargable = localStorage.getItem('keySelected')
+              
+                    if(recargable !==''){
+                      
+                      this.router.navigate(['/rkmain/cargando']);  
+                      // console.log('main');
+                      setTimeout( () => {  
+                        // console.log('nodo');
+                        this.recargarPadre();
+
+                        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+                        //this.ver(this.nodoseleccionado); 
+                      }, 1000 );
+                      
+          
+                      
+                    }else{
+                      
+                      this.recargarPadre();
+                        
+                    }
 
               }else{
 

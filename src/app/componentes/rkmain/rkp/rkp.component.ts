@@ -83,7 +83,8 @@ ngOnInit() {
   localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
   this.Cajas.Recargar$.subscribe(resp=>{
     if(resp){
-     
+      this.procesoModel = {};
+      this.subprocesosList = [];
       this.ver(this.id, this.pid);
          
     }

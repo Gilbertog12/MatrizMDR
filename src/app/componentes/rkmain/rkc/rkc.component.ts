@@ -108,7 +108,12 @@ public Razon : string
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
     this.percreacion = localStorage.getItem('NoCreador')
     this.Cajas.Recargar$.subscribe(resp=>{
-      if(resp){         
+      if(resp){    
+        this.actividadModel = {};
+      this.tareasList = [];
+      this.logList = [];
+      this.detalleList = [];
+      this.stdJobList = [];     
         this.ver(this.id, this.pid, this.sid, this.cid);        
       }
     })

@@ -85,6 +85,8 @@ public Razon : string
     this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){
         this.areaModel = {};
+        this.procesosList= [];
+        this.procesosListLectura=[]
         this.ver(this.id);             
         
       }

@@ -92,7 +92,8 @@ public Razon : string
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
     this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){
-        
+        this.riesgoModel = {};
+        this.consecuenciasList = [];        
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid);        
       }
     })
