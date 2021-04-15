@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
   recordar: boolean = true;
   posDefault: any ='';
   disDefault: any;
+  min:number;
+  sec:number;
   
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -36,8 +38,11 @@ export class LoginComponent implements OnInit {
               private posiciones: ServiciocajasService,
               ) {
     this.Version();
+    this.min = 4;
+    this.sec = 59;
     // this.prueba();
               }
+
 
     LoginForm = this.FormBuilder.group({
       username : [''],
@@ -101,7 +106,10 @@ export class LoginComponent implements OnInit {
     this.autentication.login_token(this.model.username, this.model.password, this.model.district, this.model.position)
      .subscribe(
        (data) => {
+
+        console.log(data)
         const result = data.access_token;
+        localStorage.setItem('tokenApp',JSON.stringify(data))
         if (result) {
              //store user details and jwt token in local storage to keep user logged in between page refreshes
              /*localStorage.setItem('isLoggedinApp', 'true');
@@ -144,7 +152,7 @@ export class LoginComponent implements OnInit {
      });
 
   }
-
+  
   
 
   defaultvalues() {
@@ -234,11 +242,11 @@ export class LoginComponent implements OnInit {
             
               
             });
-            console.log( this.posDefault)
+            // console.log( this.posDefault)
 
             // this.model.position =this.posDefault;
 
-            console.log(data)
+            // console.log(data)
             return data;
           } else {
             Swal2.fire({

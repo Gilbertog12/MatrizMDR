@@ -45,6 +45,7 @@ export class AppHeaderComponent implements OnInit {
     Version : ''
     
   };
+  tiempoVida: string;
 
 
   constructor(private authenticationService: AuthenticationService,
@@ -70,6 +71,8 @@ export class AppHeaderComponent implements OnInit {
     localStorage.setItem('versionSelected', '');
     localStorage.setItem('statusSelected', '');
     console.log(this.posiciones.Posiciones)
+
+    
 
     this.usuario2 = localStorage.getItem('Usuario')
     this.posicion = localStorage.getItem('Posicion')

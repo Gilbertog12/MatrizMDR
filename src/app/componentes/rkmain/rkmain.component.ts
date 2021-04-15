@@ -37,6 +37,7 @@ import 'rxjs/add/observable/interval';
 import { NgClass } from '@angular/common';
 // import { class } from '../../../../angular_material_schematics-OK9cjk/address-form/files/__path__/__name@dasherize@if-flat__/__name@dasherize__.component';
 import { ServiciocajasService } from '../../shared/services/serviciocajas.service';
+import { AutologoutService } from '../../shared/services/autologout.service';
 
 @Injectable({
   providedIn: 'root',
@@ -459,6 +460,8 @@ export class RkmainComponent implements OnInit,OnChanges {
   Vcompilacion: string;
   rutaCjas: any;
   cj: any;
+  minutos: number = 4;
+  segundos: number = 59;
 
    // PolarArea
   
@@ -524,9 +527,15 @@ export class RkmainComponent implements OnInit,OnChanges {
     
   ];
 
+
   
  
    public barChartType: ChartType = 'bar';
+  t:any;
+
+  //mmetodos para hacer logout automatico
+
+  
 
   constructor(
     private autentication: AuthenticationService,
@@ -537,9 +546,11 @@ export class RkmainComponent implements OnInit,OnChanges {
     private renderer: Renderer2,
     public dialog: MatDialog,
     public Cajas:ServiciocajasService,
-    public rutas:ActivatedRoute) {
+    public rutas:ActivatedRoute,
+    public logout:AutologoutService) {
       // consola.log(this.comparador)
-
+      
+      
       this.rutas.params.subscribe( parametros => {
         // console.log(parametros)
         this.cj = parametros
@@ -568,11 +579,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.href = val['url'];
           if (this.href === '/rkmain' && this.showDashboard === false) {
             this.showDashboard = true;
-            // debugger
-            // this.cargarDashboard();
-            // console.log("epa la arepa")
-            // a.unsubscribe()
-                    
+           
           }
           else {
             this.showDashboard = false;
@@ -580,6 +587,12 @@ export class RkmainComponent implements OnInit,OnChanges {
           
         }
       });
+
+      // this.reloj()
+      // this.t = setInterval(()=>{
+      //   console.log(`${this.minutos} : ${this.segundos}`)
+      // },1000)
+      
       
       // this.cargarDashboard()
       this.Vcompilacion = '4.1.5'
@@ -598,23 +611,25 @@ export class RkmainComponent implements OnInit,OnChanges {
     this.recargarArbol();
     // this.verSinAprobar();
     // this.idleLogout();
+    // window.addEventListener('mousemove', this.resetear, true);
+
 							 
     // this.cargarDashboardData(); 
     
     // console.log(this.SL)
 
+
     this.Cajas.Recargar$.subscribe(resp=>{
-      if(resp){
-       
+      if(resp){      
 
       this.recargarPadre()
-     
-        
+            
       }
     })
 
-
-
+    
+    
+    
     this.usuario = localStorage.getItem('Usuario')
     this.posicion = localStorage.getItem('Posicion')
     this.distrito = localStorage.getItem('Distrito')
@@ -634,24 +649,47 @@ export class RkmainComponent implements OnInit,OnChanges {
         // console.log('ejecuto');
         
 
-          // this.abrirNodoYSeleccionar();
-          this.recargarPadre();
-          // this.router.navigate(['/rkmain/']); 
-
+        // this.abrirNodoYSeleccionar();
+        this.recargarPadre();
+        // this.router.navigate(['/rkmain/']); 
+        
         
       }
-     });
+    });
   }
+  resetear(){
+    console.log('limpie')
+ }
 
- 
+  
+  reloj(rset?:boolean){
+  
+    let t  = setInterval(() =>{
+
+      if(--this.segundos<0){
+        this.segundos = 59;
+        if(--this.minutos < 0){
+          debugger
+          clearInterval(t)
+          this.autentication.logout()
+        }
+      }
+      
+    },1000)
+     console.log(`${this.minutos} : ${this.segundos}`)
+
+    
+
+  }
+  
   SinPermisos(){
     //Esta funcion se ejecuta cuando la posicion no tiene permisos de creacion o Elimninacion , despliega un mensaje de error!
-
+    
     Swal2.fire({
       icon:'error',
       html:'Posicion '+this.posicion.bold()+' no tiene Priveligios'
       // background:'#A8A4A3',
-
+      
     })
   }
 
@@ -664,28 +702,47 @@ export class RkmainComponent implements OnInit,OnChanges {
  
  
  
-
- /* public cargarDashboardData() {
+  public cargarDashboardData() {
     let t;
     const parentThis = this;
+
+    function reloj(rset?:boolean){
+
+      if(rset){
+        this.minutos = 4;
+        this.segundos = 59;
+      }
+  
+      // window.addEventListener('mousemove',this.t)
+      if(--this.segundos<0){
+        this.segundos = 59;
+        if(--this.minutos < 0){
+          debugger
+          clearInterval(this.t)
+          this.autentication.logout()
+        }
+      }
+  
+    }
 
     window.onload = resetTimer;
     window.addEventListener('mousemove', resetTimer, true);
 
     function resetTimer() {
 
-      clearTimeout(t);
+      clearInterval(t);
+           
       t = setTimeout(() => {
-        //console.log(localStorage.getItem('recargarAprobaciones'));        
-        if (parentThis.href === '/rkmain') {
-          parentThis.cargarDashboard();
-        }
-
+        //console.log(localStorage.getItem('recargarAprobaciones'));  
+        reloj(true)
+        
       }, 1000);
 
     }
 
-  }*/
+  }
+
+  
 
   
 
@@ -694,6 +751,8 @@ export class RkmainComponent implements OnInit,OnChanges {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     // _atts.push({ name: 'stdJobNo1', value: '' });
     _atts.push({ name: 'action', value: 'TABLERO_LIST' });
+
+    // window.addEventListener('mousemove')
 
     // const spinner = this.controlService.openSpinner()
     const promiseView = new Promise((resolve, reject) => {

@@ -23,7 +23,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (localStorage.getItem('tokenApp')) {
-
+        console.log(JSON.parse(localStorage.getItem('tokenApp')))
+        debugger;
         const token = JSON.parse(localStorage.getItem('tokenApp'));
         const expiracion: number = token.expires_in / 3600;
         const fechaInicial: number = new Date(localStorage.getItem('datePTEL')).getTime();
@@ -31,7 +32,6 @@ export class AuthGuard implements CanActivate {
         const totalHoras = Math.abs(fechaFinal - fechaInicial) / 36e5;
 
         if (totalHoras > expiracion) {
-          this.autentication.logout();
           // const spinner = this.controlService.openSpinner();
           // this.autentication.actualizar_token()
           //   .subscribe(
@@ -52,12 +52,14 @@ export class AuthGuard implements CanActivate {
           //     this.controlService.closeSpinner(spinner);
           //     this.controlService.snackbarError('Token invalido.');
           //   });
+          if (localStorage.getItem('isLoggedinApp') === 'true') {
+            return true;
+          }
+        }else{
+          this.autentication.logout();
+          
         }
 
-    }
-
-    if (localStorage.getItem('isLoggedinApp') === 'true') {
-      return true;
     }
 
     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});

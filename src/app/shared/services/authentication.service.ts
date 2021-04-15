@@ -53,6 +53,7 @@ export class AuthenticationService {
 
     if (!online) {
       this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout()
       return;
     }
 
@@ -80,6 +81,8 @@ export class AuthenticationService {
 
     if (!online) {
       this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout()
+
       return;
     }
 
@@ -112,6 +115,8 @@ export class AuthenticationService {
 
     if (!online) {
       this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout()
+
       return;
     }
 
@@ -145,6 +150,8 @@ export class AuthenticationService {
 
     if (!online) {
       this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout()
+
       return;
     }
 
@@ -176,6 +183,8 @@ export class AuthenticationService {
 
     if (!online) {
       //this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout()
+
       return;
     }
 
@@ -236,6 +245,8 @@ export class AuthenticationService {
     localStorage.removeItem('isSelectedNode')
     localStorage.removeItem('noCreador')
     localStorage.removeItem('isLoggedinApp')
+    localStorage.removeItem('STORE_KEY')
+    
   }
 
   logout() {
