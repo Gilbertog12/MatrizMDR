@@ -57,6 +57,7 @@ export class RkpendaprobComponent implements OnInit {
   soloControles: boolean;
   TotalRegistros :number =0
   totalMarcados: number = 0;
+  sendSome:boolean = false
 
   constructor(public dialogRef: MatDialogRef<RkpendaprobComponent>,
     private controlService: ControlsService,
@@ -450,8 +451,14 @@ export class RkpendaprobComponent implements OnInit {
     // console.log(mensaje)
 
     if(mensaje !==''){
-      this.ejecutar()
-      this.dialogRef.close(mensaje);
+      if(this.sendSome){
+
+        this.ejecutar()
+        this.dialogRef.close(mensaje);
+      }else{
+        this.dialogRef.close(mensaje);
+
+      }
     }else{
 
       this.ejecutar()
@@ -725,6 +732,7 @@ async RestaurarItem() {
                                   }
                                   )
                                   // this.cerrar('falso'); 
+                                  this.sendSome = true
                                   this.totalMarcados = 0
                                   this.recargar()
 

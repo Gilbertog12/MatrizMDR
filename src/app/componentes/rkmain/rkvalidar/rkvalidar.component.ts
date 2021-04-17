@@ -23,6 +23,7 @@ export class RkvalidarComponent implements OnInit {
   controles: string;
   comments='';
   entidadfiltro='';
+  sendSome:boolean = false
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
@@ -98,9 +99,9 @@ export class RkvalidarComponent implements OnInit {
                   let rutaLongitud = rutaJerarquia.length
                   let ruta = rutaJerarquia
                   // console.log(ruta)
-                  console.group()
-                  console.log(rutaLongitud.toString())
-                  console.groupEnd()
+                  // console.group()
+                  // console.log(rutaLongitud.toString())
+                  // console.groupEnd()
                   switch(rutaLongitud.toString()) {
 
                     case '2':
@@ -442,7 +443,7 @@ export class RkvalidarComponent implements OnInit {
       
     }
 
-
+    //emite el valor del observable para ejecutar la funcion para recargar ell arbol
     ejecutar(){
       this._Recargarble.Recargar$.emit(true)
     }
@@ -453,8 +454,15 @@ export class RkvalidarComponent implements OnInit {
       // console.log(mensaje)
   
       if(mensaje !==''){
-        this.ejecutar()
-        this.dialogRef.close(mensaje);
+
+        if(this.sendSome){
+
+          this.ejecutar()
+          this.dialogRef.close(mensaje);
+        }else{
+          this.dialogRef.close(mensaje);
+
+        }
       }else{
   
         this.ejecutar()
@@ -617,6 +625,7 @@ checkUncheckAll() {
     
                             Swal2.fire('Registro Enviado a Aprobar','', 'success' )
                             // this.cerrar('falso');
+                            this.sendSome = true;
                             this.totalMarcados = 0
                             this.recargar()
 
@@ -926,6 +935,7 @@ checkUncheckAll() {
                 
               })
               // this.cerrar('falso')
+              this.sendSome = true
               this.totalMarcados = 0
               this.recargar()
 

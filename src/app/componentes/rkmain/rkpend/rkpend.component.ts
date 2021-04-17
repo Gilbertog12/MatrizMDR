@@ -126,6 +126,7 @@ export class RkpendComponent implements OnInit {
   soloControles: boolean;
   totalMarcados: number= 0;
   buscar: boolean = false;
+  sendSome: boolean = false;
   
 
   
@@ -190,8 +191,14 @@ export class RkpendComponent implements OnInit {
     // debugger
     if(mensaje !==''){
       debugger
-      this.ejecutar()
-      this.dialogRef.close(mensaje);
+      if(this.sendSome){
+
+        this.ejecutar()
+        this.dialogRef.close(mensaje);
+      }else{
+        this.dialogRef.close(mensaje);
+
+      }
     }else{
         // if(mensaje === 'undefined'){
           this.dialogRef.close(false);
@@ -337,6 +344,7 @@ export class RkpendComponent implements OnInit {
                             // localStorage.setItem('isSendToValidate','1')
                             // this.cerrar('falso');
                             this.totalMarcados = 0
+                            this.sendSome = true
                             this.recargar()
 
     

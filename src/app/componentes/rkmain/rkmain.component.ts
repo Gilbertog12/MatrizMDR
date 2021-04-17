@@ -1,3 +1,4 @@
+
 import { Component, Injectable, OnInit, ElementRef, ViewChildren, Renderer2, ViewChild,HostListener, OnChanges, Input, AfterViewInit } from '@angular/core';
 import { CollectionViewer, SelectionChange, DataSource } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -621,8 +622,8 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){      
-
-      this.recargarPadre()
+      
+      this.recargarPadre(resp)
             
       }
     })
@@ -875,19 +876,40 @@ export class RkmainComponent implements OnInit,OnChanges {
     });
   }
 
-  abrirNodo() {
+  abrirNodo(recarga?) {
     
     // this.treeControl.collapseAll()
 
     // this.treeControl.expandAll()
     
-    this.treeControl.collapse(this.getSelection);
+    
+    if(recarga){
+
+      this.recargarArbol(true);
+    }else{
+      this.treeControl.collapse(this.getSelection);
     this.treeControl.expand(this.getSelection);
     this.getSelection= this.getSelection
+    }
+    
+
+    
     // console.log(this.getSelection)
     // localStorage.setItem('seleccion',this.getSelection)
+    // this.mostrarNivelesSuperiores()
     
   };
+
+  mostrarNivelesSuperiores(){
+
+    for(let i = 0 ;i<this.dataSource.data.length; i++){
+
+      if(this.dataSource.data[i]['level'] === this.getSelection.level && this.dataSource.data[i]['key'] === this.getSelection.key ){
+        console.log("soy igual que el seleccionado")
+      }
+
+    }
+  }
 
 
   superMetodo(){
@@ -940,20 +962,14 @@ export class RkmainComponent implements OnInit,OnChanges {
   recargarPadre(ruta?) {
     let getParent
     // debugger;
-    if(ruta){
-
-       getParent = this.dataSource.getParent(ruta);
-    }else{
-
-     getParent = this.dataSource.getParent(this.getSelection);
-    }
+    console.log(ruta)
     // console.log(this.getSelection)
     this.getSelection = getParent;
     if (typeof (this.getSelection) === 'undefined') {
       this.recargarArbol();
     }
     else {
-      this.abrirNodo();
+      this.abrirNodo(ruta);
     }
   }
 
@@ -1083,11 +1099,16 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.percreacion = localStorage.getItem('NoCreador')
           // console.log(this.fix )
           
+          
         } else {
           // data.success = 'I'
           this.autentication.showMessage(data.success, data.message, data['data'], data.redirect);
         }
         this.isLoading = false;
+        if(arbol){
+
+          this.ExpandirNodos(this.getSelection.key) 
+        }
         // this.bandera = true;
       },
         error => {
@@ -1107,10 +1128,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         // // document.getElementById(key).className= 'background-highlight';
         // }
 
-        if(arbol){
-
-          this.router.navigate(['/rkmain/']); 
-        }
+        
   }
   
  
@@ -2814,8 +2832,8 @@ export class RkmainComponent implements OnInit,OnChanges {
   
 
  ExpandirNodos(key:any){
-
-  // console.log(key)
+  
+  console.log(key)
   // const spinner = this.controlService.openSpinner()
 
    let area = key.substring(0,2)
@@ -2850,7 +2868,10 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // this.ver(level)
                   if(key.length == area.length ){
                     document.getElementById(area).click()
+                    let pos = document.getElementById(area)
+                    pos.scrollIntoView()
                     document.getElementById(area).focus()
+                    
                     
                     // this.ver(this.nivel2)
                     this.controlService.closeSpinner(spinner);
@@ -2865,31 +2886,36 @@ export class RkmainComponent implements OnInit,OnChanges {
         
                       desplegable = JSON.parse(localStorage.getItem('comparar'))
                       
-                      console.log( desplegable)
-                      for(let i = 0 ; desplegable.length; i++){
+                        for(let i = 0 ; desplegable.length; i++){
         
-                        if(desplegable[i]['key']  === proceso){
-        
-                          
-        
-                          console.log(desplegable[i])
-                          this.nivel2 = padre+i+1;
-                          console.log(this.nivel2)
-                          this.treeControl.expand(this.treeControl.dataNodes[this.nivel2])
-                          if(key.length == proceso.length ){
-                            document.getElementById(proceso).click()
-                            document.getElementById(proceso).focus()
-                            // this.ver(this.nivel2)
-                            this.controlService.closeSpinner(spinner);
-                            
-                          }
+                          if(desplegable[i]['key']  === proceso){
           
-                        }
+                            
+          
+                            console.log(desplegable[i])
+                            this.nivel2 = padre+i+1;
+                            console.log(this.nivel2)
+                            this.treeControl.expand(this.treeControl.dataNodes[this.nivel2])
+                            if(key.length == proceso.length ){
+                              let pos = document.getElementById(proceso)
+                              pos.scrollIntoView()
+                              document.getElementById(proceso).click()
+                              
+                              document.getElementById(proceso).focus()
+                              // document.getElementById(proceso).scrollTo(pos.bottom,pos.left)
+  
+                              // this.ver(this.nivel2)
+                              this.controlService.closeSpinner(spinner);
+                              
+                            }
+            
+                          }
+                          
                         
                       
-                    }
-                    
-                    
+                      }
+                      // console.log( desplegable)
+                                         
                     
                   }, 2000);
                   
@@ -2898,23 +2924,29 @@ export class RkmainComponent implements OnInit,OnChanges {
                     console.log('subproceso')
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
-        
-                    for(let i = 0 ; desplegable.length; i++){
-        
-                    if(desplegable[i]['key']  === subproceso){
-        
-                      console.log(desplegable[i])
-                      this.nivel3 = this.nivel2+i+1;
-                      // console.log(this.nivel3)
-                      this.treeControl.expand(this.treeControl.dataNodes[this.nivel3])
-                      if(key.length == subproceso.length ){
-                        document.getElementById(subproceso).click()
-                        // this.ver(this.nivel3)
-                        this.controlService.closeSpinner(spinner);
+
+                    
+
+                      for(let i = 0 ; desplegable.length; i++){
+          
+                      if(desplegable[i]['key']  === subproceso){
+          
+                        console.log(desplegable[i])
+                        this.nivel3 = this.nivel2+i+1;
+                        // console.log(this.nivel3)
+                        this.treeControl.expand(this.treeControl.dataNodes[this.nivel3])
+                        if(key.length == subproceso.length ){
+                          let pos = document.getElementById(subproceso)
+                                pos.scrollIntoView()
+                          document.getElementById(subproceso).click()
+                          // this.ver(this.nivel3)
+                          this.controlService.closeSpinner(spinner);
+                        }
+          
                       }
+                      }
+                    
         
-                    }
-                    }
                   }, 4000);
         
                   setTimeout(() => {
@@ -2923,6 +2955,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
         
+                   
                     for(let i = 0 ; desplegable.length; i++){
         
                     if(desplegable[i]['key']  === actividad){
@@ -2932,8 +2965,10 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // console.log(this.nivel4)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel4])
                       if(key.length == actividad.length ){
+                        let pos = document.getElementById(actividad)
+                        pos.scrollIntoView()
                         document.getElementById(actividad).click()
-                        document.getElementById(actividad).focus()
+                        
                         // this.ver(this.nivel4) 
                         this.controlService.closeSpinner(spinner);
                         
@@ -2941,6 +2976,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         
                     }
                     }
+                  
                   }, 6000);
                   
                   setTimeout(() => {
@@ -2948,50 +2984,63 @@ export class RkmainComponent implements OnInit,OnChanges {
                     console.log('tarea')
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
-        
-                    for(let i = 0 ; desplegable.length; i++){
-        
-                    if(desplegable[i]['key']  === tarea){
-        
-                      console.log(desplegable[i])
-                      this.nivel5 = this.nivel4+i+1;
-                      // console.log(this.nivel5)
-                      this.treeControl.expand(this.treeControl.dataNodes[this.nivel5])
-                      if(key.length == tarea.length ){
-                        document.getElementById(tarea).click()
-                        document.getElementById(tarea).focus()
-                        // this.ver(this.nivel5) 
-                        this.controlService.closeSpinner(spinner);
-                        
+
+                  
+
+                      for(let i = 0 ; desplegable.length; i++){
+          
+                      if(desplegable[i]['key']  === tarea){
+          
+                        console.log(desplegable[i])
+                        this.nivel5 = this.nivel4+i+1;
+                        // console.log(this.nivel5)
+                        this.treeControl.expand(this.treeControl.dataNodes[this.nivel5])
+                        if(key.length == tarea.length ){
+                          let pos = document.getElementById(tarea)
+                          pos.scrollIntoView();
+                          document.getElementById(tarea).click()
+                          document.getElementById(tarea).focus()
+                          // this.ver(this.nivel5) 
+                          this.controlService.closeSpinner(spinner);
+                          
+                        }
+          
                       }
+                      }
+                    
         
-                    }
-                    }
                   }, 8500);
                   setTimeout(() => {
                   
                     console.log('dimension')
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
+
+                    
+                      
+                      for(let i = 0 ; desplegable.length; i++){
         
-                    for(let i = 0 ; desplegable.length; i++){
+                        if(desplegable[i]['key']  === dimension){
+            
+                          console.log(desplegable[i])
+                          this.nivel6 = this.nivel5+i+1;
+                          // console.log(this.nivel6)
+                          this.treeControl.expand(this.treeControl.dataNodes[this.nivel6])
+                          if(key.length == dimension.length ){
+                            let pos = document.getElementById(dimension)
+                            pos.scrollIntoView();
+                            document.getElementById(dimension).click()
+                            
+                            // this.ver(this.nivel6)
+                            this.controlService.closeSpinner(spinner);
+                            
+                          }
+            
+                        }
+                        }
+                    
         
-                    if(desplegable[i]['key']  === dimension){
-        
-                      console.log(desplegable[i])
-                      this.nivel6 = this.nivel5+i+1;
-                      // console.log(this.nivel6)
-                      this.treeControl.expand(this.treeControl.dataNodes[this.nivel6])
-                      if(key.length == dimension.length ){
-                        document.getElementById(dimension).click()
-                        document.getElementById(dimension).focus()
-                        // this.ver(this.nivel6)
-                        this.controlService.closeSpinner(spinner);
-                        
-                      }
-        
-                    }
-                    }
+                    
                   }, 10000);
         
                   setTimeout(() => {
@@ -2999,25 +3048,32 @@ export class RkmainComponent implements OnInit,OnChanges {
                     console.log('dimension')
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
-        
-                    for(let i = 0 ; desplegable.length; i++){
-        
-                    if(desplegable[i]['key']  === riesgo){
-        
-                      console.log(desplegable[i])
-                      this.nivel7 = this.nivel6+i+1;
-                      // console.log(this.nivel6)
-                      this.treeControl.expand(this.treeControl.dataNodes[this.nivel7])
-                      if(key.length == riesgo.length ){
-                        document.getElementById(riesgo).click()
-                        document.getElementById(riesgo).focus()
-                        // this.ver(this.nivel6)
-                        this.controlService.closeSpinner(spinner);
-                        
+
+                    
+
+                      for(let i = 0 ; desplegable.length; i++){
+          
+                      if(desplegable[i]['key']  === riesgo){
+          
+                        console.log(desplegable[i])
+                        this.nivel7 = this.nivel6+i+1;
+                        // console.log(this.nivel6)
+                        this.treeControl.expand(this.treeControl.dataNodes[this.nivel7])
+                        if(key.length == riesgo.length ){
+                          let pos = document.getElementById(riesgo)
+                          pos.scrollIntoView();
+                          
+                          document.getElementById(riesgo).click()
+                          document.getElementById(riesgo).focus()
+                          // this.ver(this.nivel6)
+                          this.controlService.closeSpinner(spinner);
+                          
+                        }
+          
                       }
+                      }
+                    
         
-                    }
-                    }
                   }, 12000);
         
                   setTimeout(() => {
@@ -3025,24 +3081,30 @@ export class RkmainComponent implements OnInit,OnChanges {
                     console.log('consecuencia')
         
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
+
+                    
+
+                      for(let i = 0 ; desplegable.length; i++){
+          
+                      if(desplegable[i]['key']  === consecuencia){
+          
+                        console.log(desplegable[i])
+                        this.nivel8 = this.nivel7+i+1;
+                        // console.log(this.nivel8)
+                        // this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
+                        let pos = document.getElementById(consecuencia)
+                        pos.scrollIntoView()
+                        document.getElementById(consecuencia).click();
+                        document.getElementById(consecuencia).focus();
+                        // this.ver(this.nivel8)
+                        this.controlService.closeSpinner(spinner);
+      
+                        
+          
+                      }
+                      }
+                    
         
-                    for(let i = 0 ; desplegable.length; i++){
-        
-                    if(desplegable[i]['key']  === consecuencia){
-        
-                      console.log(desplegable[i])
-                      this.nivel8 = this.nivel7+i+1;
-                      // console.log(this.nivel8)
-                      // this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
-                      document.getElementById(consecuencia).click();
-                      document.getElementById(consecuencia).focus();
-                      // this.ver(this.nivel8)
-                      this.controlService.closeSpinner(spinner);
-    
-                      
-        
-                    }
-                    }
                   }, 14000);
                     
                   // this.treeControl.expand(this.treeControl.dataNodes[level])

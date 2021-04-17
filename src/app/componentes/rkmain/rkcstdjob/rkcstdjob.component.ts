@@ -5,6 +5,7 @@ import Swal2 from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { RkstdtareasComponent } from '../rkstdtareas/rkstdtareas.component';
+import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
 
 
@@ -48,6 +49,7 @@ export class RkcstdjobComponent implements OnInit {
               private autentication: AuthenticationService,
               private confirm: MatDialog,
               private route: ActivatedRoute,
+              private _Recargarble:ServiciocajasService,
               @Inject(MAT_DIALOG_DATA) public data: any) { 
                
                 this.stdJobModel.areaId = data.areaId;
@@ -258,6 +260,8 @@ export class RkcstdjobComponent implements OnInit {
       if ( data.data[0].atts[1] ) {
         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.stdJobModel, data.redirect);
         Swal2.fire('', data.data[0].atts[1].value, "success")
+        this._Recargarble.Recargar$.emit(true)
+
         this.dialogRef.close(true);
       }
     }

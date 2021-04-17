@@ -36,6 +36,7 @@ export class RkporaprobarComponent implements OnInit {
   entidadfiltro: string ='';
   TotalRegistros :number =0
   totalMarcados: number = 0;
+  sendSome:boolean = false
 
   constructor(public dialogRef: MatDialogRef<RkporaprobarComponent>,
     private controlService: ControlsService,
@@ -454,8 +455,14 @@ export class RkporaprobarComponent implements OnInit {
       // console.log(mensaje)
   
       if(mensaje !==''){
-        this.ejecutar()
-        this.dialogRef.close(mensaje);
+        if(this.sendSome){
+          
+          this.ejecutar()
+          this.dialogRef.close(mensaje);
+        }else{
+
+          this.dialogRef.close(mensaje);
+        }
       }else{
   
         this.ejecutar()
@@ -518,6 +525,7 @@ export class RkporaprobarComponent implements OnInit {
     
                             Swal2.fire('Registro Aprobado','', 'success' )
                             // this.cerrar('falso');
+                            this.sendSome = true
                             this.totalMarcados = 0
                             this.recargar()
 
@@ -929,6 +937,7 @@ isOnlyControl(arreglo)
                         
                       })
                       // this.cerrar('falso')
+                      this.sendSome = true
                       this.totalMarcados = 0
                       this.recargar()
 
