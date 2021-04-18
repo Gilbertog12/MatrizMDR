@@ -81,7 +81,8 @@ public canAdd : string
               private controlService: ControlsService,
               private confirm: MatDialog,
               private route: ActivatedRoute,
-              private Cajas:ServiciocajasService
+              private Cajas:ServiciocajasService,
+              private _Recargarble:ServiciocajasService
               ) {
 
                 this.aperfil()
@@ -1145,6 +1146,7 @@ public canAdd : string
     if (data.success === true) {
       if ( data.data[0].atts[1] ) {
         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.tareaModel, data.redirect);
+        this._Recargarble.Recargar$.emit(true)
         Swal2.fire({
           icon:'success',
           text:data.data[0].atts[1].value

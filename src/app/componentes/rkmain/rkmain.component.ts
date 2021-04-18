@@ -596,7 +596,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       
       
       // this.cargarDashboard()
-      this.Vcompilacion = '4.1.5'
+      this.Vcompilacion = '4.1.6'
     var  mensaje = 
     `    ======================================
               Version ${this.Vcompilacion}     
@@ -622,7 +622,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){      
-      
+      debugger
       this.recargarPadre(resp)
             
       }
@@ -882,7 +882,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     // this.treeControl.expandAll()
     
-    
+    debugger
     if(recarga){
 
       this.recargarArbol(true);
@@ -960,11 +960,12 @@ export class RkmainComponent implements OnInit,OnChanges {
   };
 
   recargarPadre(ruta?) {
+    console.log(this.getSelection)
     let getParent
     // debugger;
     console.log(ruta)
     // console.log(this.getSelection)
-    this.getSelection = getParent;
+    // this.getSelection = getParent;
     if (typeof (this.getSelection) === 'undefined') {
       this.recargarArbol();
     }
@@ -976,6 +977,8 @@ export class RkmainComponent implements OnInit,OnChanges {
  
   
   recargarArbol(arbol?:boolean) {
+    debugger
+
     this.isLoading = true;
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
 
@@ -1106,6 +1109,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         }
         this.isLoading = false;
         if(arbol){
+          debugger
 
           this.ExpandirNodos(this.getSelection.key) 
         }
@@ -2852,6 +2856,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   // console.log(this.dataSource.data)
   
   for(let i =0 ;this.dataSource.data.length; i++){
+    const spinner = this.controlService.openSpinner()
     
     if(this.dataSource.data[i]['key'] === area)
     {
@@ -3110,7 +3115,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // this.treeControl.expand(this.treeControl.dataNodes[level])
                 // this.controlService.closeSpinner(spinner);
             }
-          
+            
+            
+            this.controlService.closeSpinner(spinner);
           }
           
 

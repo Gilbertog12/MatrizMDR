@@ -80,7 +80,8 @@ public Razon : string
     private controlService: ControlsService,
     private confirm: MatDialog,
     private route: ActivatedRoute,
-    private Cajas:ServiciocajasService
+    private Cajas:ServiciocajasService,
+    private _Recargarble:ServiciocajasService
     ) {
 
       this.aperfil()
@@ -121,6 +122,13 @@ public Razon : string
   }
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string) {
+
+    this.actividadModel = {};
+    this.tareasList = [];
+    this.logList = [];
+    this.detalleList = [];
+    this.stdJobList = []; 
+  
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'ACTIVIDAD_READ' });
@@ -489,7 +497,7 @@ public Razon : string
                 // debugger
                 if (data.data[0].atts[1]) {
                   // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.actividadModel, data.redirect);
-
+                  
                   Swal2.fire({
                     icon:'success',
                     text: 'Registro eliminado Correctamente'
@@ -501,6 +509,8 @@ public Razon : string
                 this.detalleList = [];
                 this.stdJobList = [];
                 this.ver(this.id, this.pid, this.sid, this.cid);
+                this._Recargarble.Recargar$.emit(true)
+                // this._Recargarble.Recargar$.emit(true)
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.actividadModel, data.redirect);
 
