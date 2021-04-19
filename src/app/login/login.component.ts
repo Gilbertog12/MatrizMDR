@@ -311,7 +311,7 @@ export class LoginComponent implements OnInit {
 
     Swal2.fire({
       icon:'info',
-      html:"Matriz de riesgos, Copyright 2021. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.1.6 <br />Fecha de compilación: 2021-04-18 <br />",
+      html:"Matriz de riesgos, Copyright 2021. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.1.6 <br />Fecha de compilación: 2021-04-19 <br />",
       showCloseButton: true
       
     })

@@ -126,6 +126,25 @@ public canAdd : string
 
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string) {
+    
+
+    if(this.tareaModel !== {}){
+      this.tareaModel = {}
+    };
+    if(this.dimensionesList !== []){
+      this.dimensionesList = []
+    }
+    if(this.detalleList !== []){
+      this.detalleList = []
+    }
+    if(this.stdJobList !== []){
+      this.stdJobList = []
+    }
+    if(this.detalleList !== []){
+      this.detalleList = []
+    }
+    
+
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'TAREA_READ' });

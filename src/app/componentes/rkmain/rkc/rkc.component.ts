@@ -108,6 +108,11 @@ public Razon : string
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
     this.percreacion = localStorage.getItem('NoCreador')
+    this.actividadModel = {};
+      this.tareasList = [];
+      this.logList = [];
+      this.detalleList = [];
+      this.stdJobList = [];
     this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){    
         this.actividadModel = {};
@@ -122,12 +127,27 @@ public Razon : string
   }
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string) {
-
-    this.actividadModel = {};
-    this.tareasList = [];
-    this.logList = [];
-    this.detalleList = [];
-    this.stdJobList = []; 
+    
+    if(this.actividadModel !== {}){
+      this.actividadModel = {}
+    };
+    if(this.tareasList !== []){
+      this.tareasList = []
+    }
+    if(this.logList !== []){
+      this.logList = []
+    }
+    if(this.tareasList !== []){
+      this.tareasList = []
+    }
+    if(this.detalleList !== []){
+      this.detalleList = []
+    }
+    if(this.stdJobList !== []){
+      
+      this.stdJobList = []; 
+    }
+    
   
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -451,7 +471,9 @@ public Razon : string
         this.logList = [];
         this.detalleList = [];
         this.stdJobList = [];
+        debugger
         this.ver(this.id, this.pid, this.sid, this.cid);
+        
       }
     });
 
