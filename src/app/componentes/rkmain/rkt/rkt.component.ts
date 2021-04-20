@@ -409,6 +409,8 @@ public canAdd : string
         this.detalleList = [];
         this.stdJobList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
+        this._Recargarble.Recargar$.emit(true)
+
       }
     });
 

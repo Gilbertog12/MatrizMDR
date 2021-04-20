@@ -260,7 +260,6 @@ export class RkcstdjobComponent implements OnInit {
       if ( data.data[0].atts[1] ) {
         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.stdJobModel, data.redirect);
         Swal2.fire('', data.data[0].atts[1].value, "success")
-        
 
         this.dialogRef.close(true);
       }

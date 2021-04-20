@@ -2972,6 +2972,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                       if(key.length == actividad.length ){
                         let pos = document.getElementById(actividad)
                         pos.scrollIntoView()
+                        // this.router.navigate(['/rkmain/cargando']);
                         document.getElementById(actividad).click()
                         
                         // this.ver(this.nivel4) 

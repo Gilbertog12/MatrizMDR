@@ -473,6 +473,8 @@ public Razon : string
         this.stdJobList = [];
         debugger
         this.ver(this.id, this.pid, this.sid, this.cid);
+        this._Recargarble.Recargar$.emit(true)
+
         
       }
     });
