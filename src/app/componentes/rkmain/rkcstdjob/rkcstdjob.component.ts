@@ -142,7 +142,7 @@ export class RkcstdjobComponent implements OnInit {
             console.log(element)
 
       if ( element.STD_JOB_NO !== item.STD_JOB_NO) {
-          console.log(item.STD_JOB_NO+ 'falso')
+          // console.log(item.STD_JOB_NO+ 'falso')
           element.selected = false;
           this.habilitar = false
       }
@@ -150,7 +150,7 @@ export class RkcstdjobComponent implements OnInit {
 
     this.stdJobModel.STD_JOB_NO = '';
     if ( item.selected === true ) {
-      console.log(item.STD_JOB_NO + 'verdadere')
+      // console.log(item.STD_JOB_NO + 'verdadere')
       this.stdJobModel.STD_JOB_NO= item.STD_JOB_NO;
       this.habilitar = true
       this.stdJobModel.stdJobTaskNo1 ='*'

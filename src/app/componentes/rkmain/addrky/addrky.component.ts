@@ -319,6 +319,7 @@ export class AddrkyComponent implements OnInit {
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr'});
     _atts.push({ name: 'action', value: 'READ_CRITICIDAD'});
+    _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
     _atts.push({ name: 'severidadId', value: this.consecuenciaModel.riesgoPuroP });
     _atts.push({ name: 'probabilidadId', value: this.consecuenciaModel.riesgoPuroS });
 

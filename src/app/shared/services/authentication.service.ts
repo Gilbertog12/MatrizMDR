@@ -219,7 +219,7 @@ export class AuthenticationService {
         }
       }
     );*/
-
+    console.log(_post)
     return _post;
 
   }

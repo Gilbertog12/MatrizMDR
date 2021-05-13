@@ -113,16 +113,16 @@ public Razon : string
       this.logList = [];
       this.detalleList = [];
       this.stdJobList = [];
-    this.Cajas.Recargar$.subscribe(resp=>{
-      if(resp){    
-        this.actividadModel = {};
-      this.tareasList = [];
-      this.logList = [];
-      this.detalleList = [];
-      this.stdJobList = [];     
-        this.ver(this.id, this.pid, this.sid, this.cid);        
-      }
-    })
+    // this.Cajas.Recargar$.subscribe(resp=>{
+    //   if(resp){    
+    //     this.actividadModel = {};
+    //   this.tareasList = [];
+    //   this.logList = [];
+    //   this.detalleList = [];
+    //   this.stdJobList = [];     
+    //     this.ver(this.id, this.pid, this.sid, this.cid);        
+    //   }
+    // })
 
   }
 

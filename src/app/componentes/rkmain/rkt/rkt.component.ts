@@ -110,16 +110,16 @@ public canAdd : string
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
     this.percreacion = localStorage.getItem('NoCreador')
 
-    this.Cajas.Recargar$.subscribe(resp=>{
-      if(resp){       
-        this.tareaModel = {};
-        this.dimensionesList = [];
-        this.detalleList = [];
-        this.stdJobList = [];
-        this.ver(this.id, this.pid, this.sid, this.cid, this.tid);     
+    // this.Cajas.Recargar$.subscribe(resp=>{
+    //   if(resp){       
+    //     this.tareaModel = {};
+    //     this.dimensionesList = [];
+    //     this.detalleList = [];
+    //     this.stdJobList = [];
+    //     this.ver(this.id, this.pid, this.sid, this.cid, this.tid);     
         
-      }
-    })
+    //   }
+    // })
 
     
   }
@@ -127,7 +127,7 @@ public canAdd : string
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string) {
     
-
+    debugger
     if(this.tareaModel !== {}){
       this.tareaModel = {}
     };

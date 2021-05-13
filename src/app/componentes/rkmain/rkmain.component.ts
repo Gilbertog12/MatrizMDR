@@ -596,7 +596,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       
       
       // this.cargarDashboard()
-      this.Vcompilacion = '4.1.6'
+      this.Vcompilacion = '4.1.7'
     var  mensaje = 
     `    ======================================
               Version ${this.Vcompilacion}     
@@ -618,6 +618,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     // this.cargarDashboardData(); 
     
     // console.log(this.SL)
+    
 
 
     this.Cajas.Recargar$.subscribe(resp=>{
@@ -779,6 +780,36 @@ export class RkmainComponent implements OnInit,OnChanges {
             return result;
           });
     });
+  }
+
+  pruebs(){
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    // _atts.push({ name: 'stdJobNo1', value: '' });
+    _atts.push({ name: 'action', value: 'TABLERO_LIST' });
+
+    this.autentication.generic(_atts)
+        .subscribe(
+          (data) => {
+            console.log(data)
+            const result = data.success;
+            if (result) {
+              this.Cajas.caja1 = data.data[0].atts[1].value.trim()
+              this.dashboardData = {
+                ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
+                POR_VALIDAR: data.data[0].atts[2].value.trim(),
+                Rechazados: data.data[0].atts[3].value.trim(),
+                POR_APROBAR: data.data[0].atts[4].value.trim(),
+                En_Construccion: data.data[0].atts[5].value.trim()
+              };
+            } else {
+              // this.controlService.closeSpinner(spinner);
+
+              this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
+            }
+            return result;
+          });
+
   }
 
   

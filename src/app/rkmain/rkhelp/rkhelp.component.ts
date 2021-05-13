@@ -83,7 +83,7 @@ export class RkhelpComponent implements OnInit {
             if(pruebaLink.includes('youtube')){
               this.icono ='assets/images/youtube.png'
             }else{
-              this.icono ='assets/images/pdf.png'
+              this.icono ='assets/images/link.png'
             }
 
             this.docsHelp.push({
