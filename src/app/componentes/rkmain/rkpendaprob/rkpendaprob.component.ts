@@ -58,6 +58,7 @@ export class RkpendaprobComponent implements OnInit {
   TotalRegistros :number =0
   totalMarcados: number = 0;
   sendSome:boolean = false
+  nodoseleccionado: string;
 
   constructor(public dialogRef: MatDialogRef<RkpendaprobComponent>,
     private controlService: ControlsService,
@@ -72,6 +73,8 @@ export class RkpendaprobComponent implements OnInit {
 
 
   ngOnInit() {
+    this.nodoseleccionado = localStorage.getItem('itemseleccionado')
+
   }
   masterSelected = false;
 
@@ -145,6 +148,8 @@ export class RkpendaprobComponent implements OnInit {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'RE' });
+    _atts.push({ name: 'key', value: this.data.id });
+    _atts.push({ name: 'statusItem', value: this.data.status });
     if(this.complete == true){
       _atts.push({ name: 'showCompleted', value: 'N' });
       
@@ -451,18 +456,27 @@ export class RkpendaprobComponent implements OnInit {
     // console.log(mensaje)
 
     if(mensaje !==''){
-      if(this.sendSome){
+      
 
         this.ejecutar()
         this.dialogRef.close(mensaje);
-      }else{
-        this.dialogRef.close(mensaje);
-
-      }
+         
+    
+    this.router.navigate(['/rkmain/cargando']);  
+    setTimeout(() => {
+      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+        
+    }, 1000);
+     
     }else{
 
       this.ejecutar()
       this.dialogRef.close(false);
+      this.router.navigate(['/rkmain/cargando']);  
+    setTimeout(() => {
+      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+        
+    }, 1000);
       
       
     }
@@ -1136,5 +1150,7 @@ verTable(item: any) {
       break;
   }
 }
+
+
 
 }

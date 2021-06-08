@@ -17,7 +17,8 @@ const AppRoutes: Routes = [
   //   canActivate: [AuthGuard]
   // },
   { path: '', component: ComponentesComponent, canActivate: [AuthGuard] },
-  { path: 'login', loadChildren: './login/login.module#LoginModule' }
+  { path: 'login', loadChildren: './login/login.module#LoginModule' },
+  // { path: '**', loadChildren: './login/login.module#LoginModule' }
   // { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
   // { path: 'app', component: LayoutComponent },
   // { path: 'extra', loadChildren: './extra-pages/extra-pages.module#ExtraPagesModule' },

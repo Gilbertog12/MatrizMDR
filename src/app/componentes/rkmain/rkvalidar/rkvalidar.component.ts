@@ -24,6 +24,7 @@ export class RkvalidarComponent implements OnInit {
   comments='';
   entidadfiltro='';
   sendSome:boolean = false
+  nodoseleccionado: string;
 
   constructor(public dialogRef: MatDialogRef<RkvalidarComponent>,
     private controlService: ControlsService,
@@ -40,6 +41,9 @@ export class RkvalidarComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.nodoseleccionado = localStorage.getItem('itemseleccionado')
+
   }
 
   @Input() Razon: any;
@@ -450,28 +454,37 @@ export class RkvalidarComponent implements OnInit {
     
   
   
-    cerrar(mensaje:any) {
-      // console.log(mensaje)
-  
-      if(mensaje !==''){
+   
+  cerrar(mensaje:any) {
+    // console.log(mensaje)
 
-        if(this.sendSome){
+    if(mensaje !==''){
+      
 
-          this.ejecutar()
-          this.dialogRef.close(mensaje);
-        }else{
-          this.dialogRef.close(mensaje);
-
-        }
-      }else{
-  
         this.ejecutar()
-        this.dialogRef.close(false);
+        this.dialogRef.close(mensaje);
+         
+    
+    this.router.navigate(['/rkmain/cargando']);  
+    setTimeout(() => {
+      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
         
+    }, 1000);
+     
+    }else{
+
+      this.ejecutar()
+      this.dialogRef.close(false);
+      this.router.navigate(['/rkmain/cargando']);  
+    setTimeout(() => {
+      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
         
-      }
-  
+    }, 1000);
+      
+      
     }
+
+  }
 
   ActivarFuncion(){
       

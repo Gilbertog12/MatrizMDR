@@ -37,6 +37,7 @@ export class RkporaprobarComponent implements OnInit {
   TotalRegistros :number =0
   totalMarcados: number = 0;
   sendSome:boolean = false
+  nodoseleccionado: string;
 
   constructor(public dialogRef: MatDialogRef<RkporaprobarComponent>,
     private controlService: ControlsService,
@@ -52,6 +53,9 @@ export class RkporaprobarComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.nodoseleccionado = localStorage.getItem('itemseleccionado')
+
   }
   public pendList: any[] = [];
   masterSelected = false;
@@ -451,22 +455,32 @@ export class RkporaprobarComponent implements OnInit {
     
   
   
+ 
     cerrar(mensaje:any) {
       // console.log(mensaje)
   
       if(mensaje !==''){
-        if(this.sendSome){
-          
+        
+  
           this.ejecutar()
           this.dialogRef.close(mensaje);
-        }else{
-
-          this.dialogRef.close(mensaje);
-        }
+           
+      
+      this.router.navigate(['/rkmain/cargando']);  
+      setTimeout(() => {
+        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+          
+      }, 1000);
+       
       }else{
   
         this.ejecutar()
         this.dialogRef.close(false);
+        this.router.navigate(['/rkmain/cargando']);  
+      setTimeout(() => {
+        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+          
+      }, 1000);
         
         
       }

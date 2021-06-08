@@ -190,15 +190,11 @@ export class RkpendComponent implements OnInit {
 
     // debugger
     if(mensaje !==''){
-      debugger
-      if(this.sendSome){
+     
 
         this.ejecutar()
         this.dialogRef.close(mensaje);
-      }else{
-        this.dialogRef.close(mensaje);
 
-      }
     }else{
         // if(mensaje === 'undefined'){
           this.dialogRef.close(false);

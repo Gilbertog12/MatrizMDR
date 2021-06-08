@@ -239,7 +239,7 @@ export class DynamicFlatNode {
             
           },
           error => {
-            //if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', {}, false); }
+            if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet1', {}, false); }
             console.log(error);
           });
         }
@@ -533,6 +533,7 @@ export class RkmainComponent implements OnInit,OnChanges {
  
    public barChartType: ChartType = 'bar';
   t:any;
+  PosicionAMover: any;
 
   //mmetodos para hacer logout automatico
 
@@ -559,13 +560,10 @@ export class RkmainComponent implements OnInit,OnChanges {
     
     
    
-    this.aperfil()
+    // this.aperfil()
     
   }
-  // imprimir(){
-    //   this.hijo.recargarArbol()
-    //   console.log('hola')
-    // }
+
     
     
     ngOnInit() {
@@ -589,14 +587,10 @@ export class RkmainComponent implements OnInit,OnChanges {
         }
       });
 
-      // this.reloj()
-      // this.t = setInterval(()=>{
-      //   console.log(`${this.minutos} : ${this.segundos}`)
-      // },1000)
-      
+    
       
       // this.cargarDashboard()
-      this.Vcompilacion = '4.1.7'
+      this.Vcompilacion = '4.2.0'
     var  mensaje = 
     `    ======================================
               Version ${this.Vcompilacion}     
@@ -610,6 +604,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     // localStorage.setItem('recargarAprobaciones', 'false');
     // this.refresh = localStorage.getItem('recargarAprobaciones');
     this.recargarArbol();
+    // this.aperfil()
     // this.verSinAprobar();
     // this.idleLogout();
     // window.addEventListener('mousemove', this.resetear, true);
@@ -705,11 +700,9 @@ export class RkmainComponent implements OnInit,OnChanges {
  
  
   public cargarDashboardData() {
-    let t;
+        let t;
     const parentThis = this;
-
     function reloj(rset?:boolean){
-
       if(rset){
         this.minutos = 4;
         this.segundos = 59;
@@ -902,7 +895,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           },
           (error) => {
             this.controlService.closeSpinner(spinner);
-            // if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', this.aprobacionesList, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.aprobacionesList, false); }
+            if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', this.aprobacionesList, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet2', this.aprobacionesList, false); }
           });
     });
   }
@@ -1045,6 +1038,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             let pendingDelete = value['atts'][20]['value'];
             let statusParent = value['atts'][22]['value'];
             let displayDeleteIcon = value['atts'][23]['value'];
+            // this.cargo = perfil
 
             
             if(parseInt(status)< parseInt(statusParent)){
@@ -1147,7 +1141,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         // this.bandera = true;
       },
         error => {
-          //if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', {}, false); }
+          if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet3', {}, false); }
           console.log(error);
         });
 
@@ -1733,7 +1727,7 @@ export class RkmainComponent implements OnInit,OnChanges {
               },
               (error) => {
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', node, false);
+                this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet4', node, false);
                 this.controlService.closeSpinner(spinner);
               });
         }
@@ -2035,8 +2029,10 @@ export class RkmainComponent implements OnInit,OnChanges {
                 this.controlService.closeSpinner(spinner);
               },
               (error) => {
+              console.log(error)
+                debugger
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', node, false);
+                this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet5', node, false);
                 this.controlService.closeSpinner(spinner);
               });
         }
@@ -2870,6 +2866,9 @@ export class RkmainComponent implements OnInit,OnChanges {
   
   console.log(key)
   // const spinner = this.controlService.openSpinner()
+  // this.PosicionAMover
+
+
 
    let area = key.substring(0,2)
   let proceso = key.substring(0,6)
@@ -2904,8 +2903,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // this.ver(level)
                   if(key.length == area.length ){
                     document.getElementById(area).click()
-                    let pos = document.getElementById(area)
-                    pos.scrollIntoView()
+                    
                     document.getElementById(area).focus()
                     
                     
@@ -2933,8 +2931,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                             console.log(this.nivel2)
                             this.treeControl.expand(this.treeControl.dataNodes[this.nivel2])
                             if(key.length == proceso.length ){
-                              let pos = document.getElementById(proceso)
-                              pos.scrollIntoView()
+                              // let pos = document.getElementById(proceso)
+                              // pos.scrollIntoView()
                               document.getElementById(proceso).click()
                               
                               document.getElementById(proceso).focus()
@@ -2972,8 +2970,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                         // console.log(this.nivel3)
                         this.treeControl.expand(this.treeControl.dataNodes[this.nivel3])
                         if(key.length == subproceso.length ){
-                          let pos = document.getElementById(subproceso)
-                                pos.scrollIntoView()
+                          // let pos = document.getElementById(subproceso)
+                          //       pos.scrollIntoView()
                           document.getElementById(subproceso).click()
                           // this.ver(this.nivel3)
                           this.controlService.closeSpinner(spinner);
@@ -3001,8 +2999,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // console.log(this.nivel4)
                       this.treeControl.expand(this.treeControl.dataNodes[this.nivel4])
                       if(key.length == actividad.length ){
-                        let pos = document.getElementById(actividad)
-                        pos.scrollIntoView()
+                        // let pos = document.getElementById(actividad)
+                        // pos.scrollIntoView()
                         // this.router.navigate(['/rkmain/cargando']);
                         document.getElementById(actividad).click()
                         
@@ -3033,8 +3031,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                         // console.log(this.nivel5)
                         this.treeControl.expand(this.treeControl.dataNodes[this.nivel5])
                         if(key.length == tarea.length ){
-                          let pos = document.getElementById(tarea)
-                          pos.scrollIntoView();
+                          // let pos = document.getElementById(tarea)
+                          // pos.scrollIntoView();
                           document.getElementById(tarea).click()
                           document.getElementById(tarea).focus()
                           // this.ver(this.nivel5) 
@@ -3064,8 +3062,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                           // console.log(this.nivel6)
                           this.treeControl.expand(this.treeControl.dataNodes[this.nivel6])
                           if(key.length == dimension.length ){
-                            let pos = document.getElementById(dimension)
-                            pos.scrollIntoView();
+                            // let pos = document.getElementById(dimension)
+                            // pos.scrollIntoView();
                             document.getElementById(dimension).click()
                             
                             // this.ver(this.nivel6)
@@ -3097,8 +3095,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                         // console.log(this.nivel6)
                         this.treeControl.expand(this.treeControl.dataNodes[this.nivel7])
                         if(key.length == riesgo.length ){
-                          let pos = document.getElementById(riesgo)
-                          pos.scrollIntoView();
+                          // let pos = document.getElementById(riesgo)
+                          // pos.scrollIntoView();
                           
                           document.getElementById(riesgo).click()
                           document.getElementById(riesgo).focus()
@@ -3129,8 +3127,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                         this.nivel8 = this.nivel7+i+1;
                         // console.log(this.nivel8)
                         // this.treeControl.expand(this.treeControl.dataNodes[this.nivel8])
-                        let pos = document.getElementById(consecuencia)
-                        pos.scrollIntoView()
+                        // let pos = document.getElementById(consecuencia)
+                        // pos.scrollIntoView()
                         document.getElementById(consecuencia).click();
                         document.getElementById(consecuencia).focus();
                         // this.ver(this.nivel8)
@@ -3148,7 +3146,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                 // this.controlService.closeSpinner(spinner);
             }
             
-            
+            let pos = document.getElementById(key)
+            pos.scrollIntoView()
+
             this.controlService.closeSpinner(spinner);
           }
           
@@ -3300,63 +3300,65 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   }
   aperfil() {
-    let _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr' });
-    _atts.push({ name: 'action', value: 'SESSION' });
+    // let _atts = [];
+    // _atts.push({ name: 'scriptName', value: 'coemdr' });
+    // _atts.push({ name: 'action', value: 'SESSION' });
 
-    const promiseView = new Promise((resolve, reject) => {
-      this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            // console.log("RES:" + JSON.stringify(data));
-            const result = data.success;
-            if (result) {
+    // const promiseView = new Promise((resolve, reject) => {
+    //   this.autentication.generic(_atts)
+    //     .subscribe(
+    //       (data) => {
+    //         // console.log("RES:" + JSON.stringify(data));
+    //         const result = data.success;
+    //         if (result) {
 
-              data.data.forEach((element) => {
-                if (element.atts.length > 0) {
-                  this.Perfil.push({
-                    adm: element.atts[1].value,
-                    apr: element.atts[2].value,
-                    con: element.atts[3].value,
-                    cre: element.atts[4].value,
-                    val: element.atts[5].value,
-                  });
-                }
+    //           data.data.forEach((element) => {
+    //             if (element.atts.length > 0) {
+    //               this.Perfil.push({
+    //                 adm: element.atts[1].value,
+    //                 apr: element.atts[2].value,
+    //                 con: element.atts[3].value,
+    //                 cre: element.atts[4].value,
+    //                 val: element.atts[5].value,
+    //               });
+    //             }
 
 
-              });
+    //           });
+    //           debugger
+    //           this.Perfil.forEach((element, index, array) => {
 
-              this.Perfil.forEach((element, index, array) => {
+    //             this.consulta = element.con;
+    //             this.admin = element.adm;
+    //             this.aprobador = element.apr;
+    //             this.creador = element.cre;
+    //             this.validador = element.val;
 
-                this.consulta = element.con;
-                this.admin = element.adm;
-                this.aprobador = element.apr;
-                this.creador = element.cre;
-                this.validador = element.val;
-
-                this.cargo = this.admin + this.aprobador + this.consulta + this.creador + this.validador;
-                // if (this.cargo === 'NNYNN') {
-                //   this.propiedad = 'none';
-                // }
-                this.mostrar();
-
-              });
-
-            } else {
-              this.controlService.snackbarError(data.message);
-            }
-            return result;
-          },
-          (error) => {
-            this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
-          });
-    });
-    
+    //             this.cargo = this.admin + this.aprobador + this.consulta + this.creador + this.validador;
+    //             // if (this.cargo === 'NNYNN') {
+    //             //   this.propiedad = 'none';
+    //             // }
+                
+    //           });
+              
+    //         } else {
+    //           this.controlService.snackbarError(data.message);
+    //         }
+    //         return result;
+    //       },
+    //       (error) => {
+    //         debugger
+    //         console.log(error)
+    //         this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet6');
+    //       });
+    //     });
         
-
-  }
-
-  async mostrar() {
+        
+        this.mostrar();
+        
+      }
+      
+      async mostrar() {
 
     switch (this.cargo) {
       case 'NNYNN': //SOLO LECTURA

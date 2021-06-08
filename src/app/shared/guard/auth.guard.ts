@@ -23,8 +23,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (localStorage.getItem('tokenApp')) {
-        console.log(JSON.parse(localStorage.getItem('tokenApp')))
-        debugger;
+        // console.log(JSON.parse(localStorage.getItem('tokenApp')))
+        // debugger;
         const token = JSON.parse(localStorage.getItem('tokenApp'));
         const expiracion: number = token.expires_in / 3600;
         const fechaInicial: number = new Date(localStorage.getItem('datePTEL')).getTime();

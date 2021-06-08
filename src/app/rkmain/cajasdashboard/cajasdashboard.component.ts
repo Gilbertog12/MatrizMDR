@@ -3,6 +3,8 @@ import { AuthenticationService } from '../../shared';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RkpendaprobComponent } from '../../componentes/rkmain/rkpendaprob/rkpendaprob.component';
 import { RkpendComponent } from '../../componentes/rkmain/rkpend/rkpend.component';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-cajasdashboard',
@@ -10,6 +12,8 @@ import { RkpendComponent } from '../../componentes/rkmain/rkpend/rkpend.componen
   styleUrls: ['./cajasdashboard.component.scss']
 })
 export class CajasdashboardComponent implements OnInit {
+  
+  public nodoseleccionado: string;
 
 
   public dashboardData: any = {
@@ -23,6 +27,7 @@ export class CajasdashboardComponent implements OnInit {
 
   constructor(private autentication: AuthenticationService, 
     private confirm: MatDialog ,
+    private router: Router,
     public dialogRef: MatDialogRef<CajasdashboardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       // console.log(data)
@@ -31,6 +36,8 @@ export class CajasdashboardComponent implements OnInit {
     }
     
     ngOnInit() {
+    this.nodoseleccionado = localStorage.getItem('itemseleccionado')
+
     this.cargarDashboard()
     
   }
@@ -185,6 +192,11 @@ export class CajasdashboardComponent implements OnInit {
   cancelar() {
     
     this.dialogRef.close(true);
+    this.router.navigate(['/rkmain/cargando']);  
+    setTimeout(() => {
+      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+        
+    }, 1000);
   }
 
 }

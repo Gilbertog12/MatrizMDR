@@ -85,7 +85,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SpinnerComponent } from './controls/spinner/spinner.component';
 
 import { ComponentesComponent } from './componentes/componentes.component';
-import { NgxLoadingModule } from 'ngx-loading';
+import { NgxLoadingModule,ngxLoadingAnimationTypes } from 'ngx-loading';
 import { RkmessagesModule } from './componentes/rkmain/rkmessages/rkmessages.module';
 import { InfoModule } from './componentes/rkmain/info/info.module';
 import { ConfirmationModule } from './controls/confirmation/confirmation.module';
@@ -155,7 +155,7 @@ import { ChartsModule } from './charts/charts.module';
     ConfirmationModule,
     AddrkaModule,
     rkHelpModule,
-    NgxLoadingModule.forRoot({}),
+    NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.circleSwish}),
     ReactiveFormsModule,
     
     

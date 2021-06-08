@@ -50,7 +50,7 @@ export class AuthenticationService {
     const online = navigator.onLine;
 
     
-
+    debugger
     if (!online) {
       this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
       this.logout()
@@ -64,12 +64,12 @@ export class AuthenticationService {
       pwd: passwordV === 'undefined' ? '' : passwordV,
       district: districtV.toUpperCase(),
       position: positionV.toUpperCase(),
-      recordar : false
+      
     };
 
     let headersV = new HttpHeaders();
     headersV = headersV.append('Content-Type', 'application/json');
-
+    debugger
     return this.http.post<any>(_url, body, { headers : headersV });
 
   }
@@ -146,7 +146,7 @@ export class AuthenticationService {
     const _url = this.httpService.baseUrl + '/values/positions/';
     const online = navigator.onLine;
 
-    console.log("======" + _url);
+    // console.log("======" + _url);
 
     if (!online) {
       this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
@@ -219,7 +219,7 @@ export class AuthenticationService {
         }
       }
     );*/
-    console.log(_post)
+    // console.log(_post)
     return _post;
 
   }
