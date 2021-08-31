@@ -1,0 +1,49 @@
+.capitalize {
+    text-transform:capitalize;
+  }
+  
+  .breadcrumb-item {
+    float: left;
+  }
+
+  .button-flotant-left {
+    z-index:5;
+    position: fixed;
+    display: flex; 
+    align-self: flex-end;
+    bottom: 0; 
+    margin-bottom: 74px;
+    margin-left:32px;
+  }
+  
+  .button-flotant-right {
+    z-index:5;
+    position: fixed;
+    display: flex; 
+    align-self: flex-end;
+    bottom: 0; 
+    margin-bottom: 74px;
+    right:32px
+  }
+  
+
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+  
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }

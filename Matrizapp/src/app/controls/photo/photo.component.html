@@ -1,0 +1,7 @@
+<mat-card class="example-card" class="z-depth center">  
+    <input [accept]="accept" type="file"   hidden (change)="onNativeInputFileSelect($event)" #inputFile  
+    (click)="selectFile()"/>              
+    <img class="image-size" mat-card-image (click)="inputFile.click()" *ngIf="image"  src="{{ image || './assets/images/default.jpg' }}" alt="Foto del producto">       
+    <mat-icon color="accent" style="font-size: 122px; cursor: pointer;" (click)="inputFile.click()" *ngIf="!image" >perm_media</mat-icon>    
+</mat-card>
+<div *ngIf="tieneTitulo" >{{titulo}}</div>

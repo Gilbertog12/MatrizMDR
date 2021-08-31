@@ -1,0 +1,76 @@
+
+
+
+<div class="box box-default" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle *ngIf="mostrar">
+    <div class="box-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h4>Transacciones pendientes </h4>
+                    <!-- {{prueba}} -->
+                </div>
+                <div class="col-xl-2"></div>
+                <div class="col-xl-4 text-center">
+                    <div class="card bg-color-warning ">
+                        <a class='pasos'>Paso 1</a>
+                        <div class="card-content">
+                            <span class="card-title " style="color: black; font-size: 30px;">{{dashboardData.ENVIAR_A_VALIDAR}}</span>
+
+                            <p style="font-weight: bold"><a style="color: black; font-size: 13px; font-weight: bold;" [routerLink]="" (click)="VerEnviarValidar()">ITEMS PENDIENTES ENVIAR A VALIDAR
+  
+          </a>
+                            </p>
+
+                            <p style="font-weight: bold">ITEMS EN CONSTRUCCION {{dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION}}</p>
+                            <!-- <a style="font-size: 11px;">(Items en fase de creación, modificación o borrado)</a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 text-center">
+                    <div class="card bg-color-success">
+                        <!-- <a class='pasos'>Paso 2</a> -->
+                        <div class="card-content">
+                            <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.RECHAZADO}}</span>
+                            <p><a style="color: black; font-size: 13px;" [routerLink]="" (click)="VerEnviarAprobar()"> ITEMS RECHAZADOS</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2"></div>
+
+                <!-- <div class="col-xl-2"></div>
+                <div class="col-xl-4 text-center">
+                    <div class="card bg-color-success">
+                        <div class="card-content">
+                            <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.Rechazados}}</span>
+                            <p><a style="color: black; font-size: 13px;" (click)="VerEnviarAprobar()"> ITEMS RECHAZADOS
+            
+
+        </a>
+                            </p>
+
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-xl-4 text-center">
+                    <div class="card bg-color-info ">
+                        <a class='pasos'>Paso 3</a>
+                        <div class="card-content">
+                            <span class="card-title" style="color: black; font-size: 30px;">{{dashboardData.POR_APROBAR}}</span>
+                            <p><a style="color: black; font-size: 13px;" (click)="VerPorAprobar()">ITEMS PENDIENTES POR APROBAR</a></p>
+
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <mat-dialog-actions align="end">
+            <!-- <button type="submit" class="btn-w-md mat-raised-button mat-primary" color="primary" md-raised-button="" ng-reflect-color="primary">
+                        <span class="mat-button-wrapper">
+                        <mat-icon mat-list-icon>save</mat-icon>
+                        {{ data.button_confirm }}
+                        </span>
+                </button> -->
+            <button mat-raised-button color="warn" (click)="cancelar()">Cerrar</button>
+        </mat-dialog-actions>
+    </div>

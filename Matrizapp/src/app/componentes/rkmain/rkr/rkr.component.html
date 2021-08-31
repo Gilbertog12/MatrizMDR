@@ -1,0 +1,235 @@
+<h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea > Dimension > Riesgo
+    <button *ngIf="riesgoModel.riesgoStatusId !=='008' && riesgoModel.CanAdd === 'true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+
+</h6>
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaId" placeholder="Area" [(ngModel)]="riesgoModel.areaId" #areaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaDescripcion" placeholder="" [(ngModel)]="riesgoModel.areaDescripcion" #areaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoId" placeholder="Proceso" [(ngModel)]="riesgoModel.procesoId" #procesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoDescripcion" placeholder="" [(ngModel)]="riesgoModel.procesoDescripcion" #procesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoId" placeholder="Subproceso" [(ngModel)]="riesgoModel.subprocesoId" #subprocesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoDescripcion" placeholder="" [(ngModel)]="riesgoModel.subprocesoDescripcion" #subprocesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadId" placeholder="Actividad" [(ngModel)]="riesgoModel.actividadId" #actividadId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadDescripcion" placeholder="" [(ngModel)]="riesgoModel.actividadDescripcion" #actividadDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="tareaId" placeholder="Tarea" [(ngModel)]="riesgoModel.tareaId" #tareaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="tareaDescripcion" placeholder="" [(ngModel)]="riesgoModel.tareaDescripcion" #tareaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="dimensionId" placeholder="Dimensión" [(ngModel)]="riesgoModel.dimensionId" #dimensionId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="dimensionDescripcion" placeholder="" [(ngModel)]="riesgoModel.dimensionDescripcion" #dimensionDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoId" placeholder="Riesgo" [(ngModel)]="riesgoModel.riesgoId" #riesgoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescripcion" placeholder="" [(ngModel)]="riesgoModel.riesgoDescripcion" #riesgoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <mat-form-field>
+                                <textarea style="height: 40px;" matInput name="riesgoDescripcionExt" placeholder="Descripción extendida" [(ngModel)]="riesgoModel.riesgoDescripcionExt" #riesgoDescripcionExt="ngModel" readonly="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoIdRama" placeholder="Rama" [(ngModel)]="riesgoModel.riesgoIdRama" #riesgoIdRama="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescRama" placeholder="" [(ngModel)]="riesgoModel.riesgoDescRama" #riesgoDescRama="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoIdFamilia" placeholder="Familia" [(ngModel)]="riesgoModel.riesgoIdFamilia" #riesgoIdFamilia="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescRama" placeholder="" [(ngModel)]="riesgoModel.riesgoDescRama" #riesgoDescRama="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoPuroDesc !== ' '" type="text" [class]="riesgoModel.riesgoRiesgoPuroDesc" name="riesgoRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="riesgoModel.riesgoRiesgoPuroDesc" #riesgoRiesgoPuroDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoPuroDesc === ' '" type="text" [id]="riesgoModel.riesgoRiesgoPuroDesc" name="riesgoRiesgoPuroDesc" placeholder="Riesgo Puro" [(ngModel)]="riesgoModel.riesgoRiesgoPuroDesc" #riesgoRiesgoPuroDesc="ngModel" readonly="true"
+                                />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoResidualDesc !== ' '" type="text" [class]="riesgoModel.riesgoRiesgoResidualDesc" name="riesgoRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="riesgoModel.riesgoRiesgoResidualDesc" #riesgoRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
+                                <input matInput *ngIf="riesgoModel.riesgoRiesgoResidualDesc === ' '" type="text" [id]="riesgoModel.riesgoRiesgoResidualDesc" name="riesgoRiesgoResidualDesc" placeholder="Riesgo Residual" [(ngModel)]="riesgoModel.riesgoRiesgoResidualDesc" #riesgoRiesgoResidualDesc="ngModel"
+                                    readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn !== 'lectura' ">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height:500px;">
+            <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
+                <thead>
+                    <tr>
+                        <th>
+                            <p><b></b></p>
+                        </th>
+                        <th></th>
+                        <th colspan=2 style="text-align: center; ">Seguridad y Salud Ocupacional</th>
+                        <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                        <th colspan=2 style="text-align: center;">Operacional</th>
+                    </tr>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                            <p><b></b></p>Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual"</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of consecuenciasList">
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete ==="Y" || item.estado ==="002" && item.pendingDelete ==="Y"|| item.estado ==="003"  && item.pendingDelete ==="Y"|| item.estado ==="006" && item.pendingDelete ==="Y"'
+                            class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="007" && item.pendingDelete ==="Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+
+
+                        <td *ngIf=' item.estado ==="001"  && item.pendingDelete ==="N"|| item.estado ==="002" && item.pendingDelete ==="N" || item.estado ==="003" && item.pendingDelete ==="N" || item.estado ==="006" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
+                        <td *ngIf=' item.estado ==="004" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
+                        <td *ngIf=' item.estado ==="007" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (***)</a></td>
+                        <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                        <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                        <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                        <td *ngIf='item.estado ==="008" && item.pendingDelete ==="N"' class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroS">{{item.consecuenciaRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualS">{{item.consecuenciaRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroM">{{item.consecuenciaRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualM">{{item.consecuenciaRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroN">{{item.consecuenciaRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualN">{{item.consecuenciaRiesgoResidualN}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-xl-12" *ngIf="btn === 'lectura' ">
+        <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height:500px;">
+            <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                <thead>
+                    <tr>
+                        <th>
+                            <p><b></b></p>
+                        </th>
+                        <th></th>
+                        <th colspan=2 style="text-align: center; ">Seguridad y Salud Ocupacional</th>
+                        <th colspan=2 style="text-align: center;">Medio ambiente</th>
+                        <th colspan=2 style="text-align: center;">Operacional</th>
+                    </tr>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">
+                            <p><b></b></p>Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico">Descripción Consecuencia</th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Puro</b></th>
+                        <th class="mdl-data-table__cell--non-numeric" id="estatico"><b>Residual</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of consecuenciasListLectura">
+
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroS">{{item.consecuenciaRiesgoPuroS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualS">{{item.consecuenciaRiesgoResidualS}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroM">{{item.consecuenciaRiesgoPuroM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualM">{{item.consecuenciaRiesgoResidualM}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoPuroN">{{item.consecuenciaRiesgoPuroN}}</td>
+                        <td class="mdl-data-table__cell--non-numeric" [id]="item.consecuenciaRiesgoResidualN">{{item.consecuenciaRiesgoResidualN}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

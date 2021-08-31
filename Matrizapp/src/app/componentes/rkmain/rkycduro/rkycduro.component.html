@@ -1,0 +1,62 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+    <!-- <mat-form-field>
+        <input matInput type="text" name="areaId" placeholder="areaId" #areaId readonly="true" value="{{data.areaId}}" [(ngModel)]="cDuroModel.areaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="procesoId" placeholder="procesoId" #procesoId readonly="true" value="{{data.procesoId}}" [(ngModel)]="cDuroModel.procesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="subprocesoId" placeholder="subprocesoId" #subprocesoId readonly="true" value="{{data.subprocesoId}}" [(ngModel)]="cDuroModel.subprocesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="actividadId" placeholder="actividadId" #actividadId readonly="true" value="{{data.actividadId}}" [(ngModel)]="cDuroModel.actividadId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="tareaId" placeholder="tareaId" #tareaId readonly="true" value="{{data.tareaId}}" [(ngModel)]="cDuroModel.tareaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="dimensionId" placeholder="dimensionId" #dimensionId readonly="true" value="{{data.dimensionId}}" [(ngModel)]="cDuroModel.dimensionId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="riesgoId" placeholder="riesgoId" #riesgoId readonly="true" value="{{data.riesgoId}}" [(ngModel)]="cDuroModel.riesgoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="consecuenciaId" placeholder="consecuenciaId" #consecuenciaId readonly="true" value="{{data.consecuenciaId}}" [(ngModel)]="cDuroModel.consecuenciaId"/>
+    </mat-form-field> -->
+    <mat-form-field>
+    <mat-label>Seleccione Jerarquía de Control de Riesgos</mat-label>
+        <mat-select required [(ngModel)]="cDuroModel.cduroClasificacion" #cduroClasificacion >
+        
+        <mat-option *ngFor="let item of cDuroClasificacionList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Seleccione Tipo de Control</mat-label>
+        <mat-select required [(ngModel)]="cDuroModel.cduroTipo1" #cduroTipo1 >
+        
+        <mat-option *ngFor="let item of cDuroTipos1List" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>    
+    <mat-form-field>
+        <mat-label>Seleccione Clasificación del Control</mat-label>
+        <mat-select [(ngModel)]="cDuroModel.cduroTipo2" #cduroTipo2 >
+        
+        <mat-option *ngFor="let item of cDuroTipos2List" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Seleccione la Efectividad</mat-label>
+        <mat-select required [(ngModel)]="cDuroModel.cduroEfectividad" #cduroEfectividad >
+        
+        <mat-option *ngFor="let item of cDuroEfectividadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <textarea style="height: 40px;" matInput name="cduroDesc" placeholder="Descripción del Control Duro" [(ngModel)]="cDuroModel.cduroDesc" #cduroDesc="ngModel" ></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions>

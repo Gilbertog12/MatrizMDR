@@ -1,0 +1,34 @@
+<div [ngSwitch]="data.success">
+  <div *ngSwitchCase="true">
+    <p  style="color: green;" mat-dialog-title><img src="assets/images/Success.png" alt="" style="width: 50px; height: 50px;"> Success</p>
+    <p  style="color: green;"  [innerHTML]="data.message"></p>
+
+
+  </div>
+  <div *ngSwitchCase="'I'">
+    <p  style="color: green;" mat-dialog-title><img src="assets/images/Success.png" alt="" style="width: 50px; height: 50px;"> Success</p>
+    <p  style="color: green;"  [innerHTML]="data.message"></p>
+
+
+  </div>
+
+  <div *ngSwitchCase="false">
+    <p style="color: red;"  mat-dialog-title><img src="assets/images/Error.png" alt="" style="width: 70px; height: 70px; ">Error</p>
+    <p style="color: red;"  [innerHTML]="data.message"></p>
+
+  </div>
+
+  <div *ngSwitchCase="'E'">
+    <p style="color: red;"  mat-dialog-title><img src="assets/images/Error.png" alt="" style="width: 70px; height: 70px; ">Error</p>
+    <p style="color: red;"  [innerHTML]="data.message"></p>
+
+  </div>
+
+</div>
+
+
+  <mat-dialog-actions>        
+    <button mat-raised-button color="primary" (click)="aceptar()">{{ data.button_confirm }}</button>
+    <!-- <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button> -->
+</mat-dialog-actions>
+

@@ -1,0 +1,22 @@
+.mdl-data-table th {
+    position: relative;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+    letter-spacing: 0;
+    height: 48px;
+    font-size: 12px;
+    color: black;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+@font-face{
+    font-family: 'collahuasi';
+    src:url("assets/eurostyle.ttf")
+  }
+  h1{
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+ }

@@ -1,0 +1,17 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+    {{ data.title }} </h1>
+
+<mat-dialog-content>
+
+    <textarea type="text" id="form7" maxlength="960" [(ngModel)]="razon" class="md-textarea " style=" vertical-align: top;"></textarea>
+    <!-- <label for="form7">Auto resizing textarea</label> -->
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <!-- <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button> -->
+    <button mat-raised-button color="primary" (click)="EnviarRazon()">{{ data.button_confirm }}</button>
+
+
+
+</mat-dialog-actions>

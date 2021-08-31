@@ -1,0 +1,29 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{ data.title }}</h1>
+<form name="rkc_form" class="form-validation" (ngSubmit)="!actividadControl.hasError('required') && rkcForm.form.valid && guardar()" #rkcForm="ngForm" noValidate>
+    <div class="row">
+        <div class="col-xl-7">
+            <mat-form-field>
+
+                <mat-select focused="'false'" [formControl]="actividadControl" placeholder="Seleccione una Actividad" required [(ngModel)]="actividadModel.actividadId" #actividadId multiple>
+                    <!-- <input  matInput autofocus  id='busqueda '  style="height: 18px;"   (keydown)="Buscar($event)" type="text" [(ngModel)]="actividadModel.name" name='name' value={{actividadModel.name}} placeholder="search"> -->
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
+
+                    <mat-option *ngFor="let item of actividadesList|filterPipe:descripcion" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="actividadControl.hasError('required')">No ha seleccionado una actividad</mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-dialog-actions align="end">
+        <button type="submit" class="btn-w-md mat-raised-button mat-primary" color="primary" md-raised-button="" ng-reflect-color="primary">
+                    <span class="mat-button-wrapper">
+                    <mat-icon mat-list-icon>save</mat-icon>
+                    {{ data.button_confirm }}
+                    </span>
+            </button>
+        <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+    </mat-dialog-actions>
+</form>

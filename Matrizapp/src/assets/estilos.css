@@ -1,0 +1,39 @@
+.aprobar {
+    color: #EF5350;
+    background: white;
+}
+
+.por_aprobar {
+    color: #00BCD4;
+    background: white;
+}
+
+.por_validar {
+    color: #ffc107;
+    background: white;
+}
+
+.validar {
+    color: #66BB6A;
+    background: white;
+}
+
+.tabla {
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
+.custom-class {
+    top: 0;
+    z-index: 2002;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000ba;
+    border-radius: 3px;
+}

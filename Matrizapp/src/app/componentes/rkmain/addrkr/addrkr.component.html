@@ -1,0 +1,29 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{ data.title }}</h1>
+<form name="rkr_form" class="form-validation" (ngSubmit)="!riesgoControl.hasError('required') && rkrForm.form.valid && guardar()" #rkrForm="ngForm" noValidate>
+    <div class="row">
+        <div class="col-xl-7">
+            <mat-form-field>
+
+                <mat-select [formControl]="riesgoControl" placeholder="Seleccione un Riesgo" required [(ngModel)]="riesgoModel.riesgoId" #riesgoId multiple>
+                    <!-- <input  matInput focused="'true'"   style="height: 18px;" (keydown)="Buscar($event)"  type="text" [(ngModel)]="riesgoModel.name" value={{riesgoModel.name}} name='name' placeholder="search"> -->
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
+
+                    <mat-option *ngFor="let item of riesgosList |filterPipe:descripcion" (keydown)="$event.stopPropagation()" [value]="item.Id">{{item.Descripcion}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="riesgoControl.hasError('required')">No ha seleccionado un Riesgo</mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-dialog-actions align="end">
+        <button type="submit" class="btn-w-md mat-raised-button mat-primary" color="primary" md-raised-button="" ng-reflect-color="primary">
+                    <span class="mat-button-wrapper">
+                    <mat-icon mat-list-icon>save</mat-icon>
+                    {{ data.button_confirm }}
+                    </span>
+            </button>
+        <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+    </mat-dialog-actions>
+</form>

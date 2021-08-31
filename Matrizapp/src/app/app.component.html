@@ -1,0 +1,44 @@
+<div myPreloader class="preloaderbar hide">
+    <span class="bar"></span></div>
+<div id="app-main" class="app-main full-height" [ngClass]="{'fixed-header' : AppConfig.fixedHeader,
+    'nav-collapsed' : AppConfig.navCollapsed,
+    'nav-behind' : AppConfig.navBehind,
+    'layout-boxed' : AppConfig.layoutBoxed,
+    'theme-gray' : AppConfig.theme == 'gray',
+    'theme-dark' : AppConfig.theme == 'dark',
+    'sidebar-sm' : AppConfig.sidebarWidth == 'small',
+    'sidebar-lg' : AppConfig.sidebarWidth == 'large'}">
+
+
+    <router-outlet>
+
+        <!-- <ng-template #customLoadingTemplate>
+            <div style="top: 0;
+            z-index: 1950;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000ba;
+            border-radius: 3px;
+            color: rgb(240, 241, 241);">
+                <h3>
+                    Cargando...
+                </h3>
+
+
+            </div>
+        </ng-template> 
+
+         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' , fullScreenBackdrop:true , backdropBackgroundColour: 'rgba(255, 87, 51,0.3)'}">
+            
+            
+        </ngx-loading> -->
+
+        <ngx-loading [show]="loading" [config]="{fullScreenBackdrop:true,fullScreenBackdrop:true, backdropBorderRadius: '14px'}" [template]="customLoadingTemplate"></ngx-loading>
+    </router-outlet>
+</div>

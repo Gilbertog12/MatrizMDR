@@ -1,0 +1,14 @@
+<h3 style="font-size: 12px;" mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{ data.title }}</h3>
+<div>
+    <mat-dialog-content>
+        <div [innerHTML]="data.message"></div>
+        <input type="checkbox" [(ngModel)]="Confirmar">Acepto
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button id="bloqueo" *ngIf="Confirmar == false" mat-raised-button color="primary" (click)="aceptar()" disabled>{{ data.button_confirm }}</button>
+        <button *ngIf="Confirmar != false" mat-raised-button color="primary" (click)="aceptar()">{{ data.button_confirm }}</button>
+
+        <button mat-raised-button color="warn" mat-dialog-close>{{ data.button_close }}</button>
+    </mat-dialog-actions>
+
+</div>

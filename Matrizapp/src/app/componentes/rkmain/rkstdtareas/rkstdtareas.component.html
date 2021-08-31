@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar> -->
+            <div class="box box-default table-box table-responsive mdl-shadow--2dp">
+                <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                            <th class="mdl-data-table__cell--non-numeric">Std Job</th>
+                            <th class="mdl-data-table__cell--non-numeric">Descripcion</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of StdJobTareasList">
+                            <td>
+                                <mat-checkbox class="example-margin" [(ngModel)]="item.selected" (change)="deseleccionarTodo(item)"></mat-checkbox>
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.STD_JOB_TASK}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.SJ_TASK_DESC}}</td>
+
+                            <!-- <td class="mdl-data-table__cell--non-numeric">{{item.documentAuthor}}</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+
+    <button *ngIf='!habilitar' mat-raised-button color="primary" (click)="guardar()" disabled>{{ data.button_confirm }}</button>
+    <button *ngIf='habilitar' mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions>

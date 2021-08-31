@@ -1,0 +1,61 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+    <!-- <mat-form-field>
+        <input matInput type="text" name="areaId" placeholder="areaId" #areaId readonly="true" value="{{data.areaId}}" [(ngModel)]="riesgoPuroModel.areaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="procesoId" placeholder="procesoId" #procesoId readonly="true" value="{{data.procesoId}}" [(ngModel)]="riesgoPuroModel.procesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="subprocesoId" placeholder="subprocesoId" #subprocesoId readonly="true" value="{{data.subprocesoId}}" [(ngModel)]="riesgoPuroModel.subprocesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="actividadId" placeholder="actividadId" #actividadId readonly="true" value="{{data.actividadId}}" [(ngModel)]="riesgoPuroModel.actividadId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="tareaId" placeholder="tareaId" #tareaId readonly="true" value="{{data.tareaId}}" [(ngModel)]="riesgoPuroModel.tareaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="dimensionId" placeholder="dimensionId" #dimensionId readonly="true" value="{{data.dimensionId}}" [(ngModel)]="riesgoPuroModel.dimensionId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="riesgoId" placeholder="riesgoId" #riesgoId readonly="true" value="{{data.riesgoId}}" [(ngModel)]="riesgoPuroModel.riesgoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="consecuenciaId" placeholder="consecuenciaId" #consecuenciaId readonly="true" value="{{data.consecuenciaId}}" [(ngModel)]="riesgoPuroModel.consecuenciaId"/>
+    </mat-form-field> -->
+    <mat-form-field>
+    <mat-label>Seleccione la Probabilidad</mat-label>
+        <mat-select required [(ngModel)]="riesgoPuroModel.probabilidadId" #probabilidadId >
+        
+        <mat-option *ngFor="let item of probabilidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="probabilidadId" placeholder="Probabilidad" #probabilidadId [(ngModel)]="riesgoPuroModel.probabilidadId" readonly="true"/>
+    </mat-form-field>
+    <mat-form-field>
+    <mat-label>Seleccione la Severidad</mat-label>
+        <mat-select required [(ngModel)]="riesgoPuroModel.severidadId" #severidadId >
+        
+        <mat-option *ngFor="let item of severidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="severidadId" placeholder="Severidad" #severidadId [(ngModel)]="riesgoPuroModel.severidadId" readonly="true"/>
+    </mat-form-field>
+    <mat-form-field>
+    <mat-label>Seleccione la Criticidad</mat-label>
+        <mat-select required [(ngModel)]="riesgoPuroModel.criticidadId" #criticidadId >
+        
+        <mat-option *ngFor="let item of criticidadList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="criticidadId" placeholder="Criticidad" #criticidadId [(ngModel)]="riesgoPuroModel.criticidadId" readonly="true"/>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions>

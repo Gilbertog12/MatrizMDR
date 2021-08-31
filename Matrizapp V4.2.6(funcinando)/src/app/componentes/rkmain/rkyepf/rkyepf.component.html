@@ -1,0 +1,126 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<!-- <mat-dialog-content> -->
+<!-- <mat-form-field>
+        <input matInput type="text" name="areaId" placeholder="areaId" #areaId readonly="true" value="{{data.areaId}}" [(ngModel)]="epfModel.areaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="procesoId" placeholder="procesoId" #procesoId readonly="true" value="{{data.procesoId}}" [(ngModel)]="epfModel.procesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="subprocesoId" placeholder="subprocesoId" #subprocesoId readonly="true" value="{{data.subprocesoId}}" [(ngModel)]="epfModel.subprocesoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="actividadId" placeholder="actividadId" #actividadId readonly="true" value="{{data.actividadId}}" [(ngModel)]="epfModel.actividadId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="tareaId" placeholder="tareaId" #tareaId readonly="true" value="{{data.tareaId}}" [(ngModel)]="epfModel.tareaId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="dimensionId" placeholder="dimensionId" #dimensionId readonly="true" value="{{data.dimensionId}}" [(ngModel)]="epfModel.dimensionId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="riesgoId" placeholder="riesgoId" #riesgoId readonly="true" value="{{data.riesgoId}}" [(ngModel)]="epfModel.riesgoId"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="consecuenciaId" placeholder="consecuenciaId" #consecuenciaId readonly="true" value="{{data.consecuenciaId}}" [(ngModel)]="epfModel.consecuenciaId"/>
+    </mat-form-field> -->
+<!-- <mat-form-field>
+    <mat-label>Seleccione un EPF</mat-label>
+        <mat-select required [(ngModel)]="epfModel.epfId" #epfId >
+        
+        <mat-option *ngFor="let item of epfList" [value]="item.Id">{{item.Descripcion}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" name="epfId" placeholder="EPF" #stdJobNo [(ngModel)]="epfModel.epfId"/>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions> -->
+
+<!-- NUEVO FORMATO DE BUSQUEDA -->
+
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-xl-4">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Control" [(ngModel)]='epfModel.epfcontrol' />
+            </mat-form-field>
+        </div>
+
+        <div class="col-xl-6">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Descripcion" [(ngModel)]='epfModel.epfcontroldescripcion' />
+            </mat-form-field>
+        </div>
+        <div class="col-xl-4">
+            <mat-form-field>
+                <input matInput type="text" placeholder="EPF" [(ngModel)]='epfModel.epf' />
+            </mat-form-field>
+        </div>
+
+        <div class="col-xl-6">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Descripcion" [(ngModel)]='epfModel.epfdescripcion' />
+            </mat-form-field>
+        </div>
+
+        <div class="col-xl-2">
+            <button mat-raised-button color="accent" (click)="cargarepfs()">Buscar</button>
+        </div>
+        <br>
+
+        <div class="col-xl-3">
+            <button mat-raised-button class="btn-sm" (click)='paginacion(-1)'>
+                <i class="material-icons">arrow_left</i>
+            </button>
+            <button mat-raised-button class="btn-sm" (click)='paginacion(+1)'>
+                <i class="material-icons" >arrow_right</i>
+            </button>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar> -->
+            <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 270px;">
+                <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                            <th class="mdl-data-table__cell--non-numeric">Id Control</th>
+                            <th class="mdl-data-table__cell--non-numeric">Descripcion</th>
+
+                            <th class="mdl-data-table__cell--non-numeric">Id EPF</th>
+                            <th class="mdl-data-table__cell--non-numeric">Descripcion</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of epfList">
+                            <td>
+                                <mat-checkbox class="example-margin" [(ngModel)]="item.check"></mat-checkbox>
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.controlId}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.controlDesc}}</td>
+                            <!-- <td class="mdl-data-table__cell--non-numeric"><a (click)='SeleccionarTareas(item.STD_JOB_NO)'>{{item.STD_JOB_NO_TASK}}</a></td> -->
+                            <td class="mdl-data-table__cell--non-numeric">{{item.epfId}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.epfDesc}}</td>
+                            <!-- <td class="mdl-data-table__cell--non-numeric"><a (click)='SeleccionarTareas(item.STD_JOB_NO)'>{{item.STD_JOB_NO_TASK}}</a></td> -->
+                            <!-- <td class="mdl-data-table__cell--non-numeric">{{item.documentAuthor}}</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <!-- <button *ngIf='!habilitar' mat-raised-button color="primary" (click)="guardar()" disabled>{{ data.button_confirm }}</button> -->
+    <button mat-raised-button color="primary" (click)="consola()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+</mat-dialog-actions>

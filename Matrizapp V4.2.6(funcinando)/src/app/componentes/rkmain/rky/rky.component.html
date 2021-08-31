@@ -1,0 +1,1402 @@
+<h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea >Dimension > Riesgo > Consecuencia
+    <button *ngIf="consecuenciaModel.consecuenciaStatusId !=='008' && consecuenciaModel.CanAdd==='true'|| controlesstatusa && consecuenciaModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId,statusc)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+</h6>
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaId" placeholder="Area" [(ngModel)]="consecuenciaModel.areaId" #areaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="areaDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.areaDescripcion" #areaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoId" placeholder="Proceso" [(ngModel)]="consecuenciaModel.procesoId" #procesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="procesoDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.procesoDescripcion" #procesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoId" placeholder="Subproceso" [(ngModel)]="consecuenciaModel.subprocesoId" #subprocesoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="subprocesoDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.subprocesoDescripcion" #subprocesoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadId" placeholder="Actividad" [(ngModel)]="consecuenciaModel.actividadId" #actividadId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="actividadDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.actividadDescripcion" #actividadDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="tareaId" placeholder="Tarea" [(ngModel)]="consecuenciaModel.tareaId" #tareaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="tareaDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.tareaDescripcion" #tareaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="dimensionId" placeholder="Dimensión" [(ngModel)]="consecuenciaModel.dimensionId" #dimensionId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="dimensionDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.dimensionDescripcion" #dimensionDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoId" placeholder="Riesgo" [(ngModel)]="consecuenciaModel.riesgoId" #riesgoId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="riesgoDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.riesgoDescripcion" #riesgoDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <mat-form-field>
+                                <input matInput type="text" name="consecuenciaId" placeholder="Consecuencia" [(ngModel)]="consecuenciaModel.consecuenciaId" #consecuenciaId="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input matInput type="text" name="consecuenciaDescripcion" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescripcion" #consecuenciaDescripcion="ngModel" readonly="true" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field>
+                                <textarea style="height: 40px;" matInput name="consecuenciaDescripcionExt" placeholder="Descripción extendida" [(ngModel)]="consecuenciaModel.consecuenciaDescripcionExt" #consecuenciaDescripcionExt="ngModel" readonly="true"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn !=='lectura'">
+        <div class="box box-default">
+            <mat-tab-group>
+                <mat-tab label="Evaluacion Riesgo">
+                    <div class="box box-default" style="width: 90%; height: 400px;">
+                        <div class="row">
+                            <div class="col-xl-1"></div>
+                            <div class="col-xl-5">
+                                <br />
+                                <div class="text-center"><b>Riesgo puro</b>
+                                </div>
+                                <div class="box box-default">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdProbRP" placeholder="Probabilidad" [(ngModel)]="consecuenciaModel.consecuenciaIdProbRP" #consecuenciaIdProbRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescPrbRP" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescPrbRP" #consecuenciaDescPrbRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgopurotable()">
+                                                    <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdSevRP" placeholder="Severidad" [(ngModel)]="consecuenciaModel.consecuenciaIdSevRP" #consecuenciaIdSevRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescSevRP" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescSevRP" #consecuenciaDescSevRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgopurotabler()">
+                                                    <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdRMRP" placeholder="MR" [(ngModel)]="consecuenciaModel.consecuenciaIdRMRP" #consecuenciaIdRMRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescRMRP" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescRMRP" #consecuenciaDescRMRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput [ngStyle]="{'background-color': consecuenciaModel.consecuenciaDescNivelRP}" type="text" name="consecuenciaDescNivelRP" placeholder="" readonly="true" />
+
+                                                    </mat-form-field>
+
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdNivelRP" placeholder="Criticidad" [(ngModel)]="consecuenciaModel.consecuenciaIdNivelRP" #consecuenciaIdNivelRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-5">
+                                <br />
+                                <div class="text-center"><b>Riesgo residual</b>
+                                </div>
+                                <div class="box box-default">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdProbRR" placeholder="Probabilidad" [(ngModel)]="consecuenciaModel.consecuenciaIdProbRR" #consecuenciaIdProbRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescPrbRR" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescPrbRR" #consecuenciaDescPrbRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgoresidualtable()">
+                                                            <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdSevRR" placeholder="Severidad" [(ngModel)]="consecuenciaModel.consecuenciaIdSevRR" #consecuenciaIdSevRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescSevRR" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescSevRR" #consecuenciaDescSevRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgoresidualtabler()">
+                                                            <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdRMRR" placeholder="MR" [(ngModel)]="consecuenciaModel.consecuenciaIdRMRR" #consecuenciaIdRMRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescRMRR" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescRMRR" #consecuenciaDescRMRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput [ngStyle]="{'background-color': consecuenciaModel.consecuenciaDescNivelRR}" type="text" name="consecuenciaDescNivelRR" placeholder="" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdNivelRR" placeholder="Criticidad" [(ngModel)]="consecuenciaModel.consecuenciaIdNivelRR" #consecuenciaIdNivelRR="ngModel" readonly="true" />
+
+                                                    </mat-form-field>
+                                                </div>
+                                                <!-- <div class="col-md-1" [ngStyle]="{ 'background-color': consecuenciaModel.consecuenciaDescNivelRR }"></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-1"></div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Controles Blandos">
+                    <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 400px;">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;"></th>
+
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="false">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10p;" >
+                                            </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' || consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()">
+                                                            <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10p;" >
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" id="SinPermisos" disabled>
+                                                                <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10p;" >
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" id="SinPermisos" disabled>
+                                                                <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10p;" >
+                                                        </button>
+
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">Id</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                                    <th class="mdl-data-table__cell--non-numeric"><b>Familia Id</b></th>
+                                    <th class="mdl-data-table__cell--non-numeric"><b>Familia Descripción</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of cBlandosList; let indice = index">
+                                    <td class="mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' ||consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+
+
+
+
+
+
+
+                                                        <button *ngIf="item.cblandoStatus ==='007'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                            </button>
+                                                        <button *ngIf="item.cblandoStatus ==='004'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                            </button>
+
+                                                        <button *ngIf="item.cblandoStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                            ||item.cblandoStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                            ||item.cblandoStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                            ||item.cblandoStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                            ||item.cblandoStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)">
+                                                    <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                        <button *ngIf="item.cblandoStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                            ||item.cblandoStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                            ||item.cblandoStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                            ||item.cblandoStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                            ||item.cblandoStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                        <button *ngIf="item.cblandoStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N' 
+                                                            ||item.cblandoStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                                            ||item.cblandoStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                                            ||item.cblandoStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                                            ||item.cblandoStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                        <button *ngIf="item.cblandoStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N' 
+                                                            ||item.cblandoStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                            ||item.cblandoStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                            ||item.cblandoStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                            ||item.cblandoStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td title="Ítem pendiente por enviar a validar." *ngIf='item.cblandoStatus ==="001" && item.pendingDelete === "N"|| item.cblandoStatus ==="002" && item.pendingDelete === "N"||item.cblandoStatus ==="003" && item.pendingDelete === "N" || item.cblandoStatus ==="006" && item.pendingDelete === "N"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(*)</a></td>
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.cblandoStatus ==="001" && item.pendingDelete === "Y"|| item.cblandoStatus ==="002" && item.pendingDelete === "Y"||item.cblandoStatus ==="003" && item.pendingDelete === "Y" || item.cblandoStatus ==="006" && item.pendingDelete === "Y"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(*)</a></td>
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.cblandoStatus === '004' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+
+                                    <td title="Ítem pendiente de Validar" *ngIf="item.cblandoStatus === '004'  && item.pendingDelete === 'N' " class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+
+
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.cblandoStatus === '007' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(***)</a></td>
+
+                                    <td title="Ítem pendiente por Aprobar" *ngIf="item.cblandoStatus === '007'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(***)</a></td>
+
+                                    <td *ngIf=' item.cblandoStatus ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <td *ngIf=' item.cblandoStatus ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <!-- <td *ngIf=' item.cblandoStatus ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                    <!-- <td *ngIf=' item.cblandoStatus ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                    <!--<td *ngIf="item.cblandoStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
+
+                                    <td title="Aprobado" *ngIf="item.cblandoStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}</td>
+                                    <td title="Aprobado" *ngIf="item.cblandoStatus === '008'  && item.pendingDelete === 'Y'" class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric"><b>{{item.cblandoDescripcion}}</b><br>{{item.cblandoDescripcionExt}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cblandoFamiliaId}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cblandoFamiliaDesc}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Controles Duros">
+                    <div class="box box-default table-box table-responsive mdl-shadow--1dp" style="height: 400px;">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric"></th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' ||consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()">
+                                                            <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>Id</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Jerarquia</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción </th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tipo </th>
+                                    <th class="mdl-data-table__cell--non-numeric">Clasificacion</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Efectividad</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let item of cDurosList;let indice= index">
+                                    <td class="mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' ||consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+
+
+
+
+
+
+
+                                                        <button *ngIf="item.cduroStatus ==='007'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                        <button *ngIf="item.cduroStatus ==='004'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+                                                        <button *ngIf="item.cduroStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.cduroStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)">
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
+
+                                                        <button *ngIf="item.cduroStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N' 
+                                            ||item.cduroStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                            ||item.cduroStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                            ||item.cduroStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                            ||item.cduroStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                </button>
+                                                        <button *ngIf="item.cduroStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.cduroStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.cduroStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+
+                                                        <button *ngIf="item.cduroStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N' 
+                                                        ||item.cduroStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                        ||item.cduroStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                        ||item.cduroStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                        ||item.cduroStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td title="Ítem pendiente por enviar a validar." *ngIf='item.cduroStatus ==="001" && item.pendingDelete === "N"|| item.cduroStatus ==="002" && item.pendingDelete === "N"||item.cduroStatus ==="003" && item.pendingDelete === "N" || item.cduroStatus ==="006" && item.pendingDelete === "N"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(*)</a></td>
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.cduroStatus ==="001" && item.pendingDelete === "Y"|| item.cduroStatus ==="002" && item.pendingDelete === "Y"||item.cduroStatus ==="003" && item.pendingDelete === "Y" || item.cduroStatus ==="006" && item.pendingDelete === "Y"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(*)</a></td>
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.cduroStatus === '004' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+
+                                    <td title="Ítem pendiente de Validar" *ngIf="item.cduroStatus === '004'  && item.pendingDelete === 'N' " class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(**)</a></td>
+
+
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.cduroStatus === '007' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(***)</a></td>
+
+                                    <td title="Ítem pendiente por Aprobar" *ngIf="item.cduroStatus === '007'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(***)</a></td>
+
+                                    <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <td *ngIf=' item.estado ==="000" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (R)</a></td>
+                                    <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="Y" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                    <!-- <td *ngIf=' item.estado ==="010" && item.pendingDelete ==="N" ' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (Ar)</a></td> -->
+                                    <!--<td *ngIf="item.cduroStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
+
+                                    <td title="Aprobado" *ngIf="item.cduroStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
+                                    <td title="Aprobado" *ngIf="item.cduroStatus === '008'  && item.pendingDelete === 'Y'" class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroClasificacionDesc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.controlDuroDesc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo1Desc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo2Desc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroEfectividad}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+                <mat-tab label="EPF">
+                    <div class="box box-default table-box table-responsive mdl-shadow--2dp">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;"></th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' || consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()">
+                                                            <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric " style="text-align: center !important ;">
+                                        <p><b></b></p>EPF</th>
+                                    <!-- <th class="mdl-data-table__cell--non-numeric">Descripción Extendida</th> -->
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>Id Control</th>
+
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción Control</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of epfList; let indice = index">
+                                    <td class="mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' || consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+
+                                                        <button *ngIf="item.epfStatus ==='007'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+                                                        <button *ngIf="item.epfStatus ==='004'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+                                                        <button *ngIf="item.epfStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.epfStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)">
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                        <button *ngIf="item.epfStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y' 
+                                                        ||item.epfStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'
+                                                        ||item.epfStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                        <button *ngIf="item.epfStatus ==='001' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N' 
+                                                        ||item.epfStatus ==='006' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                                        ||item.epfStatus ==='002' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                                        ||item.epfStatus ==='008' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'
+                                                        ||item.epfStatus ==='000' && item.pendingDelete ==='N' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                                        <button *ngIf="item.epfStatus ==='001' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N' 
+                                                        ||item.epfStatus ==='006' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                        ||item.epfStatus ==='002' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                        ||item.epfStatus ==='008' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'
+                                                        ||item.epfStatus ==='000' && item.pendingDelete ==='Y' && item.displayDeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td title="Item Pendiente por enviar a Validar" *ngIf='item.epfStatus ==="001" && item.pendingDelete === "N"|| item.epfStatus ==="002" && item.pendingDelete === "N"||item.epfStatus ==="003" && item.pendingDelete === "N" || item.epfStatus ==="006" && item.pendingDelete === "N"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(*)</a>{{item.epfDesc}}</td>
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf='item.epfStatus ==="001" && item.pendingDelete === "Y"|| item.epfStatus ==="002" && item.pendingDelete === "Y"||item.epfStatus ==="003" && item.pendingDelete === "Y" || item.epfStatus ==="006" && item.pendingDelete === "Y"'
+                                        class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(*)</a>{{item.epfDesc}}</td>
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.epfStatus === '004' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(**)</a>{{item.epfDesc}}</td>
+
+                                    <td title="Ítem pendiente de Validar" *ngIf="item.epfStatus === '004'  && item.pendingDelete === 'N' " class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(**)</a>{{item.epfDesc}}</td>
+
+
+
+                                    <td title="Pendiente Inactivacion (Eliminacion)." *ngIf="item.epfStatus === '007' && item.pendingDelete === 'Y' " class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(***)</a>{{item.epfDesc}}</td>
+
+                                    <td title="Item Pendiente por Aprobar" *ngIf="item.epfStatus === '007'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(***)</a>{{item.epfDesc}}</td>
+                                    <!--<td *ngIf="item.epfStatus === '000'" class="mdl-data-table__cell--non-numeric">{{item.epfId}}<a style="font-size: 11px;color: red;">(R)</a></td>-->
+
+                                    <td title="Aprobado" *ngIf="item.epfStatus === '008'  && item.pendingDelete === 'N'" class="mdl-data-table__cell--non-numeric">{{item.epfId}} {{item.epfDesc}}</td>
+                                    <td title="Aprobado" *ngIf="item.epfStatus === '008'  && item.pendingDelete === 'Y'" class="mdl-data-table__cell--non-numeric">{{item.epfId}} {{item.epfDesc}}</td>
+
+                                    <!-- <td class="mdl-data-table__cell--non-numeric">{{item.controlDescExt}}</td> -->
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.controlId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric"><b>{{item.controlDesc}}</b><br>{{item.controlDescExt}}</td>
+
+
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Documentos">
+                    <div class="box box-default table-box table-responsive mdl-shadow--2dp">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;"></th>
+
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' || consecuenciaModel.consecuenciaStatusId ==='002' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()">
+                                                            <img class="img-circle" src="assets/images/Add.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>No</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of docsList;let indice = index">
+                                    <td class="mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)" id="SinPermisos" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+
+                                                <ng-template [ngIf]="consecuenciaModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
+
+                                                    <ng-template [ngIf]="consecuenciaModel.consecuenciaStatusId ==='001' || consecuenciaModel.consecuenciaStatusId ==='008'" [ngIfElse]='opcion2'>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)">
+                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                                            </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #opcion2>
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+
+
+                                                    </ng-template>
+
+                                                    <ng-template #NoPermitido>
+
+
+                                                        <button class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)" id="SinPermisos" disabled>
+                                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                    </ng-template>
+
+
+                                                </ng-template>
+
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="mdl-data-table__cell--non-numeric" [innerHTML]="item.documentUrl"></td>
+                                    <!-- <td *ngIf="item.docStatus != '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}<a style="font-size: 11px;color: red;">(*)</a></td> -->
+                                    <td *ngIf='item.docStatus ==="001" || item.docStatus ==="002"||item.docStatus ==="003"|| item.docStatus ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (*)</a></td>
+                                    <td *ngIf='item.docStatus ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (**)</a></td>
+                                    <td *ngIf='item.docStatus ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (***)</a></td>
+                                    <td *ngIf='item.docStatus ==="000"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                    <td *ngIf='item.docStatus ==="010"' class="mdl-data-table__cell--non-numeric ">{{item.documentName}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                    <!-- <td class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td> -->
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.documentType}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+
+    <div class="col-xl-12" *ngIf="btn ==='lectura'">
+        <div class="box box-default">
+            <mat-tab-group>
+                <mat-tab label="Evaluacion Riesgo">
+                    <div class="box box-default" style="width: 90%; height: 400px;">
+                        <div class="row">
+                            <div class="col-xl-1"></div>
+                            <div class="col-xl-5">
+                                <br />
+                                <div class="text-center"><b>Riesgo puro</b>
+                                </div>
+                                <div class="box box-default">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdProbRP" placeholder="Probabilidad" [(ngModel)]="consecuenciaModel.consecuenciaIdProbRP" #consecuenciaIdProbRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescPrbRP" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescPrbRP" #consecuenciaDescPrbRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgopurotable()">
+                                                    <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdSevRP" placeholder="Severidad" [(ngModel)]="consecuenciaModel.consecuenciaIdSevRP" #consecuenciaIdSevRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescSevRP" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescSevRP" #consecuenciaDescSevRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgopurotabler()">
+                                                    <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdRMRP" placeholder="MR" [(ngModel)]="consecuenciaModel.consecuenciaIdRMRP" #consecuenciaIdRMRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescRMRP" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescRMRP" #consecuenciaDescRMRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput [ngStyle]="{'background-color': consecuenciaModel.consecuenciaDescNivelRP}" type="text" name="consecuenciaDescNivelRP" placeholder="" readonly="true" />
+
+                                                    </mat-form-field>
+
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdNivelRP" placeholder="Criticidad" [(ngModel)]="consecuenciaModel.consecuenciaIdNivelRP" #consecuenciaIdNivelRP="ngModel" readonly="true" />
+                                                    </mat-form-field>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-5">
+                                <br />
+                                <div class="text-center"><b>Riesgo residual</b>
+                                </div>
+                                <div class="box box-default">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdProbRR" placeholder="Probabilidad" [(ngModel)]="consecuenciaModel.consecuenciaIdProbRR" #consecuenciaIdProbRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescPrbRR" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescPrbRR" #consecuenciaDescPrbRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgoresidualtable()">
+                                                            <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdSevRR" placeholder="Severidad" [(ngModel)]="consecuenciaModel.consecuenciaIdSevRR" #consecuenciaIdSevRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescSevRR" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescSevRR" #consecuenciaDescSevRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-sm btn-light btn-round" (click)="guardarriesgoresidualtabler()">
+                                                            <img class="img-circle" src="assets/images/Edit.png" style="width: 10px; height: 10px;">
+                                                        </button>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdRMRR" placeholder="MR" [(ngModel)]="consecuenciaModel.consecuenciaIdRMRR" #consecuenciaIdRMRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" name="consecuenciaDescRMRR" placeholder="" [(ngModel)]="consecuenciaModel.consecuenciaDescRMRR" #consecuenciaDescRMRR="ngModel" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput [ngStyle]="{'background-color': consecuenciaModel.consecuenciaDescNivelRR}" type="text" name="consecuenciaDescNivelRR" placeholder="" readonly="true" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <input matInput style="text-align: center;" type="text" name="consecuenciaIdNivelRR" placeholder="Criticidad" [(ngModel)]="consecuenciaModel.consecuenciaIdNivelRR" #consecuenciaIdNivelRR="ngModel" readonly="true" />
+
+                                                    </mat-form-field>
+                                                </div>
+                                                <!-- <div class="col-md-1" [ngStyle]="{ 'background-color': consecuenciaModel.consecuenciaDescNivelRR }"></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-1"></div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Controles Blandos">
+                    <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 400px;">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;"></th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" disabled>
+                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcblando()" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                            </div>
+
+                                        </div>
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">Id</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                                    <th class="mdl-data-table__cell--non-numeric"><b>Familia Id</b></th>
+                                    <th class="mdl-data-table__cell--non-numeric"><b>Familia Descripción</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of cBlandosListLectura; let indice = index">
+                                    <td class="mdl data-table mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                        <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcblando(item)" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cblandoId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric"><b>{{item.cblandoDescripcion}}</b><br>{{item.cblandoDescripcionExt}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cblandoFamiliaId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cblandoFamiliaDesc}}</td>
+
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Controles Duros">
+                    <div class="box box-default table-box table-responsive mdl-shadow--1dp" style="height: 400px;">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric"></th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" disabled>
+                                            <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarcduro()" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                            </button>
+                                            </div>
+
+                                        </div>
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>Id</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Jerarquia</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción </th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tipo </th>
+                                    <th class="mdl-data-table__cell--non-numeric">Clasificacion</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Efectividad</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let item of cDurosListLectura;let indice = index">
+                                    <td class="mdl data-table mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" disabled>
+                                        <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+                                            </div>
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarcduro(item)" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.controlDuroDesc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroClasificacionDesc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo1Desc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroTipo2Desc}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.cduroEfectividad}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+                <mat-tab label="EPF">
+                    <div class="box box-default table-box table-responsive mdl-shadow--2dp">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric"></th>
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'false'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" disabled>
+                                        <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+
+                                            </div>
+
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardarepf()" disabled>
+                                        <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>EPF</th>
+                                    <!-- <th class="mdl-data-table__cell--non-numeric">Descripción Extendida</th> -->
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>Id Control</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción Control</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of epfListLectura; let indice = index">
+                                    <td class="mdl data-table mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+
+                                            <div *ngSwitchCase="'false'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" disabled>
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminarepf(item)" disabled>
+                                        <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.epfId}} {{item.epfDesc}}</td>
+                                    <!-- <td class="mdl-data-table__cell--non-numeric">{{item.controlDescExt}}</td> -->
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.controlId}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric"><b>{{item.controlDesc}}</b><br>{{item.controlDescExt}}</td>
+
+
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Documentos">
+                    <div class="box box-default table-box table-responsive mdl-shadow--2dp">
+                        <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric"></th>
+
+                                    <th class="mdl-data-table__cell--non-numeric" style="width: 30px;">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+                                            <div *ngSwitchCase="'true'">
+
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" disabled>
+                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                </button>
+                                            </div>
+
+                                            <div *ngSwitchCase="'N'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="guardardoc()" disabled>
+                                                    <img class="img-circle" src="assets/images/Add_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+
+                                            </div>
+                                        </div>
+
+                                    </th>
+                                    <th class="mdl-data-table__cell--non-numeric">
+                                        <p><b></b></p>No</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of docsListLectura; let indice = index">
+                                    <td class="mdl data-table mdl-data-table__cell--non-numeric">{{indice+1}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <div [ngSwitch]="consecuenciaModel.CanAdd">
+
+                                            <div *ngSwitchCase="'false'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)">
+                                                    <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                                </button>
+                                            </div>
+
+                                            <div *ngSwitchCase="'true'">
+                                                <button class="btn btn-sm btn-light btn-round" (click)="eliminardoc(item)" disabled>
+                                        <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                                    </button>
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="mdl-data-table__cell--non-numeric" [innerHTML]="item.documentUrl"></td>
+                                    <td *ngIf="item.docStatus != '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}<a style="font-size: 11px;color: red;">(*)</a></td>
+                                    <td *ngIf="item.docStatus === '008'" class="mdl-data-table__cell--non-numeric">{{item.documentName}}</td>
+
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.documentType}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

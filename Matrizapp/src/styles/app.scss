@@ -1,0 +1,26 @@
+@import "variables";
+@import "vendors/material2/material2";
+@import "pages/demo";
+@import "pages/auth";
+@import "pages/error";
+@import "pages/lock-screen";
+@import "pages/profile";
+@import "pages/invoice";
+@import "pages/dashboard";
+@import "pages/maintenance";
+@import "pages/about";
+@import "pages/terms";
+@import "pages/blog";
+@import "error";
+@import "pages/general";
+.tabla {
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
+.swal2-icon.swal2-warning {
+    border-color: red !important;
+    color: #3fc3ee !important;
+}

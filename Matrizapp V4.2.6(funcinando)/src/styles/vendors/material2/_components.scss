@@ -1,0 +1,21 @@
+
+// validation
+mat-form-field:not(.ng-pristine) {
+  &.ng-invalid {
+    .mat-form-field-underline {
+      border-color: theme-color("danger");
+      .mat-form-field-ripple {
+        background-color: theme-color("danger");
+      }
+    }
+  }
+  &.ng-valid {
+    .mat-form-field-underline {
+      border-color: theme-color("success");
+      .mat-form-field-ripple {
+        background-color: theme-color("success");
+      }
+    }
+  }
+}
+
