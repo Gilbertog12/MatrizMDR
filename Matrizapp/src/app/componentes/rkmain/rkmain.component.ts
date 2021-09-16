@@ -43,6 +43,9 @@ import { ServiciocajasService } from '../../shared/services/serviciocajas.servic
 import { AutologoutService } from '../../shared/services/autologout.service';
 import { state } from '@angular/animations';
 import { includes } from 'core-js/fn/array';
+import { isNullOrUndefined } from 'util';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -87,7 +90,8 @@ export class DynamicFlatNode {
 
   constructor(
     public _treeControl: FlatTreeControl<DynamicFlatNode>,
-    private autentication: AuthenticationService) { }
+    private autentication: AuthenticationService,
+    private ControlsService:ControlsService) { }
 
 
 
@@ -123,7 +127,7 @@ export class DynamicFlatNode {
   toggleNode(node: DynamicFlatNode, expand: boolean)
   {
 
-    
+
       // console.log(this.data.indexOf(node))
       const index = this.data.indexOf(node);
       if (!expand) {
@@ -156,6 +160,9 @@ export class DynamicFlatNode {
 
           }
         }
+
+        const spinner = this.ControlsService.openSpinner();
+        
 
         this.autentication.generic(params)
         .subscribe(data => {
@@ -244,14 +251,19 @@ export class DynamicFlatNode {
               // notify the change
               this.dataChange.next(this.data);
 
-            
+
+              this.ControlsService.closeSpinner(spinner);
+
 
             } else {
+              this.ControlsService.closeSpinner(spinner);
+
               this.autentication.showMessage(data.success, data.message, data['data'], data.redirect);
             }
 
           },
           error => {
+            this.ControlsService.closeSpinner(spinner);
             if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet1', {}, false); }
             console.log(error);
           });
@@ -558,6 +570,10 @@ export class RkmainComponent implements OnInit,OnChanges {
   mostrarLimpiar: boolean = false;
   nivelpermitido: any;
   nodoPadreBloqueo: string;
+  nodocopiarkey: any;
+  cambiarColor: boolean = false;
+  accionElmininar: string;
+  nivelEliminar: string;
 
   //mmetodos para hacer logout automatico
 
@@ -1031,7 +1047,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     this.isLoading = true;
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
 
-    this.dataSource = new DynamicDataSource(this.treeControl, this.autentication);
+    this.dataSource = new DynamicDataSource(this.treeControl, this.autentication,this.controlService);
 
     let params = [];
     params.push({ name: 'scriptName', value: 'coemdr' });
@@ -1376,20 +1392,22 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
   @ViewChildren(MatTreeNode, { read: ElementRef }) treeNodes: ElementRef[];
+
+  clase = "background-highlight"
   hasListener: any[] = [];
   oldHighlight: ElementRef;
 
   updateHighlight = (newHighlight: ElementRef) => {
-    this.oldHighlight && this.renderer.removeClass(this.oldHighlight.nativeElement, 'background-highlight');
+    this.oldHighlight && this.renderer.removeClass(this.oldHighlight.nativeElement, this.clase);
 
-    this.renderer.addClass(newHighlight.nativeElement, 'background-highlight');
+    this.renderer.addClass(newHighlight.nativeElement, this.clase);
     this.oldHighlight = newHighlight;
   }
 
   ngAfterViewChecked() {
     this.treeNodes.forEach((reference) => {
       if (!this.hasListener.includes(reference.nativeElement)) {
-        //console.log('* tick');
+        // console.log('* tick');
 
         this.renderer.listen(reference.nativeElement, 'click', () => {
           this.updateHighlight(reference);
@@ -1398,13 +1416,12 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.updateHighlight(reference);
         });
 
-        this.hasListener = this.hasListener.concat([reference.nativeElement]);
+        this.hasListener = this.hasListener.concat([ reference.nativeElement ]);
       }
     });
 
-    //console.log(this.hasListener);
     this.hasListener = this.hasListener.filter((element) => document.contains(element));
-    //console.log('*', this.hasListener.length);
+    // console.log('*', this.hasListener.length);
   }
 
 	 mensajes(status?:string ){
@@ -1487,6 +1504,136 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
+  nivelSuperior(level,key){
+
+    switch(level){
+      case 1:
+        this.nivelEliminar = 'areaId'
+        this.accionElmininar ='AREA_DELETE'
+        return '';
+      case 2:
+        this.nivelEliminar = 'procesoId'
+
+        this.accionElmininar ='PROCESO_DELETE'
+        return key.substring(0,2);
+        case 3:
+        this.nivelEliminar = 'subprocesoId'
+
+        this.accionElmininar ='SUBPROCESO_DELETE'
+        return key.substring(0,6);
+        case 4:
+        this.nivelEliminar = 'actividadId'
+
+        this.accionElmininar ='ACTIVIDAD_DELETE'
+        return key.substring(0,10);
+        case 5:
+        this.nivelEliminar = 'tareaId'
+
+        this.accionElmininar ='TAREA_DELETE'
+        return key.substring(0,14);
+        case 6:
+        this.nivelEliminar = 'dimensionId'
+
+        this.accionElmininar ='DIMENSION_DELETE'
+        return key.substring(0,18);
+        case 7:
+        this.nivelEliminar = 'riesgoId'
+
+        this.accionElmininar ='RIESGO_DELETE'
+        return key.substring(0,19);
+        case 8:
+        this.nivelEliminar = 'consecuenciaId'
+
+        this.accionElmininar ='CONSECUENCIA_DELETE'
+        return key.substring(0,23);
+
+      }
+
+  }
+
+
+
+  async eliminarNuevo(node){
+    for (let i =0 ;i<this.dataSource.data.length; i++){
+
+      if(this.dataSource.data[i] === node){
+
+        let levelUp = this.nivelSuperior(node.level,node.key)
+
+        if(levelUp !== ''){
+
+          for(let i =0 ;i<this.dataSource.data.length; i++){
+            if(this.dataSource.data[i].key === levelUp){
+
+              console.log(this.dataSource.data[i])
+              this.getSelection = this.dataSource.data[i]
+
+            }
+          }
+        }else{
+          this.getSelection = undefined
+        }
+
+        if(node.status === '008'){
+
+          Swal2.fire({
+            title: '<strong style="color:red">ADVERTENCIA !</strong>',
+            html:
+                'Al eliminar este Registro,se eliminarán todos sus HIJOS <br> aún estando <strong style="color:#5672C4">Aprobados</strong>. ' +
+                '</br> <b style="color:#5672C4">¿ Desea continuar?</b>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor: '#d33'
+          }).then(result=>{
+
+            if(result.value){
+
+              let _atts = [];
+              let _ids = [];
+              _ids = node.key.substring(2, node.key.length)
+              console.log(_ids)
+              _atts.push({ name: 'scriptName', value: 'coemdr' });
+              _atts.push({ name: 'action', value: this.accionElmininar });
+              _atts.push({ name: this.accionElmininar, value: node.key });
+              _atts.push({ name: 'versionId', value: node.version });
+              _atts.push({ name: 'statusId', value: node.status });
+
+              const spinner = this.controlService.openSpinner();
+
+              this.autentication.generic(_atts).subscribe(
+                (data)=>{
+                  if(data.succes === true){
+                    if (data.data[0].atts[0].value === 'I' ) {
+                    Swal2.fire({
+                      html:'Registro Eliminado',
+                      icon: 'success',
+
+                    })
+                    this.controlService.closeSpinner(spinner);
+                  }else{
+                    this.controlService.closeSpinner(spinner);
+                    console.log(data.data[0].atts[0].value)
+                  }
+                }else{
+                    this.controlService.closeSpinner(spinner);
+                    console.log(data)
+                  }
+                }
+              )
+            }
+
+          })
+        }
+
+
+      }
+
+
+    }
+  }
 
   async eliminar(node) {
 
@@ -1743,6 +1890,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // timer: 3500
 
                 })
+                this.controlService.closeSpinner(spinner);
+
                 // this.recargarPadre();
 
                 let recargable = localStorage.getItem('keySelected')
@@ -1762,6 +1911,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
                     }else{
+                      this.controlService.closeSpinner(spinner);
 
                       this.recargarPadre();
 
@@ -1773,6 +1923,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                   icon:'error',
                   text: data.message
                 })
+              this.controlService.closeSpinner(spinner);
+
 
               }
               this.controlService.closeSpinner(spinner);
@@ -1792,6 +1944,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
+              this.controlService.closeSpinner(spinner);
 
 
                 }
@@ -1907,6 +2060,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                       // timer: 3500
 
                     })
+                    this.controlService.closeSpinner(spinner);
+
                     // this.recargarPadre();
                     let recargable = localStorage.getItem('keySelected')
 
@@ -1925,7 +2080,8 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
                     }else{
-
+                      this.controlService.closeSpinner(spinner);
+                      
                       this.recargarPadre();
 
                     }
@@ -2048,6 +2204,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // timer: 3500
 
                 })
+              this.controlService.closeSpinner(spinner);
+
                 // this.recargarPadre();
                 let recargable = localStorage.getItem('keySelected')
 
@@ -2077,6 +2235,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                   icon:'error',
                   text: data.message
                 })
+              this.controlService.closeSpinner(spinner);
 
               }
               this.controlService.closeSpinner(spinner);
@@ -2096,6 +2255,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
+              this.controlService.closeSpinner(spinner);
 
                 }
                 this.controlService.closeSpinner(spinner);
@@ -2203,14 +2363,16 @@ export class RkmainComponent implements OnInit,OnChanges {
 
               if(recargable !==''){
 
-                this.router.navigate(['/rkmain/cargando']);
+                // this.router.navigate(['/rkmain/cargando']);
                 // console.log('main');
-                setTimeout( () => {
+                // setTimeout( () => {
                   // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+                  // this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                   //this.ver(this.nodoseleccionado);
-                }, 1000 );
+                  // }, 1000 );
+
+                  this.abrirNodo();
+                  this.Cajas.RecargarDetalle$.emit(true)
 
 
 
@@ -2273,14 +2435,10 @@ export class RkmainComponent implements OnInit,OnChanges {
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);
-                // console.log('main');
-                setTimeout( () => {
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado);
-                }, 1000 );
+
+
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
 
 
               // this.RefrescarPantalla()
@@ -2304,27 +2462,6 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
 
     })
-
-    // let conf = this.confirm.open(AddrksComponent, {
-    //   hasBackdrop: true,
-    //   height: 'auto',
-    //   width: '500px',
-    //   data: {
-    //     title: 'Agregar Subproceso',
-    //     message: ``,
-    //     button_confirm: 'Guardar',
-    //     button_close: 'Cancelar',
-    //     areaId: _areaId,
-    //     procesoId: _procesoId
-    //   }
-    // });
-
-    // conf.afterClosed()
-    //   .subscribe(async (result) => {
-    //     if (result) {
-    //       this.abrirNodo();
-    //     }
-    //   });
 
   }
 
@@ -2370,14 +2507,8 @@ export class RkmainComponent implements OnInit,OnChanges {
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);
-                // console.log('main');
-                setTimeout( () => {
-                  console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado);
-                }, 1000 );
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
 
 
               // this.RefrescarPantalla()
@@ -2449,14 +2580,8 @@ export class RkmainComponent implements OnInit,OnChanges {
             // console.log(recargable);
             // this.ver(recargable);
 
-            this.router.navigate(['/rkmain/cargando']);
-            // console.log('main');
-            setTimeout( () => {
-              // console.log('nodo');
-              this.abrirNodo();
-              this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-              //this.ver(this.nodoseleccionado);
-            }, 1000 );
+            this.abrirNodo();
+            this.Cajas.RecargarDetalle$.emit(true)
 
             // // this.RefrescarPantalla()
             // setTimeout(() => {
@@ -2527,14 +2652,8 @@ export class RkmainComponent implements OnInit,OnChanges {
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);
-                // console.log('main');
-                setTimeout( () => {
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado);
-                }, 1000 );
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
 
 
               // this.RefrescarPantalla()
@@ -2604,14 +2723,8 @@ export class RkmainComponent implements OnInit,OnChanges {
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);
-                // console.log('main');
-                setTimeout( () => {
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado);
-                }, 1000 );
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
 
 
               // this.RefrescarPantalla()
@@ -2682,15 +2795,8 @@ export class RkmainComponent implements OnInit,OnChanges {
             if(recargable !==''){
 
                 //aqui*
-                this.router.navigate(['/rkmain/cargando']);
-                // console.log('main');
-                setTimeout( () => {
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado);
-                }, 1000 );
-
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
               // this.RefrescarPantalla()
               // setTimeout(() => {
 
@@ -3553,28 +3659,35 @@ export class RkmainComponent implements OnInit,OnChanges {
           break
       case 5:
         this.nodoPadreBloqueo = node.key.substring(0,14)
-          break
-      case 6:
-        this.nodoPadreBloqueo = node.key.substring(0,18)
+        break
+        case 6:
+          this.nodoPadreBloqueo = node.key.substring(0,18)
           break
       case 7:
         this.nodoPadreBloqueo = node.key.substring(0,19)
+        break
+        case 8:
+          this.nodoPadreBloqueo = node.key.substring(0,23)
           break
-      case 8:
-        this.nodoPadreBloqueo = node.key.substring(0,23)
-          break
 
-    }
+        }
 
-      console.log(this.nodoPadreBloqueo)
+        console.log(this.nodoPadreBloqueo)
 
-    this.rutaimagen = true;
-    this.mostrarLimpiar = true
+        this.rutaimagen = true;
+        this.mostrarLimpiar = true
+        // document.getElementById(this.nodocopiarkey).style.backgroundColor = '#d1f312'
 
     if(node){
       this.nodocopiar = node
+      this.nodocopiarkey = node.key
       this.nivelpermitido = node.level - 1
       this.rutaimagen = false;
+      this.cambiarColor = true
+      let a = document.getElementById(this.nodocopiarkey)
+
+      // console.log(a.getAttribute('color'))
+
 
       this.controlService.snackbarSucces('Jerarquia Copiada');
     }
@@ -3733,6 +3846,11 @@ export class RkmainComponent implements OnInit,OnChanges {
           // this.autentication.showMessages( data.data[0].atts[0].value, data.data[0].atts[1].value, this.procesoModel, data.redirect);
           this.rutaimagen = true
           this.mostrarLimpiar = false
+          this.nivelpermitido = ''
+          this.nodoPadreBloqueo = ''
+          this.cambiarColor = false
+
+
 
 
           this.treeControl.collapse(this.CopyPaste);

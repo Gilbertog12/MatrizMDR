@@ -72,6 +72,7 @@ public Razon : string
                   this.areaModel = {};
                   this.procesosList = [];
                   this.ver(this.id);
+                  
 
 
 
@@ -82,9 +83,9 @@ public Razon : string
   ngOnInit() {
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', this.id)
-    this.cargarRiesgo()
+    // this.cargarRiesgo()
 
-    this.Cajas.Recargar$.subscribe(resp=>{
+    this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
         this.areaModel = {};
         this.procesosList= [];
@@ -208,8 +209,9 @@ public Razon : string
                 }
               });
               // console.log(this.procesosList)
-              // debugger
-              this.controlService.closeSpinner(spinner);
+              this.cargarRiesgo();
+        
+              
             } else {
                 if(data.bypass === '1'){
 
@@ -222,7 +224,7 @@ public Razon : string
 
                 }
               }
-              this.controlService.closeSpinner(spinner);
+              // this.controlService.closeSpinner(spinner);
               console.log(result)
               return result;
             },
@@ -235,7 +237,7 @@ public Razon : string
         console.log(reject)
       }
     });
-    this.controlService.closeSpinner(spinner);
+    // this.controlService.closeSpinner(spinner);
 
   }
 
@@ -251,6 +253,7 @@ public Razon : string
 
     const obj =  this.autentication.generic(_atts);
 
+    const spinner = this.controlService.openSpinner();
 
 
     obj.subscribe((data)=>{
@@ -280,14 +283,16 @@ public Razon : string
         })
 
         this.loading = false
+        this.controlService.closeSpinner(spinner);
 
       }else{
+        this.controlService.closeSpinner(spinner);
 
         this.loading = false
       }
     })
 
-    this.loading = false
+    // this.loading = false
   }
 
 

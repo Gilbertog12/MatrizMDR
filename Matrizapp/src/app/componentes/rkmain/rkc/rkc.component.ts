@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, HttpMethodService, ControlsService } from '../../../shared';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTabChangeEvent } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RkcstdjobComponent } from '../rkcstdjob/rkcstdjob.component';
 import { RkcequipComponent } from '../rkcequip/rkcequip.component';
@@ -26,6 +26,8 @@ import { ServiciocajasService } from '../../../shared/services/serviciocajas.ser
   styleUrls: ['./rkc.component.scss']
 })
 export class RkcComponent implements OnInit {
+
+  
 
   public actividadModel: any = {
 
@@ -79,6 +81,8 @@ public Razon : string
   loading: boolean = true;
   label: string = 'Mostar Evaluacion';
   show: boolean =true;
+  tabDefault: number;
+  habilitar: boolean = false;
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
     private controlService: ControlsService,
@@ -102,14 +106,17 @@ public Razon : string
       this.logList = [];
       this.detalleList = [];
       this.stdJobList = [];
+      this.tabDefault = 0
       this.ver(this.id, this.pid, this.sid, this.cid);
+     
+
     });
 
   }
 
   ngOnInit() {
 
-    this.cargarPestañasDetalle()
+    // this.cargarRiesgo()
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
     this.percreacion = localStorage.getItem('NoCreador')
@@ -118,6 +125,19 @@ public Razon : string
       this.logList = [];
       this.detalleList = [];
       this.stdJobList = [];
+      this.Cajas.RecargarDetalle$.subscribe(resp=>{
+        if(resp){
+          this.actividadModel = {};
+      this.tareasList = [];
+      this.logList = [];
+      this.detalleList = [];
+      this.stdJobList = [];
+          this.ver(this.id,this.pid,this.sid,this.cid);
+          
+  
+  
+        }
+      })
 
 
   }
@@ -246,8 +266,9 @@ public Razon : string
             } else {
               if(data.bypass === '1'){
 
-
-                this.controlService.closeSpinner(spinner);
+                
+                this.cargarRiesgo()
+                
                 this.loading = false
 
               }else{
@@ -257,7 +278,6 @@ public Razon : string
 
               }
             }
-            this.controlService.closeSpinner(spinner);
             return result;
           },
           (error) => {
@@ -1137,8 +1157,10 @@ public Razon : string
                             // tarea: element.atts[2].value,
                             // dimension: element.atts[3].value,
                           });
-
-                    })
+                          
+                        })
+                        this.loading = false
+                        this.habilitar = true
                   }else{
 
                     this.loading = false
@@ -1193,7 +1215,10 @@ public Razon : string
                           });
 
                     })
+                    console.log(this.detalleList)
                     this.loading = false
+                    this.habilitar = false
+
 
                   }else{
 
@@ -1244,6 +1269,8 @@ public Razon : string
 
                     })
                     this.loading = false
+                    this.habilitar = false
+
 
       }else{
 
@@ -1260,22 +1287,27 @@ public Razon : string
 
       }
 
-      test(e){
+      test(e:MatTabChangeEvent){
 
         console.log(e)
-        debugger
+
+        // console.log(this.tabDefault)
+
         switch(e.index){
           case 0:
-            this.cargarPestañasDetalle()
+            if(this.tabDefault !== e.index){
+
+              this.cargarRiesgo()
+            }
             break;
             case 1:
-            this.cargarRiesgo()
-            break;
-            case 2:
               this.cargarPestañasStdJob()
-            break;
-            case 3:
-            this.cargarPestañasLog()
+              break;
+              case 2:
+                this.cargarPestañasDetalle()
+                break;
+                case 3:
+                  this.cargarPestañasLog()
             break;
         }
 
@@ -1299,11 +1331,11 @@ public Razon : string
         let _atts = [];
         _atts.push({ name: 'scriptName', value: 'coemdr' });
         _atts.push({ name: 'action', value: 'ITEM_EVALRISK_DETAIL_READ' });
-        _atts.push({ name: 'key', value:  this.actividadModel.key });
+        _atts.push({ name: 'key', value:  this.id+this.pid+this.sid+this.cid });
 
 
         const obj =  this.autentication.generic(_atts);
-
+        const spinner = this.controlService.openSpinner();
 
 
         obj.subscribe((data)=>{
@@ -1332,10 +1364,14 @@ public Razon : string
 
             })
             this.loading = false
-
+            this.tabDefault = -1
+            this.controlService.closeSpinner(spinner);
+            
           }else{
-    
+            
             this.loading = false
+            this.tabDefault = -1
+            this.controlService.closeSpinner(spinner);
           }
         })
     

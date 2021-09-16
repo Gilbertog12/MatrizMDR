@@ -185,8 +185,12 @@ export class LoginComponent implements OnInit {
             this.districts = this.array1;
                     
           }
-            this.districts.forEach(element => {
-              this.disDefault = element.name
+            this.districts.forEach((element,index) => {
+
+              if(index == 0){
+                this.disDefault = element.name
+
+               }
             });
 
             console.log(this.disDefault)
@@ -312,7 +316,7 @@ export class LoginComponent implements OnInit {
 
     Swal2.fire({
       icon:'info',
-      html:"Matriz de riesgos, Copyright 2021. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.2.4 <br />Fecha de compilación: 2021-18-08 <br />",
+      html:"Matriz de riesgos, Copyright 2021. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.2.6 <br />Fecha de compilación: 2021-09-07 <br />",
       showCloseButton: true
       
     })

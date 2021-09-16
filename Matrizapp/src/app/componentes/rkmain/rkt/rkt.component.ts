@@ -76,6 +76,8 @@ public canAdd : string
   permisoValidar: boolean;
   percreacion: string;
   loading: boolean = true;
+  tabDefault: number;
+
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -100,14 +102,18 @@ public canAdd : string
                   this.dimensionesList = [];
                   this.detalleList = [];
                   this.stdJobList = [];
+                  
+                  this.tabDefault = 0
                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
+                  
+
                 });
 
               }
 
   ngOnInit() {
 
-    this.cargarPestañasDetalle()
+    // this.cargarRiesgo()
 
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
@@ -123,6 +129,19 @@ public canAdd : string
 
     //   }
     // })
+
+    this.Cajas.RecargarDetalle$.subscribe(resp=>{
+      if(resp){
+        this.tareaModel = {};
+            this.dimensionesList = [];
+            this.detalleList = [];
+            this.stdJobList = [];
+            this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
+        
+
+
+      }
+    })
 
 
   }
@@ -301,13 +320,13 @@ public canAdd : string
               }
             });
 
-            this.controlService.closeSpinner(spinner);
+            this.cargarRiesgo()
           } else {
             this.controlService.closeSpinner(spinner);
             this.autentication.showMessage(data.success, data.message, this.tareaModel, data.redirect);
           }
 
-            this.controlService.closeSpinner(spinner);
+            
           return result;
       },
       (error) => {
@@ -633,7 +652,7 @@ public canAdd : string
 
     const obj =  this.autentication.generic(_atts);
 
-
+    const spinner = this.controlService.openSpinner();
 
     obj.subscribe((data)=>{
 
@@ -658,10 +677,14 @@ public canAdd : string
         })
 
         this.loading = false
-
+        this.tabDefault = -1
+        this.controlService.closeSpinner(spinner);
+        
       }else{
-
-          this.loading = false
+        
+        this.loading = false
+        this.tabDefault = -1
+        this.controlService.closeSpinner(spinner);
         }
       })
 
@@ -776,16 +799,19 @@ public canAdd : string
   test(e){
 
     console.log(e)
-    debugger
+    // debugger
     switch(e.index){
       case 0:
-        this.cargarPestañasDetalle()
+        if(this.tabDefault !== e.index){
+
+          this.cargarRiesgo()
+        }
         break;
         case 1:
-        this.cargarRiesgo()
-        break;
-        case 2:
           this.cargarPestañasStdJob()
+          break;
+          case 2:
+          this.cargarPestañasDetalle()
         break;
 
     }

@@ -82,12 +82,13 @@ constructor(private autentication: AuthenticationService,
 ngOnInit() {
   localStorage.setItem('isSendToValidate', '0');
   localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
-  this.cargarRiesgo()
-  this.Cajas.Recargar$.subscribe(resp=>{
+  // this.cargarRiesgo()
+  this.Cajas.RecargarDetalle$.subscribe(resp=>{
     if(resp){
       this.procesoModel = {};
       this.subprocesosList = [];
       this.ver(this.id, this.pid);
+      
 
     }
   })
@@ -192,7 +193,7 @@ ver(areaId: string, procesoId: string) {
             }
           });
 
-          this.controlService.closeSpinner(spinner);
+          this.cargarRiesgo()
         } else {
           if(data.bypass === '1'){
 
@@ -205,7 +206,7 @@ ver(areaId: string, procesoId: string) {
 
           }
         }
-        this.controlService.closeSpinner(spinner);
+        
         return result;
     },
     (error) => {
@@ -227,6 +228,7 @@ cargarRiesgo(){
 
   const obj =  this.autentication.generic(_atts);
 
+  const spinner = this.controlService.openSpinner();
 
 
   obj.subscribe((data)=>{
@@ -254,14 +256,15 @@ cargarRiesgo(){
         });
 
       })
+      this.loading = false
+      this.controlService.closeSpinner(spinner);
 
     }else{
-
+      this.controlService.closeSpinner(spinner);
       this.loading = false
     }
   })
 
-  this.loading = false
 
 }
 

@@ -61,7 +61,7 @@
             </div>
         </div>
         <div *ngIf="checked === false" class="col-xl-4" style="padding-left: 10px; padding-right: 5px">
-            <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="position: sticky">
+            <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="position: sChecky">
                 <div style="position: absolute; right: 0px">
                     <button *ngIf="mostrarLimpiar" alt class="btn btn-sm btn-light btn-round float-left" (click)="limpiarCopiado()">
             <img
@@ -130,7 +130,8 @@
             *matTreeNodeDef="let node; when: hasChild"
             matTreeNodePadding
             id="{{ node.key }}"
-          >
+            
+            >
             <div [ngSwitch]="node.permiso">
               <div *ngSwitchCase="'YY'">
                 <button
@@ -199,12 +200,15 @@
                     style="width: 10px; height: 10px"
                   />
                 </button>
-                <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
-                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
-            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+              <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+          </button>
+          <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+              <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+          </button>
               </div>
               <div *ngSwitchCase="'NN'">
                 <button
@@ -273,12 +277,15 @@
                     style="width: 10px; height: 10px"
                   />
                 </button>
-                <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                  <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                  <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
               </button>
-              <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
-                  <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
-              </button>
+              <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
               </div>
               <div *ngSwitchCase="'NY'">
                 <button
@@ -347,12 +354,15 @@
                     style="width: 10px; height: 10px"
                   />
                 </button>
-                <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                  <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                  <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
               </button>
-              <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
-                  <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
-              </button>
+              <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
               </div>
               <div *ngSwitchCase="'YN'">
                 <div [ngSwitch]="node.status">
@@ -429,12 +439,15 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
-                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
-            </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+                    <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+                  </button>
+                  <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+                  </button>
                     </ng-template>
 
                     <ng-template #sinmarca>
@@ -505,12 +518,16 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
             </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+          
                     </ng-template>
                   </div>
                   <div *ngSwitchCase="010">
@@ -584,11 +601,14 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
 
@@ -659,11 +679,14 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
                   </div>
@@ -739,11 +762,14 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
 
@@ -814,11 +840,14 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
                   </div>
@@ -896,8 +925,11 @@
                        <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
                 <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
 
@@ -1005,9 +1037,9 @@
                             style="width: 10px; height: 10px"
                           />
                         </button>
-                        <button *ngIf="!rutaimagen && node.level === nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
+                        <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                          <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                      </button>
             <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
@@ -1085,11 +1117,14 @@
                           style="width: 10px; height: 10px"
                         />
                       </button>
-                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
 
@@ -1136,9 +1171,9 @@
                             style="width: 10px; height: 10px"
                           />
                         </button>
-                        <button *ngIf="!rutaimagen && node.level === nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
+                        <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                          <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                      </button>
             <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
@@ -1197,9 +1232,9 @@
                             style="width: 10px; height: 10px"
                           />
                         </button>
-                        <button *ngIf="!rutaimagen && node.level === nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)">
-                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
-            </button>
+                        <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                          <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                      </button>
             <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
@@ -1321,8 +1356,11 @@
                        <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
                 <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
 
@@ -1398,8 +1436,11 @@
                        <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
                 <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
             </button>
-            <button *ngIf="!rutaimagen && node.level !== nivelpermitido || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
                 <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
             </button>
                     </ng-template>
                   </div>

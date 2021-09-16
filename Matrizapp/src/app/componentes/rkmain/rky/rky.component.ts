@@ -114,13 +114,13 @@ public Razon : string
   }
 
   ngOnInit() {
-    this.mostrar()
+    // this.mostrar()
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
     this.percreacion = localStorage.getItem('NoCreador')
     // console.log(this.controlesstatus)
     this.controlesstatus = ''
-    this.Cajas.Recargar$.subscribe(resp=>{
+    this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
 
 
@@ -130,10 +130,7 @@ public Razon : string
       this.cDurosList = [];
       this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
-
-
-
-
+      
 
       }
     })

@@ -119,43 +119,26 @@
     </div>
 
     <div class="col-xl-12" *ngIf='btn !=="lectura"'>
-        <mat-tab-group (selectedTabChange)="test($event)">
-            <mat-tab label="Detalle">
-                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height:290px;">
-                    <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <mat-tab-group (selectedTabChange)="test($event)" [(selectedIndex)]="tabDefault">
 
-            <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
-                        <thead>
-                            <tr>
-                                <th colspan="2" style="text-align: center;">Dimensión</th>
-                                <th colspan="2" style="text-align: center;">Riesgo</th>
-                                <th colspan="2" style="text-align: center;">Consecuencia</th>
-                                <th style="text-align: left;">Probabilidad</th>
-                                <th style="text-align: left;">Severidad</th>
-                                <th style="text-align: left;">Criticidad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of detalleList">
-                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionId}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionDesc}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoId}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoDesc}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaId}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaDesc}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidad}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.severidad}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.criticidad}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </mat-tab>
             <mat-tab label="Evaluación Riesgo">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp">
-                    <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
 
-            <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">
@@ -198,7 +181,20 @@
             </mat-tab>
             <mat-tab label="Std Job">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp">
-                    <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
 
                     <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
@@ -355,15 +351,74 @@
                     </table>
                 </div>
             </mat-tab>
-            
-           
+            <mat-tab label="Detalle">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height:290px;">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align: center;">Dimensión</th>
+                                <th colspan="2" style="text-align: center;">Riesgo</th>
+                                <th colspan="2" style="text-align: center;">Consecuencia</th>
+                                <th style="text-align: left;">Probabilidad</th>
+                                <th style="text-align: left;">Severidad</th>
+                                <th style="text-align: left;">Criticidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of detalleList">
+                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.dimensionDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.riesgoDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.consecuenciaDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.probabilidad}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.severidad}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{item.criticidad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+
+
         </mat-tab-group>
     </div>
     <div class="col-xl-12" *ngIf='btn ==="lectura"'>
-        <mat-tab-group>
+        <mat-tab-group (selectedTabChange)="test($event)" [(selectedIndex)]="tabDefault">
             <mat-tab label="Evaluación Riesgo">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height:290px;">
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">
@@ -374,7 +429,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of dimensionesListLectura">
+                            <tr *ngFor="let item of dimensionesList">
 
                                 <td class="mdl-data-table__cell--non-numeric">{{item.Id}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{item.Descripcion}}</td>
@@ -387,7 +442,22 @@
             </mat-tab>
             <mat-tab label="Std Job">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp">
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
                             <tr>
                                 <th style="text-align: left; height: 30px;"></th>
@@ -416,7 +486,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of stdJobListLectura; let indice = index">
+                            <tr *ngFor="let item of stdJobList; let indice = index">
                                 <td class="mdl-data-table__cell--non-numeric">{{indice+1}}</td>
 
                                 <td class="mdl-data-table__cell--non-numeric">
@@ -441,7 +511,22 @@
             </mat-tab>
             <mat-tab label="Detalle">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp">
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
                             <tr>
                                 <th colspan="2" style="text-align: center;">Dimensión</th>

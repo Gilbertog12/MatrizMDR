@@ -74,22 +74,25 @@ public Razon : string
                   this.subprocesoModel = {};
                   this.actividadesList = [];
                   this.ver(this.id, this.pid, this.sid);
+                  
+
                 });
 
               }
 
   ngOnInit() {
 
-    this.cargarRiesgo()
+    // this.cargarRiesgo()
 
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
 
-    this.Cajas.Recargar$.subscribe(resp=>{
+    this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
         this.subprocesoModel = {};
         this.actividadesList = [];
         this.ver(this.id, this.pid, this.sid);
+        
 
       }
     })
@@ -198,7 +201,7 @@ public Razon : string
               }
             });
 
-            this.controlService.closeSpinner(spinner);
+            this.cargarRiesgo();
           } else {
             if(data.bypass === '1'){
 
@@ -211,7 +214,7 @@ public Razon : string
 
             }
           }
-          this.controlService.closeSpinner(spinner);
+          
           return result;
         },
         (error) => {
@@ -234,7 +237,7 @@ public Razon : string
 
     const obj =  this.autentication.generic(_atts);
 
-
+    const spinner = this.controlService.openSpinner();
 
     obj.subscribe((data)=>{
 
@@ -263,14 +266,16 @@ public Razon : string
         })
 
         this.loading = false
-
+        this.controlService.closeSpinner(spinner);
+        
       }else{
-
+        
         this.loading = false
+        this.controlService.closeSpinner(spinner);
       }
     })
 
-    this.loading = false
+    // this.loading = false
 
   }
 

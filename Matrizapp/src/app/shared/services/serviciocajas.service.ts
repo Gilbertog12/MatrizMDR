@@ -7,6 +7,7 @@ export class ServiciocajasService {
 
 
   Recargar$ = new EventEmitter<boolean>()
+  RecargarDetalle$ = new EventEmitter<boolean>()
 
   constructor() { }
 
