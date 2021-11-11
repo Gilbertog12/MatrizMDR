@@ -478,7 +478,7 @@ public Razon : string
               this.controlService.closeSpinner(spinner);
               this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
             }
-            this.controlService.closeSpinner(spinner);
+            // this.controlService.closeSpinner(spinner);
             return result;
           },
           (error) => {
@@ -491,7 +491,7 @@ public Razon : string
         // console.log(this.controlesstatus)
 
         // this.validarcontroles(this.controlesstatus)
-        this.controlService.closeSpinner(spinner);
+        // this.controlService.closeSpinner(spinner);
       }
 
       validarcontroles(string:string){

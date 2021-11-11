@@ -650,9 +650,9 @@ public canAdd : string
     _atts.push({ name: 'key', value:  this.id+this.pid+this.sid+this.cid+this.tid });
 
 
+    const spinner = this.controlService.openSpinner();
     const obj =  this.autentication.generic(_atts);
 
-    const spinner = this.controlService.openSpinner();
 
     obj.subscribe((data)=>{
 
@@ -707,6 +707,9 @@ public canAdd : string
     _atts.push({ name: 'actividadId', value:  this.cid });
     _atts.push({ name: 'tareaId', value:  this.tid });
 
+
+    const spinner = this.controlService.openSpinner()
+
     const obj =  this.autentication.generic(_atts);
 
           obj.subscribe((data)=>{
@@ -735,9 +738,12 @@ public canAdd : string
                 })
                 this.loading = false
 
-      }else{
-
-          this.loading = false
+                this.controlService.closeSpinner(spinner)
+                
+              }else{
+                
+                this.loading = false
+                this.controlService.closeSpinner(spinner)
         }
       })
 
@@ -757,6 +763,8 @@ public canAdd : string
     _atts.push({ name: 'subprocesoId', value:  this.sid });
     _atts.push({ name: 'actividadId', value:  this.cid });
     _atts.push({ name: 'tareaId', value:  this.tid });
+
+    const spinner = this.controlService.openSpinner()
 
     const obj =  this.autentication.generic(_atts);
 
@@ -785,10 +793,12 @@ public canAdd : string
 
                 })
                 this.loading = false
-
+                this.controlService.closeSpinner(spinner)
+                
               }else{
-
+                
                 this.loading = false
+                this.controlService.closeSpinner(spinner)
               }
             })
 

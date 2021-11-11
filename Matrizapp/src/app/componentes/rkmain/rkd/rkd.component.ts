@@ -241,9 +241,9 @@ public Razon : string
     _atts.push({ name: 'action', value: 'ITEM_EVALRISK_DETAIL_READ' });
     _atts.push({ name: 'key', value:  this.id+this.pid+this.sid+this.cid+this.tid+this.did });
 
-
-    const obj =  this.autentication.generic(_atts);
+    
     const spinner = this.controlService.openSpinner();
+    const obj =  this.autentication.generic(_atts);
 
 
 

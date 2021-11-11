@@ -226,9 +226,9 @@ cargarRiesgo(){
   _atts.push({ name: 'key', value:  this.id+this.pid });
 
 
+  const spinner = this.controlService.openSpinner();
   const obj =  this.autentication.generic(_atts);
 
-  const spinner = this.controlService.openSpinner();
 
 
   obj.subscribe((data)=>{

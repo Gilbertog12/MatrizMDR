@@ -13,51 +13,7 @@
           </button>
                 </div>
 
-                <mat-slide-toggle [color]="color" [checked]="checked" [(ngModel)]="checked" (change)="switchToTree()">
-                    &nbsp;&nbsp;&nbsp;{{ tittle }}
-                </mat-slide-toggle>
-                <input {{cambio}} style="display: none" />
-                <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar>
-                <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 780px">
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
-                        <thead>
-                            <tr>
-                                <th style="width: 10px; height: 28px"></th>
-                                <th class="mdl-data-table__cell--non-numeric" style="text-align: left">
-                                    Ruta
-                                </th>
-                                <th class="mdl-data-table__cell--non-numeric" style="text-align: left">
-                                    Id
-                                </th>
-                                <th class="mdl-data-table__cell--non-numeric" style="text-align: left; width: 300px">
-                                    Descripción
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of aprobacionesList">
-                                <th style="width: 10px; height: 28px">
-                                    <button class="btn btn-sm btn-light btn-round" (click)="verDetalleAprobacion(item)">
-                    <img
-                      class="img-circle"
-                      src="assets/images/Help.png"
-                      style="width: 10px; height: 10px"
-                    />
-                  </button>
-                                </th>
-                                <th class="mdl-data-table__cell--non-numeric">
-                                    {{ item.ruta }}
-                                </th>
-                                <th class="mdl-data-table__cell--non-numeric">
-                                    <a (click)="verTable(item)" [routerLink]="">{{ item.id }}</a>
-                                </th>
-                                <th class="mdl-data-table__cell--non-numeric" style="width: 300px">
-                                    {{ item.descripcion }}
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
             </div>
         </div>
         <div *ngIf="checked === false" class="col-xl-4" style="padding-left: 10px; padding-right: 5px">
@@ -1450,7 +1406,7 @@
             </div>
 
             <b *ngFor="let item of node.sp"
-              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b
+              >&nbsp;&nbsp;&nbsp;&nbsp;</b
             >
 
             <div *ngIf="treeControl.isExpanded(node)">
@@ -1559,30 +1515,30 @@
                 node.status === '001' ||
                 node.status === '002' ||
                 node.status === '003'
-              " title="Ítem pendiente por enviar a validar." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(*)</a>
+              " title="Ítem pendiente por enviar a validar." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim().trim()}}<a style="font-size: 11px; color: red">(*)</a>
                         </a>
-                        <a *ngIf="node.status === '006' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(*)</a>
-                        </a>
-
-                        <a *ngIf="node.status === '006' && node.pendingDelete === 'N'" title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(*)</a>
+                        <a *ngIf="node.status === '006' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(*)</a>
                         </a>
 
-                        <a *ngIf="node.status === '008'" title="Aprobado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }}
+                        <a *ngIf="node.status === '006' && node.pendingDelete === 'N'" title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(*)</a>
+                        </a>
+
+                        <a *ngIf="node.status === '008'" title="Aprobado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}
             </a>
-                        <a *ngIf="node.status === '004' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." style="color: black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(**)</a>
+                        <a *ngIf="node.status === '004' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." style="color: black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(**)</a>
                         </a>
-                        <a *ngIf="node.status === '004' && node.pendingDelete === 'N'" title="Ítem pendiente de validar." style="color: black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(**)</a>
+                        <a *ngIf="node.status === '004' && node.pendingDelete === 'N'" title="Ítem pendiente de validar." style="color: black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(**)</a>
                         </a>
-                        <a *ngIf="node.status === '007' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(***)</a>
+                        <a *ngIf="node.status === '007' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(***)</a>
                         </a>
-                        <a *ngIf="node.status === '007' && node.pendingDelete === 'N'" title="Ítem pendiente por Aprobar" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(***)</a>
+                        <a *ngIf="node.status === '007' && node.pendingDelete === 'N'" title="Ítem pendiente por Aprobar" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(***)</a>
                         </a>
 
-                        <a *ngIf="node.status === '000'" title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(R)</a></a>
-                        <a *ngIf="node.status === '010'" title="Ítem Archivado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }}
-              <a style="font-size: 11px; color: red">(Ar)</a></a>
+                        <a *ngIf="node.status === '000'" title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}<a style="font-size: 11px; color: red">(R)</a></a>
+                        <a *ngIf="node.status === '010'" title="Ítem Archivado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item.trim()}}
+            <a style="font-size: 11px; color: red">(Ar)</a></a>
                         <!-- <a *ngIf="node.status === '010' " title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(AR)</a></a> -->
-                        <!-- <a *ngIf="node.status === '005'" title="Ítem pendiente por enviar a aprobar" style="color: black;  " [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a> -->
+                        <!-- <a *ngIf="node.status === '005'" title="Ítem pendiente por enviar a aprobar" style="color: black;  " [routerLink]="" (click)="ver(node)">{{node.item}<a style="font-size: 11px;color: red;">(*)</a></a> -->
 
                         <mat-progress-bar *ngIf="node.isLoading" style="width: 50px" mode="buffer"></mat-progress-bar>
                     </mat-tree-node>

@@ -154,7 +154,7 @@ export class DynamicFlatNode {
         for (let _i = 0; _i < node.level + 1; _i++) {
           if(node.level == 8){
 
-            espacios.push(_i+9);
+            espacios.push(_i+5);
           }else{
             espacios.push(_i+2);
 
@@ -174,7 +174,8 @@ export class DynamicFlatNode {
 
 
             data['data'].forEach(function (value) {
-              let name = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
+              let name = value['atts'][1]['value'].trim() + ' - ' + value['atts'][2]['value'].trim();
+              name = name.trimRight()
               let key = value['atts'][7]['value'];
               let status = value['atts'][3]['value'];
               let version = value['atts'][4]['value'];
@@ -1553,7 +1554,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
 
-  async eliminarNuevo(node){
+  async eliminarn(node){
     for (let i =0 ;i<this.dataSource.data.length; i++){
 
       if(this.dataSource.data[i] === node){
@@ -1593,11 +1594,34 @@ export class RkmainComponent implements OnInit,OnChanges {
 
               let _atts = [];
               let _ids = [];
-              _ids = node.key.substring(2, node.key.length)
-              console.log(_ids)
+              _ids = node.route.substring(4, node.route.length).split('/');
+
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: this.accionElmininar });
-              _atts.push({ name: this.accionElmininar, value: node.key });
+              if (_ids[0]) {
+                _atts.push({ name: 'areaId', value: _ids[0] });
+              }
+              if (_ids[1]) {
+                _atts.push({ name: 'procesoId', value: _ids[1] });
+              }
+              if (_ids[2]) {
+                _atts.push({ name: 'subprocesoId', value: _ids[2] });
+              }
+              if (_ids[3]) {
+                _atts.push({ name: 'actividadId', value: _ids[3] });
+              }
+              if (_ids[4]) {
+                _atts.push({ name: 'tareaId', value: _ids[4] });
+              }
+              if (_ids[5]) {
+                _atts.push({ name: 'dimensionId', value: _ids[5] });
+              }
+              if (_ids[6]) {
+                _atts.push({ name: 'riesgoId', value: _ids[6] });
+              }
+              if (_ids[7]) {
+                _atts.push({ name: 'consecuenciaId', value: _ids[7] });
+              }              
               _atts.push({ name: 'versionId', value: node.version });
               _atts.push({ name: 'statusId', value: node.status });
 
@@ -1607,19 +1631,18 @@ export class RkmainComponent implements OnInit,OnChanges {
                 (data)=>{
                   if(data.succes === true){
                     if (data.data[0].atts[0].value === 'I' ) {
-                    Swal2.fire({
-                      html:'Registro Eliminado',
-                      icon: 'success',
-
-                    })
+                    
                     this.controlService.closeSpinner(spinner);
+                    this.mostrarResponsables(data.data[0].atts[1].value,data.data[0].atts[2].value,_atts)
                   }else{
-                    this.controlService.closeSpinner(spinner);
-                    console.log(data.data[0].atts[0].value)
+                    // this.mostrarResponsables(data.data[0].atts[1].value,data.data[0].atts[2].value,_atts)
                   }
                 }else{
-                    this.controlService.closeSpinner(spinner);
-                    console.log(data)
+                  Swal2.fire({
+                    icon:'error',
+                    text: data.message
+                  })
+              this.controlService.closeSpinner(spinner);
                   }
                 }
               )
@@ -1633,6 +1656,80 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
     }
+  }
+
+
+  mostrarResponsables(mensaje,responsablesa,jerarquia){
+
+
+    Swal2.fire({
+      html: mensaje,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor: '#d33'
+      // timer: 3500
+
+    }).then(result =>
+      {
+        if(result.value){
+          let re = '/\,/gi'
+                      var Responsables = responsablesa
+                      var responsables = Responsables.split(',')
+                      var texto = '';
+                      for(let i =0 ; i < responsables.length ; i++){
+                         texto = texto + `${responsables[i]}<br>`
+                      }
+                      Swal2.fire({
+                        title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
+
+                        html:  texto,
+                        showCancelButton: true,
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor:'#3085d6',
+                        cancelButtonColor: '#d33'
+
+                      }).then(result =>{
+                        if(result.value){
+                          const spinner = this.controlService.openSpinner();
+                          jerarquia.push({ name: 'warning', value: 'Y' });
+                          
+                          const obj =  this.autentication.generic(jerarquia);
+
+                          obj.subscribe(
+                            (data)=>{
+                              if(data.success === true){
+
+                                Swal2.fire({
+                                  html:'Notificaciones Enviadas',
+                                  icon: 'success',
+                                  // timer: 3500
+                
+                                })
+                              this.controlService.closeSpinner(spinner);
+                
+                
+                                    
+                
+                              }else{
+                
+                                Swal2.fire({
+                                  icon:'error',
+                                  text: data.message
+                                })
+                              this.controlService.closeSpinner(spinner);
+                
+                              }
+                            }
+                          )
+                        }
+                      })
+
+        }
+      })
   }
 
   async eliminar(node) {
@@ -1778,7 +1875,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                   }else{
 
-
+                    
                     // console.log(data.data[0].atts[0])
                     // console.log(data.data[0].atts[1])
                   Swal2.fire({

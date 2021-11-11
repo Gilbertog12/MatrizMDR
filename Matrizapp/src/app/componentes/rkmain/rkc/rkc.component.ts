@@ -46,6 +46,7 @@ export class RkcComponent implements OnInit {
   public DetalleRiesgos: any[] = [];
   public stdJobListLectura: any[] = [];
   public Perfil: any[] = [];
+  public checklist: any[] = [];
   public consulta: string;
   public admin: string;
   public aprobador: string;
@@ -83,6 +84,12 @@ public Razon : string
   show: boolean =true;
   tabDefault: number;
   habilitar: boolean = false;
+  masterSelected = false;
+  valor: string;
+  valorChck: string;
+  ChecklisCopiado: string[];
+  comentario: string;
+
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
     private controlService: ControlsService,
@@ -108,6 +115,172 @@ public Razon : string
       this.stdJobList = [];
       this.tabDefault = 0
       this.ver(this.id, this.pid, this.sid, this.cid);
+      this.checklist= [{
+        "table_code": "00026             ",
+        "table_desc": "A.R.T.A. (Adjuntar)                               ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00029             ",
+        "table_desc": "Alta y Media Tensión (adjuntar)                   ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00027             ",
+        "table_desc": "Aplicar Control EPF (indicar cuales)              ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00031             ",
+        "table_desc": "Cierre de fuentes radioactivas (indique Tag)      ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00018             ",
+        "table_desc": "Compromisos Medioambientales                      ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00022             ",
+        "table_desc": "EPP específicos (indicar)                         ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00014             ",
+        "table_desc": "Energía origen Biológica                          ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00015             ",
+        "table_desc": "Energía origen Biomecánica                        ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00005             ",
+        "table_desc": "Energía origen Eléctrica                          ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00012             ",
+        "table_desc": "Energía origen Eólica                             ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00008             ",
+        "table_desc": "Energía origen Gravitacional                      ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00007             ",
+        "table_desc": "Energía origen Hidráulica                         ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00016             ",
+        "table_desc": "Energía origen Mareomotriz                        ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00006             ",
+        "table_desc": "Energía origen Mecánica                           ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00010             ",
+        "table_desc": "Energía origen Neumática                          ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00017             ",
+        "table_desc": "Energía origen No especificado                    ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00011             ",
+        "table_desc": "Energía origen Nuclear                            ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00013             ",
+        "table_desc": "Energía origen Química                            ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00009             ",
+        "table_desc": "Energía origen Rotatoria                          ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00024             ",
+        "table_desc": "Espacios confinados (Gases, O2, etc)              ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00002             ",
+        "table_desc": "Evaluación de Riesgos (Web\/Documental)            ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00028             ",
+        "table_desc": "Excavaciones (adjuntar)                           ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00032             ",
+        "table_desc": "Intervenir Equipos Radioactivos (adjuntar)        ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00019             ",
+        "table_desc": "Libro y Puntos de Bloqueo                         ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00001             ",
+        "table_desc": "Orden de Trabajo y\/o Estándar Trabajo             ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00033             ",
+        "table_desc": "Otro No especificado                              ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00003             ",
+        "table_desc": "Personal entrenado y capacitado                   ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00020             ",
+        "table_desc": "Plan de Bloqueo                                   ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00025             ",
+        "table_desc": "Plan de Izaje (Adjuntar)                          ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00021             ",
+        "table_desc": "Protección contra Incendios (indique Tag)         ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00004             ",
+        "table_desc": "Recursos (Herramienta, Equipos, EPP)              ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00023             ",
+        "table_desc": "Sectorizar el área (indicar sector)               ",
+        "check": false,
+        "comentario": ""
+      }, {
+        "table_code": "00030             ",
+        "table_desc": "Trabajos en Caliente (adjuntar)                   ",
+        "check": false,
+        "comentario": ""
+      }]
      
 
     });
@@ -141,6 +314,27 @@ public Razon : string
 
 
   }
+
+  checkUncheckAll() {
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < this.checklist.length; i++) {
+      this.checklist[i].check = this.masterSelected;
+      if(this.masterSelected == true){
+        console.log( this.checklist.length)
+        // console.log( this.checklist[i].check)
+
+      }else{
+        console.log( this.checklist.length)
+
+      }
+    }
+
+  }
+
+  clientesMapa = {
+    true : 'Y',
+    false : 'N'
+   }
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string) {
 
@@ -261,16 +455,16 @@ public Razon : string
 
               })
               // console.log(JSON.stringify(this.antesAux))
-              this.controlService.closeSpinner(spinner);
+              this.cargarRiesgo()
+              // this.controlService.closeSpinner(spinner);
               this.loading = false
             } else {
               if(data.bypass === '1'){
 
                 
-                this.cargarRiesgo()
                 
                 this.loading = false
-
+                
               }else{
                 this.controlService.closeSpinner(spinner);
                 this.loading = false
@@ -1129,6 +1323,8 @@ public Razon : string
         _atts.push({ name: 'subprocesoId', value:  this.sid });
         _atts.push({ name: 'actividadId', value:  this.cid });
 
+        const spinner = this.controlService.openSpinner()
+
         const obj =  this.autentication.generic(_atts);
 
               obj.subscribe((data)=>{
@@ -1161,9 +1357,11 @@ public Razon : string
                         })
                         this.loading = false
                         this.habilitar = true
+                        this.controlService.closeSpinner(spinner)
                   }else{
 
                     this.loading = false
+                    this.controlService.closeSpinner(spinner)
                   }
                 })
 
@@ -1183,6 +1381,7 @@ public Razon : string
         _atts.push({ name: 'subprocesoId', value:  this.sid });
         _atts.push({ name: 'actividadId', value:  this.cid });
 
+        const spinner = this.controlService.openSpinner()
         const obj =  this.autentication.generic(_atts);
 
               obj.subscribe((data)=>{
@@ -1215,14 +1414,16 @@ public Razon : string
                           });
 
                     })
-                    console.log(this.detalleList)
+                    // console.log(this.detalleList)
                     this.loading = false
                     this.habilitar = false
-
-
+                    this.controlService.closeSpinner(spinner)
+                    
+                    
                   }else{
-
+                    
                     this.loading = false
+                    this.controlService.closeSpinner(spinner)
                   }
                 })
 
@@ -1241,6 +1442,9 @@ public Razon : string
         _atts.push({ name: 'procesoId', value:  this.pid });
         _atts.push({ name: 'subprocesoId', value:  this.sid });
         _atts.push({ name: 'actividadId', value:  this.cid });
+
+
+        const spinner = this.controlService.openSpinner()
 
         const obj =  this.autentication.generic(_atts);
 
@@ -1270,11 +1474,13 @@ public Razon : string
                     })
                     this.loading = false
                     this.habilitar = false
-
-
-      }else{
-
-        this.loading = false
+                    this.controlService.closeSpinner(spinner)
+                    
+                    
+                  }else{
+                    
+                    this.loading = false
+                    this.controlService.closeSpinner(spinner)
       }
     })
 
@@ -1334,8 +1540,8 @@ public Razon : string
         _atts.push({ name: 'key', value:  this.id+this.pid+this.sid+this.cid });
 
 
-        const obj =  this.autentication.generic(_atts);
         const spinner = this.controlService.openSpinner();
+        const obj =  this.autentication.generic(_atts);
 
 
         obj.subscribe((data)=>{
@@ -1575,6 +1781,68 @@ public Razon : string
             });
 
           }
+
+
+          guardarCheckList(){
+
+          this.valor = "";
+
+
+            for (let i = 0; i < this.checklist.length; i++) {
+
+              if(this.checklist[i]["check"] === true){
+
+                this.valorChck = this.checklist[i]["check"]  ? 'Y' : 'N'
+                this.valor = this.valor + ','+ this.checklist[i]["table_code"].trim() + ','+ this.valorChck+','+ this.checklist[i]["comentario"].trim();
+                console.log(this.valor)
+              }else{
+                // console.log('epale||')
+              }
+            }
+          }
+
+          CopiarCheckList(){
+
+          this.valor = "";
+
+            for (let i = 0; i < this.checklist.length; i++) {
+
+              if(this.checklist[i]["check"] === true){
+
+                this.valorChck = this.checklist[i]["check"]  ? 'Y' : 'N'
+                this.valor = this.valor + ','+ this.checklist[i]["table_code"].trim() + ','+ this.valorChck+','+ this.checklist[i]["comentario"].trim() ;
+                // console.log(this.valor)
+              }else{
+                // console.log('epale||')
+              }
+            }
+
+            this.valor = this.valor.slice(1)
+
+            this.ChecklisCopiado = this.valor.split(',')
+
+          //  let a = this.arrayCollectionToObject(this.ChecklisCopiado)
+
+            // console.log(this.ChecklisCopiado.filter(el => el != "undefined"))
+
+            this.ChecklisCopiado =this.ChecklisCopiado.filter(el => el != "undefined")
+
+
+            console.log(this.ChecklisCopiado)
+
+
+            // console.log(JSON.stringify(this.ChecklisCopiado))
+          }
+
+
+          arrayCollectionToObject(collection) {
+            const result = {};
+            for (const item of collection) {
+              result[item.id] = item.name;
+            }
+            return result;
+          }
+
 
 
 

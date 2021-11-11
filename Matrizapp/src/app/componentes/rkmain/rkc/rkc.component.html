@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-md-4">
                             <mat-form-field>
-                                <input matInput style="width: auto" type="text" name="actividadFechaApprovedDate" [(ngModel)]="actividadModel.actividadFechaApprovedDate|date" #actividadFechaApprovedDate="ngModel" placeholder="Fecha" readonly="true" />
+                                <input matInput style="width: auto" type="text" name="actividadFechaApprovedDate" [(ngModel)]="actividadModel.actividadFechaApprovedDate" #actividadFechaApprovedDate="ngModel" placeholder="Fecha" readonly="true" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -285,28 +285,28 @@
                                                             <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                         </button>
 
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='000' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)">
                                                 <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                             </button>
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='000' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" disabled>
                                                 <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                             </button>
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'N' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='000' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" disabled>
                                                 <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                             </button>
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
@@ -360,6 +360,41 @@
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.stdJobTaskDesc}}</td>
                             </tr>
                         </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+            <!-- checkList -->
+            <mat-tab label="CheckList">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin ">
+                        <thead>
+
+                            <tr>
+                                <th>
+                                    <mat-slide-toggle [(ngModel)]="masterSelected" (change)="checkUncheckAll()">Validar</mat-slide-toggle>
+                                </th>
+                                <th>Codigo</th>
+                                <th>Tipo</th>
+                                <th>Descripcion</th>
+                                <th>Validacion</th>
+                                <th>Comentario</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let chk of checklist">
+                                <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">
+                                    <mat-slide-toggle [(ngModel)]="chk.check"></mat-slide-toggle>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">{{chk.table_code}}</td>
+                                <td class="mdl-data-table__cell--non-numeric"></td>
+                                <td class="mdl-data-table__cell--non-numeric">{{chk.table_desc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{chk.check == true ? 'Y' : 'N'}}</td>
+                                <td class="mdl-data-table__cell--non-numeric"><input type="text">{{chk.comentario}}</td>
+                            </tr>
+                        </tbody>
+
                     </table>
                 </div>
             </mat-tab>

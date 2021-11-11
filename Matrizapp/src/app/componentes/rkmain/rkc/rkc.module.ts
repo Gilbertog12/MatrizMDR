@@ -17,6 +17,8 @@ import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
 import {MatTableModule} from '@angular/material/table';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 
 
@@ -42,12 +44,13 @@ import {MatTableModule} from '@angular/material/table';
     DragDropModule,
     cajadashboardModule,
     MatTableModule,
-    MatPaginatorModule
-    
+    MatPaginatorModule,
+    MatSlideToggleModule
 
-    
 
-    
+
+
+
   ],
   declarations: [RkcComponent]
 })

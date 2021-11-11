@@ -25,10 +25,11 @@
   .example-tree {
       min-height: 500px;
       height: 800px;
+      min-width: 520px;
       white-space: nowrap;
       font-family: 'Open Sans', Arial, Helvetica, sans-serif;
       overflow-x: auto;
-      overflow-y: scroll;
+      // overflow-y: scroll;
       overflow: scroll;
   }
   
@@ -216,6 +217,14 @@
       padding: 10px;
       border-radius: 0 0 2px 2px;
       height: 135px;
+  }
+  
+  .text {
+      float: right;
+      display: flex;
+      align-items: center;
+      word-break: break-all;
+      margin: 0 0 1em 1em;
   }
   
   // .card .card-content {

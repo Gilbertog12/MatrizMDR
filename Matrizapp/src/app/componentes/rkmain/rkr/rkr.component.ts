@@ -238,7 +238,7 @@ public Razon : string
           this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.riesgoModel, false);
         });
       });
-      this.controlService.closeSpinner(spinner);
+      
   }
 
   cargarRiesgo(){
@@ -251,9 +251,9 @@ public Razon : string
     _atts.push({ name: 'key', value:  this.id+this.pid+ this.sid+ this.cid+ this.tid+ this.did+ this.rid });
     
     
+    const spinner = this.controlService.openSpinner()
     const obj =  this.autentication.generic(_atts);
     
-    const spinner = this.controlService.openSpinner()
     
     obj.subscribe((data)=>{
       
