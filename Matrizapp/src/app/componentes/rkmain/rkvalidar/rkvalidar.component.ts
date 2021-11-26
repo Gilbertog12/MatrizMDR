@@ -169,7 +169,37 @@ export class RkvalidarComponent implements OnInit {
             
             if (result) {
                   console.log(data)
+                  debugger
+                  console.log(data.message)
+
+                  console.log(data.data[0].atts[0]['name'])
+                  // console.log(data.data[0].atts['name'])
+
+                  // debugger
+                  if(data.data[0].atts[0].name === 'TIMEOUT'){
+                    // debugger
+                    this.controlService.closeSpinner(spinner);
+    
+                    Swal2.fire({
+                      icon:'info',
+                      text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`  
+                      
+                    }).then((resultado)=>{
+                      if(resultado.value){
+                        
+                        this.dialogRef.close(true);
+                      }
+                    })
+                    
+                    return
+                    
+                  }
+
+                  
               data.data.forEach((element) => {
+
+
+                
                 if (element.atts.length > 0) {
 
                   let fecha = this.convertiFechaYhora(element.atts[15].value.trim())

@@ -101,6 +101,7 @@ import { rkHelpModule } from './rkmain/rkhelp/rkhelp.module';
 import { CajasdashboardComponent } from './rkmain/cajasdashboard/cajasdashboard.component';
 import { CajaslinkComponent } from './cajaslink/cajaslink.component';
 import { ChartsModule } from './charts/charts.module';
+// import { ChecklistComponent } from './checklist/checklist.component';
 
 
 
@@ -194,6 +195,9 @@ import { ChartsModule } from './charts/charts.module';
 
 
     FilterdataPipe,
+
+
+    // ChecklistComponent,
 
 
     // CajaslinkComponent,

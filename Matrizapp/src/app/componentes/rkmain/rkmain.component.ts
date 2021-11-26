@@ -154,7 +154,7 @@ export class DynamicFlatNode {
         for (let _i = 0; _i < node.level + 1; _i++) {
           if(node.level == 8){
 
-            espacios.push(_i+5);
+            espacios.push(_i+9);
           }else{
             espacios.push(_i+2);
 
@@ -174,8 +174,7 @@ export class DynamicFlatNode {
 
 
             data['data'].forEach(function (value) {
-              let name = value['atts'][1]['value'].trim() + ' - ' + value['atts'][2]['value'].trim();
-              name = name.trimRight()
+              let name = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
               let key = value['atts'][7]['value'];
               let status = value['atts'][3]['value'];
               let version = value['atts'][4]['value'];

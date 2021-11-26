@@ -330,6 +330,8 @@ public canAdd : string
           return result;
       },
       (error) => {
+        debugger
+          console.log(error)
         this.controlService.closeSpinner(spinner);
         this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.tareaModel, false);
       });

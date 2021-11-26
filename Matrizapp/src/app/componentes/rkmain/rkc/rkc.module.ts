@@ -18,6 +18,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
 import {MatTableModule} from '@angular/material/table';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu'
+import { checklistModule } from '../../../checklist/checklist.module';
+
 
 
 
@@ -45,7 +49,10 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     cajadashboardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatMenuModule,
+    checklistModule
 
 
 

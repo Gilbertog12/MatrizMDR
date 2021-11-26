@@ -67,7 +67,7 @@ export class CajasdashboardComponent implements OnInit {
               // debugger
               
               if(data.data[0].atts[1].name === 'TIMEOUT'){
-                debugger
+                // debugger
                 this.controlService.closeSpinner(spinner);
 
                 Swal2.fire({

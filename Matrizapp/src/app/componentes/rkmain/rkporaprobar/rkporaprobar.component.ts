@@ -166,7 +166,31 @@ export class RkporaprobarComponent implements OnInit {
             const result = data.success;
             if (result) {
 
+
+
+              
+              if(data.data[0].atts[0].name === 'TIMEOUT'){
+                // debugger
+                this.controlService.closeSpinner(spinner);
+
+                Swal2.fire({
+                  icon:'info',
+                  text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`  
+                  
+                }).then((resultado)=>{
+                  if(resultado.value){
+                    
+                    this.dialogRef.close(true);
+                  }
+                })
+                
+                return
+                
+              }
+
               data.data.forEach((element) => {
+
+
                 if (element.atts.length > 0) {
 
                   let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
@@ -229,7 +253,7 @@ export class RkporaprobarComponent implements OnInit {
             this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
           });
         });
-        this.controlService.closeSpinner(spinner);
+        // this.controlService.closeSpinner(spinner);
 
       }
 

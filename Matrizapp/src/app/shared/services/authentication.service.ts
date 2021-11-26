@@ -76,6 +76,8 @@ export class AuthenticationService {
 
   login_token(usernameV: string, passwordV: string, districtV: string, positionV: string) {
 
+    debugger
+
     const _url = this.httpService.baseUrl.slice(0,-4) + '/token';
     const online = navigator.onLine;
 
@@ -100,12 +102,14 @@ export class AuthenticationService {
     let headersV = new HttpHeaders();
     headersV = headersV.append('Content-Type', 'application/x-www-form-urlencoded');
     headersV = headersV.append('Access-Control-Allow-Origin', '*');
-
+    debugger
     return this.http.post<any>(_url, body, { headers : headersV});
 
   }
 
   districts(usernameV: string, passwordV: string) {
+
+    // debugger
 
     const _url = this.httpService.baseUrl + '/values/districts/';
     
@@ -134,6 +138,8 @@ export class AuthenticationService {
     headersV = headersV.append('Content-Type', 'application/json');
     headersV = headersV.append('username', usernameV);
     headersV = headersV.append('password', passwordV);
+
+    console.log(headersV)
 
     const _post  = this.http.post<any>(_url, body, {headers : headersV});
 
@@ -184,7 +190,7 @@ export class AuthenticationService {
     // this.limpiar()
     if (!online) {
       //this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
-      this.logout()
+      this.logout();
 
       return;
     }
@@ -209,7 +215,7 @@ export class AuthenticationService {
     const _post = this.http.post<any>(_url, body, { headers : headersV });
 
     /*_post.subscribe(
-      (data) => { 
+      (data) => {
         console.log('Generic se ejecuto satisfactoriamente!' );
       },
       (error) => {

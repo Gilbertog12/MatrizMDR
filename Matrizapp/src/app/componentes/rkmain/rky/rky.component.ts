@@ -17,14 +17,11 @@ import { RkReasonRejectComponent } from '../../../rk-reason-reject/rk-reason-rej
 import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.component';
 import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
-
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
 import { RkporaprobarComponent } from '../rkporaprobar/rkporaprobar.component';
 import { RkvalidarComponent } from '../rkvalidar/rkvalidar.component';
-
-
 
 @Component({
   selector: 'app-rky',
@@ -54,7 +51,7 @@ export class RkyComponent implements OnInit {
   public validador: string;
   public cargo: string;
   public btn: string;
-  public canAdd:string;
+  public canAdd: string;
 
   public administrador = 'administrador';
   public creacion = 'creacion' ;
@@ -63,11 +60,11 @@ export class RkyComponent implements OnInit {
   public validacion = 'Validacion';
   public aprobacion = 'aprobacion';
   public validacionaprobacion = 'validacionaprobacion';
-  creacionaprobacion ='creacionaprobacion'
+  creacionaprobacion = 'creacionaprobacion';
 
-public key:string
-public version : string
-public Razon : string
+public key: string;
+public version: string;
+public Razon: string;
   private id: string;
   private pid: string;
   private sid: string;
@@ -80,20 +77,20 @@ public Razon : string
   permisoValidar: boolean;
   percreacion: string;
   dialogRef: any;
-  controlesstatus: any ='';
+  controlesstatus: any = '';
   statusc: any = '';
   controlesstatusa: boolean;
 
   constructor(private autentication: AuthenticationService,
-    private methodService: HttpMethodService,
-    private controlService: ControlsService,
-    private confirm: MatDialog,
-    private route: ActivatedRoute,
-    private Cajas:ServiciocajasService) {
+              private methodService: HttpMethodService,
+              private controlService: ControlsService,
+              private confirm: MatDialog,
+              private route: ActivatedRoute,
+              private Cajas: ServiciocajasService) {
 
-      //this.aperfil()
-      this.canAdd=localStorage.getItem('canAdd')
-    this.route.params.subscribe(params => {
+      // this.aperfil()
+      this.canAdd = localStorage.getItem('canAdd');
+      this.route.params.subscribe((params) => {
       this.id = params['id'];
       this.pid = params['pid'];
       this.sid = params['sid'];
@@ -117,34 +114,26 @@ public Razon : string
     // this.mostrar()
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
-    this.percreacion = localStorage.getItem('NoCreador')
+    this.percreacion = localStorage.getItem('NoCreador');
     // console.log(this.controlesstatus)
-    this.controlesstatus = ''
-    this.Cajas.RecargarDetalle$.subscribe(resp=>{
-      if(resp){
-
+    this.controlesstatus = '';
+    this.Cajas.RecargarDetalle$.subscribe((resp)=> {
+      if (resp) {
 
         this.consecuenciaModel = {};
-      this.epfList = [];
-      this.cBlandosList = [];
-      this.cDurosList = [];
-      this.docsList = [];
+        this.epfList = [];
+        this.cBlandosList = [];
+        this.cDurosList = [];
+        this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
-      
 
       }
-    })
-
-
+    });
 
   }
 
-
-
-
-
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string, dimensionId: string, riesgoId: string, consecuenciaId: string) {
-    let _atts = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'CONSECUENCIA_READ' });
     _atts.push({ name: 'areaId', value: areaId });
@@ -163,10 +152,10 @@ public Razon : string
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log(data)
+            console.log(data);
             const result = data.success;
             if (result) {
-              console.log(data)
+              console.log(data);
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
                   if (element.atts[0].value === '0') {
@@ -213,35 +202,14 @@ public Razon : string
                       consecuenciaIdRMRR: element.atts[39].value.trim(),
                       consecuenciaDescRMRR: element.atts[40].value.trim(),
                       key: element.atts[41].value.trim(),
-                      statusParent:element.atts[42].value.trim(),
-                      CanAdd:element.atts[43].value.trim(),
-                      CanModify:element.atts[44].value.trim(),
-                      Creador:element.atts[45].value.trim()
-
-
+                      statusParent: element.atts[42].value.trim(),
+                      CanAdd: element.atts[43].value.trim(),
+                      CanModify: element.atts[44].value.trim(),
+                      Creador: element.atts[45].value.trim()
 
                     };
-                    if(parseInt(this.consecuenciaModel.consecuenciaStatusId) == 1 || parseInt(this.consecuenciaModel.consecuenciaStatusId) == 2 ||parseInt(this.consecuenciaModel.consecuenciaStatusId) == 6 ){
-                      var StatusTemp = 1
-                    }else{
-                      var StatusTemp = parseInt(this.consecuenciaModel.consecuenciaStatusId)
-                    }
-                    console.log(StatusTemp)
-
-                    if(parseInt(this.consecuenciaModel.statusParent) == 1 || parseInt(this.consecuenciaModel.statusParent) == 2 ||parseInt(this.consecuenciaModel.statusParent) == 6 ){
-                      var StatusTempP = 1
-                    }else{
-                      var StatusTempP = parseInt(this.consecuenciaModel.statusParent)
-                    }
-
-
-                    if(StatusTemp<StatusTempP){
-                      this.permisoValidar = true
-                    }else{
-                      this.permisoValidar= false
-                    }
-                    console.log(this.permisoValidar)
-                    //alert(this.consecuenciaModel.key);
+                   
+                    // alert(this.consecuenciaModel.key);
                     localStorage.setItem('keySelected', this.consecuenciaModel.key);
                     localStorage.setItem('versionSelected', this.consecuenciaModel.consecuenciaVersion);
                     localStorage.setItem('statusSelected', this.consecuenciaModel.consecuenciaStatusId);
@@ -254,7 +222,7 @@ public Razon : string
 
                       // console.log(element.atts[2].value.trim().toString().bold())
 
-                      if(element.atts[5].value === '008' && this.btn==='lectura'){
+                      if (element.atts[5].value === '008' && this.btn === 'lectura') {
                         this.epfListLectura.push({
 
                           offset: element.atts[0].value,
@@ -265,19 +233,17 @@ public Razon : string
                           epfStatus: element.atts[5].value.trim(),
                           epfversion: element.atts[6].value.trim(),
                           seqNum: element.atts[7].value.trim(),
-                          pendingDelete:element.atts[8].value.trim(),
-                          displayDeleteIcon:element.atts[9].value.trim(),
-                          controlDescExt:element.atts[10].value.trim()
-
+                          pendingDelete: element.atts[8].value.trim(),
+                          displayDeleteIcon: element.atts[9].value.trim(),
+                          controlDescExt: element.atts[10].value.trim()
 
                         });
 
-
                         console.log(this.epfListLectura);
 
-                      }else{
+                      } else {
 
-                        let a = element.atts[2].value.trim();
+                        const a = element.atts[2].value.trim();
 
                         this.epfList.push({
 
@@ -289,44 +255,36 @@ public Razon : string
                           epfStatus: element.atts[5].value.trim(),
                           epfversion: element.atts[6].value.trim(),
                           seqNum: element.atts[7].value.trim(),
-                          pendingDelete:element.atts[8].value.trim(),
-                          displayDeleteIcon:element.atts[9].value.trim(),
-                          controlDescExt:element.atts[10].value.trim()
+                          pendingDelete: element.atts[8].value.trim(),
+                          displayDeleteIcon: element.atts[9].value.trim(),
+                          controlDescExt: element.atts[10].value.trim()
 
                         });
 
                         // if(element.atts[5].value.trim() !== '008'){
 
-
-
-
                         //     this.statusc = element.atts[5].value.trim()
 
                         // }
-                        if(element.atts[5].value.trim() !== '008'){
+                        if (element.atts[5].value.trim() !== '008') {
 
                           // if(this.controlesstatus !== ''){
                           //   this.controlesstatus = ''
                           // }
 
-                          this.controlesstatus = this.controlesstatus+" "+element.atts[5].value.trim();
+                          this.controlesstatus = this.controlesstatus +' '+ element.atts[5].value.trim();
 
                         }
                         // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
 
                         // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
 
-
-
-
                       }
 
-
                       // console.log(this.epfList)
-                    }
-                    else if (_s.includes('cblando')) {
+                    } else if (_s.includes('cblando')) {
 
-                      if(element.atts[5].value === '008' && this.btn === 'lectura'){
+                      if (element.atts[5].value === '008' && this.btn === 'lectura') {
 
                         this.cBlandosListLectura.push({
                           offset: element.atts[0].value,
@@ -336,15 +294,13 @@ public Razon : string
                           cblandoFamiliaDesc: element.atts[4].value.trim(),
                           cblandoStatus: element.atts[5].value.trim(),
                           cblandoVersion: element.atts[6].value.trim(),
-                          pendingDelete:element.atts[7].value.trim(),
-                          displayDeleteIcon:element.atts[8].value.trim(),
-                          cblandoDescripcionExt:element.atts[9].value.trim()
-
-
+                          pendingDelete: element.atts[7].value.trim(),
+                          displayDeleteIcon: element.atts[8].value.trim(),
+                          cblandoDescripcionExt: element.atts[9].value.trim()
 
                         });
 
-                      }else{
+                      } else {
                         this.cBlandosList.push({
                           offset: element.atts[0].value,
                           cblandoId: element.atts[1].value.trim(),
@@ -353,28 +309,26 @@ public Razon : string
                           cblandoFamiliaDesc: element.atts[4].value.trim(),
                           cblandoStatus: element.atts[5].value.trim(),
                           cblandoVersion: element.atts[6].value.trim(),
-                          pendingDelete:element.atts[7].value.trim(),
-                          displayDeleteIcon:element.atts[8].value.trim(),
-                          cblandoDescripcionExt:element.atts[9].value.trim()
-
+                          pendingDelete: element.atts[7].value.trim(),
+                          displayDeleteIcon: element.atts[8].value.trim(),
+                          cblandoDescripcionExt: element.atts[9].value.trim()
 
                         });
                         // if(element.atts[5].value.trim() !== '008'){
                         //   this.statusc = element.atts[5].value.trim()
                         // }
-                        if(element.atts[5].value.trim() !== '008'){
+                        if (element.atts[5].value.trim() !== '008') {
 
-                          this.controlesstatus = this.controlesstatus+" "+element.atts[5].value.trim();
+                          this.controlesstatus = this.controlesstatus +' '+ element.atts[5].value.trim();
                         }
                         // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
 
-                        console.log(this.controlesstatus)
+                        console.log(this.controlesstatus);
                       }
 
-                    }
-                    else if (_s.includes('cduro')) {
+                    } else if (_s.includes('cduro')) {
 
-                      if(  element.atts[7].value === '008' && this.btn === 'lectura'){
+                      if (  element.atts[7].value === '008' && this.btn === 'lectura') {
                         this.cDurosListLectura.push({
                           offset: element.atts[0].value,
                           cduroId: element.atts[1].value.trim(),
@@ -385,12 +339,12 @@ public Razon : string
                           cduroEfectividad: element.atts[6].value.trim(),
                           cduroStatus: element.atts[7].value.trim(),
                           cduroVersion: element.atts[8].value.trim(),
-                          pendingDelete:element.atts[9].value.trim(),
-                          displayDeleteIcon:element.atts[10].value.trim()
+                          pendingDelete: element.atts[9].value.trim(),
+                          displayDeleteIcon: element.atts[10].value.trim()
 
                         });
 
-                      }else{
+                      } else {
                       this.cDurosList.push({
                         offset: element.atts[0].value,
                         cduroId: element.atts[1].value.trim(),
@@ -401,8 +355,8 @@ public Razon : string
                         cduroEfectividad: element.atts[6].value.trim(),
                         cduroStatus: element.atts[7].value.trim(),
                         cduroVersion: element.atts[8].value.trim(),
-                        pendingDelete:element.atts[9].value.trim(),
-                          displayDeleteIcon:element.atts[10].value.trim()
+                        pendingDelete: element.atts[9].value.trim(),
+                          displayDeleteIcon: element.atts[10].value.trim()
 
                       });
                       // if(element.atts[5].value.trim() !== '008'){
@@ -411,18 +365,17 @@ public Razon : string
                       //     this.statusc = element.atts[5].value.trim()
                       //   }
                       // }
-                      if(element.atts[7].value.trim() !== '008'){
+                      if (element.atts[7].value.trim() !== '008') {
 
-                        this.controlesstatus = this.controlesstatus+" "+element.atts[7].value.trim();
+                        this.controlesstatus = this.controlesstatus +' '+ element.atts[7].value.trim();
                       }
                         // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
 
-                        console.log(this.controlesstatus)
+                      console.log(this.controlesstatus);
                     }
-                    }
-                    else if (_s.includes('doc')) {
+                    } else if (_s.includes('doc')) {
 
-                      if(element.atts[6].value==='008'&& this.btn === 'lectura'){
+                      if (element.atts[6].value === '008' && this.btn === 'lectura') {
 
                         this.docsListLectura.push({
                           offset: element.atts[0].value.trim(),
@@ -434,12 +387,12 @@ public Razon : string
                           docStatus: element.atts[6].value.trim(),
                           docVersion: element.atts[7].value.trim(),
                           seqNum: element.atts[8].value.trim(),
-                          displayDeleteIcon:element.atts[9].value.trim(),
-                          pendingDelete:element.atts[10].value.trim(),
+                          displayDeleteIcon: element.atts[9].value.trim(),
+                          pendingDelete: element.atts[10].value.trim(),
 
                         });
 
-                      }else{
+                      } else {
 
                         this.docsList.push({
                           offset: element.atts[0].value.trim(),
@@ -451,7 +404,7 @@ public Razon : string
                           docStatus: element.atts[6].value.trim(),
                           docVersion: element.atts[7].value.trim(),
                           seqNum: element.atts[8].value.trim(),
-                          displayDeleteIcon:element.atts[9].value.trim()
+                          displayDeleteIcon: element.atts[9].value.trim()
 
                         });
                         // if(element.atts[5].value.trim() !== '008'){
@@ -460,21 +413,22 @@ public Razon : string
                         //     this.statusc = element.atts[5].value.trim()
                         //   }
                         // }
-                        if(element.atts[6].value.trim() !== '008'){
+                        if (element.atts[6].value.trim() !== '008') {
 
-                          this.controlesstatus = this.controlesstatus+" "+element.atts[6].value.trim();
+                          this.controlesstatus = this.controlesstatus +' '+ element.atts[6].value.trim();
                         }
-                        console.log(this.controlesstatus)
+                        console.log(this.controlesstatus);
                       }
                     }
                   }
                 }
               });
 
-              this.controlesstatusa = this.validarcontroles(this.controlesstatus)
-              this.controlesstatus = ''
+              this.controlesstatusa = this.validarcontroles(this.controlesstatus);
+              this.controlesstatus = '';
               this.controlService.closeSpinner(spinner);
             } else {
+
               this.controlService.closeSpinner(spinner);
               this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
             }
@@ -482,8 +436,10 @@ public Razon : string
             return result;
           },
           (error) => {
-            this.controlService.closeSpinner(spinner);
-            this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.consecuenciaModel, false);
+            // debugger
+          console.log(error);
+          this.controlService.closeSpinner(spinner);
+          this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.consecuenciaModel, false);
           });
         });
 
@@ -494,84 +450,77 @@ public Razon : string
         // this.controlService.closeSpinner(spinner);
       }
 
-      validarcontroles(string:string){
+      validarcontroles(string: string) {
 
-
-
-    if(string !==''){
-      var arry = string.split(' ')
+    if (string !== '') {
+      let arry = string.split(' ');
       switch (this.btn) {
 
+        case 'creacion': // LECTURA Y CREACION
 
-        case 'creacion'://LECTURA Y CREACION
+        arry = arry.sort();
+        arry.filter((status) => {
 
-        arry = arry.sort()
-        arry.filter(status => {
+          if (this.statusc === '') {
 
-          if(this.statusc === ''){
+            if (status === '000' || status === '001' || status === '002' || status === '003' || status === '006') {
 
-            if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
+              this.statusc = status;
 
-              this.statusc = status
+        } else if (status === '004') {
+              this.statusc = status;
 
+        } else {
 
-
-        }else if(status === '004'){
-              this.statusc = status
-
-
-        }else{
-
-          if(status === '007'){
-            this.statusc = status
+          if (status === '007') {
+            this.statusc = status;
 
           }
 
         } }
 
         }
-          )
+          );
 
         break;
-        case 'Validacion'://LECTURA Y VALIDACION
+        case 'Validacion': // LECTURA Y VALIDACION
 
         // var arry = string.split(' ')
         arry = arry.sort();
-        arry.filter(status => {
+        arry.filter((status) => {
 
-          if(this.statusc === '000' && status === '004' ||this.statusc === '001' &&  status === '004' ||this.statusc === '002' && status === '004' ||this.statusc === '003' && status === '004'||this.statusc === '006' && status === '004'){
-            this.statusc = status
-
-          }
-          if(this.statusc === '000' && status === '007' ||this.statusc === '001' &&  status === '007' ||this.statusc === '002' && status === '007' ||this.statusc === '003' && status === '007'||this.statusc === '006' && status === '007'){
-            this.statusc = status
+          if (this.statusc === '000' && status === '004' || this.statusc === '001' &&  status === '004' || this.statusc === '002' && status === '004' || this.statusc === '003' && status === '004' || this.statusc === '006' && status === '004') {
+            this.statusc = status;
 
           }
+          if (this.statusc === '000' && status === '007' || this.statusc === '001' &&  status === '007' || this.statusc === '002' && status === '007' || this.statusc === '003' && status === '007' || this.statusc === '006' && status === '007') {
+            this.statusc = status;
 
-          if(this.statusc ===''){
+          }
 
-            if(status === '004'){
+          if (this.statusc === '') {
 
-              this.statusc = status
+            if (status === '004') {
 
-              }else{
-                if(status === '007'){
+              this.statusc = status;
 
-                  this.statusc = status
-                }else{
-                  if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
-                    this.statusc = status
+              } else {
+                if (status === '007') {
+
+                  this.statusc = status;
+                } else {
+                  if (status === '000' || status === '001' || status === '002' || status === '003' || status === '006') {
+                    this.statusc = status;
 
                   }
               }
             }
           }
 
-
       }
-      )
+      );
 
-      break;
+        break;
 
     /*  case 'validacionaprobacion'://LECTURA Y VALIDACION
 
@@ -623,36 +572,32 @@ public Razon : string
 
       return !string.includes('008');*/
 
-      case 'aprobacion'://LECTURA Y APROBACION
-
+      case 'aprobacion': // LECTURA Y APROBACION
 
       // var arry = string.split(' ')
-      arry = arry.sort().reverse()
-      arry.filter(status => {
+      arry = arry.sort().reverse();
+      arry.filter((status) => {
 
-        if(this.statusc === '004' && status === '000' ||this.statusc === '004' &&  status === '001' ||this.statusc === '004' && status === '002' ||this.statusc === '004' && status === '003'||this.statusc === '004' && status === '006'){
-          this.statusc = status
+        if (this.statusc === '004' && status === '000' || this.statusc === '004' &&  status === '001' || this.statusc === '004' && status === '002' || this.statusc === '004' && status === '003' || this.statusc === '004' && status === '006') {
+          this.statusc = status;
 
         }
 
+        if (this.statusc === '' ) {
 
-        if(this.statusc === '' ){
+          if (status === '007') {
 
+            this.statusc = '007';
 
+          } else {
 
-          if(status === '007'){
+            if (status === '000' || status === '001' || status === '002' || status === '003' || status === '006') {
+              this.statusc = status;
 
-            this.statusc = '007'
+          } else {
 
-          }else{
-
-            if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
-              this.statusc = status
-
-          }else{
-
-            if(status === '004'){
-              this.statusc = '004'
+            if (status === '004') {
+              this.statusc = '004';
             }
           }
 
@@ -660,7 +605,7 @@ public Razon : string
         }
 
       }
-      )
+      );
       break;
 
       default:
@@ -671,16 +616,13 @@ public Razon : string
 
   }
 
-
     // return !string.includes('008')
 
   }
 
-
-
   async guardarcblando() {
 
-    let conf = this.confirm.open(RkycblandoComponent, {
+    const conf = this.confirm.open(RkycblandoComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '500px',
@@ -731,7 +673,7 @@ public Razon : string
       .subscribe(async (result) => {
         if (result) {
 
-          let _atts = [];
+          const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'CBLANDO_DELETE' });
 
@@ -756,9 +698,9 @@ public Razon : string
                 if (data.data[0].atts[1]) {
                   // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.consecuenciaModel, data.redirect);
                   Swal2.fire({
-                    icon:'success',
+                    icon: 'success',
                     text: 'Control Blando Eliminado'
-                  })
+                  });
                 }
                 this.consecuenciaModel = {};
                 this.epfList = [];
@@ -766,16 +708,15 @@ public Razon : string
                 this.cDurosList = [];
                 this.docsList = [];
                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
-              }
-              else {
+              } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
                 Swal2.fire({
-                  icon:'error',
-                  text:data.message
-                })
+                  icon: 'error',
+                  text: data.message
+                });
               }
               this.controlService.closeSpinner(spinner);
-              
+
             },
             (error) => {
               this.controlService.closeSpinner(spinner);
@@ -789,7 +730,7 @@ public Razon : string
 
   async guardarcduro() {
 
-    let conf = this.confirm.open(RkycduroComponent, {
+    const conf = this.confirm.open(RkycduroComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '500px',
@@ -840,7 +781,7 @@ public Razon : string
       .subscribe(async (result) => {
         if (result) {
 
-          let _atts = [];
+          const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'CDURO_DELETE' });
           _atts.push({ name: 'areaId', value: this.id });
@@ -864,9 +805,9 @@ public Razon : string
                 if (data.data[0].atts[1]) {
                   // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.consecuenciaModel, data.redirect);
                   Swal2.fire({
-                    icon:'success',
+                    icon: 'success',
                     text: 'Control Duro Eliminado'
-                  })
+                  });
                 }
                 this.consecuenciaModel = {};
                 this.epfList = [];
@@ -877,9 +818,9 @@ public Razon : string
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
                 Swal2.fire({
-                    icon:'error',
+                    icon: 'error',
                     text: data.message
-                  })
+                  });
               }
               this.controlService.closeSpinner(spinner);
             },
@@ -893,11 +834,9 @@ public Razon : string
 
   }
 
-
-
   async guardarepf() {
 
-    let conf = this.confirm.open(RkyepfComponent, {
+    const conf = this.confirm.open(RkyepfComponent, {
       hasBackdrop: true,
       height: '600px',
       width: '950px',
@@ -926,8 +865,7 @@ public Razon : string
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
 
-
-      }else{
+      } else {
         this.consecuenciaModel = {};
         this.epfList = [];
         this.cBlandosList = [];
@@ -958,7 +896,7 @@ public Razon : string
       .subscribe(async (result) => {
         if (result) {
 
-          let _atts = [];
+          const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'EPF_DELETE' });
           _atts.push({ name: 'areaId', value: this.id });
@@ -981,8 +919,7 @@ public Razon : string
             (data) => {
               if (data.success === true) {
                 if (data.data[0].atts[1]) {
-                Swal2.fire('','Registro eliminado', 'success')
-
+                Swal2.fire('', 'Registro eliminado', 'success');
 
                 }
                 this.consecuenciaModel = {};
@@ -993,7 +930,7 @@ public Razon : string
                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
-                Swal2.fire('',data.message, 'error')
+                Swal2.fire('', data.message, 'error');
                 this.consecuenciaModel = {};
                 this.epfList = [];
                 this.cBlandosList = [];
@@ -1016,7 +953,7 @@ public Razon : string
 
   async guardardoc() {
 
-    let conf = this.confirm.open(RkydocComponent, {
+    const conf = this.confirm.open(RkydocComponent, {
       hasBackdrop: true,
       height: '600px',
       width: '950px',
@@ -1044,7 +981,7 @@ public Razon : string
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
-      }else{
+      } else {
         this.consecuenciaModel = {};
         this.epfList = [];
         this.cBlandosList = [];
@@ -1074,7 +1011,7 @@ public Razon : string
       .subscribe(async (result) => {
         if (result) {
 
-          let _atts = [];
+          const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'DOCUMENTO_DELETE' });
           _atts.push({ name: 'areaId', value: this.id });
@@ -1120,7 +1057,7 @@ public Razon : string
 
   async guardarriesgopuro() {
 
-    let conf = this.confirm.open(RkyriesgopuroComponent, {
+    const conf = this.confirm.open(RkyriesgopuroComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '500px',
@@ -1159,7 +1096,7 @@ public Razon : string
 
   async guardarriesgoresidual() {
 
-    let conf = this.confirm.open(RkyriesgoresidualComponent, {
+    const conf = this.confirm.open(RkyriesgoresidualComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '500px',
@@ -1198,7 +1135,7 @@ public Razon : string
 
   async guardarriesgopurotable() {
 
-    let conf = this.confirm.open(RkyriesgopurotableComponent, {
+    const conf = this.confirm.open(RkyriesgopurotableComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '900px',
@@ -1237,7 +1174,7 @@ public Razon : string
 
   async guardarriesgopurotabler() {
 
-    let conf = this.confirm.open(RkyriesgopurotablerComponent, {
+    const conf = this.confirm.open(RkyriesgopurotablerComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '900px',
@@ -1276,7 +1213,7 @@ public Razon : string
 
   async guardarriesgoresidualtable() {
 
-    let conf = this.confirm.open(RkyriesgoresidualtableComponent, {
+    const conf = this.confirm.open(RkyriesgoresidualtableComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '900px',
@@ -1315,7 +1252,7 @@ public Razon : string
 
   async guardarriesgoresidualtabler() {
 
-    let conf = this.confirm.open(RkyriesgoresidualtablerComponent, {
+    const conf = this.confirm.open(RkyriesgoresidualtablerComponent, {
       hasBackdrop: true,
       height: 'auto',
       width: '900px',
@@ -1353,7 +1290,7 @@ public Razon : string
   }
 
   aperfil() {
-    let _atts = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'SESSION' });
 
@@ -1361,7 +1298,7 @@ public Razon : string
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log("RES:" + JSON.stringify(data));
+            console.log('RES:' + JSON.stringify(data));
             const result = data.success;
             if (result) {
 
@@ -1376,7 +1313,6 @@ public Razon : string
                   });
                 }
 
-
               });
 
               this.Perfil.forEach((element, index, array) => {
@@ -1387,12 +1323,11 @@ public Razon : string
                 this.creador = element.cre;
                 this.validador = element.val;
 
-                if(this.admin === 'Y'){
+                if (this.admin === 'Y') {
                   this.aprobador = 'Y';
                   this.creador = 'Y';
                   this.validador = 'Y';
                   this.consulta = 'Y';
-
 
                 }
 
@@ -1414,37 +1349,36 @@ public Razon : string
           });
     });
 
-
   }
 
   async mostrar()  {
 
     switch (this.cargo) {
-      case 'NNYNN': //SOLO LECTURA
+      case 'NNYNN': // SOLO LECTURA
 
         this.btn = 'lectura';
         return;
 
-      case 'NNYYN'://LECTURA Y CREACION
+      case 'NNYYN': // LECTURA Y CREACION
         this.btn = 'creacion';
         return;
-      case 'NNYNY'://LECTURA Y VALIDACION
+      case 'NNYNY': // LECTURA Y VALIDACION
         this.btn = 'Validacion';
         return;
-      case 'NYYNN'://LECTURA Y APROBACION
+      case 'NYYNN': // LECTURA Y APROBACION
         this.btn = 'aprobacion';
         return;
-      case 'NNYYY'://LECTURA , CREACION , VALIDACION
+      case 'NNYYY': // LECTURA , CREACION , VALIDACION
         this.btn = 'creacionvalidacion';
 
         return;
 
-        case 'YYYYY'://Administrador
+        case 'YYYYY': // Administrador
         this.btn = 'administrador';
 
         return;
 
-        case 'NYYYY'://Administrador
+        case 'NYYYY': // Administrador
         this.btn = 'administrador';
 
         return;
@@ -1455,104 +1389,95 @@ public Razon : string
         return;
 
         case 'NYYYN':
-          this.btn='creacionaprobacion'
-          return
+          this.btn = 'creacionaprobacion';
+          return;
 
       default:
         break;
     }
 
-
   }
 
-  consola(accion : string){
+  consola(accion: string) {
 
-    this.key = this.consecuenciaModel.key
-    this.version = localStorage.getItem('versionSelected')
+    this.key = this.consecuenciaModel.key;
+    this.version = localStorage.getItem('versionSelected');
 
-
-    switch(accion){
+    switch (accion) {
 
     case 'aprobar':
-      this.sendvalidate()
+      this.sendvalidate();
       return;
 
       case 'validaraprobar':
-      this.ValidarAprobar()
+      this.ValidarAprobar();
       return;
 
     case 'rechazar':
-        this.Rechazar()
+        this.Rechazar();
         return;
 
     case 'archivar':
-          this.Archivar()
+          this.Archivar();
           return;
 
     case 'restaurar':
-          this.RestaurarItem()
+          this.RestaurarItem();
           return;
 
     }
 
-
-
-
-
   }
 
-  async ValidarAprobar(){
+  async ValidarAprobar() {
 
-    let title=''
-      let resp= ''
+    let title = '';
+    let resp = '';
 
-      switch (this.consecuenciaModel.areaStatus) {
+    switch (this.consecuenciaModel.areaStatus) {
 
         case 'ENVIADO A VALIDACION':
-          title= 'Validar'
-          resp = 'Validado'
+          title = 'Validar';
+          resp = 'Validado';
 
           break;
         case 'PENDIENTE DE APROBACION':
-          title= 'Aprobar'
-          resp = 'Aprobado'
+          title = 'Aprobar';
+          resp = 'Aprobado';
 
-          break
+          break;
 
           case 'PENDIENTE INACTIVACION':
-            title= 'Validar'
-          resp = 'Validado'
+            title = 'Validar';
+            resp = 'Validado';
 
             break;
 
           case 'ENVIADO A APROBACION':
-            title= 'Aprobar'
-            resp = 'Aprobado'
-          break;
-
-
+            title = 'Aprobar';
+            resp = 'Aprobado';
+            break;
 
         default:
           break;
       }
 
-      const inputOptions = {
+    const inputOptions = {
 
-        'Y': 'Solo Padre',
-        'N': 'Padre e Hijos',
+        Y: 'Solo Padre',
+        N: 'Padre e Hijos',
 
+  };
 
-  }
-
-  const { value: color } = await Swal2.fire({
-    title: title,
-    text: '¿ Está seguro que desea'+' '+ title +' ' + 'este registro ?',
+    const { value: color } = await Swal2.fire({
+    title,
+    text: '¿ Está seguro que desea' + ' ' + title + ' ' + 'este registro ?',
 
     showCancelButton: true,
 
     confirmButtonText: 'Aceptar',
     cancelButtonText: 'Cancelar',
-    confirmButtonColor:'#3085d6',
+    confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
   //   input: 'radio',
   //   inputOptions: inputOptions,
@@ -1562,10 +1487,8 @@ public Razon : string
   //   }
   // }
 
-
-
-  })
-  if(color ){
+  });
+    if (color ) {
     // console.log(color)
 
     // if(color == 1){
@@ -1591,15 +1514,14 @@ public Razon : string
                 if (data.success === true) {
                   // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                  Swal2.fire('Registro'+' '+resp,'', 'success' )
+                  Swal2.fire('Registro' + ' ' + resp, '', 'success' );
                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                                   //  console.log('estoy aqui')
                   localStorage.setItem('isSendToValidate', '1');
 
-
                 } else {
                   // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                  Swal2.fire('',data.message,'error')
+                  Swal2.fire('', data.message, 'error');
                 }
 
                 this.controlService.closeSpinner(spinner);
@@ -1612,35 +1534,30 @@ public Razon : string
 
   }
 
-
-
-
     }
 
-    Rechazar(){
+    Rechazar() {
 
-      let title=''
-      let resp=''
+      let title = '';
+      let resp = '';
       switch (this.consecuenciaModel.consecuenciaStatus) {
 
         case 'ENVIADO A VALIDACION':
-          title= 'Validacion'
-          resp = 'Validado'
+          title = 'Validacion';
+          resp = 'Validado';
 
           break;
         case 'PENDIENTE DE APROBACION':
-          title= 'AprobacionS'
-          resp = 'Aprobado'
-
-
+          title = 'AprobacionS';
+          resp = 'Aprobado';
 
         default:
           break;
       }
-      console.log(this.consecuenciaModel.consecuenciaVersion)
+      console.log(this.consecuenciaModel.consecuenciaVersion);
 
-      this.key = this.consecuenciaModel.key + ','
-      this.version = this.consecuenciaModel.consecuenciaVersion + ','
+      this.key = this.consecuenciaModel.key + ',';
+      this.version = this.consecuenciaModel.consecuenciaVersion + ',';
 
       localStorage.setItem('Llave', this.key);
       localStorage.setItem('VersionL', this.version);
@@ -1648,19 +1565,19 @@ public Razon : string
 
       Swal2.fire({
 
-        title:'Rechazar '+title,
-        text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
+        title: 'Rechazar ' + title,
+        text: 'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
-        confirmButtonColor:'#3085d6',
+        confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33'
 
-      }).then((result)=>{
-          if(result.value){
+      }).then((result) => {
+          if (result.value) {
 
-            const conf1 = this.confirm.open(RkReasonRejectComponent,{
+            const conf1 = this.confirm.open(RkReasonRejectComponent, {
               hasBackdrop: true,
               height: 'auto',
               width: 'auto',
@@ -1671,9 +1588,8 @@ public Razon : string
               }
             });
 
-
           }
-      })
+      });
 
   //     const conf = this.confirm.open(ConfirmationComponent, {
   //       hasBackdrop: true,
@@ -1744,31 +1660,28 @@ public Razon : string
     //           }
     //         } )
 
-
     //       //   console.log('Aqui Estoy..!')
     //       }
           // this.cerrar();
 
-
     //     });
     }
 
-
       async sendvalidate() {
 
-        let title=''
-        let resp= ''
+        let title = '';
+        let resp = '';
 
         switch (this.consecuenciaModel.consecuenciaStatus) {
           case 'CREADO':
-            title= 'Enviar a Validar'
-            resp = 'Enviado a Validar'
+            title = 'Enviar a Validar';
+            resp = 'Enviado a Validar';
 
             break;
 
           case 'MODIFICADO':
-            title= 'Enviar a Validar'
-            resp = 'Enviado a Validar'
+            title = 'Enviar a Validar';
+            resp = 'Enviado a Validar';
 
             break;
 
@@ -1778,21 +1691,20 @@ public Razon : string
 
         const inputOptions = {
 
-          'Y': 'Solo Padre',
-          'N': 'Padre e Hijos',
+          Y: 'Solo Padre',
+          N: 'Padre e Hijos',
 
+    };
 
-    }
-
-    const { value: color } = await Swal2.fire({
-      title: title,
-      text: '¿ Está seguro que desea'+' '+ title +' ' + 'este registro ?',
+        const { value: color } = await Swal2.fire({
+      title,
+      text: '¿ Está seguro que desea' + ' ' + title + ' ' + 'este registro ?',
 
       showCancelButton: true,
 
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor:'#3085d6',
+      confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
     //   input: 'radio',
     //   inputOptions: inputOptions,
@@ -1802,35 +1714,33 @@ public Razon : string
     //   }
     // }
 
-
-
-    })
-    if(color ){
+    });
+        if (color ) {
 
       const _atts = [];
-              _atts.push({ name: 'scriptName', value: 'coemdr' });
-              _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-              _atts.push({ name: 'onlyActualNode', value: 'Y' });
-              _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
+      _atts.push({ name: 'scriptName', value: 'coemdr' });
+      _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+      _atts.push({ name: 'onlyActualNode', value: 'Y' });
+      _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
 
-              _atts.push({ name: 'key', value: this.key });
+      _atts.push({ name: 'key', value: this.key });
 
-              const spinner = this.controlService.openSpinner();
-              const obj = this.autentication.generic(_atts);
+      const spinner = this.controlService.openSpinner();
+      const obj = this.autentication.generic(_atts);
 
-              obj.subscribe(
+      obj.subscribe(
                         (data) => {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro'+' '+resp,'', 'success' )
+                            Swal2.fire('Registro' + ' ' + resp, '', 'success' );
                             this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                             localStorage.setItem('isSendToValidate', '1');
-                            //recargar arbol
+                            // recargar arbol
 
                           } else {
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                            Swal2.fire('',data.message,'error')
+                            Swal2.fire('', data.message, 'error');
                           }
 
                           this.controlService.closeSpinner(spinner);
@@ -1843,47 +1753,42 @@ public Razon : string
 
     }
 
-
-
       }
-
 
       async Archivar() {
 
-
         const { value: accept } = await Swal2.fire({
 
-          title:'Enviar a Archivar',
+          title: 'Enviar a Archivar',
           text: 'Tenga en cuenta que una vez archivado no podrá visualizar ni utilizar más éste Registro',
-          icon:'question',
-          input:'checkbox',
-          inputValue:'',
+          icon: 'question',
+          input: 'checkbox',
+          inputValue: '',
           showCancelButton: true,
           cancelButtonColor: '#d33',
           cancelButtonText: 'Cancelar',
-          inputPlaceholder:'Acepto',
-          confirmButtonText:'Archivar',
+          inputPlaceholder: 'Acepto',
+          confirmButtonText: 'Archivar',
           inputValidator: (result) => {
-          return !result && 'Debe Aceptar los Terminos'
+          return !result && 'Debe Aceptar los Terminos';
       }
-        })
+        });
 
         if (accept) {
 
-          console.log(this.consecuenciaModel.key)
-          this.key =this.key+ ','
-          console.log(this.key)
+          console.log(this.consecuenciaModel.key);
+          this.key = this.key + ',';
+          console.log(this.key);
 
-          let _atts = [];
-              _atts.push({ name: 'scriptName', value: 'coemdr' });
-              _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
-              _atts.push({ name: 'key', value: this.key });
+          const _atts = [];
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
+          _atts.push({ name: 'key', value: this.key });
 
+          const spinner = this.controlService.openSpinner();
+          const obj = await this.autentication.generic(_atts);
 
-              const spinner = this.controlService.openSpinner();
-              const obj = await this.autentication.generic(_atts);
-
-                obj.subscribe((data)=>{
+          obj.subscribe((data) => {
 
                   if (data.success === true) {
                                 if (data.data[0].atts[1]) {
@@ -1891,38 +1796,36 @@ public Razon : string
 
                                   Swal2.fire(
                                     {
-                                      icon:'success',
-                                      text:'Registro Archivado ',
+                                      icon: 'success',
+                                      text: 'Registro Archivado ',
                                       showConfirmButton: false,
                                       timer: 3000
                                     }
-                                  )
+                                  );
                                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                                   localStorage.setItem('isSendToValidate', '1');
 
                                 }
 
-                              }else {
+                              } else {
 
                                   Swal2.fire(
                                     {
-                                      icon:'error',
-                                      text:data.message,
+                                      icon: 'error',
+                                      text: data.message,
                                       showConfirmButton: false,
                                       timer: 3000
                                     }
-                                  )
+                                  );
 
                               // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
 
                               }
-                              this.controlService.closeSpinner(spinner);
-
-
-
-                },(error)=>{
                   this.controlService.closeSpinner(spinner);
-                })
+
+                }, (error) => {
+                  this.controlService.closeSpinner(spinner);
+                });
               //  this.cerrar();
         //       obj.subscribe(
         //         (data) => {
@@ -1945,9 +1848,6 @@ public Razon : string
         //     this.cerrar();
         //   });
 
-
-
-
         }
 
     }
@@ -1956,37 +1856,36 @@ public Razon : string
 
       const { value: accept } = await Swal2.fire({
 
-        title:'Restaurar Registro',
+        title: 'Restaurar Registro',
         text: '¿Desea Restaurar este Item ?',
-        icon:'question',
-        input:'checkbox',
-        inputValue:'',
-        inputPlaceholder:'Acepto',
+        icon: 'question',
+        input: 'checkbox',
+        inputValue: '',
+        inputPlaceholder: 'Acepto',
         showCancelButton: true,
       cancelButtonColor: '#d33',
       cancelButtonText: 'Cancelar',
-        confirmButtonText:'Restaurar',
+        confirmButtonText: 'Restaurar',
         inputValidator: (result) => {
-        return !result && 'Debe Aceptar los Terminos'
+        return !result && 'Debe Aceptar los Terminos';
     }
-      })
+      });
 
       if (accept) {
 
-        console.log(this.consecuenciaModel.key)
-        this.key =this.key+ ','
-        console.log(this.key)
+        console.log(this.consecuenciaModel.key);
+        this.key = this.key + ',';
+        console.log(this.key);
 
-        let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
-            _atts.push({ name: 'key', value: this.key });
+        const _atts = [];
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
+        _atts.push({ name: 'key', value: this.key });
 
+        const spinner = this.controlService.openSpinner();
+        const obj = await this.autentication.generic(_atts);
 
-            const spinner = this.controlService.openSpinner();
-            const obj = await this.autentication.generic(_atts);
-
-              obj.subscribe((data)=>{
+        obj.subscribe((data) => {
 
                 if (data.success === true) {
                               if (data.data[0].atts[1]) {
@@ -1994,59 +1893,55 @@ public Razon : string
 
                                 Swal2.fire(
                                   {
-                                    icon:'success',
-                                    text:'Registro Restaurado ',
+                                    icon: 'success',
+                                    text: 'Registro Restaurado ',
                                     showConfirmButton: false,
                                     timer: 3000
                                   }
-                                )
+                                );
                                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                                 localStorage.setItem('isSendToValidate', '1');
 
                               }
 
-                            }else {
+                            } else {
 
                                 Swal2.fire(
                                   {
-                                    icon:'error',
-                                    text:data.message,
+                                    icon: 'error',
+                                    text: data.message,
                                     showConfirmButton: false,
                                     timer: 3000
                                   }
-                                )
+                                );
 
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
 
                             }
-                            this.controlService.closeSpinner(spinner);
-
-
-
-              },(error)=>{
                 this.controlService.closeSpinner(spinner);
-              })
+
+              }, (error) => {
+                this.controlService.closeSpinner(spinner);
+              });
             //  this.cerrar();
 
-
       }
-
 
     }
 
-    Caja(key,status,statusc?){
-      // debugger
+    Caja(key, status, statusc?) {
+      // //debugger
 
       let conf;
 
-      if(status === '008'){
-        status = statusc
+      if (status === '008') {
+        status = statusc;
       }
 
-      switch(status){
+      switch (status) {
        case  '001' :
 
-        conf=this.confirm.open(CajasdashboardComponent,
+        conf = this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2059,24 +1954,23 @@ public Razon : string
                 button_confirm: 'Cerrar',
                 button_close: 'Cerrar',
                 id: key,
-                status: status
+                status
 
               },
               // panelClass : 'tabla'
 
-
             });
-            conf.afterClosed().suscribe(async (result) => {
+        conf.afterClosed().suscribe(async (result) => {
 
-              if(result === 'undefined' || result === 'falso'){
+              if (result === 'undefined' || result === 'falso') {
 
-                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
               }
-            })
+            });
         break;
        case  '000' :
 
-        conf= this.confirm.open(CajasdashboardComponent,
+        conf = this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2094,19 +1988,18 @@ public Razon : string
               },
               // panelClass : 'tabla'
 
-
             });
-            conf.afterClosed().suscribe(async (result) => {
+        conf.afterClosed().suscribe(async (result) => {
 
-              if(result === 'undefined' || result === 'falso'){
+              if (result === 'undefined' || result === 'falso') {
 
-                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
               }
-            })
+            });
         break;
        case  '002' :
 
-        conf= this.confirm.open(CajasdashboardComponent,
+        conf = this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2119,24 +2012,23 @@ public Razon : string
                 button_confirm: 'Cerrar',
                 button_close: 'Cerrar',
                 id: key,
-                status: status
+                status
 
               },
               // panelClass : 'tabla'
 
-
             });
-            conf.afterClosed().suscribe(async (result) => {
+        conf.afterClosed().suscribe(async (result) => {
 
-              if(result === 'undefined' || result === 'falso'){
+              if (result === 'undefined' || result === 'falso') {
 
-                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
               }
-            })
+            });
         break;
        case  '003' :
 
-        conf =this.confirm.open(CajasdashboardComponent,
+        conf = this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2149,24 +2041,23 @@ public Razon : string
                 button_confirm: 'Cerrar',
                 button_close: 'Cerrar',
                 id: key,
-                status: status
+                status
 
               },
               // panelClass : 'tabla'
 
-
             });
-            conf.afterClosed().suscribe(async (result) => {
+        conf.afterClosed().suscribe(async (result) => {
 
-              if(result === 'undefined' || result === 'falso'){
+              if (result === 'undefined' || result === 'falso') {
 
-                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
               }
-            })
+            });
         break;
        case  '006' :
 
-        conf=  this.confirm.open(CajasdashboardComponent,
+        conf =  this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
               id: 'drag',
@@ -2179,24 +2070,23 @@ public Razon : string
                 button_confirm: 'Cerrar',
                 button_close: 'Cerrar',
                 id: key,
-                status: status
+                status
 
               },
               // panelClass : 'tabla'
 
-
             });
-            conf.afterClosed().suscribe(async (result) => {
+        conf.afterClosed().suscribe(async (result) => {
 
-              if(result === 'undefined' || result === 'falso'){
+              if (result === 'undefined' || result === 'falso') {
 
-                this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
               }
-            })
+            });
         break;
 
         case '004':
-          conf= this.confirm.open(RkvalidarComponent, {
+          conf = this.confirm.open(RkvalidarComponent, {
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
@@ -2207,23 +2097,23 @@ public Razon : string
               button_confirm: 'Cerrar',
               button_close: 'Cerrar',
               id: key,
-              status: status
+              status
 
             }
 
           });
           conf.afterClosed().suscribe(async (result) => {
 
-            if(result === 'undefined' || result === 'falso'){
+            if (result === 'undefined' || result === 'falso') {
 
-              this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
             }
-          })
+          });
 
           break;
 
         case '007':
-          conf= this.confirm.open(RkporaprobarComponent, {
+          conf = this.confirm.open(RkporaprobarComponent, {
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
@@ -2235,7 +2125,7 @@ public Razon : string
               button_confirm: 'Cerrar',
               button_close: 'Cerrar',
               id: key,
-              status: status
+              status
 
             }
 
@@ -2243,17 +2133,15 @@ public Razon : string
 
           conf.afterClosed().suscribe(async (result) => {
 
-            if(result === 'undefined' || result === 'falso'){
+            if (result === 'undefined' || result === 'falso') {
 
-              this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
+              this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.rid, this.rid, this.yid);
             }
-          })
+          });
           break;
-
 
       }
 
     }
-
 
 }

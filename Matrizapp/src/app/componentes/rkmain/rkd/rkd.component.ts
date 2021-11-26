@@ -117,7 +117,7 @@ public Razon : string
     _atts.push({ name: 'versionId', value: '000' });
 
     const spinner = this.controlService.openSpinner();
-
+    
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
       .subscribe(
@@ -226,6 +226,8 @@ public Razon : string
           return result;
         },
         (error) => {
+          //debugger
+          console.log(error)
           this.controlService.closeSpinner(spinner);
           this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.dimensionModel, false);
         });

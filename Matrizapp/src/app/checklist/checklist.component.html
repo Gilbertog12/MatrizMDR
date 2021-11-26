@@ -1,0 +1,69 @@
+<h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>{{ data.title }}</h1>
+<form name="rka_form" class="form-validation" (ngSubmit)="!areaControl.hasError('required') && rkaForm.form.valid && guardar()" #rkaForm="ngForm" noValidate>
+    <div class="row">
+        <div class="col-xl-7">
+            <mat-form-field>
+                <mat-select [formControl]="areaControl" [(ngModel)]="seleccion" (selectionChange)="imprimeSeleccion(seleccion)" #areaId placeholder="Seleccione un Area" [multiple]="true">
+                    <mat-option style="height: 50px !important;">
+
+                        <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
+                    </mat-option>
+
+
+                    <mat-option *ngFor="let item of areasList | filterPipe:descripcion " [value]="item.Id">
+                        {{item.Descripcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+
+    </div>
+    <mat-dialog-content class="text-center" align="center">
+        <table class="mdl-data-table table-bordered table-striped cf no-margin text-center">
+            <thead>
+                <tr>
+                    <!-- <th class="mdl-data-table__cell--non-numeric text-center"></th> -->
+                    <th class="mdl-data-table__cell--non-numeric text-center">Codigo</th>
+                    <!-- <th class="text-center">Tipo</th> -->
+                    <th class="mdl-data-table__cell--non-numeric text-center">Descripcion</th>
+                    <th class="text-center">Aplica</th>
+                    <!-- <th class="text-center">Validacion</th> -->
+                    <th class="mdl-data-table__cell--non-numeric text-center">Comentario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of checklistEllipse">
+                    <!-- <td class="mdl-data-table__cell--non-numeric text-center">
+                        <img class="img-circle" src="assets/images/Delete.png" (click)="borrarItem(item.table_code)" style="width: 10px; height: 10px;">
+
+                    </td> -->
+
+                    <td class="mdl-data-table__cell--non-numeric text-center">{{item.table_code}}</td>
+                    <!-- <td class="mdl-data-table__cell--non-numeric">{{item.table_desc}}</td> -->
+                    <td class="mdl-data-table__cell--non-numeric">{{item.table_desc}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">
+                        <!-- <label class="example-margin">No</label> -->
+                        <mat-slide-toggle [(ngModel)]="item.check" name='check' (click)="cambiarValidation()" size="small">{{item.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+                        <!-- <label class="example-margin">Si</label> -->
+
+                    </td>
+                    <!-- <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">{{item.table_desc}}</td> -->
+                    <td class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="item.comentario" name="comentario">{{item.comentario}}</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button type="submit" class="btn-w-md mat-raised-button mat-primary" color="primary" md-raised-button="" ng-reflect-color="primary">
+                        <span class="mat-button-wrapper">
+                        <mat-icon mat-list-icon>save</mat-icon>
+                        {{ data.button_confirm }}
+                        </span>
+                </button>
+        <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
+    </mat-dialog-actions>
+
+
+</form>
