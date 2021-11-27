@@ -123,8 +123,6 @@ public Razon: string;
 
       // this.canAdd = localStorage.getItem('canAdd');
       // this.valorChckCopiado = localStorage.getItem('idCheckCopiado');
-      
-     
 
       if (this.pasteComments) {
         this.habilitarPaste = true;
@@ -141,7 +139,7 @@ public Razon: string;
       this.detalleList = [];
       this.stdJobList = [];
       this.tabDefault = 0;
-      this.ver(this.id, this.pid, this.sid, this.cid);
+      this.ver(this.id, this.pid, this.sid, this.cid, true);
 
       this.checklist2 = [{
         table_code: '00026',
@@ -362,7 +360,7 @@ public Razon: string;
           this.logList = [];
           this.detalleList = [];
           this.stdJobList = [];
-          this.ver(this.id, this.pid, this.sid, this.cid);
+          this.ver(this.id, this.pid, this.sid, this.cid, true);
 
         }
       });
@@ -400,7 +398,7 @@ public Razon: string;
 
   }
 
-  ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string) {
+  ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string , activarRiesgo: boolean) {
 
     this.loading = true;
 
@@ -494,7 +492,11 @@ public Razon: string;
 
               });
               // console.log(JSON.stringify(this.antesAux))
-        this.cargarRiesgo();
+
+        if (activarRiesgo) {
+
+                this.cargarRiesgo();
+              }
               // this.controlService.closeSpinner(spinner);
         this.loading = false;
             } else {
@@ -620,7 +622,7 @@ public Razon: string;
         this.detalleList = [];
         this.stdJobList = [];
         // debugger
-        this.ver(this.id, this.pid, this.sid, this.cid);
+        this.ver(this.id, this.pid, this.sid, this.cid, false);
         this._Recargarble.Recargar$.emit(true);
 
       }
@@ -654,9 +656,9 @@ public Razon: string;
         this.stdJobList = [];
         this.checklistEllipse = [];
         // debugger
-        this.ver(this.id, this.pid, this.sid, this.cid);
+        this.ver(this.id, this.pid, this.sid, this.cid, false);
         this.cargarPestañaCheck();
-        this._Recargarble.Recargar$.emit(true);
+        // this._Recargarble.Recargar$.emit(true);
 
       }
     });
@@ -714,8 +716,9 @@ public Razon: string;
                 this.logList = [];
                 this.detalleList = [];
                 this.stdJobList = [];
-                this.ver(this.id, this.pid, this.sid, this.cid);
-                this._Recargarble.Recargar$.emit(true);
+                this.ver(this.id, this.pid, this.sid, this.cid,false);
+                this.cargarPestañasLog()
+                // this._Recargarble.Recargar$.emit(true);
                 // this._Recargarble.Recargar$.emit(true)
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.actividadModel, data.redirect);
@@ -1107,82 +1110,7 @@ public Razon: string;
 
       }
 
-    async RestaurarItem() {
-
-      const { value: accept } = await Swal2.fire({
-
-        title: 'Restaurar Registro',
-        text: '¿Desea Restaurar este Item ?',
-        icon: 'question',
-        input: 'checkbox',
-        inputValue: '',
-        inputPlaceholder: 'Acepto',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Restaurar',
-        inputValidator: (result) => {
-        return !result && 'Debe Aceptar los Terminos';
-      }
-    });
-
-      if (accept) {
-
-        console.log(this.actividadModel.key);
-        this.key = this.key + ',';
-        // console.log(this.key)
-
-        const _atts = [];
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
-        _atts.push({ name: 'key', value: this.key});
-
-        const spinner = this.controlService.openSpinner();
-        const obj = await this.autentication.generic(_atts);
-
-        obj.subscribe((data) => {
-
-              if (data.success === true) {
-                if (data.data[0].atts[1]) {
-                                // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-
-                                Swal2.fire(
-                                  {
-                                    icon: 'success',
-                                    text: 'Registro Restaurado ',
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                  }
-                                  );
-                                this.ver(this.id, this.pid, this.sid, this.cid);
-                                localStorage.setItem('isSendToValidate', '1');
-
-                              }
-
-                            } else {
-
-                              Swal2.fire(
-                                  {
-                                    icon: 'error',
-                                    text: data.message,
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                  }
-                                  );
-
-                                  // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-
-                                }
-              this.controlService.closeSpinner(spinner);
-
-              }, (error) => {
-                this.controlService.closeSpinner(spinner);
-              });
-              //  this.cerrar();
-
-            }
-
-          }
+   
 
           async Caja(key, status) {
 
@@ -1429,7 +1357,7 @@ public Razon: string;
           this.activar = true;
 
           this.valorChckCopiado = this.canPaste();
-            console.log(this.valorChckCopiado)
+          console.log(this.valorChckCopiado);
           const toast = Swal2.mixin({
             position: 'top-end'
           });
@@ -1529,8 +1457,9 @@ public Razon: string;
                           this.logList = [];
                           this.detalleList = [];
                           this.stdJobList = [];
-                          this.ver(this.id, this.pid, this.sid, this.cid);
-                          this._Recargarble.Recargar$.emit(true);
+                          this.ver(this.id, this.pid, this.sid, this.cid , false);
+                          this.cargarPestañaCheck();
+                          // this._Recargarble.Recargar$.emit(true);
                           this.modificados = 0;
                           // this._Recargarble.Recargar$.emit(true)
                         } else {
@@ -1596,8 +1525,10 @@ public Razon: string;
                           this.logList = [];
                           this.detalleList = [];
                           this.stdJobList = [];
-                          this.ver(this.id, this.pid, this.sid, this.cid);
-                          this._Recargarble.Recargar$.emit(true);
+                          // this.ver(this.id, this.pid, this.sid, this.cid);
+                          this.cargarPestañaCheck();
+
+                          // this._Recargarble.Recargar$.emit(true);
                           // this._Recargarble.Recargar$.emit(true)
                         } else {
                           // this.autentication.showMessage(data.success, data.message, this.actividadModel, data.redirect);

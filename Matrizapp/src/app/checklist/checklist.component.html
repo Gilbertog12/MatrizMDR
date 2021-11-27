@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-xl-7">
             <mat-form-field>
-                <mat-select [formControl]="areaControl" [(ngModel)]="seleccion" (selectionChange)="imprimeSeleccion(seleccion)" #areaId placeholder="Seleccione un Area" [multiple]="true">
+                <mat-select [formControl]="areaControl" [(ngModel)]="seleccion" (selectionChange)="imprimeSeleccion(seleccion)" #areaId placeholder="Seleccione un Código" [multiple]="true">
                     <mat-option style="height: 50px !important;">
 
                         <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>
@@ -11,7 +11,7 @@
 
 
                     <mat-option *ngFor="let item of areasList | filterPipe:descripcion " [value]="item.Id">
-                        {{item.Descripcion}}
+                        {{item.chkDescripcionSola}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

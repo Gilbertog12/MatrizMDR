@@ -114,7 +114,7 @@ export class ChecklistComponent implements OnInit {
       }
       // filter the banks
       this.filteredBanksMulti.next(
-        this.areasList.filter((bank) => bank.Descripcion.toLowerCase().indexOf(search) > -1)
+        this.areasList.filter((bank) => bank.chkDescripcionSola.toLowerCase().indexOf(search) > -1)
       );
     }
 
@@ -122,17 +122,23 @@ export class ChecklistComponent implements OnInit {
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'RCK_LIST' });
+    _atts.push({ name: 'areaId', value: this.actividadModel.areaId });
+    _atts.push({ name: 'procesoId', value: this.actividadModel.procesoId });
+    _atts.push({ name: 'subprocesoId', value: this.actividadModel.subprocesoId });
+    _atts.push({ name: 'actividadId', value: this.actividadModel.actividadId });
 
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts).subscribe(
         (data) => {
+
+          console.log(data);
           const result = data.success;
           if (result) {
             data.data.forEach((element) => {
               if (element.atts.length > 0) {
                 this.areasList.push({
                   Id: element.atts[0].value,
-                  Descripcion: element.atts[1].value,
+                  chkDescripcionSola: element.atts[2].value,
                   comentario : this.comentarios,
                 });
               }
@@ -228,7 +234,7 @@ export class ChecklistComponent implements OnInit {
                 );
                 this.checkModel = {
                   areaId: '',
-                  areaDescripcion: '',
+                  chkDescripcionSola: '',
                 };
                 this.areasList = [];
                 this.cargarAreas();
@@ -294,7 +300,7 @@ export class ChecklistComponent implements OnInit {
     for (  const code of codigo) {
       // tslint:disable-next-line: no-debugger
 
-      debugger;
+      // debugger;
 
       this.areasList.forEach((elemento, index) => {
 
@@ -304,7 +310,7 @@ export class ChecklistComponent implements OnInit {
 
               this.checklistEllipse.push({
                 table_code: elemento.Id,
-                table_desc: elemento.Descripcion,
+                table_desc: elemento.chkDescripcionSola,
                 comentario: elemento.comentario,
                 checkValidation : 'Y',
                 check : true
