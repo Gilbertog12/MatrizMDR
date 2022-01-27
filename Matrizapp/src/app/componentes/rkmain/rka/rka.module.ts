@@ -8,7 +8,7 @@ import { RkaComponent } from './rka.component';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDialogModule, MatButtonModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatBadgeModule } from '@angular/material';
 import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
@@ -27,7 +27,8 @@ import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboa
     RkpendaprobModule,
     Rkvalidarmodule,
     RkpendaprobModule,
-    cajadashboardModule
+    cajadashboardModule,
+    MatBadgeModule
   ],
   declarations: [RkaComponent]
 })

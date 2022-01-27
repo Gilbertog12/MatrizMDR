@@ -40,7 +40,9 @@ import { CajaslinkModule } from '../../cajaslink/cajaslink.module';
 import { CajaslinkComponent } from '../../cajaslink/cajaslink.component';
 import { ChartsModule } from 'ng2-charts';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ScrollingModule } from '@angular/cdk/scrolling'
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NotificacionesModule } from './notificaciones/notificaciones.module';
+
 
 
 //
@@ -76,7 +78,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling'
     PdfViewerModule,
     ChartsModule,
     DragDropModule,
-    ScrollingModule
+    ScrollingModule,
+    NotificacionesModule
 
     // CajaslinkModule,    
     // cajadashboardModule

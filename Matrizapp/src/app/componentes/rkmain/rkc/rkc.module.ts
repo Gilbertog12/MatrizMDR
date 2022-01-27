@@ -11,22 +11,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RkcstdjobModule } from '../rkcstdjob/rkcstdjob.module';
 import { RkcequipModule } from '../rkcequip/rkcequip.module';
-import { MatDialogModule, MatButtonModule, MatPaginatorModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatPaginatorModule, MatBadgeModule } from '@angular/material';
 import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
-import {MatTableModule} from '@angular/material/table';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatSelectModule} from '@angular/material/select';
-import {MatMenuModule} from '@angular/material/menu'
+import { MatTableModule } from '@angular/material/table';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 import { checklistModule } from '../../../checklist/checklist.module';
-
-
-
-
-
-
 
 @NgModule({
   imports: [
@@ -52,11 +46,8 @@ import { checklistModule } from '../../../checklist/checklist.module';
     MatSlideToggleModule,
     MatSelectModule,
     MatMenuModule,
-    checklistModule
-
-
-
-
+    checklistModule,
+    MatBadgeModule
 
   ],
   declarations: [RkcComponent]

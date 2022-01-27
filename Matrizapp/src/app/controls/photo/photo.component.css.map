@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,OAAO,CAAA;EACH,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,SAAS;CACpB;;AAED,AAAA,WAAW,CACX;EACI,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;CAChB;;AAED,AAAA,GAAG,AAAA,MAAM,CAAA;EACT,MAAM,EAAE,OAAO;EACf,MAAM,EAAE,eAAe;CAEtB",
+    "sources": [
+        "photo.component.scss"
+    ],
+    "names": [],
+    "file": "photo.component.css"
+}

@@ -670,7 +670,9 @@ checkUncheckAll() {
                             // this.cerrar('falso');
                             this.sendSome = true;
                             this.totalMarcados = 0
-                            this.recargar()
+                            this._Recargarble.notificaciones$.emit(true);
+                            // this.recargar()
+                            this.cerrar('cerrar');
 
     
                             
@@ -721,7 +723,9 @@ checkUncheckAll() {
                             Swal2.fire('Registro Enviado a Aprobar','', 'success' )
                             // this.cerrar('falso');
                             this.totalMarcados = 0
-                            this.recargar()
+                            this._Recargarble.notificaciones$.emit(true);
+                            // this.recargar()
+                            this.cerrar('cerrar');
 
     
                             

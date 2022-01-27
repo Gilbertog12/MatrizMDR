@@ -35,7 +35,7 @@ export class RkaComponent implements OnInit {
   public validacion = 'Validacion';
   public aprobacion = 'aprobacion';
   public validacionaprobacion = 'validacionaprobacion';
-  creacionaprobacion ='creacionaprobacion'
+  creacionaprobacion = 'creacionaprobacion';
   public Perfil: any[] = [];
   public consulta: string;
   public admin: string;
@@ -45,36 +45,37 @@ export class RkaComponent implements OnInit {
   public cargo: string;
   public btn: string;
 
-public key:string
-public version : string
-public Razon : string
+public key: string;
+public version: string;
+public Razon: string;
 
   public procesosList: any[] = [];
-  public procesosListLectura: any[] =[]
-  private id : string;
+  public procesosListLectura: any[] = [];
+  private id: string;
   EnviarHijos: string;
-  public papa:RkmainComponent;
+  public papa: RkmainComponent;
   permisoValidar: any;
   loading: boolean;
+  type: string;
+  valorType: string;
+  message: string;
+  valorMessage: string;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
               private controlService: ControlsService,
               private confirm: MatDialog,
               private route: ActivatedRoute,
-              private Cajas:ServiciocajasService) {
+              private Cajas: ServiciocajasService) {
 
                 // console.log('ante del obtener el perfil')
                 // this.aperfil()
 
-                this.route.params.subscribe( params => {
+                this.route.params.subscribe( (params) => {
                   this.id = params['id'];
                   this.areaModel = {};
                   this.procesosList = [];
                   this.ver(this.id);
-                  
-
-
 
                 });
 
@@ -82,38 +83,44 @@ public Razon : string
 
   ngOnInit() {
     localStorage.setItem('isSendToValidate', '0');
-    localStorage.setItem('UltimoEnviado', this.id)
+    localStorage.setItem('UltimoEnviado', this.id);
     // this.cargarRiesgo()
 
-    this.Cajas.RecargarDetalle$.subscribe(resp=>{
-      if(resp){
+    this.Cajas.RecargarDetalle$.subscribe((resp)=> {
+      if (resp) {
         this.areaModel = {};
-        this.procesosList= [];
-        this.procesosListLectura=[]
+        this.procesosList = [];
+        this.procesosListLectura = [];
         this.ver(this.id);
 
-
       }
-    })
+    });
+
+    this.Cajas.notificaciones$.subscribe((resp)=>{
+      this.activarNotificaciones()
+       })
 
   }
 
-
+  ejemplo() {
+    Swal2.fire({
+        text : `${this.type} ${this.valorType} ${this.message} ${this.valorMessage} `
+    });
+  }
 
   async ver(areaId: string) {
 
-    this.permisoValidar = localStorage.getItem('canAdd')
+    this.permisoValidar = localStorage.getItem('canAdd');
 
-    if(this.permisoValidar === 'Y'){
+    if (this.permisoValidar === 'Y') {
 
-      this.permisoValidar = true
-    }else{
-      this.permisoValidar = false
+      this.permisoValidar = true;
+    } else {
+      this.permisoValidar = false;
     }
     // console.log(this.permisoValidar)
 
-
-    let _atts = [];
+    const _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'AREA_READ'});
     _atts.push({ name: 'areaId', value: areaId });
@@ -128,9 +135,8 @@ public Razon : string
 
           (data) => {
             const result = data.success;
-            console.log(data)
+            console.log(data);
             if (result) {
-
 
               // console.info('aqui esta el cambio')
               data.data.forEach( (element) => {
@@ -152,18 +158,13 @@ public Razon : string
                       areaStatus: data.data[0].atts[10].value,
                       areaVersion: data.data[0].atts[11].value,
                       // areaNivel: data.data[0].atts[12].value,
-                      //areaAtributos: data.data[0].atts[13].value,
+                      // areaAtributos: data.data[0].atts[13].value,
                       areaStatusId: data.data[0].atts[14].value,
                       key: data.data[0].atts[15].value,
                       statusParent: data.data[0].atts[16].value,
-                      CanAdd:data.data[0].atts[17].value,
-                      CanModify:data.data[0].atts[18].value,
+                      CanAdd: data.data[0].atts[17].value,
+                      CanModify: data.data[0].atts[18].value,
                     };
-
-
-
-
-
 
                     localStorage.setItem('keySelected', this.areaModel.key);
                     localStorage.setItem('versionSelected', this.areaModel.areaVersion);
@@ -172,8 +173,8 @@ public Razon : string
                   } else {
                     // console.log(data)
                     // console.log(element.atts[9].value )
-                    if( element.atts[9].value === '008' && this.btn=== 'lectura' ){
-                      console.log('aqui')
+                    if ( element.atts[9].value === '008' && this.btn === 'lectura' ) {
+                      console.log('aqui');
                       this.procesosListLectura.push({
 
                       offset: element.atts[0].value,
@@ -187,7 +188,7 @@ public Razon : string
                       procesoRiesgoResidualS: element.atts[8].value,
                       estado: element.atts[9].value
                     });
-                    }else{
+                    } else {
                       // console.log("No Soy SOLOLectura")
                       this.procesosList.push({
 
@@ -210,63 +211,56 @@ public Razon : string
               });
               // console.log(this.procesosList)
               this.cargarRiesgo();
-        
-              
-            } else {
-                if(data.bypass === '1'){
 
+            } else {
+                if (data.bypass === '1') {
 
                   this.controlService.closeSpinner(spinner);
 
-                }else{
+                } else {
                   this.controlService.closeSpinner(spinner);
                   this.autentication.showMessage(data.success, data.message, this.areaModel, data.redirect);
 
                 }
               }
               // this.controlService.closeSpinner(spinner);
-              console.log(result)
-              return result;
+            console.log(result);
+            return result;
             },
             (error) => {
-              //debugger
-          console.log(error)
+              // debugger
+          console.log(error);
           this.controlService.closeSpinner(spinner);
           this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.areaModel, false);
         });
 
       } catch (error) {
-        console.log(reject)
+        console.log(reject);
       }
     });
     // this.controlService.closeSpinner(spinner);
 
   }
 
-  cargarRiesgo(){
+  cargarRiesgo() {
 
-    this.loading = true
-    this.procesosList=[]
-    let _atts = [];
+    this.loading = true;
+    this.procesosList = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'ITEM_EVALRISK_DETAIL_READ' });
     _atts.push({ name: 'key', value:  this.id });
 
-
     const spinner = this.controlService.openSpinner();
     const obj =  this.autentication.generic(_atts);
 
-
-
-    obj.subscribe((data)=>{
+    obj.subscribe((data) => {
 
       if (data.success === true) {
 
-        console.log(data)
+        console.log(data);
 
-
-
-        data.data.forEach((element) =>{
+        data.data.forEach((element) => {
 
           this.procesosList.push({
             offset: element.atts[0].value,
@@ -282,70 +276,72 @@ public Razon : string
             pendingDelete: element.atts[11].value
           });
 
-        })
+        });
 
-        this.loading = false
+        this.loading = false;
         this.controlService.closeSpinner(spinner);
 
-      }else{
+      } else {
         this.controlService.closeSpinner(spinner);
 
-        this.loading = false
+        this.loading = false;
       }
-    })
+    });
 
     // this.loading = false
   }
 
+   async Caja(key, status) {
 
-
-
-   async Caja(key,status){
-
-
-      switch(status){
+      switch (status) {
 
         case  '000' :
-            this.VerCajasdashboard(key)
+            this.VerCajasdashboard(key);
 
-        break;
+            break;
        case  '001' :
 
-        this.VerCajasdashboard(key)
-
+        this.VerCajasdashboard(key);
 
         break;
        case  '002' :
 
-        this.VerCajasdashboard(key)
+        this.VerCajasdashboard(key);
 
         break;
        case  '003' :
 
-        this.VerCajasdashboard(key)
+        this.VerCajasdashboard(key);
        case  '006' :
 
-        this.VerCajasdashboard(key)
+        this.VerCajasdashboard(key);
 
         break;
 
         case '004':
 
-              this.VerRkvalidarC(key)
-          break;
+              this.VerRkvalidarC(key);
+              break;
 
         case '007':
-          this.VerRkporaprobar(key)
+          this.VerRkporaprobar(key);
 
           break;
-
 
       }
 
+    }
+
+    activarNotificaciones() {
+
+      this.type = localStorage.getItem('type');
+      this.valorType = localStorage.getItem('valorType');
+      this.message = localStorage.getItem('message');
+      this.valorMessage = localStorage.getItem('valorMessage');
 
     }
 
-   async VerCajasdashboard(key){
+   async VerCajasdashboard(key) {
 
       const conf = this.confirm.open(CajasdashboardComponent,
         {
@@ -365,12 +361,13 @@ public Razon : string
           },
           // panelClass : 'tabla'
 
-
         });
+
+
 
     }
 
-   async VerRkvalidarC(key){
+   async VerRkvalidarC(key) {
       const conf5 = this.confirm.open(RkvalidarComponent, {
         hasBackdrop: true,
         height: 'auto',
@@ -382,7 +379,7 @@ public Razon : string
           button_confirm: 'Cerrar',
           button_close: 'Cerrar',
           id: key,
-          status: status
+          status
 
         }
 
@@ -390,7 +387,7 @@ public Razon : string
 
     }
 
-   async VerRkporaprobar(key){
+   async VerRkporaprobar(key) {
       const conf6 = this.confirm.open(RkporaprobarComponent, {
         hasBackdrop: true,
         height: 'auto',
@@ -403,7 +400,7 @@ public Razon : string
           button_confirm: 'Cerrar',
           button_close: 'Cerrar',
           id: key,
-          status: status
+          status
 
         }
 

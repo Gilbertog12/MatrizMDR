@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'collahuasi';
+  src: url("assets/eurostyle.ttf");
+}
+
+input {
+  border-radius: 50%;
+  max-width: 70px;
+  max-height: 30px;
+  font-family: 'collahuasi';
+  font-size: 11px;
+}
+
+h3 {
+  font-family: 'collahuasi';
+}
+
+::-webkit-input-placeholder {
+  /* Safari y Chrome */
+  color: black;
+  text-align: center;
+}
+
+button {
+  vertical-align: middle;
+}
+
+b {
+  font-size: 20px;
+  font-family: 'collahuasi';
+}
+
+.boton {
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  font-size: 11px;
+  line-height: 32px;
+  text-transform: uppercase;
+}
+/*# sourceMappingURL=leyenda.component.css.map */

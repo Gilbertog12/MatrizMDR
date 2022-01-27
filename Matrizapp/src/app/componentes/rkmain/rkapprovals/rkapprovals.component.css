@@ -1,0 +1,91 @@
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.2rem;
+  -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+}
+
+.mdl-data-table th {
+  position: relative;
+  vertical-align: bottom;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 12px;
+  letter-spacing: 0;
+  height: 28px;
+  color: black;
+  padding-bottom: 4px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.mdl-data-table tbody tr {
+  font-size: 10px;
+  line-height: 12px;
+  position: relative;
+  height: 28px;
+  padding-bottom: 4px;
+  -webkit-transition-duration: 0.14s;
+          transition-duration: 0.14s;
+  -webkit-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
+}
+
+.box-body {
+  padding: .25rem;
+}
+
+.divider {
+  display: block;
+  border: 0;
+  border-top: 1px solid transparent;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.mat-tab-label-container, .mat-tab-label, .mat-tab-link {
+  font-family: 'collahuasi',Roboto, "Helvetica Neue", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.mdl-data-table__cell--non-numeric {
+  text-align: left !important;
+  height: 9px !important;
+  padding: 0px 0px 0px 12px;
+  max-width: 300px;
+  white-space: pre-wrap;
+  /* css-3 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+thead tr:first-child th {
+  position: -webkit-sticky;
+  position: sticky;
+  background: white;
+  top: 0;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+/*# sourceMappingURL=rkapprovals.component.css.map */

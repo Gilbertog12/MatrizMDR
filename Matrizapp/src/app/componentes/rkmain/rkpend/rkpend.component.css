@@ -1,0 +1,295 @@
+.cebra .sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  min-width: 60px !important;
+  left: 0;
+}
+
+.cebra .sticky2 {
+  position: -webkit-sticky;
+  position: sticky;
+  min-width: 90px !important;
+  left: 60px;
+}
+
+.cebra .fecha {
+  min-width: 120px !important;
+}
+
+.cebra {
+  border-top: solid 1px #333;
+  border-spacing: 0;
+}
+
+.cebra thead th {
+  background: #333;
+  color: white;
+}
+
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  background: #333;
+  color: white;
+  left: 150px;
+}
+
+#filtro {
+  min-width: 200px;
+}
+
+.cebra th,
+.cebra td {
+  border-right: solid 1px #ccc;
+  min-width: 200px;
+  padding: 0.5rem;
+  text-align: left;
+  cursor: text;
+}
+
+.cebra th:last-child,
+.cebra td:last-child {
+  border-right: 0;
+}
+
+.cebra td {
+  border-bottom: solid 1px #ccc;
+}
+
+.cebra tbody tr .sticky,
+.cebra tbody tr .sticky2 {
+  background-color: white;
+}
+
+.cebra tbody tr:nth-child(2n) .sticky,
+.cebra tbody tr:nth-child(2n) .sticky2 {
+  background-color: #f2f2f2;
+}
+
+.cebra tbody tr:nth-child(2n) {
+  background-color: #f2f2f2;
+}
+
+a {
+  color: #2196F3 !important;
+  font-weight: 500;
+  cursor: pointer !important;
+}
+
+input:checked ~ .checkmark {
+  background-color: green;
+}
+
+span:hover {
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.swal2-icon.swal2-warning {
+  border-color: red !important;
+  color: #f8bb86;
+}
+
+.dates-wrapper {
+  background: #f0f0f0;
+  padding: 1em 1em 0 1em;
+  display: inline-block;
+}
+
+.input-text {
+  background-color: #ffffff;
+  padding: 2px 10px;
+  color: #333;
+  border: 1px solid #dddddd;
+  outline: none;
+  vertical-align: middle;
+  height: 36px;
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  -webkit-appearance: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+}
+
+.date-wrapper {
+  position: relative;
+  margin: 0 42px 10px 0;
+  display: inline-block;
+}
+
+.date-wrapper .label {
+  float: left;
+  display: inline-block;
+  margin-right: 28px;
+  padding-top: 10px;
+}
+
+.date-wrapper .input {
+  font-size: 15px;
+  color: #333;
+  max-width: 172px;
+  float: left;
+  margin-right: 10px;
+}
+
+.date-wrapper .input input {
+  float: left;
+  width: 100%;
+  padding: 2px 10px;
+}
+
+.date-wrapper .calendar-btn {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  float: left;
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/9487/icon-calendar-72x72.png);
+  background-repeat: no-repeat;
+  background-size: 36px 36px;
+}
+
+.pika-single {
+  position: absolute;
+  top: 40px;
+  left: 0px;
+}
+
+.pika-single .pika-title {
+  color: #444;
+}
+
+.pika-single .is-selected .pika-button {
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background: #ec0000;
+}
+
+.pika-single .pika-table tbody td {
+  border: 1px solid #b9b9b9;
+}
+
+.pika-single .pika-button:hover {
+  border-radius: 0 !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  background: #868686 !important;
+}
+
+.pika-single .is-today .pika-button {
+  color: #ec0000;
+}
+
+.pika-single .is-today.is-selected .pika-button {
+  color: #fff;
+}
+
+.hide-text {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.button5 {
+  background-color: #4CAF50;
+  width: 68px;
+  border: none;
+  color: white;
+  padding: 8px 28px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 11px;
+  margin: -10px -4px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+}
+
+.button5:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button5:hover {
+  -webkit-box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+          box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+#fechas {
+  height: 5px;
+}
+
+input[type="date"] {
+  display: block;
+  position: relative;
+  padding: 1rem 3.5rem 1rem 0.75rem;
+  font-size: 1rem;
+  font-family: monospace;
+  border: 1px solid #8292a2;
+  border-radius: 0.25rem;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='22' viewBox='0 0 20 22'%3E%3Cg fill='none' fill-rule='evenodd' stroke='%23688EBB' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' transform='translate(1 1)'%3E%3Crect width='18' height='18' y='2' rx='2'/%3E%3Cpath d='M13 0L13 4M5 0L5 4M0 8L18 8'/%3E%3C/g%3E%3C/svg%3E") right 1rem center no-repeat;
+  cursor: pointer;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #3acfff;
+  -webkit-box-shadow: 0 0 0 0.25rem rgba(0, 120, 250, 0.1);
+          box-shadow: 0 0 0 0.25rem rgba(0, 120, 250, 0.1);
+}
+
+::-webkit-datetime-edit-month-field:hover,
+::-webkit-datetime-edit-day-field:hover,
+::-webkit-datetime-edit-year-field:hover {
+  background: rgba(0, 120, 250, 0.1);
+}
+
+::-webkit-datetime-edit-text {
+  opacity: 0;
+}
+
+::-webkit-clear-button,
+::-webkit-inner-spin-button {
+  display: none;
+}
+
+::-webkit-calendar-picker-indicator {
+  position: absolute;
+  width: 2.5rem;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  cursor: pointer;
+  color: #0078fa;
+  background: #0078fa;
+}
+
+input[type="date"]:hover::-webkit-calendar-picker-indicator {
+  opacity: 0.05;
+}
+
+input[type="date"]:hover::-webkit-calendar-picker-indicator:hover {
+  opacity: 0.15;
+}
+
+h4 {
+  margin-top: 0px;
+  margin-bottom: 4px;
+}
+
+.contador {
+  top: 0;
+  font-size: 20px;
+}
+/*# sourceMappingURL=rkpend.component.css.map */

@@ -1,5 +1,8 @@
 <h6 class="article-title">
     Area
+    <!-- Include text description of the icon's meaning for screen-readers -->
+
+
     <button *ngIf="areaModel.areaStatusId !=='008' && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
 
 </h6>
@@ -85,7 +88,20 @@
 
     <div class="col-xl-12" *ngIf="btn !== 'lectura'">
         <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
-            <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <div class="lds-spinner div_centrado" *ngIf="loading">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
 
             <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                 <thead>

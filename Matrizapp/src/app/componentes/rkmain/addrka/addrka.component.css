@@ -1,0 +1,82 @@
+@charset "UTF-8";
+::-webkit-input-placeholder {
+  /* Safari y Chrome */
+  color: #110707;
+  text-align: left;
+  text-decoration: underline;
+  margin-left: 30px !important;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+:-moz-placeholder {
+  /* Firefox hasta v18 */
+  color: #110707;
+  text-align: left;
+  text-decoration: underline;
+  margin-left: 30px !important;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #110707;
+  text-align: left;
+  text-decoration: underline;
+  margin-left: 30px !important;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+´*/
+  color: #110707;
+  text-align: left;
+  text-decoration: underline;
+  margin-left: 30px !important;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+h4 {
+  font-family: 'collahuasi';
+}
+
+.mat-input-element {
+  font: inherit;
+  background: 0 0;
+  color: currentColor;
+  border: 1px solid black;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  vertical-align: bottom;
+  text-align: left;
+  padding-left: 10px;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.mat-select-search-inside-mat-option,
+.mat-dialog-actions {
+  height: 50px !important;
+}
+
+h1 {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+mat-label {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.mat-dialog-actions[align='end'] {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.mat-dialog-actions[align='center'] {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+/*# sourceMappingURL=addrka.component.css.map */

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../shared';
 import { Router } from '@angular/router';
-import { ConfirmationComponent } from '../controls/confirmation/confirmation.component';
+
 import Swal2 from 'sweetalert2';
 
 

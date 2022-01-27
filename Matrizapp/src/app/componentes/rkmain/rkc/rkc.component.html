@@ -1,8 +1,14 @@
-<h6 class="article-title">
-    Area > Proceso > Subproceso > Actividad
+<!-- <div class="article-title">
+
+    <!--</div> -->
+<h6 class="article-title">Area > Proceso > Subproceso > Actividad
+
     <button *ngIf="actividadModel.actividadStatusId !=='008' &&actividadModel.CanAdd=== 'true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
 
+
 </h6>
+
+
 
 <div class="row">
     <div class="col-xl-12">
@@ -191,6 +197,8 @@
                     </table>
                 </div>
             </mat-tab>
+            <!--  Std job-->
+
             <mat-tab label="Std. Job">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
                     <div class="lds-spinner div_centrado" *ngIf="loading">
@@ -387,6 +395,7 @@
                                 <!-- <th style="text-align: left; height: 30px;"></th> -->
 
                                 <th class="mdl-data-table__cell--non-numeric"></th>
+
                                 <th class="mdl-data-table__cell--non-numeric" *ngIf="modificados > 0">
                                     <button mat-icon-button>
                                         <mat-icon (click)="actulizarTodo()" style="cursor: pointer;">save</mat-icon>
@@ -397,6 +406,7 @@
                                         <mat-icon  style="cursor: no-drop;">save</mat-icon>
                                     </button>
                                 </th>
+
 
                                 <th class="mdl-data-table__cell--non-numeric">
 
@@ -420,17 +430,20 @@
                                             style="width: 15px; height: 15px"
                                           />
                                         </button>
-                                        <button class="btn btn-sm btn-light btn-round" (click)="CopiarCheckList()">
+                                        <button class="btn btn-sm btn-light btn-round" (click)="CopiarCheckList()" [disabled]=deshabilitado>
                                             <img
                                             class="img-circle"
-                                            src="assets/images/copy.png"
+                                            [src]=rutaImgCopy
                                             title="Copiar CheckList"
                                             style="width: 15px; height: 15px"
                                           />
                                         </button>
                                     </ng-container>
 
+
+
                                     <ng-container *ngIf="(checklistEllipse.length >= 0 && habilitarPaste ) && (!valorChckCopiado) || (checklistEllipse.length == 0 && habilitarPaste ) && (!valorChckCopiado )">
+
                                         <button class="btn btn-sm btn-light btn-round" (click)="guardarCheckListEllipse()" [disabled]=deshabilitado>
                                             <img
                                             class="img-circle"
@@ -439,16 +452,26 @@
                                             style="width: 15px; height: 15px"
                                           />
                                         </button>
-                                        <button class="btn btn-sm btn-light btn-round" (click)="pegarCheck()" [disabled]=deshabilitado>
+
+                                        <button *ngIf=" pegar " class="btn btn-sm btn-light btn-round" (click)="validarPegadoCheck()">
                                             <img
                                             class="img-circle"
-                                            [src]= rutaImgPaste
-                                            title="Copiar ChechkList"
+                                            src= "assets/images/paste.png"
+                                            title="Pegar ChechkList"
                                             style="width: 15px; height: 15px"
                                           />
                                         </button>
-                                    </ng-container>
+                                        <button *ngIf="!pegar" class="btn btn-sm btn-light btn-round" (click)="pegarCheck()" disabled>
+                                            <img
+                                            class="img-circle"
+                                            src= "assets/images/paste2.png"
+                                            title="Pegar ChechkList"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
 
+
+                                    </ng-container>
 
                                     <ng-container *ngIf="valorChckCopiado && habilitarPaste">
                                         <button mat-icon-button (click)="limpiarCopiado()">
@@ -465,7 +488,7 @@
 
 
                                 <th class="text-center">Codigo</th>
-                                <th class="text-center">Tipo</th>
+                                <!-- <th class="text-center">Tipo</th> -->
                                 <th class="text-center">Descripcion</th>
                                 <th>
                                     <!-- <mat-slide-toggle [(ngModel)]="masterSelected" size="small" (change)="checkUncheckAll()">Validar</mat-slide-toggle> -->
@@ -502,92 +525,46 @@
                                 </td>
                                 <td>
 
-                                    <div [ngSwitch]="actividadModel.CanAdd ">
-
-                                        <div *ngSwitchCase=" 'true' ">
-
-                                            <ng-template [ngIf]="actividadModel.Creador ==='true'" [ngIfElse]='NoPermitido'>
-
-                                                <ng-template [ngIf]="actividadModel.actividadStatusId ==='001' || actividadModel.actividadStatusId ==='002'|| actividadModel.actividadStatusId ==='008'" [ngIfElse]='opcion2'>
-
-                                                    <button *ngIf="chk.statusId ==='007'" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled>
-                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
-                                                    <button *ngIf="chk.statusId ==='004'" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled>
-                                                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
-                                                        </button>
-
-                                                    <button *ngIf="chk.statusId ==='001' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='006' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='002' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='008' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='000' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)">
-                                                <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
-                                            </button>
-                                                    <button *ngIf="chk.statusId ==='001' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='006' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='002' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='008' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'Y'
-                                                        ||chk.statusId ==='000' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled>
-                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
-                                            </button>
-                                                    <button *ngIf="chk.statusId ==='001' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='006' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='002' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='008' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='000' && chk.pendingDelete ==='N' && chk.DeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled>
-                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
-                                            </button>
-                                                    <button *ngIf="chk.statusId ==='001' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='006' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='002' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='008' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'N'
-                                                        ||chk.statusId ==='000' && chk.pendingDelete ==='Y' && chk.DeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled>
-                                                <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
-                                            </button>
-
-
-                                                </ng-template>
-
-                                                <ng-template #opcion2>
-                                                    <button class="btn btn-sm btn-light btn-round " (click)="eliminarCheck(chk.checkCode) " id="SinPermisos " disabled>
-                                                        <img class="img-circle " src="assets/images/Delete_Disabled.png " style="width: 10px; height: 10px; ">
-                                                    </button>
-                                                </ng-template>
-
-
-                                            </ng-template>
-
-                                            <ng-template #NoPermitido>
-
-                                                <button class="btn btn-sm btn-light btn-round " (click)="eliminarCheck(chk.checkCode) " id="SinPermisos " disabled>
-                                                    <img class="img-circle " src="assets/images/Delete_Disabled.png " style="width: 10px; height: 10px; ">
-                                                </button>
-
-                                            </ng-template>
-
-                                        </div>
-                                        <div *ngSwitchCase=" 'false' ">
-                                            <button class="btn btn-sm btn-light btn-round " (click)="eliminarCheck(chk.checkCode) " id="SinPermisos " disabled>
-                            <img class="img-circle " src="assets/images/Delete_Disabled.png " style="width: 10px; height: 10px; ">
+                                    <button *ngIf="chk.mostrarEliminar" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)">
+                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                         </button>
-                                        </div>
-                                    </div>
+                                    <button *ngIf="!chk.mostrarEliminar" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled id="SinPermisos">
+                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                        </button>
 
                                 </td>
-
-                                <td class="mdl-data-table__cell--non-numeric text-center">{{chk.checkCode}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{chk.checkType}}</td>
+                                <td *ngIf='chk.statusId ==="001" || chk.statusId ==="002"||chk.statusId ==="003"|| chk.statusId ==="006"' class="mdl-data-table__cell--non-numeric ">{{chk.checkCode}}<a style="font-size: 11px;color: red; "> (*)</a></td>
+                                <td *ngIf='chk.statusId ==="004"' class="mdl-data-table__cell--non-numeric ">{{chk.checkCode}}<a style="font-size: 11px;color: red; "> (**)</a></td>
+                                <td *ngIf='chk.statusId ==="007"' class="mdl-data-table__cell--non-numeric ">{{chk.checkCode}}<a style="font-size: 11px;color: red; "> (***)</a></td>
+                                <td *ngIf='chk.statusId ==="000"' class="mdl-data-table__cell--non-numeric ">{{chk.checkCode}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                <td *ngIf='chk.statusId ==="010"' class="mdl-data-table__cell--non-numeric ">{{chk.checkCode}}<a style="font-size: 11px;color: red; "> (R)</a></td>
+                                <td *ngIf='chk.statusId ==="008"' class="mdl-data-table__cell--non-numeric text-center">{{chk.checkCode}}</td>
+                                <!-- <td class="mdl-data-table__cell--non-numeric">{{chk.checkType}}</td> -->
                                 <td class="mdl-data-table__cell--non-numeric">{{chk.checkDescription}}</td>
                                 <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">
                                     <!-- <label class="example-margin">No</label> -->
-                                    <mat-slide-toggle [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small">{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+                                    <ng-container *ngIf='chk.statusId ==="001" || chk.statusId ==="002"'>
+                                        <mat-slide-toggle [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small" [disabled]="!showDelete">{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+
+                                    </ng-container>
+                                    <ng-container *ngIf='chk.statusId ==="004" || chk.statusId ==="006" || chk.statusId ==="007" || chk.statusId ==="008" '>
+                                        <mat-slide-toggle [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small" disabled>{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+
+                                    </ng-container>
                                     <!-- <label class="example-margin">Si</label> -->
 
                                 </td>
                                 <!-- <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">{{chk.checkValidation === 'Y' ? 'Si' : 'No'}}</td> -->
-                                <td class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment">{{chk.checkComment}}</textarea></td>
+                                <ng-container *ngIf='chk.statusId ==="001" || chk.statusId ==="002"'>
+
+                                    <td class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment" (ngModelChange)="habilitarSave(indice)" [disabled]="!showDelete">{{chk.checkComment}}</textarea></td>
+
+                                </ng-container>
+                                <ng-container *ngIf='chk.statusId ==="004" || chk.statusId ==="006" || chk.statusId ==="007" || chk.statusId ==="008" '>
+
+
+                                    <td class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment" (ngModelChange)="habilitarSave(indice)" disabled>{{chk.checkComment}}</textarea></td>
+                                </ng-container>
                             </tr>
                         </tbody>
 
@@ -850,6 +827,185 @@
                     </table>
                 </div>
             </mat-tab>
+
+            <!-- checkList -->
+            <mat-tab label="CheckList">
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin ">
+                        <thead>
+
+                            <tr>
+                                <!-- <th style="text-align: left; height: 30px;"></th> -->
+
+                                <th class="mdl-data-table__cell--non-numeric"></th>
+                                <th class="mdl-data-table__cell--non-numeric" *ngIf="modificados > 0">
+                                    <button mat-icon-button>
+                                        <mat-icon (click)="actulizarTodo()" style="cursor: pointer;">save</mat-icon>
+                                    </button>
+                                </th>
+                                <th class="mdl-data-table__cell--non-numeric" *ngIf="modificados == 0">
+                                    <button mat-icon-button disabled id="SinPermisos">
+                                        <mat-icon  style="cursor: no-drop;">save</mat-icon>
+                                    </button>
+                                </th>
+
+                                <th class="mdl-data-table__cell--non-numeric">
+
+                                    <ng-container *ngIf="checklistEllipse.length == 0  && !habilitarPaste">
+                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarCheckListEllipse()" [disabled]=deshabilitado>
+                                            <img
+                                            class="img-circle"
+                                            [src]= rutaImgAdd
+                                            title="Añadir Item"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="checklistEllipse.length >= 1 && !habilitarPaste">
+                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarCheckListEllipse()" [disabled]=deshabilitado>
+                                            <img
+                                            class="img-circle"
+                                            [src]= rutaImgAdd
+                                            title="Añadir Item"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+                                        <button class="btn btn-sm btn-light btn-round" (click)="CopiarCheckList()">
+                                            <img
+                                            class="img-circle"
+                                            src="assets/images/copy.png"
+                                            title="Copiar CheckList"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="(checklistEllipse.length >= 0 && habilitarPaste ) && (!valorChckCopiado) || (checklistEllipse.length == 0 && habilitarPaste ) && (!valorChckCopiado )">
+
+                                        <button class="btn btn-sm btn-light btn-round" (click)="guardarCheckListEllipse()" [disabled]=deshabilitado>
+                                            <img
+                                            class="img-circle"
+                                            [src]= rutaImgAdd
+                                            title="Añadir Item"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+
+                                        <button *ngIf="actividadModel.actividadStatusId === '001' || actividadModel.actividadStatusId === '002'" class="btn btn-sm btn-light btn-round" (click)="pegarCheck()">
+                                            <img
+                                            class="img-circle"
+                                            src= "assets/images/paste.png"
+                                            title="Pegar ChechkList"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+                                        <button *ngIf="actividadModel.actividadStatusId !== '001' || actividadModel.actividadStatusId !== '002'" class="btn btn-sm btn-light btn-round" (click)="pegarCheck()" disabled>
+                                            <img
+                                            class="img-circle"
+                                            src= "assets/images/paste2.png"
+                                            title="Pegar ChechkList"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+
+
+                                    </ng-container>
+
+
+                                    <ng-container *ngIf="valorChckCopiado && habilitarPaste">
+                                        <button mat-icon-button (click)="limpiarCopiado()">
+                                            <mat-icon color="primary" >undo</mat-icon>
+
+                                        </button>
+                                    </ng-container>
+
+
+
+                                </th>
+
+
+
+
+                                <th class="text-center">Codigo</th>
+                                <!-- <th class="text-center">Tipo</th> -->
+                                <th class="text-center">Descripcion</th>
+                                <th>
+                                    <!-- <mat-slide-toggle [(ngModel)]="masterSelected" size="small" (change)="checkUncheckAll()">Validar</mat-slide-toggle> -->
+                                    Aplica
+                                </th>
+
+                                <th colspan="2" class="text-center">Comentario</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let chk of checklistEllipse ; let indice = index">
+                                <td>{{indice+1}}</td>
+                                <td *ngIf="!chk.modify" class="mdl-data-table__cell--non-numeric">
+                                    <button mat-icon-button (click)="actualizarCheck(chk.checkCode,chk.checkComment,chk.checkValidation)" style="text-align: center !important; cursor:pointer;" id="SinPermisos" disabled>
+                                    <mat-icon class="material-icons" >
+
+                                        save
+                                    </mat-icon>
+                                    
+                                   </button>
+                                </td>
+
+                                <td *ngIf="chk.modify" class="mdl-data-table__cell--non-numeric">
+
+                                    <button mat-icon-button (click)="actualizarCheck(chk.checkCode,chk.checkComment,chk.checkValidation)" style="text-align: center !important; cursor:pointer;" disabled>
+                                        <mat-icon class="material-icons" >
+    
+                                            save
+                                        </mat-icon>
+
+                                    </button>
+                                </td>
+                                <td>
+
+                                    <button *ngIf="chk.mostrarEliminar" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled>
+                            <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
+                        </button>
+                                    <button *ngIf="!chk.mostrarEliminar" class="btn btn-sm btn-light btn-round" (click)="eliminarCheck(chk.checkCode)" disabled id="SinPermisos">
+                            <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
+                        </button>
+
+                                </td>
+
+                                <td class="mdl-data-table__cell--non-numeric text-center">{{chk.checkCode}}</td>
+                                <!-- <td class="mdl-data-table__cell--non-numeric">{{chk.checkType}}</td> -->
+                                <td class="mdl-data-table__cell--non-numeric">{{chk.checkDescription}}</td>
+                                <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">
+                                    <!-- <label class="example-margin">No</label> -->
+                                    <mat-slide-toggle [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small" [disabled]="!showDelete">{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+                                    <!-- <label class="example-margin">Si</label> -->
+
+                                </td>
+                                <!-- <td class="mdl-data-table__cell--non-numeric" style="text-align: center !important;">{{chk.checkValidation === 'Y' ? 'Si' : 'No'}}</td> -->
+                                <td class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment" disabled>{{chk.checkComment}}</textarea></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </mat-tab>
+
             <mat-tab label="Detalle ">
                 <div class="lds-spinner div_centrado" *ngIf="loading">
                     <div></div>

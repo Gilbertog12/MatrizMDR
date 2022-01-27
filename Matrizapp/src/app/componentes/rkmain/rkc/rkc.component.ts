@@ -20,6 +20,9 @@ import { ServiciocajasService } from '../../../shared/services/serviciocajas.ser
 import { Checklist } from '../interfaces/checklist.interfaces';
 import { ChecklistComponent } from '../../../checklist/checklist.component';
 import { text } from '@angular/core/src/render3/instructions';
+import { includes } from 'core-js/fn/array';
+import { _ } from 'core-js';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-rkc',
@@ -56,6 +59,7 @@ export class RkcComponent implements OnInit {
   public cargo: string;
   public btn: string;
   public canAdd: string;
+  showDelete: boolean = false;
 
   public administrador = 'administrador';
   public creacion = 'creacion' ;
@@ -109,6 +113,14 @@ public Razon: string;
   rutaImgCopy: string;
   rutaImgPaste: string;
   rutaImgPate: string;
+  comentarioanterior: any;
+  textomodificado: boolean = false;
+  pegar: boolean;
+  type: string;
+  valorType: string;
+  message: string;
+  valorMessage: string;
+  contadorNotificaciones: number = 0;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -123,6 +135,10 @@ public Razon: string;
 
       // this.canAdd = localStorage.getItem('canAdd');
       // this.valorChckCopiado = localStorage.getItem('idCheckCopiado');
+
+      this.Cajas.notificaciones$.subscribe((resp)=>{
+        // this.activarNotificaciones()
+         });
 
       if (this.pasteComments) {
         this.habilitarPaste = true;
@@ -337,7 +353,7 @@ public Razon: string;
         this.CopiarCheckList();
         break;
       case 'Pegar':
-        this.pegarCheck();
+        this.pegarCheck(false);
         break;
     }
   }
@@ -361,10 +377,25 @@ public Razon: string;
           this.detalleList = [];
           this.stdJobList = [];
           this.ver(this.id, this.pid, this.sid, this.cid, true);
+          debugger
+          this.activarNotificaciones()
 
         }
       });
 
+     
+
+  }
+
+  ejemplo() {
+            this.type = localStorage.getItem('type');
+            this.valorType = localStorage.getItem('valorType');
+            this.message = localStorage.getItem('message');
+            this.valorMessage = localStorage.getItem('valorMessage');
+
+    Swal2.fire({
+        html : `<b>${this.valorType}</b> ${this.type} </br> <b>${this.valorMessage}</b>${this.message}  `,
+    });
   }
 
   limpiarCopiado() {
@@ -444,7 +475,6 @@ public Razon: string;
         console.log(data);
         data.data.forEach((element) => {
                 if (element.atts.length > 0) {
-                  if (element.atts[0].value === '0') {
 
                     this.actividadModel = {
                       offset: element.atts[0].value,
@@ -475,12 +505,14 @@ public Razon: string;
                     };
 
                     console.log(this.actividadModel.actividadStatusId);
+                    console.log(this.actividadModel.Creador);
+                    console.log(this.actividadModel);
 
                     localStorage.setItem('keySelected', this.actividadModel.key);
+                    localStorage.setItem('isCreador', this.actividadModel.Creador);
+                    localStorage.setItem('CanAddCheck', this.actividadModel.CanAdd);
                     localStorage.setItem('versionSelected', this.actividadModel.actividadVersion);
                     localStorage.setItem('statusSelected', this.actividadModel.actividadStatusId);
-
-                  }
 
                 }
               });
@@ -522,7 +554,123 @@ public Razon: string;
           this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.actividadModel, false);
           });
     });
+
+    this.contadorNotificaciones = parseInt( localStorage.getItem( 'contadorNotificaciones' ) );
   }
+
+ /* ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string , activarRiesgo: boolean) {
+
+    this.loading = true;
+
+    if (this.actividadModel !== {}) {
+      this.actividadModel = {};
+    }
+    if (this.tareasList !== []) {
+      this.tareasList = [];
+    }
+    if (this.logList !== []) {
+      this.logList = [];
+    }
+    if (this.tareasList !== []) {
+      this.tareasList = [];
+    }
+    if (this.detalleList !== []) {
+      this.detalleList = [];
+    }
+    if (this.stdJobList !== []) {
+
+      this.stdJobList = [];
+    }
+
+    const _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'ACTIVIDAD_READ' });
+    _atts.push({ name: 'areaId', value: areaId });
+    _atts.push({ name: 'procesoId', value: procesoId });
+    _atts.push({ name: 'subprocesoId', value: subprocesoId });
+    _atts.push({ name: 'actividadId', value: actividadId });
+
+    const spinner = this.controlService.openSpinner();
+    console.log(_atts);
+
+    this.autentication.generic(_atts)
+        .subscribe(
+          (data) => {
+            console.log(data);
+            const result = data.success;
+
+            if (result) {
+
+        console.log(data);
+        data.data.forEach((element) => {
+
+          // debugger
+          this.actividadModel = {
+                      offset: element.atts[0].value,
+                      areaId: element.atts[1].value,
+                      areaDescripcion: element.atts[2].value,
+                      procesoId: element.atts[3].value,
+                      procesoDescripcion: element.atts[4].value,
+                      subprocesoId: element.atts[5].value,
+                      subprocesoDescripcion: element.atts[6].value,
+                      actividadId: element.atts[7].value,
+                      actividadDescripcion: element.atts[8].value,
+                      actividadDescripcionExt: element.atts[9].value,
+                      actividadIdClasificacion: element.atts[10].value,
+                      actividadDescClasificacion: element.atts[11].value,
+                      actividadRiesgoPuroDesc: element.atts[12].value,
+                      actividadRiesgoResidualDesc: element.atts[13].value,
+                      actividadStatus: element.atts[14].value,
+                      actividadVersion: element.atts[15].value,
+                      actividadNivel: element.atts[16].value,
+                      actividadAtributos: element.atts[17].value,
+                      actividadStatusId: data.data[0].atts[18].value,
+                      key: data.data[0].atts[19].value,
+                      actividadFechaApprovedDate: data.data[0].atts[20].value,
+                      statusParent: data.data[0].atts[21].value,
+                      CanAdd: data.data[0].atts[22].value,
+                      CanModify: data.data[0].atts[23].value,
+                      Creador: data.data[0].atts[24].value,
+                    };
+
+          console.log(this.actividadModel.actividadStatusId);
+
+          localStorage.setItem('keySelected', this.actividadModel.key);
+          localStorage.setItem('versionSelected', this.actividadModel.actividadVersion);
+          localStorage.setItem('statusSelected', this.actividadModel.actividadStatusId);
+
+              });
+
+        this.tareasList.forEach((element) => {
+              this.antesAux.push({
+                id: element.Id
+                });
+
+              });
+              // console.log(JSON.stringify(this.antesAux))
+
+        if (activarRiesgo) {
+
+                this.cargarRiesgo();
+              }
+              // this.controlService.closeSpinner(spinner);
+        this.loading = false;
+            } else {
+              if (data.bypass === '1') {
+
+                this.loading = false;
+
+              } else {
+                this.controlService.closeSpinner(spinner);
+                this.loading = false;
+                this.autentication.showMessage(data.success, data.message, this.actividadModel, data.redirect);
+
+              }
+            }
+            return result;
+
+    });
+  }*/
 
   drop(event: CdkDragDrop<string[]>) {
 
@@ -623,6 +771,7 @@ public Razon: string;
         this.stdJobList = [];
         // debugger
         this.ver(this.id, this.pid, this.sid, this.cid, false);
+        this.cargarPestañasStdJob();
         this._Recargarble.Recargar$.emit(true);
 
       }
@@ -716,8 +865,8 @@ public Razon: string;
                 this.logList = [];
                 this.detalleList = [];
                 this.stdJobList = [];
-                this.ver(this.id, this.pid, this.sid, this.cid,false);
-                this.cargarPestañasLog()
+                this.ver(this.id, this.pid, this.sid, this.cid, false);
+                this.cargarPestañasLog();
                 // this._Recargarble.Recargar$.emit(true);
                 // this._Recargarble.Recargar$.emit(true)
               } else {
@@ -926,36 +1075,55 @@ public Razon: string;
 
       }
 
-      cargarPestañaCheck() {
+      validarBotones() {
+        debugger
+        if(localStorage.getItem('CanAddCheck') === 'true'){
+          if (localStorage.getItem('isCreador') === 'true') {
+            let statusId = localStorage.getItem('statusSelected');
+            if (statusId === '001' || statusId === '002' || statusId === '008' ) {
 
-        this.loading = true;
+            this.crear = true;
+            this.deshabilitado = false;
+            this.rutaImgAdd = 'assets/images/Add.png';
+            this.rutaImgCopy = 'assets/images/copy.png';
+            this.rutaImgPaste = 'assets/images/paste.png';
 
-        // debugger;
-        console.log( this.actividadModel.CanAdd);
-        this.valorChckCopiado = this.canPaste();
-        console.log('Constructor', this.valorChckCopiado);
-
-        if (this.actividadModel.actividadStatusId !== '001' || this.actividadModel.actividadStatusId !== '002' || this.actividadModel.actividadStatusId !== '008') {
-
-          if (this.actividadModel.CanAdd === 'false' ) {
+          } else {
 
             this.crear = false;
             this.deshabilitado = true;
             this.rutaImgAdd = 'assets/images/Add_Disabled.png';
-            this.rutaImgCopy = 'assets/images/Add_Disabled.png';
+            this.rutaImgCopy = 'assets/images/copy2.png';
             this.rutaImgPaste = 'assets/images/paste2.png';
-          } else {
-            this.crear = true;
-            this.deshabilitado = false;
-            this.rutaImgAdd = 'assets/images/Add.png';
-            this.rutaImgCopy = 'assets/images/Add.png';
-            this.rutaImgPaste = 'assets/images/paste.png';
-
           }
 
+        } else {
+          this.crear = false;
+          this.deshabilitado = true;
+          this.rutaImgAdd = 'assets/images/Add_Disabled.png';
+          this.rutaImgCopy = 'assets/images/copy2.png';
+          this.rutaImgPaste = 'assets/images/paste2.png';
         }
+        }else{
+          this.crear = false;
+            this.deshabilitado = true;
+            this.rutaImgAdd = 'assets/images/Add_Disabled.png';
+            this.rutaImgCopy = 'assets/images/copy2.png';
+            this.rutaImgPaste = 'assets/images/paste2.png';
+        }
+        
+
+      }
+      cargarPestañaCheck() {
+
+        this.loading = true;
+
+        this.valorChckCopiado = this.canPaste();
+        debugger;
+        this.validarBotones();
 
         this.checklistEllipse = [];
+
         const _atts = [];
         _atts.push({ name: 'scriptName', value: 'coemdr' });
         _atts.push({ name: 'action', value: 'ACTIVIDAD_READ_CHECK' });
@@ -976,6 +1144,14 @@ public Razon: string;
 
                   data.data.forEach((element) => {
 
+                    
+
+                    if (localStorage.getItem('statusSelected') !== '001' || localStorage.getItem('statusSelected') !== '002' || localStorage.getItem('statusSelected') !== '008') {
+
+              this.showDelete = this.mostrarDelete(localStorage.getItem('isCreador'), element.atts[7].value, element.atts[8].value, element.atts[9].value );
+
+            }
+
                     if (element.atts[4].value === 'Y') {
                       this.check = true;
 
@@ -995,7 +1171,8 @@ public Razon: string;
                       pendingDelete: element.atts[8].value,
                       DeleteIcon: element.atts[9].value,
                       check: this.check,
-                      modify : false
+                      modify : false,
+                      mostrarEliminar : this.showDelete
                         });
 
                   });
@@ -1008,11 +1185,74 @@ public Razon: string;
                   this.loading = false;
                   this.controlService.closeSpinner(spinner);
     }
+                console.log(this.checklistEllipse);
+  // debugger;
+                this.pegar = this.anonimmo(this.checklistEllipse, this.checklistEllipse.length, this.actividadModel.actividadStatusId);
   });
 
   // this.paste = localStorage.getItem('checklist')
 
   // console.log(this.paste.length)
+
+      }
+
+      anonimmo(checklist, longitud: number, status: string) {
+
+        if ( longitud === 0 ) {
+
+          switch (status) {
+
+            case '001':
+              return true;
+
+              case '002':
+                return true;
+                case '008':
+                  return true;
+                }
+
+              } else if ( longitud > 0 ) {
+
+                // console.log(  checklist.some( (item) => {
+                  //   console.log(item.statusId)
+                  //   item.statusId !== '001' || item.statusId !== '002' || item.statusId !== '003'
+                  // } ))
+
+                  // console.log(checklist.some( (item) => {item.statusId === '008' || item.statusId === '007' || item.statusId === '006' || item.statusId === '004' } ))
+                  // if (checklist.some( (item) => {item.statusId === '008' || item.statusId === '007' || item.statusId === '006' || item.statusId === '004' } ) ) {
+
+                    //   return true;
+                    // } else {
+
+                      //    return false;
+                      // }
+
+                      // debugger;
+                      // let permitido = 0;
+                      for (let i = 0 ; i < longitud; i++) {
+                        // debugger;
+                        if ( checklist[i].statusId === '008' || checklist[i].statusId === '007' || checklist[i].statusId === '006' || checklist[i].statusId === '004' )  {
+                            return  false;
+                    }
+                  }
+
+                      return true;
+
+          } else {
+
+            return false;
+          }
+
+      }
+
+      mostrarDelete(creador, statusId, pendingDelete, DeleteIcon ) {
+
+        if (creador === 'true') {
+
+          if ((statusId === '001' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '008' && pendingDelete === 'N' && DeleteIcon === 'Y')) {
+              return true ;
+          }
+        }
 
       }
 
@@ -1110,8 +1350,6 @@ public Razon: string;
 
       }
 
-   
-
           async Caja(key, status) {
 
             switch (status) {
@@ -1151,6 +1389,15 @@ public Razon: string;
 
             }
 
+          }
+
+          activarNotificaciones() {
+
+            this.type = localStorage.getItem('type');
+            this.valorType = localStorage.getItem('valorType');
+            this.message = localStorage.getItem('message');
+            this.valorMessage = localStorage.getItem('valorMessage');
+      
           }
 
          async VerCajasdashboard(key) {
@@ -1218,13 +1465,40 @@ public Razon: string;
 
           }
 
-          pegarCheck() {
+          validarPegadoCheck() {
+              if (this.checklistEllipse.length > 0) {
+
+                  Swal2.fire({
+                    icon : 'warning',
+                    title : '<b style = "color:red"> ADVERTENCIA </b>',
+                    text : 'TODOS  los Registros del Checklist serán reemplazados con el nuevo Checklist',
+                    confirmButtonText : 'Continuar',
+                    confirmButtonColor : '#2196f3',
+                    cancelButtonText : 'Cancelar',
+                    cancelButtonColor : 'red',
+                    showCancelButton : true
+                  }).then((respuesta) => {
+
+                        if (respuesta.value) {
+
+                          this.pegarCheck(true);
+                        }
+
+                  });
+
+              } else {
+                 this.pegarCheck(false);
+              }
+
+          }
+
+          pegarCheck(confirmacion: boolean) {
 
             this.pasteCode = localStorage.getItem('checklist');
             this.pasteComments = localStorage.getItem('comentarios');
             this.pasteValores = localStorage.getItem('valorescheck');
             // debugger
-            console.log(this.pasteCode);
+            // console.log(this.pasteCode);
             // console.log(this.paste.length)
 
             const _atts = [];
@@ -1237,6 +1511,10 @@ public Razon: string;
             _atts.push({ name: 'checkNo', value: this.pasteCode });
             _atts.push({ name: 'checkValidation', value: this.pasteValores });
             _atts.push({ name: 'comentario', value: this.pasteComments });
+            if (confirmacion) {
+              _atts.push({ name: 'confirm', value: 'Y' });
+
+            }
 
             const spinner = this.controlService.openSpinner();
             const obj =  this.autentication.generic(_atts);
@@ -1262,6 +1540,7 @@ public Razon: string;
                   timer: 2000
                 }
                 );
+                this.cargarPestañaCheck();
 
               }
             } else {
@@ -1306,6 +1585,8 @@ public Razon: string;
 
             console.log(this.valor, this.comments, this.valoresCheck);
 
+            
+
             this.actualizarCheck(this.valor, this.comments, this.valoresCheck);
           }
 
@@ -1323,32 +1604,12 @@ public Razon: string;
               this.valor = this.valor + ',' + this.checklistEllipse[i].checkCode;
               this.comments = this.comments + '^~|' + this.checklistEllipse[i].checkComment;
               this.valoresCheck = this.valoresCheck + ',' + this.checklistEllipse[i].checkValidation;
-
-              // if(this.checklist[i]["check"] === true){
-
-              //   this.valorChck = this.checklist[i]["check"]  ? 'Y' : 'N'
-              //   this.valor = this.valor + ','+ this.checklist[i]["table_code"].trim() + ','+ this.valorChck+','+ this.checklist[i]["comentario"].trim() ;
-
-              //   this.ChecklisCopiado.push(
-              //     {
-              //       table_code : this.checklist[i]["table_code"],
-              //       table_desc : this.checklist[i]["table_desc"],
-              //       check: this.checklist[i]["check"],
-              //       comentario : this.checklist[i]["comentario"]
-
-              //     }
-              //   )
-              //   // console.log(this.valor)
-              // }else{
-              //   // console.log('epale||')
-              // }
-
             }
 
           this.valor = this.valor.slice(1);
           this.valoresCheck = this.valoresCheck.slice(1);
           this.comments = this.comments.slice(3);
-          console.log(this.comments);
+
           localStorage.setItem('checklist', this.valor);
           localStorage.setItem('comentarios', this.comments);
           localStorage.setItem('valorescheck', this.valoresCheck);
@@ -1357,7 +1618,7 @@ public Razon: string;
           this.activar = true;
 
           this.valorChckCopiado = this.canPaste();
-          console.log(this.valorChckCopiado);
+
           const toast = Swal2.mixin({
             position: 'top-end'
           });
@@ -1367,17 +1628,6 @@ public Razon: string;
             title : 'CheckList Copiado',
             text : `Jeraquia Ar:${this.actividadModel.areaId} Pr:${this.actividadModel.procesoId} Sp:${this.actividadModel.subprocesoId} Ac:${this.actividadModel.actividadId}`
           });
-
-          //  let a = this.arrayCollectionToObject(this.ChecklisCopiado)
-
-            // console.log(this.ChecklisCopiado.filter(el => el != "undefined"))
-
-            // this.ChecklisCopiado =this.ChecklisCopiado.filter(el => el != "undefined")
-
-            // console.log(this.ChecklisCopiado)
-            // console.log([this.ChecklisCopiado])
-
-            // console.log(JSON.stringify(this.ChecklisCopiado))
 
           }
 
@@ -1394,33 +1644,54 @@ public Razon: string;
               if (i === indice) {
                 this.checklistEllipse[i].checkValidation = this.checklistEllipse[i].check;
 
-                if (this.checklistEllipse[i].checkValidation === false) {
-                  this.checklistEllipse[i].checkValidation = 'N';
-                  if ( this.checklistEllipse[i].modify === false ) {
-                    this.checklistEllipse[i].modify = true;
-                    this.modificados += 1;
-                  } else {
-                    this.checklistEllipse[i].modify = false;
-                    this.modificados -= 1;
-                  }
-                  this.mostraractualizar = true;
+                if (this.textomodificado === false) {
 
-                  } else {
-                    this.checklistEllipse[i].checkValidation = 'Y';
-                    if ( this.checklistEllipse[i].modify !== false ) {
+                  if (this.checklistEllipse[i].checkValidation === false  ) {
+                    this.checklistEllipse[i].checkValidation = 'N';
+                    if ( this.checklistEllipse[i].modify === false ) {
+                      this.checklistEllipse[i].modify = true;
+                      this.modificados += 1;
+                    } else {
                       this.checklistEllipse[i].modify = false;
                       this.modificados -= 1;
+                    }
+                    this.mostraractualizar = true;
+
                     } else {
-                  this.checklistEllipse[i].modify = true;
-                  this.modificados += 1;
+                      this.checklistEllipse[i].checkValidation = 'Y';
+                      if ( this.checklistEllipse[i].modify !== false ) {
+                        this.checklistEllipse[i].modify = false;
+                        this.modificados -= 1;
+                      } else {
+                    this.checklistEllipse[i].modify = true;
+                    this.modificados += 1;
+                  }
+                      this.mostraractualizar = false;
                 }
-                    this.mostraractualizar = false;
-              }
+
+                }
+
             }
 
             }
 
           }
+
+          habilitarSave(indice) {
+
+            for (let i = 0; i < this.checklistEllipse.length; i++) {
+
+              // tslint:disable-next-line: no-empty
+              if (i === indice) {
+                this.checklistEllipse[i].modify = true;
+                this.textomodificado = true;
+                this.modificados += 1;
+              }
+            }
+          }
+
+
+         
 
           actualizarCheck(item, comentario, checkValidation) {
 
@@ -1477,13 +1748,15 @@ public Razon: string;
                         this.controlService.closeSpinner(spinner);
                       });
 
+           
+
           }
 
           eliminarCheck(check: string) {
 
             Swal2.fire({
               title: '<strong style="color:red">ADVERTENCIA !</strong>',
-              text : ' esta seguro que desea eliminar este Item ?',
+              text : ' Está seguro que desea eliminar este Item ?',
               icon: 'question',
               showCancelButton: true,
               confirmButtonText: 'Aceptar',
@@ -1520,12 +1793,14 @@ public Razon: string;
                               text: 'Registro eliminado Correctamente'
                             });
                           }
-                          this.actividadModel = {};
-                          this.tareasList = [];
-                          this.logList = [];
-                          this.detalleList = [];
-                          this.stdJobList = [];
-                          // this.ver(this.id, this.pid, this.sid, this.cid);
+                          // this.actividadModel = [];
+                          // this.tareasList = [];
+                          // this.logList = [];
+                          // this.detalleList = [];
+                          // this.stdJobList = [];
+                          // debugger;
+                          this.ver(this.id, this.pid, this.sid, this.cid, false);
+                          // this.checklistEllipse = [];
                           this.cargarPestañaCheck();
 
                           // this._Recargarble.Recargar$.emit(true);
@@ -1553,4 +1828,3 @@ public Razon: string;
           }
 
   }
-

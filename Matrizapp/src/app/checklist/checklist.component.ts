@@ -138,6 +138,7 @@ export class ChecklistComponent implements OnInit {
               if (element.atts.length > 0) {
                 this.areasList.push({
                   Id: element.atts[0].value,
+                  chkDescripcion : element.atts[1].value,
                   chkDescripcionSola: element.atts[2].value,
                   comentario : this.comentarios,
                 });
@@ -184,19 +185,46 @@ export class ChecklistComponent implements OnInit {
     this.comments = '';
     this.aplica = '';
 
-    this.checklistEllipse.forEach((valor) => {
+    for (let i = 0; i < this.checklistEllipse.length; i++) {
+
+      this.valor = this.valor + ',' + this.checklistEllipse[i].table_code;
+      this.comments = this.comments + '^~|' + this.checklistEllipse[i].comentario;
+      if ( this.checklistEllipse[i].check === true) {
+        this.checklistEllipse[i].checkValidation = 'Y';
+      } else {
+        this.checklistEllipse[i].checkValidation = 'N';
+      }
+      this.aplica = this.aplica + ',' + this.checklistEllipse[i].checkValidation;
+    }
+
+    /*this.checklistEllipse.forEach((valor) => {
       this.valor = this.valor + ',' + valor.table_code;
       this.comments = this.comments + '^~|' + valor.comentario;
+      if ( valor.check === true) {
+        valor.checkValidation = 'Y';
+      } else {
+        valor.checkValidation = 'N';
+      }
       this.aplica = this.aplica + ',' + valor.checkValidation;
       // console.log(valor.table_code)
 
-    });
+    });*/
 
     this.valor = this.valor.slice(1);
     this.comments = this.comments.slice(3);
     this.aplica = this.aplica.slice(1);
     console.log(this.valor, this.comments);
     console.log(this.aplica);
+
+    if(this.comments.includes('undefined')){
+
+      return Swal2.fire({
+        title : '<b style = "color:red"> ADVERTENCIA </b>',
+        icon : 'warning',
+        text : 'Comentario Obligatorio'
+      });
+    }
+
 
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -419,23 +447,18 @@ export class ChecklistComponent implements OnInit {
     });
   }
 
-  cambiarValidation() {
+  cambiarValidation(indice: number ) {
 
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.checklistEllipse.length; i++) {
-        debugger;
-        if (this.checklistEllipse[i].check === true) {
-          this.checklistEllipse[i].checkValidation = 'N';
-          console.log(this.checklistEllipse[i].checkValidation);
+       
+      if ( i  === indice ) {
+          if( this.checklistEllipse[i].check ) {
+              this.checklistEllipse[i].checkValidation = 'N';
+            } else {
+              this.checklistEllipse[i].checkValidation = 'Y';
 
-        } else {
-
-          if ( this.checklistEllipse[i].check === false ) {
-
-            this.checklistEllipse[i].checkValidation = 'Y';
-            console.log(this.checklistEllipse[i].checkValidation);
-        }
-
+          }
       }
 
     }

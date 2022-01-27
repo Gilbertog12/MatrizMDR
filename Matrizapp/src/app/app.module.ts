@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 
@@ -158,6 +159,7 @@ import { ChartsModule } from './charts/charts.module';
     rkHelpModule,
     NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.circleSwish}),
     ReactiveFormsModule,
+    MatBadgeModule
 
 
 

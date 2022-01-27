@@ -1,0 +1,68 @@
+table {
+  width: 100%;
+}
+
+.cebra .sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  min-width: 60px !important;
+  left: 0;
+}
+
+.cebra .sticky2 {
+  position: -webkit-sticky;
+  position: sticky;
+  min-width: 90px !important;
+  left: 60px;
+}
+
+.cebra .fecha {
+  min-width: 120px !important;
+}
+
+.cebra {
+  border-top: solid 1px #333;
+  border-spacing: 0;
+}
+
+.cebra thead th {
+  background: #333;
+  color: white;
+}
+
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  background: #333;
+  color: white;
+  text-align: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.success {
+  background-color: #98e298;
+}
+
+.error {
+  background-color: #ce4141;
+}
+
+.proceso {
+  background-color: #d8d835;
+}
+
+.success tr td {
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+h4 {
+  text-align: center;
+  font-weight: bold;
+}
+/*# sourceMappingURL=notificaciones.component.css.map */

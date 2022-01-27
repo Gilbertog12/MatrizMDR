@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,QAAQ,CAAC;EACL,MAAM,EAAE,WAAW;CACtB",
+    "sources": [
+        "rkarchivar.component.scss"
+    ],
+    "names": [],
+    "file": "rkarchivar.component.css"
+}

@@ -1,0 +1,16 @@
+.center {
+  width: 155px;
+  margin: 10px auto;
+}
+
+.image-size {
+  width: 155px;
+  height: 155px;
+}
+
+img:hover {
+  cursor: pointer;
+  -webkit-filter: brightness(90%);
+          filter: brightness(90%);
+}
+/*# sourceMappingURL=photo.component.css.map */

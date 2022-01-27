@@ -568,7 +568,11 @@ export class RkporaprobarComponent implements OnInit {
                             // this.cerrar('falso');
                             this.sendSome = true
                             this.totalMarcados = 0
-                            this.recargar()
+                            
+                            // this.recargar()
+
+                            this._Recargarble.notificaciones$.emit(true);
+                            this.cerrar('cerrar');
 
 
 
@@ -619,7 +623,9 @@ export class RkporaprobarComponent implements OnInit {
                             Swal2.fire('Registro Aprobado','', 'success' )
                             // this.cerrar('falso');
                             this.totalMarcados = 0
-                            this.recargar()
+                            // this.recargar()
+                            this._Recargarble.notificaciones$.emit(true);
+                            this.cerrar('cerrar');
 
 
 

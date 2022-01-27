@@ -1,5 +1,4 @@
 
-
 import { MatDialog } from '@angular/material';
 import { ModalCambiarClaveComponent } from './../../componentes/modals/';
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +9,6 @@ import { ConfirmationComponent } from '../../controls/confirmation/confirmation.
 import { AddrkaComponent } from '../../componentes/rkmain/addrka/addrka.component';
 import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
 import { ServiciocajasService } from '../../shared/services/serviciocajas.service';
-
 
 @Component({
   selector: 'my-app-header',
@@ -28,73 +26,67 @@ export class AppHeaderComponent implements OnInit {
   public aprobador: string;
   public creador: string;
   public validador: string;
-  public propiedad: boolean= false;
+  public propiedad: boolean = false;
   public cargo: string;
   public pend: string;
   public valor: string;
   public Ambiente = '';
-  public ver: string
-  public version: string ='Version: 4.2.8'
-  public posicion:string
-  public distrito:string
-  public usuario2:string
-  public informacion:string
+  public ver: string;
+  public version: string = 'Version: 4.2.T';
+  public posicion: string;
+  public distrito: string;
+  public usuario2: string;
+  public informacion: string;
 
   public VersionCoemdr: any = {
-    Fecha :'',
+    Fecha : '',
     Version : ''
 
   };
   tiempoVida: string;
 
-
   constructor(private authenticationService: AuthenticationService,
-    private router: Router,
-    private autentication: AuthenticationService,
-    private methodService: HttpMethodService,
-    private controlService: ControlsService,
-    private confirm: MatDialog,
-    public posiciones:ServiciocajasService
+              private router: Router,
+              private autentication: AuthenticationService,
+              private methodService: HttpMethodService,
+              private controlService: ControlsService,
+              private confirm: MatDialog,
+              public posiciones: ServiciocajasService
     ) {
-      this.ObtenerVersionCoemdr()
+      this.ObtenerVersionCoemdr();
       // this.aperfil()
      }
 
-
-
   ngOnInit() {
-    this.Version()
+    this.Version();
     this.AppConfig = APPCONFIG;
     this.usuario = JSON.parse(localStorage.getItem('currentUserPTEL'));
     localStorage.setItem('isSelectedNode', 'false');
     localStorage.setItem('keySelected', '');
     localStorage.setItem('versionSelected', '');
     localStorage.setItem('statusSelected', '');
-    console.log(this.posiciones.Posiciones)
+    console.log(this.posiciones.Posiciones);
 
+    this.usuario2 = localStorage.getItem('Usuario');
+    this.posicion = localStorage.getItem('Posicion');
+    this.distrito = localStorage.getItem('Distrito');
 
-
-    this.usuario2 = localStorage.getItem('Usuario')
-    this.posicion = localStorage.getItem('Posicion')
-    this.distrito = localStorage.getItem('Distrito')
-
-    this.informacion = this.usuario2+' '+this.distrito+' '+this.posicion
+    this.informacion = this.usuario2 + ' ' + this.distrito + ' ' + this.posicion;
   }
 
   logout() {
     this.authenticationService.logout();
   }
 
-  ObtenerVersionCoemdr(){
-    let _atts = [];
+  ObtenerVersionCoemdr() {
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     // _atts.push({ name: 'stdJobNo1', value: '' });
     _atts.push({ name: 'action', value: 'VERSION' });
 
-
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
-      .subscribe((data)=>{
+      .subscribe((data) => {
         const result = data.success;
         // console.log(data)
         if (result) {
@@ -105,45 +97,41 @@ export class AppHeaderComponent implements OnInit {
           };
         }
         return result;
-      })
+      });
 
-    })
+    });
   }
 
+  // help() {
 
-  help(){
+  //   if (this.Ambiente.includes('DESARROLLO')) {
+  //     let AmbienteEllipse = 'DESARROLLO';
+  //   } else if (this.Ambiente.includes('DESARROLLO')) {
+  //       AmbienteEllipse = 'TST';
+  //   } else {
+  //     AmbienteEllipse = 'PRD';
+  //   }
 
-    if(this.Ambiente.includes('DESARROLLO')){
-      var AmbienteEllipse = 'DESARROLLO'
-    }else if(this.Ambiente.includes('DESARROLLO')){
-        AmbienteEllipse = 'TST'
-    }else{
-      AmbienteEllipse = 'PRD'
-    }
+  //   switch (AmbienteEllipse) {
 
-    switch(AmbienteEllipse){
+  //     case 'DESARROLLO':
+  //       window.open( 'https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home', 'popup');
+  //       break;
+  //     case 'TEST':
+  //       window.open( 'https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home', 'popup');
+  //       break;
+  //     case 'PRD':
+  //       window.open( 'https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home', 'popup');
+  //       break;
 
-      case "DESARROLLO":
-        window.open( "https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home",'popup')
-      break;
-      case "TEST":
-        window.open( "https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home",'popup')
-      break;
-      case "PRD":
-        window.open( "https://prd-p01-col.ellipsehosting.com/html/ui?application=coehlp&type=read&AppName=COEMDR&scriptName=coehlp#!home",'popup')
-      break;
-
-    }
-  }
+  //   }
+  // }
 
   Version() {
 
-    var _0x18a8=["\x6C\x6F\x67","\x41\x6D\x62\x69\x65\x6E\x74\x65","\x4D\x61\x74\x72\x69\x7A\x20\x64\x65\x20\x52\x69\x65\x73\x67\x6F\x73\x20\x45\x39","\x20\x2D\x20","\x44\x45\x53\x41\x52\x52\x4F\x4C\x4C\x4F","\x76\x65\x72","\x73\x6C\x69\x63\x65","\x74\x65\x78\x74","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x54\x45\x53\x54","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x74\x73\x74\x2D\x6E\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x50\x52\x4F\x44\x55\x43\x54\x49\x56\x4F","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x32\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x73\x75\x62\x73\x63\x72\x69\x62\x65","\x67\x65\x74\x41\x50\x49","\x6D\x65\x74\x68\x6F\x64\x53\x65\x72\x76\x69\x63\x65","\x67\x65\x74\x4A\x53\x4F\x4E"];this[_0x18a8[15]][_0x18a8[16]]()[_0x18a8[13]]((_0xd5bdx1)=>{console[_0x18a8[0]](_0xd5bdx1);this[_0x18a8[15]][_0x18a8[14]]()[_0x18a8[13]]((_0xd5bdx2)=>{switch(_0xd5bdx2[0]){case _0x18a8[8]:this[_0x18a8[1]]= _0x18a8[2]+ _0x18a8[3]+ _0x18a8[4];this[_0x18a8[5]]= _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65,80);return;case _0x18a8[10]:this[_0x18a8[1]]= _0x18a8[2]+ _0x18a8[3]+ _0x18a8[9];this[_0x18a8[5]]= _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65,80);return;case _0x18a8[12]:this[_0x18a8[1]]= _0x18a8[2]+ _0x18a8[3]+ _0x18a8[11];this[_0x18a8[5]]= _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65,80);return;default:break}})})
+    let _0x18a8 = ['\x6C\x6F\x67','\x41\x6D\x62\x69\x65\x6E\x74\x65','\x4D\x61\x74\x72\x69\x7A\x20\x64\x65\x20\x52\x69\x65\x73\x67\x6F\x73\x20\x45\x39','\x20\x2D\x20','\x44\x45\x53\x41\x52\x52\x4F\x4C\x4C\x4F','\x76\x65\x72','\x73\x6C\x69\x63\x65','\x74\x65\x78\x74','\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F','\x54\x45\x53\x54','\x68\x74\x74\x70\x73\x3A\x2F\x2F\x74\x73\x74\x2D\x6E\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F','\x50\x52\x4F\x44\x55\x43\x54\x49\x56\x4F','\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x32\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F','\x73\x75\x62\x73\x63\x72\x69\x62\x65','\x67\x65\x74\x41\x50\x49','\x6D\x65\x74\x68\x6F\x64\x53\x65\x72\x76\x69\x63\x65','\x67\x65\x74\x4A\x53\x4F\x4E']; this[_0x18a8[15]][_0x18a8[16]]()[_0x18a8[13]]((_0xd5bdx1) => {console[_0x18a8[0]](_0xd5bdx1); this[_0x18a8[15]][_0x18a8[14]]()[_0x18a8[13]]((_0xd5bdx2) => {switch (_0xd5bdx2[0]) {case _0x18a8[8]: this[_0x18a8[1]] = _0x18a8[2] + _0x18a8[3] + _0x18a8[4]; this[_0x18a8[5]] = _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65, 80); return; case _0x18a8[10]: this[_0x18a8[1]] = _0x18a8[2] + _0x18a8[3] + _0x18a8[9]; this[_0x18a8[5]] = _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65, 80); return; case _0x18a8[12]: this[_0x18a8[1]] = _0x18a8[2] + _0x18a8[3] + _0x18a8[11]; this[_0x18a8[5]] = _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65, 80); return; default: break;}});});
 
   }
-
-
-
 
   cambiarClave() {
 
@@ -210,7 +198,7 @@ export class AppHeaderComponent implements OnInit {
       .subscribe(async (result) => {
         if (result) {
 
-          let _atts = [];
+          const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
           _atts.push({ name: 'key', value: localStorage.getItem('keySelected') });
@@ -257,7 +245,7 @@ export class AppHeaderComponent implements OnInit {
 
   }
   aperfil() {
-    let _atts = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'SESSION' });
 
@@ -281,7 +269,6 @@ export class AppHeaderComponent implements OnInit {
                   });
                 }
 
-
               });
 
               this.Perfil.forEach((element, index, array) => {
@@ -296,7 +283,6 @@ export class AppHeaderComponent implements OnInit {
                 if (this.cargo === 'NNYNN') {
                   this.propiedad = true;
 
-
                 }
               });
 
@@ -309,7 +295,6 @@ export class AppHeaderComponent implements OnInit {
             this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
           });
     });
-
 
   }
 

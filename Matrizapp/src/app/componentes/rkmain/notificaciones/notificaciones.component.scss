@@ -1,0 +1,62 @@
+table {
+    width: 100%;
+}
+
+.cebra .sticky {
+    position: sticky;
+    min-width: 60px !important;
+    left: 0;
+}
+
+.cebra .sticky2 {
+    position: sticky;
+    min-width: 90px !important;
+    left: 60px;
+}
+
+.cebra .fecha {
+    min-width: 120px !important;
+}
+
+.cebra {
+    border-top: solid 1px #333;
+    border-spacing: 0;
+}
+
+.cebra thead th {
+    background: #333;
+    color: white;
+}
+
+.sticky-top {
+    position: sticky;
+    background: #333;
+    color: white;
+    text-align: center;
+    align-items: center;
+}
+
+.success {
+    background-color: rgb(152, 226, 152);
+}
+
+.error {
+    background-color: rgb(206, 65, 65);
+}
+
+.proceso {
+    background-color: rgb(216, 216, 53);
+}
+
+.success tr td {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
+h4 {
+    text-align: center;
+    font-weight: bold;
+}

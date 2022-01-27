@@ -173,6 +173,34 @@ thead tr:first-child th {
     width: 100%;
 }
 
+.article-title-button {
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 60px;
+    background-color: #175641;
+    width: 100%;
+}
+
+
+/*
+.article-title mat-icon {
+    float: right;
+    order: 2;
+    padding-left: 500px;
+    padding-top: 20px;
+}
+
+.article-title h6 {
+    order: 1;
+}
+
+.article-title button {
+    float: right;
+    order: 3;
+}*/
+
 .mdl-data-table td:first-of-type,
 .mdl-data-table th:first-of-type {
     padding-left: 9px;

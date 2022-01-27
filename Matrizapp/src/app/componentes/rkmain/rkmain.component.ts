@@ -44,35 +44,21 @@ import { AutologoutService } from '../../shared/services/autologout.service';
 import { state } from '@angular/animations';
 import { includes } from 'core-js/fn/array';
 import { isNullOrUndefined } from 'util';
-
-
+import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 
 @Injectable({
   providedIn: 'root',
 })
 
-
-
 export class DynamicFlatNode {
   constructor(public item: string, public level = 1, public expandable = false,
-    public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string, public perfiles:string,public pendingDelete:string ,public StatusPadre:boolean, public displayDeleteIcon:string) { }
-
-
-
+              public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string, public perfiles:string,public pendingDelete:string ,public StatusPadre:boolean, public displayDeleteIcon:string) { }
 
   }
 
-
-
-
-
-
   // tslint:disable-next-line:max-classes-per-file
-  @Injectable()
+@Injectable()
   export class DynamicDataSource {
-
-
-
 
     dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
@@ -85,18 +71,14 @@ export class DynamicFlatNode {
     public comparador:any
     public response:any
     public SL:string
-
-
+    public notificacionesList: any = {
+      notificaciones: '',
+    };
 
   constructor(
     public _treeControl: FlatTreeControl<DynamicFlatNode>,
     private autentication: AuthenticationService,
     private ControlsService:ControlsService) { }
-
-
-
-
-
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.onChange.subscribe(change => {
@@ -119,14 +101,11 @@ export class DynamicFlatNode {
     }
   }
 
-
-
   /**
    * Toggle the node, remove from display list
    */
   toggleNode(node: DynamicFlatNode, expand: boolean)
   {
-
 
       // console.log(this.data.indexOf(node))
       const index = this.data.indexOf(node);
@@ -136,22 +115,22 @@ export class DynamicFlatNode {
           && this.data[i].level > node.level; i++ , count++) {
             // console.log(this.data[i].level)
           }
-          this.data.splice(index + 1, count);
-          this.dataChange.next(this.data);
+        this.data.splice(index + 1, count);
+        this.dataChange.next(this.data);
         }
         else {
           node.isLoading = true;
+
         //console.log(node);
+          let params = [];
+          params.push({ name: 'scriptName', value: 'coemdr' });
+          params.push({ name: 'action', value: 'SEARCH_NODE' });
+          params.push({ name: 'level', value: node.level + 1 });
+          params.push({ name: 'id', value: node.key });
+          let response = [];
 
-        let params = [];
-        params.push({ name: 'scriptName', value: 'coemdr' });
-        params.push({ name: 'action', value: 'SEARCH_NODE' });
-        params.push({ name: 'level', value: node.level + 1 });
-        params.push({ name: 'id', value: node.key });
-        let response = [];
-
-        let espacios = [];
-        for (let _i = 0; _i < node.level + 1; _i++) {
+          let espacios = [];
+          for (let _i = 0; _i < node.level + 1; _i++) {
           if(node.level == 8){
 
             espacios.push(_i+9);
@@ -161,17 +140,16 @@ export class DynamicFlatNode {
           }
         }
 
-        const spinner = this.ControlsService.openSpinner();
-        
 
-        this.autentication.generic(params)
+
+          const spinner = this.ControlsService.openSpinner();
+
+          this.autentication.generic(params)
         .subscribe(data => {
           // console.log(data)
           let jsonObject: JSON = data as JSON;
 
           if (data['success'] === true) {
-
-
 
             data['data'].forEach(function (value) {
               let name = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
@@ -195,17 +173,17 @@ export class DynamicFlatNode {
                 var StatusPadre = false
               }
 
-            if(value['atts'][18]['value'] === 'Y'){
+              if(value['atts'][18]['value'] === 'Y'){
               var lectura = 'N'
 
             }else{
               var lectura = 'Y'
             }
-            let BloqueoDesdePadre = StatusPadre
-            localStorage.setItem('StatusPadre',BloqueoDesdePadre.toString())
-            let permiso = canAdd+lectura
+              let BloqueoDesdePadre = StatusPadre
+              localStorage.setItem('StatusPadre',BloqueoDesdePadre.toString())
+              let permiso = canAdd+lectura
             //  let permiso = lectura
-            localStorage.setItem('sololectura',permiso)
+              localStorage.setItem('sololectura',permiso)
 
               localStorage.setItem('canAdd',canAdd)
 
@@ -238,22 +216,16 @@ export class DynamicFlatNode {
               response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios,hijo,canAdd,permiso,perfiles,pendingDelete,StatusPadre,displayDeleteIcon));
               });
 
+            localStorage.setItem('comparar', JSON.stringify(response))
 
-
-
-              localStorage.setItem('comparar', JSON.stringify(response))
-
-
-              this.data.splice(index + 1, 0, ...response);
+            this.data.splice(index + 1, 0, ...response);
 
               // console.log(this.data)
-              node.isLoading = false;
+            node.isLoading = false;
               // notify the change
-              this.dataChange.next(this.data);
+            this.dataChange.next(this.data);
 
-
-              this.ControlsService.closeSpinner(spinner);
-
+            this.ControlsService.closeSpinner(spinner);
 
             } else {
               this.ControlsService.closeSpinner(spinner);
@@ -269,8 +241,6 @@ export class DynamicFlatNode {
           });
         }
       }
-
-
 
       addSubNode(index: number, name: string, isExpandable: boolean ,) {
         const node = this.data[index];
@@ -297,10 +267,9 @@ export class DynamicFlatNode {
       StatusPadre: false,
       displayDeleteIcon: ''
 
-
     }
-    this.data.splice(index + 1, 0, ...[dfn]);
-    this.dataChange.next(this.data);
+        this.data.splice(index + 1, 0, ...[dfn]);
+        this.dataChange.next(this.data);
   }
 
   addNode(index: number, name: string, isExpandable: boolean) {
@@ -366,13 +335,10 @@ export class DynamicFlatNode {
 
 export class RkmainComponent implements OnInit,OnChanges {
 
-
-
   @ViewChild(RkpendComponent) child;
 
   public cambio:DynamicDataSource;
   date = new Date().getFullYear();
-
 
   public href: any = '';
   public showDashboard: Boolean = false;
@@ -432,6 +398,9 @@ export class RkmainComponent implements OnInit,OnChanges {
   message:string;
   public dashboardvisible:string
 
+  public notificacionesList: any = {
+    notificaciones: '',
+  };
   public dashboardData: any = {
     ENVIAR_A_VALIDAR: 0,
     POR_VALIDAR: 0,
@@ -443,7 +412,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     TOTAL: 0,
     TOTAL_EV: 0,
     TOTAL_EA: 0,
-
 
   };
   public pendientes: any = {
@@ -522,7 +490,6 @@ export class RkmainComponent implements OnInit,OnChanges {
         datasets.forEach(function (dataset: Array<any>, i: number) {
           ctx.font = "10px Arial";
 
-
           ctx.fillStyle = "Black";
           chart.getDatasetMeta(i).data.forEach(function (p: any, j: any) {
             ctx.fillText(datasets[i].data[j], p._model.x, p._model.y -5);
@@ -542,7 +509,6 @@ export class RkmainComponent implements OnInit,OnChanges {
                                      'ITEMS RECHAZADOS',
                                      'ITEMS PENDIENTES POR APROBAR'];
 
-
    public chartColors: Array<any> = [
     {
       backgroundColor: [
@@ -555,9 +521,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     },
 
   ];
-
-
-
 
    public barChartType: ChartType = 'bar';
   t:any;
@@ -574,10 +537,13 @@ export class RkmainComponent implements OnInit,OnChanges {
   cambiarColor: boolean = false;
   accionElmininar: string;
   nivelEliminar: string;
+  mostrarnoficaion: boolean = false;
+  claseNotificacion: string;
+  bloqueado: boolean = false;
+  estadoPositivo : boolean = false 
+  icon: string;
 
   //mmetodos para hacer logout automatico
-
-
 
   constructor(
     private autentication: AuthenticationService,
@@ -592,24 +558,24 @@ export class RkmainComponent implements OnInit,OnChanges {
     public logout:AutologoutService) {
       // consola.log(this.comparador)
 
-
       this.rutas.params.subscribe( parametros => {
         // console.log(parametros)
         this.cj = parametros
       })
 
-
-
+      this.Cajas.notificaciones$.subscribe ( recarga => 
+      { 
+        this.notificacionesPendientes()
+      }
+      )
     // this.aperfil()
 
   }
 
-
-
     ngOnInit() {
       // this.showDashboard = true
       this.href = this.router.url;
-    var $: any;
+      var $: any;
 
       const a =  this.router.events.subscribe((val) => {
           // console.log(val)
@@ -627,11 +593,11 @@ export class RkmainComponent implements OnInit,OnChanges {
         }
       });
 
-
+      // this.notificacionesPendientes();
 
       // this.cargarDashboard()
       this.Vcompilacion = '4.2.2'
-    var  mensaje =
+      var  mensaje =
     `    ======================================
               Version ${this.Vcompilacion}
     ======================================`
@@ -639,24 +605,21 @@ export class RkmainComponent implements OnInit,OnChanges {
     // var mensaje  = '======================================'+'\n'+
     //                '=  Version :'+this.Vcompilacion+' '+'='+'\n'+
     //                '======================================'
-    let colorM = 'Green'
-    console.log(`%c${mensaje}`, `color:${colorM}`)
+      let colorM = 'Green'
+      console.log(`%c${mensaje}`, `color:${colorM}`)
     // localStorage.setItem('recargarAprobaciones', 'false');
     // this.refresh = localStorage.getItem('recargarAprobaciones');
-    this.recargarArbol();
+      this.recargarArbol();
     // this.aperfil()
     // this.verSinAprobar();
     // this.idleLogout();
     // window.addEventListener('mousemove', this.resetear, true);
 
-
     // this.cargarDashboardData();
 
     // console.log(this.SL)
 
-
-
-    this.Cajas.Recargar$.subscribe(resp=>{
+      this.Cajas.Recargar$.subscribe(resp=>{
       if(resp){
       debugger
       // this.abrirNodo()
@@ -665,20 +628,17 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
     })
 
+      this.usuario = localStorage.getItem('Usuario')
+      this.posicion = localStorage.getItem('Posicion')
+      this.distrito = localStorage.getItem('Distrito')
 
-
-
-    this.usuario = localStorage.getItem('Usuario')
-    this.posicion = localStorage.getItem('Posicion')
-    this.distrito = localStorage.getItem('Distrito')
-
-    this.informacion = this.usuario+' '+this.distrito+' '+this.posicion
+      this.informacion = this.usuario+' '+this.distrito+' '+this.posicion
 
     // if (this.href === '/rkmain') {
     //   this.cargarDashboard();
     // }
     //observable que mantiene escuchando cambios para el tema del refresh
-    this.sub = Observable.interval(3000)
+      this.sub = Observable.interval(3000)
     .subscribe((val) => {
       if(localStorage.getItem('isSendToValidate')==='1'){
         localStorage.setItem('isSendToValidate', '0');
@@ -686,11 +646,9 @@ export class RkmainComponent implements OnInit,OnChanges {
         // console.log(key)
         // console.log('ejecuto');
 
-
         // this.abrirNodoYSeleccionar();
         this.recargarPadre();
         // this.router.navigate(['/rkmain/']);
-
 
       }
     });
@@ -698,7 +656,6 @@ export class RkmainComponent implements OnInit,OnChanges {
   resetear(){
     console.log('limpie')
  }
-
 
   reloj(rset?:boolean){
 
@@ -714,9 +671,7 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
 
     },1000)
-     console.log(`${this.minutos} : ${this.segundos}`)
-
-
+    console.log(`${this.minutos} : ${this.segundos}`)
 
   }
 
@@ -733,17 +688,12 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   ngOnChanges(){
 
-
-
   }
-
-
-
 
   public cargarDashboardData() {
         let t;
-    const parentThis = this;
-    function reloj(rset?:boolean){
+        const parentThis = this;
+        function reloj(rset?:boolean){
       if(rset){
         this.minutos = 4;
         this.segundos = 59;
@@ -761,10 +711,10 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     }
 
-    window.onload = resetTimer;
-    window.addEventListener('mousemove', resetTimer, true);
+        window.onload = resetTimer;
+        window.addEventListener('mousemove', resetTimer, true);
 
-    function resetTimer() {
+        function resetTimer() {
 
       clearInterval(t);
 
@@ -777,10 +727,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
 
   }
-
-
-
-
 
   cargarDashboard() {
     let _atts = [];
@@ -846,7 +792,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   }
 
-
   switchToTree() {
     this.recargarArbol();
   }
@@ -883,7 +828,6 @@ export class RkmainComponent implements OnInit,OnChanges {
   Buscar(){
 
     console.info( this.areaId +' '+ this.busqueda)
-
 
   }
 
@@ -953,11 +897,9 @@ export class RkmainComponent implements OnInit,OnChanges {
       this.recargarArbol(true);
     }else{
       this.treeControl.collapse(this.getSelection);
-    this.treeControl.expand(this.getSelection);
-    this.getSelection= this.getSelection
+      this.treeControl.expand(this.getSelection);
+      this.getSelection= this.getSelection
     }
-
-
 
     // console.log(this.getSelection)
     // localStorage.setItem('seleccion',this.getSelection)
@@ -976,7 +918,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
-
   superMetodo(){
     this.treeControl.collapse(this.getSelection);
     this.treeControl.expand(this.getSelection);
@@ -993,7 +934,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     if(key.length == 2){
 
       this.recargarArbol()
-        document.getElementById(key).style.backgroundColor= '#cff5e9';
+      document.getElementById(key).style.backgroundColor= '#cff5e9';
     }else{
 
       // console.log('estoy aqui')
@@ -1017,9 +958,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     // }
 
-
       // console.log(document.getElementById(key))
-
 
     // this.ver(localStorage.getItem('keySelected'))
   };
@@ -1039,11 +978,10 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
-
-
   recargarArbol(arbol?:boolean) {
     //debugger
-
+    this.notificacionesPendientes();
+    // this.notificacionesList.notificaciones ='0'
     this.isLoading = true;
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
 
@@ -1055,8 +993,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     params.push({ name: 'level', value: '1' });
     params.push({ name: 'id', value: '' });
 
-
-
     let response = [];
     let prueba=[]
 
@@ -1067,8 +1003,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         if (data['success'] === true) {
               // console.log(data)
-
-
 
           data['data'].forEach(function (value) {
             let key: string = value['atts'][7]['value'];
@@ -1085,7 +1019,6 @@ export class RkmainComponent implements OnInit,OnChanges {
             let displayDeleteIcon = value['atts'][23]['value'];
             // this.cargo = perfil
 
-
             if(parseInt(status)< parseInt(statusParent)){
               var StatusPadre = true
 
@@ -1099,35 +1032,31 @@ export class RkmainComponent implements OnInit,OnChanges {
                   break;
                 case 'NYYNY'://APROBADORVALIDADOR
                    NoCreador = 'Y'
-                  break;
+                   break;
 
                 case 'NNYNY'://VALIDADOR
                    NoCreador = 'Y'
-                  break;
+                   break;
 
                 case 'NYYNN'://APROBADOR
                    NoCreador = 'Y'
-                  break;
+                   break;
 
                   case 'YYYNY'://Administrador
                    NoCreador = 'Y'
-                  break;
+                   break;
 
                   case 'YNYNY'://
                    NoCreador = 'Y'
-                  break;
+                   break;
 
                   case 'YNYNN'://
                    NoCreador = 'Y'
-                  break;
-
-
-
-
+                   break;
 
                   default:
                      NoCreador  = 'N'
-                    break;
+                     break;
 
             }
 
@@ -1139,7 +1068,6 @@ export class RkmainComponent implements OnInit,OnChanges {
               var lectura = 'N'
             }
 
-
             let BloqueoDesdePadre = StatusPadre
             let permiso = canAdd+lectura
             let Pcreador = NoCreador
@@ -1149,16 +1077,13 @@ export class RkmainComponent implements OnInit,OnChanges {
             localStorage.setItem('NoCreador',Pcreador)
             localStorage.setItem('StatusPadre',BloqueoDesdePadre.toString())
 
-
             localStorage.setItem('canAdd',canAdd)
 
             // console.log(localStorage.getItem('canAdd'))
 
-
             response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [],hijo,canAdd,permiso,perfiles,pendingDelete,StatusPadre,displayDeleteIcon));
 
           });
-
 
           // console.log(prueba);
           // console.log(response);
@@ -1173,11 +1098,11 @@ export class RkmainComponent implements OnInit,OnChanges {
           localStorage.setItem('keySelected', '');
           localStorage.setItem('versionSelected', '');
           localStorage.setItem('statusSelected', '');
-          this.fix=localStorage.getItem('sololectura')
-          this.StatusPadre=localStorage.getItem('StatusPadre')
-          this.percreacion = localStorage.getItem('NoCreador')
+          this.fix=localStorage.getItem('sololectura');
+          this.StatusPadre=localStorage.getItem('StatusPadre');
+          this.percreacion = localStorage.getItem('NoCreador');
+          this.notificacionesList.notificaciones = localStorage.getItem('notificaciones');
           // console.log(this.fix )
-
 
         } else {
           // data.success = 'I'
@@ -1197,22 +1122,17 @@ export class RkmainComponent implements OnInit,OnChanges {
           if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet3', {}, false); }
         });
 
-
         // let key = localStorage.getItem('UltimoEnviado')
         // if(key != ''){
 
         //   console.log(key)
-
 
         // // console.log(document.getElementById(key))
         // document.getElementById(key).style.backgroundColor= '#cff5e9';
         // // document.getElementById(key).className= 'background-highlight';
         // }
 
-
   }
-
-
 
   addNode() {
     this.dataSource.addNode(0, 'New Node', true);
@@ -1230,11 +1150,9 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   getLevel = (node: DynamicFlatNode) => node.level;
 
-
   isExpandable = (node: DynamicFlatNode) => node.expandable;
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => { return _nodeData.expandable; };
-
 
   nuevo(nodo: any) {
 
@@ -1265,7 +1183,6 @@ export class RkmainComponent implements OnInit,OnChanges {
         break;
       case 8:
 
-
         Swal2.fire({
 
           title:'No hay mas niveles',
@@ -1285,8 +1202,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     this.getSelection= nodo
 
-
-
     this.router.navigate(['/rkmain/' + nodo.route]);
     localStorage.setItem('isSelectedNode', 'true');
     localStorage.setItem('keySelected', '');
@@ -1301,7 +1216,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     this.nodoseleccionado = localStorage.getItem('itemseleccionado')
 
     /*let a:any = localStorage.getItem('itemseleccionado')
-
 
     a= a.slice(4,nodo.route.length)
     // a = a.split('/')
@@ -1333,20 +1247,16 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     // console.log(this.nodoseleccionado)
 
-
-
     this.HabilitarEnvioValidacion();
     // this.ruta = localStorage.getItem('keySelected');
 
     //console.log(nodo);
   }
 
-
   HabilitarEnvioValidacion(){
 
     this.Activo = localStorage.getItem('statusSelected')
     this.StatusPadre = localStorage.getItem('StatusPadre')
-
 
   }
 
@@ -1387,9 +1297,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     }
   }
-
-
-
 
   @ViewChildren(MatTreeNode, { read: ElementRef }) treeNodes: ElementRef[];
 
@@ -1469,13 +1376,8 @@ export class RkmainComponent implements OnInit,OnChanges {
           // console.log(this.PendientesNodo)
         }
 
-
     }))
     this.controlService.closeSpinner(spinner);
-
-
-
-
 
   }
 
@@ -1483,8 +1385,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     debugger
     for (let i =0 ;i<this.dataSource.data.length; i++){
-
-
 
       if(this.dataSource.data[i] === this.getSelection){
 
@@ -1495,7 +1395,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         }else{
 
           console.log(this.dataSource.data[i])
-            let i2 = i-1
+          let i2 = i-1
           this.getSelection = this.dataSource.data[i2]
           this.recargarPadre()
         }
@@ -1550,8 +1450,6 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
 
   }
-
-
 
   async eliminarn(node){
     for (let i =0 ;i<this.dataSource.data.length; i++){
@@ -1620,7 +1518,7 @@ export class RkmainComponent implements OnInit,OnChanges {
               }
               if (_ids[7]) {
                 _atts.push({ name: 'consecuenciaId', value: _ids[7] });
-              }              
+              }
               _atts.push({ name: 'versionId', value: node.version });
               _atts.push({ name: 'statusId', value: node.status });
 
@@ -1630,7 +1528,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 (data)=>{
                   if(data.succes === true){
                     if (data.data[0].atts[0].value === 'I' ) {
-                    
+
                     this.controlService.closeSpinner(spinner);
                     this.mostrarResponsables(data.data[0].atts[1].value,data.data[0].atts[2].value,_atts)
                   }else{
@@ -1641,7 +1539,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
-              this.controlService.closeSpinner(spinner);
+                  this.controlService.closeSpinner(spinner);
                   }
                 }
               )
@@ -1650,16 +1548,12 @@ export class RkmainComponent implements OnInit,OnChanges {
           })
         }
 
-
       }
-
 
     }
   }
 
-
   mostrarResponsables(mensaje,responsablesa,jerarquia){
-
 
     Swal2.fire({
       html: mensaje,
@@ -1675,13 +1569,13 @@ export class RkmainComponent implements OnInit,OnChanges {
       {
         if(result.value){
           let re = '/\,/gi'
-                      var Responsables = responsablesa
-                      var responsables = Responsables.split(',')
-                      var texto = '';
-                      for(let i =0 ; i < responsables.length ; i++){
+          var Responsables = responsablesa
+          var responsables = Responsables.split(',')
+          var texto = '';
+          for(let i =0 ; i < responsables.length ; i++){
                          texto = texto + `${responsables[i]}<br>`
                       }
-                      Swal2.fire({
+          Swal2.fire({
                         title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
 
                         html:  texto,
@@ -1695,7 +1589,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                         if(result.value){
                           const spinner = this.controlService.openSpinner();
                           jerarquia.push({ name: 'warning', value: 'Y' });
-                          
+
                           const obj =  this.autentication.generic(jerarquia);
 
                           obj.subscribe(
@@ -1706,21 +1600,18 @@ export class RkmainComponent implements OnInit,OnChanges {
                                   html:'Notificaciones Enviadas',
                                   icon: 'success',
                                   // timer: 3500
-                
+
                                 })
-                              this.controlService.closeSpinner(spinner);
-                
-                
-                                    
-                
+                                this.controlService.closeSpinner(spinner);
+
                               }else{
-                
+
                                 Swal2.fire({
                                   icon:'error',
                                   text: data.message
                                 })
-                              this.controlService.closeSpinner(spinner);
-                
+                                this.controlService.closeSpinner(spinner);
+
                               }
                             }
                           )
@@ -1741,11 +1632,10 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       if(this.dataSource.data[i] === node){
         console.log(this.dataSource.data[i])
-          let i2 = i-1
+        let i2 = i-1
         this.getSelection = this.dataSource.data[i2]
         this.recargarPadre()
       }
-
 
     }
 
@@ -1770,12 +1660,12 @@ export class RkmainComponent implements OnInit,OnChanges {
           let recargable = localStorage.getItem('keySelected')
 
           let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
 
-            let _ids = [];
-            _ids = node.route.substring(4, node.route.length).split('/');
+          let _ids = [];
+          _ids = node.route.substring(4, node.route.length).split('/');
 
-            switch (_ids.length) {
+          switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
                 break;
@@ -1802,38 +1692,38 @@ export class RkmainComponent implements OnInit,OnChanges {
                 break;
             }
 
-            if (_ids[0]) {
+          if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
-            if (_ids[1]) {
+          if (_ids[1]) {
               _atts.push({ name: 'procesoId', value: _ids[1] });
             }
-            if (_ids[2]) {
+          if (_ids[2]) {
               _atts.push({ name: 'subprocesoId', value: _ids[2] });
             }
-            if (_ids[3]) {
+          if (_ids[3]) {
               _atts.push({ name: 'actividadId', value: _ids[3] });
             }
-            if (_ids[4]) {
+          if (_ids[4]) {
               _atts.push({ name: 'tareaId', value: _ids[4] });
             }
-            if (_ids[5]) {
+          if (_ids[5]) {
               _atts.push({ name: 'dimensionId', value: _ids[5] });
             }
-            if (_ids[6]) {
+          if (_ids[6]) {
               _atts.push({ name: 'riesgoId', value: _ids[6] });
             }
-            if (_ids[7]) {
+          if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
 
-            _atts.push({ name: 'versionId', value: node.version });
-            _atts.push({ name: 'statusId', value: node.status });
+          _atts.push({ name: 'versionId', value: node.version });
+          _atts.push({ name: 'statusId', value: node.status });
 
-            const spinner = this.controlService.openSpinner();
-            const obj =  this.autentication.generic(_atts);
+          const spinner = this.controlService.openSpinner();
+          const obj =  this.autentication.generic(_atts);
 
-            obj.subscribe(
+          obj.subscribe(
               (data) => {
                 if (data.success === true) {
                   if (data.data[0].atts[0].value === 'I' ) {
@@ -1860,21 +1750,14 @@ export class RkmainComponent implements OnInit,OnChanges {
                         //this.ver(this.nodoseleccionado);
                       }, 1000 );
 
-
-
                     }else{
 
                       this.recargarPadre();
 
                     }
 
-
-
-
-
                   }else{
 
-                    
                     // console.log(data.data[0].atts[0])
                     // console.log(data.data[0].atts[1])
                   Swal2.fire({
@@ -1897,7 +1780,6 @@ export class RkmainComponent implements OnInit,OnChanges {
                          texto = texto + `${responsables[i]}<br>`
                       }
 
-
                       Swal2.fire({
                         title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
 
@@ -1912,12 +1794,12 @@ export class RkmainComponent implements OnInit,OnChanges {
                         if(result.value){
 
                           let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
+                          _atts.push({ name: 'scriptName', value: 'coemdr' });
 
-            let _ids = [];
-            _ids = node.route.substring(4, node.route.length).split('/');
+                          let _ids = [];
+                          _ids = node.route.substring(4, node.route.length).split('/');
 
-            switch (_ids.length) {
+                          switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
                 break;
@@ -1944,39 +1826,39 @@ export class RkmainComponent implements OnInit,OnChanges {
                 break;
             }
 
-            if (_ids[0]) {
+                          if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
-            if (_ids[1]) {
+                          if (_ids[1]) {
               _atts.push({ name: 'procesoId', value: _ids[1] });
             }
-            if (_ids[2]) {
+                          if (_ids[2]) {
               _atts.push({ name: 'subprocesoId', value: _ids[2] });
             }
-            if (_ids[3]) {
+                          if (_ids[3]) {
               _atts.push({ name: 'actividadId', value: _ids[3] });
             }
-            if (_ids[4]) {
+                          if (_ids[4]) {
               _atts.push({ name: 'tareaId', value: _ids[4] });
             }
-            if (_ids[5]) {
+                          if (_ids[5]) {
               _atts.push({ name: 'dimensionId', value: _ids[5] });
             }
-            if (_ids[6]) {
+                          if (_ids[6]) {
               _atts.push({ name: 'riesgoId', value: _ids[6] });
             }
-            if (_ids[7]) {
+                          if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
 
-            _atts.push({ name: 'versionId', value: node.version });
-            _atts.push({ name: 'statusId', value: node.status });
-            _atts.push({ name: 'warning', value: 'Y' });
+                          _atts.push({ name: 'versionId', value: node.version });
+                          _atts.push({ name: 'statusId', value: node.status });
+                          _atts.push({ name: 'warning', value: 'Y' });
 
-            const spinner = this.controlService.openSpinner();
-            const obj =  this.autentication.generic(_atts);
+                          const spinner = this.controlService.openSpinner();
+                          const obj =  this.autentication.generic(_atts);
 
-            obj.subscribe((data) => {
+                          obj.subscribe((data) => {
 
               if(data.success === true){
 
@@ -1992,7 +1874,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                 let recargable = localStorage.getItem('keySelected')
 
-                    if(recargable !==''){
+                if(recargable !==''){
 
                       this.router.navigate(['/rkmain/cargando']);
                       // console.log('main');
@@ -2003,8 +1885,6 @@ export class RkmainComponent implements OnInit,OnChanges {
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                         //this.ver(this.nodoseleccionado);
                       }, 1000 );
-
-
 
                     }else{
                       this.controlService.closeSpinner(spinner);
@@ -2019,8 +1899,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                   icon:'error',
                   text: data.message
                 })
-              this.controlService.closeSpinner(spinner);
-
+                this.controlService.closeSpinner(spinner);
 
               }
               this.controlService.closeSpinner(spinner);
@@ -2040,8 +1919,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
-              this.controlService.closeSpinner(spinner);
-
+                  this.controlService.closeSpinner(spinner);
 
                 }
                 this.controlService.closeSpinner(spinner);
@@ -2053,9 +1931,7 @@ export class RkmainComponent implements OnInit,OnChanges {
               });
         }
 
-
       })
-
 
     }else{
 
@@ -2079,12 +1955,12 @@ export class RkmainComponent implements OnInit,OnChanges {
           let recargable = localStorage.getItem('keySelected')
 
           let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
 
-            let _ids = [];
-            _ids = node.route.substring(4, node.route.length).split('/');
+          let _ids = [];
+          _ids = node.route.substring(4, node.route.length).split('/');
 
-            switch (_ids.length) {
+          switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
                 break;
@@ -2111,38 +1987,38 @@ export class RkmainComponent implements OnInit,OnChanges {
                 break;
             }
 
-            if (_ids[0]) {
+          if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
-            if (_ids[1]) {
+          if (_ids[1]) {
               _atts.push({ name: 'procesoId', value: _ids[1] });
             }
-            if (_ids[2]) {
+          if (_ids[2]) {
               _atts.push({ name: 'subprocesoId', value: _ids[2] });
             }
-            if (_ids[3]) {
+          if (_ids[3]) {
               _atts.push({ name: 'actividadId', value: _ids[3] });
             }
-            if (_ids[4]) {
+          if (_ids[4]) {
               _atts.push({ name: 'tareaId', value: _ids[4] });
             }
-            if (_ids[5]) {
+          if (_ids[5]) {
               _atts.push({ name: 'dimensionId', value: _ids[5] });
             }
-            if (_ids[6]) {
+          if (_ids[6]) {
               _atts.push({ name: 'riesgoId', value: _ids[6] });
             }
-            if (_ids[7]) {
+          if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
 
-            _atts.push({ name: 'versionId', value: node.version });
-            _atts.push({ name: 'statusId', value: node.status });
+          _atts.push({ name: 'versionId', value: node.version });
+          _atts.push({ name: 'statusId', value: node.status });
 
-            const spinner = this.controlService.openSpinner();
-            const obj =  this.autentication.generic(_atts);
+          const spinner = this.controlService.openSpinner();
+          const obj =  this.autentication.generic(_atts);
 
-            obj.subscribe(
+          obj.subscribe(
               (data) => {
                 //debugger;
                 if (data.success === true) {
@@ -2173,21 +2049,14 @@ export class RkmainComponent implements OnInit,OnChanges {
                         //this.ver(this.nodoseleccionado);
                       }, 1000 );
 
-
-
                     }else{
                       this.controlService.closeSpinner(spinner);
-                      
+
                       this.recargarPadre();
 
                     }
 
-
-
-
-
                   }else{
-
 
                     // console.log(data.data[0].atts[0])
                     // console.log(data.data[0].atts[1])
@@ -2211,7 +2080,6 @@ export class RkmainComponent implements OnInit,OnChanges {
                          texto = texto + `${responsables[i]}<br>`
                       }
 
-
                       Swal2.fire({
                         title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
 
@@ -2226,12 +2094,12 @@ export class RkmainComponent implements OnInit,OnChanges {
                         if(result.value){
 
                           let _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
+                          _atts.push({ name: 'scriptName', value: 'coemdr' });
 
-            let _ids = [];
-            _ids = node.route.substring(4, node.route.length).split('/');
+                          let _ids = [];
+                          _ids = node.route.substring(4, node.route.length).split('/');
 
-            switch (_ids.length) {
+                          switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
                 break;
@@ -2258,39 +2126,39 @@ export class RkmainComponent implements OnInit,OnChanges {
                 break;
             }
 
-            if (_ids[0]) {
+                          if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
-            if (_ids[1]) {
+                          if (_ids[1]) {
               _atts.push({ name: 'procesoId', value: _ids[1] });
             }
-            if (_ids[2]) {
+                          if (_ids[2]) {
               _atts.push({ name: 'subprocesoId', value: _ids[2] });
             }
-            if (_ids[3]) {
+                          if (_ids[3]) {
               _atts.push({ name: 'actividadId', value: _ids[3] });
             }
-            if (_ids[4]) {
+                          if (_ids[4]) {
               _atts.push({ name: 'tareaId', value: _ids[4] });
             }
-            if (_ids[5]) {
+                          if (_ids[5]) {
               _atts.push({ name: 'dimensionId', value: _ids[5] });
             }
-            if (_ids[6]) {
+                          if (_ids[6]) {
               _atts.push({ name: 'riesgoId', value: _ids[6] });
             }
-            if (_ids[7]) {
+                          if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
 
-            _atts.push({ name: 'versionId', value: node.version });
-            _atts.push({ name: 'statusId', value: node.status });
-            _atts.push({ name: 'warning', value: 'Y' });
+                          _atts.push({ name: 'versionId', value: node.version });
+                          _atts.push({ name: 'statusId', value: node.status });
+                          _atts.push({ name: 'warning', value: 'Y' });
 
-            const spinner = this.controlService.openSpinner();
-            const obj =  this.autentication.generic(_atts);
+                          const spinner = this.controlService.openSpinner();
+                          const obj =  this.autentication.generic(_atts);
 
-            obj.subscribe((data) => {
+                          obj.subscribe((data) => {
 
               if(data.success === true){
 
@@ -2300,12 +2168,12 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // timer: 3500
 
                 })
-              this.controlService.closeSpinner(spinner);
+                this.controlService.closeSpinner(spinner);
 
                 // this.recargarPadre();
                 let recargable = localStorage.getItem('keySelected')
 
-                    if(recargable !==''){
+                if(recargable !==''){
 
                       this.router.navigate(['/rkmain/cargando']);
                       // console.log('main');
@@ -2316,8 +2184,6 @@ export class RkmainComponent implements OnInit,OnChanges {
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
                         //this.ver(this.nodoseleccionado);
                       }, 1000 );
-
-
 
                     }else{
 
@@ -2331,7 +2197,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                   icon:'error',
                   text: data.message
                 })
-              this.controlService.closeSpinner(spinner);
+                this.controlService.closeSpinner(spinner);
 
               }
               this.controlService.closeSpinner(spinner);
@@ -2351,7 +2217,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
-              this.controlService.closeSpinner(spinner);
+                  this.controlService.closeSpinner(spinner);
 
                 }
                 this.controlService.closeSpinner(spinner);
@@ -2360,15 +2226,13 @@ export class RkmainComponent implements OnInit,OnChanges {
               console.log(error)
                 //debugger
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
-                this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet5', node, false);
-                this.controlService.closeSpinner(spinner);
+              this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet5', node, false);
+              this.controlService.closeSpinner(spinner);
               });
         }
 
-
       })
     }
-
 
   }
   async nuevaArea() {
@@ -2407,15 +2271,12 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     })
 
-
-
-
   }
 
   RefrescarPantalla(){
     const currentRoute = this.router.url;
 
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                   this.router.navigate([currentRoute]); // navigate to same route
               });
   }
@@ -2447,17 +2308,16 @@ export class RkmainComponent implements OnInit,OnChanges {
             }
           });
 
-          conf.afterClosed()
+        conf.afterClosed()
           .subscribe(async (result) => {
 
             // console.log(result)
 
             if(!result){
 
-
                 let recargable = localStorage.getItem('keySelected')
 
-              if(recargable !==''){
+                if(recargable !==''){
 
                 // this.router.navigate(['/rkmain/cargando']);
                 // console.log('main');
@@ -2470,8 +2330,6 @@ export class RkmainComponent implements OnInit,OnChanges {
                   this.abrirNodo();
                   this.Cajas.RecargarDetalle$.emit(true)
 
-
-
               }else{
 
                 this.abrirNodo();
@@ -2479,16 +2337,10 @@ export class RkmainComponent implements OnInit,OnChanges {
               }
             }
 
-
-
-
           });
       }
 
     })
-
-
-
 
   }
 
@@ -2526,16 +2378,13 @@ export class RkmainComponent implements OnInit,OnChanges {
             if(!result){
               let recargable = localStorage.getItem('keySelected')
 
-            if(recargable !==''){
+              if(recargable !==''){
 
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-
-
                 this.abrirNodo();
                 this.Cajas.RecargarDetalle$.emit(true)
-
 
               // this.RefrescarPantalla()
               // setTimeout(() => {
@@ -2543,16 +2392,13 @@ export class RkmainComponent implements OnInit,OnChanges {
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 6000);
 
-
             }else{
 
               this.abrirNodo();
 
-
             }
 
             }
-
 
           });
       }
@@ -2597,15 +2443,13 @@ export class RkmainComponent implements OnInit,OnChanges {
             if(!result){
               let recargable = localStorage.getItem('keySelected')
 
-            if(recargable !==''){
-
+              if(recargable !==''){
 
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
                 this.abrirNodo();
                 this.Cajas.RecargarDetalle$.emit(true)
-
 
               // this.RefrescarPantalla()
               // setTimeout(() => {
@@ -2616,7 +2460,6 @@ export class RkmainComponent implements OnInit,OnChanges {
             }else{
 
               this.abrirNodo();
-
 
             }
 
@@ -2646,8 +2489,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         let conf = this.confirm.open(AddrktComponent, {
 
-
-
           hasBackdrop: true,
           height: 'auto',
           width: '500px',
@@ -2667,8 +2508,7 @@ export class RkmainComponent implements OnInit,OnChanges {
           if(!result){
             let recargable = localStorage.getItem('keySelected')
 
-          if(recargable !==''){
-
+            if(recargable !==''){
 
             // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
             // this.abrirNodo();
@@ -2685,11 +2525,9 @@ export class RkmainComponent implements OnInit,OnChanges {
             //   this.ExpandirNodos(this.nodoseleccionado)
             // }, 8000);
 
-
           }else{
 
             this.abrirNodo();
-
 
           }
 
@@ -2700,12 +2538,9 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     })
 
-
-
   }
 
   async nuevaDimension(_areaId: string, _procesoId: string, _subprocesoId: string, _actividadId: string, _tareaId: string) {
-
 
     Swal2.fire({
       title: 'Agregar Dimension',
@@ -2742,15 +2577,13 @@ export class RkmainComponent implements OnInit,OnChanges {
             if(!result){
               let recargable = localStorage.getItem('keySelected')
 
-            if(recargable !==''){
-
+              if(recargable !==''){
 
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
                 this.abrirNodo();
                 this.Cajas.RecargarDetalle$.emit(true)
-
 
               // this.RefrescarPantalla()
               // setTimeout(() => {
@@ -2761,7 +2594,6 @@ export class RkmainComponent implements OnInit,OnChanges {
             }else{
 
               this.abrirNodo();
-
 
             }
 
@@ -2813,8 +2645,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             if(!result){
               let recargable = localStorage.getItem('keySelected')
 
-            if(recargable !==''){
-
+              if(recargable !==''){
 
               // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
@@ -2822,18 +2653,15 @@ export class RkmainComponent implements OnInit,OnChanges {
                 this.abrirNodo();
                 this.Cajas.RecargarDetalle$.emit(true)
 
-
               // this.RefrescarPantalla()
               // setTimeout(() => {
 
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 10000);
 
-
             }else{
 
               this.abrirNodo();
-
 
             }
 
@@ -2842,8 +2670,6 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
 
     })
-
-
 
   }
 
@@ -2888,7 +2714,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
               // console.log(recargable);
 
-            if(recargable !==''){
+              if(recargable !==''){
 
                 //aqui*
                 this.abrirNodo();
@@ -2899,11 +2725,9 @@ export class RkmainComponent implements OnInit,OnChanges {
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 11000);
 
-
             }else{
 
               this.abrirNodo();
-
 
             }
 
@@ -2914,11 +2738,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     })
 
-
-
   }
-
-
 
   sendValidate() {
     if (localStorage.getItem('isSelectedNode') === 'true') {
@@ -2980,10 +2800,8 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
     const inputOptions = {
 
-
           'Y': 'Solo Padre',
           'N': 'Padre e Hijos',
-
 
     }
 
@@ -3005,13 +2823,9 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
     }
 
-
-
     })
 
-
     if (color ){
-
 
         let _atts = [];
         _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -3040,7 +2854,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                 let recargable = localStorage.getItem('keySelected')
 
-              if(recargable !==''){
+                if(recargable !==''){
 
                 this.router.navigate(['/rkmain/cargando']);
                 // console.log('main');
@@ -3075,16 +2889,11 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       }
 
-
-
-
-
   }
 
   verDetalleAprobacion(item: any) {
     this.router.navigate(['/rkmain/rkapprovals/' + item.key + '/' + item.status + '/' + item.version]);
   }
-
 
   async VerEnviarValidar() {
 
@@ -3104,9 +2913,8 @@ export class RkmainComponent implements OnInit,OnChanges {
         },
         panelClass : 'tabla'
 
-
       });
-      conf.afterClosed()
+    conf.afterClosed()
       .subscribe(async (result) => {
 
         if(result === 'undefined' || result === 'falso'){
@@ -3116,13 +2924,11 @@ export class RkmainComponent implements OnInit,OnChanges {
 
           if(result){
 
-
             // this.recargarArbol()
                 setTimeout(() => {
                   this.ExpandirNodos(result)
 
                 }, 3000);
-
 
           }
         }
@@ -3135,16 +2941,13 @@ export class RkmainComponent implements OnInit,OnChanges {
    * pruebaclick
    */
 
-
  ExpandirNodos(key:any){
 
   console.log(key)
   // const spinner = this.controlService.openSpinner()
   // this.PosicionAMover
 
-
-
-   let area = key.substring(0,2)
+  let area = key.substring(0,2)
   let proceso = key.substring(0,6)
   let subproceso = key.substring(0,10)
   let actividad = key.substring(0,14)
@@ -3154,8 +2957,6 @@ export class RkmainComponent implements OnInit,OnChanges {
   let consecuencia = key.substring(0,27)
 
   let desplegable = []
-
-
 
   // console.log(this.dataSource.data)
 
@@ -3169,36 +2970,31 @@ export class RkmainComponent implements OnInit,OnChanges {
       const spinner = this.controlService.openSpinner()
       console.log('area')
 
-                  let padre = this.dataSource.data.indexOf(level)
-                  console.log(padre)
-                  console.log(level.key)
-                  this.treeControl.expand(level)
-                  let band = true
+      let padre = this.dataSource.data.indexOf(level)
+      console.log(padre)
+      console.log(level.key)
+      this.treeControl.expand(level)
+      let band = true
                   // this.ver(level)
-                  if(key.length == area.length ){
+      if(key.length == area.length ){
                     document.getElementById(area).click()
 
                     document.getElementById(area).focus()
-
 
                     // this.ver(this.nivel2)
                     this.controlService.closeSpinner(spinner);
 
                   }
 
-
-
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('proceso')
 
-                      desplegable = JSON.parse(localStorage.getItem('comparar'))
+                    desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-                        for(let i = 0 ; desplegable.length; i++){
+                    for(let i = 0 ; desplegable.length; i++){
 
                           if(desplegable[i]['key']  === proceso){
-
-
 
                             console.log(desplegable[i])
                             this.nivel2 = padre+i+1;
@@ -3219,23 +3015,18 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                           }
 
-
-
                       }
                       // console.log( desplegable)
 
-
                   }, 2000);
 
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('subproceso')
 
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-
-
-                      for(let i = 0 ; desplegable.length; i++){
+                    for(let i = 0 ; desplegable.length; i++){
 
                       if(desplegable[i]['key']  === subproceso){
 
@@ -3254,15 +3045,13 @@ export class RkmainComponent implements OnInit,OnChanges {
                       }
                       }
 
-
                   }, 4000);
 
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('actividad')
 
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
-
 
                     for(let i = 0 ; desplegable.length; i++){
 
@@ -3288,15 +3077,13 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                   }, 6000);
 
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('tarea')
 
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-
-
-                      for(let i = 0 ; desplegable.length; i++){
+                    for(let i = 0 ; desplegable.length; i++){
 
                       if(desplegable[i]['key']  === tarea){
 
@@ -3317,17 +3104,14 @@ export class RkmainComponent implements OnInit,OnChanges {
                       }
                       }
 
-
                   }, 8500);
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('dimension')
 
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-
-
-                      for(let i = 0 ; desplegable.length; i++){
+                    for(let i = 0 ; desplegable.length; i++){
 
                         if(desplegable[i]['key']  === dimension){
 
@@ -3348,19 +3132,15 @@ export class RkmainComponent implements OnInit,OnChanges {
                         }
                         }
 
-
-
                   }, 10000);
 
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('dimension')
 
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-
-
-                      for(let i = 0 ; desplegable.length; i++){
+                    for(let i = 0 ; desplegable.length; i++){
 
                       if(desplegable[i]['key']  === riesgo){
 
@@ -3382,18 +3162,15 @@ export class RkmainComponent implements OnInit,OnChanges {
                       }
                       }
 
-
                   }, 12000);
 
-                  setTimeout(() => {
+      setTimeout(() => {
 
                     console.log('consecuencia')
 
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-
-
-                      for(let i = 0 ; desplegable.length; i++){
+                    for(let i = 0 ; desplegable.length; i++){
 
                       if(desplegable[i]['key']  === consecuencia){
 
@@ -3408,11 +3185,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                         // this.ver(this.nivel8)
                         this.controlService.closeSpinner(spinner);
 
-
-
                       }
                       }
-
 
                   }, 14000);
 
@@ -3420,24 +3194,15 @@ export class RkmainComponent implements OnInit,OnChanges {
                 // this.controlService.closeSpinner(spinner);
             }
 
-            let pos = document.getElementById(key)
-            pos.scrollIntoView()
+    let pos = document.getElementById(key)
+    pos.scrollIntoView()
 
-            this.controlService.closeSpinner(spinner);
+    this.controlService.closeSpinner(spinner);
           }
-
-
-
-
 
           // console.log("entre despues de la bandera")s
 
-
-
  }
-
-
-
 
   async VerEnviarAprobar() {
 
@@ -3455,7 +3220,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       },
 
-
     });
 
     conf.afterClosed()
@@ -3468,20 +3232,16 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         if(result){
 
-
           // this.recargarArbol()
               setTimeout(() => {
                 this.ExpandirNodos(result)
 
               }, 3000);
 
-
         }
       }
 
     })
-
-
 
   }
 
@@ -3513,20 +3273,16 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         if(result){
 
-
           // this.recargarArbol()
               setTimeout(() => {
                 this.ExpandirNodos(result)
 
               }, 3000);
 
-
         }
       }
 
     })
-
-
 
   }
 
@@ -3550,13 +3306,12 @@ export class RkmainComponent implements OnInit,OnChanges {
     .subscribe(async (result) => {
       console.log(result)
 
-        if(result === 'undefined' || result === 'falso'){
+      if(result === 'undefined' || result === 'falso'){
 
           this.cargarDashboard()
         }else{
 
           if(result){
-
 
             // this.recargarArbol()
                 setTimeout(() => {
@@ -3564,13 +3319,10 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                 }, 3000);
 
-
           }
         }
 
     })
-
-
 
   }
   aperfil() {
@@ -3596,7 +3348,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     //                 val: element.atts[5].value,
     //               });
     //             }
-
 
     //           });
     //           //debugger
@@ -3627,7 +3378,6 @@ export class RkmainComponent implements OnInit,OnChanges {
     //       });
     //     });
 
-
         this.mostrar();
 
       }
@@ -3640,27 +3390,21 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         return;
 
-
-
-
       default:
         break;
     }
-
 
   }
 
   async VerLeyenda(){
 
-
-
     this.confirm.open(LeyendaComponent,{
       hasBackdrop: true,
       height: 'auto',
-      width: 'auto',
+      width: '500px',
       data:
       {
-        title: 'Informacion',
+        title: 'Notificaciones',
         message: '',
         button_confirm: 'Cerrar',
         button_close: 'Cerrar'
@@ -3740,7 +3484,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   copy(node){
 
-
     switch(node.level){
 
       case 2:
@@ -3749,10 +3492,10 @@ export class RkmainComponent implements OnInit,OnChanges {
           break
       case 3:
         this.nodoPadreBloqueo = node.key.substring(0,6)
-          break
+        break
       case 4:
         this.nodoPadreBloqueo = node.key.substring(0,10)
-          break
+        break
       case 5:
         this.nodoPadreBloqueo = node.key.substring(0,14)
         break
@@ -3768,10 +3511,10 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         }
 
-        console.log(this.nodoPadreBloqueo)
+    console.log(this.nodoPadreBloqueo)
 
-        this.rutaimagen = true;
-        this.mostrarLimpiar = true
+    this.rutaimagen = true;
+    this.mostrarLimpiar = true
         // document.getElementById(this.nodocopiarkey).style.backgroundColor = '#d1f312'
 
     if(node){
@@ -3784,7 +3527,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       // console.log(a.getAttribute('color'))
 
-
       this.controlService.snackbarSucces('Jerarquia Copiada');
     }
 
@@ -3794,7 +3536,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     console.log(node)
     console.log(this.nodocopiar)
-
 
     let canI = this.compararNiveles(node.level, this.nodocopiar.level)
     let stutuspermitido = this.statusPadreCopy(node.status,node.level);
@@ -3808,7 +3549,6 @@ export class RkmainComponent implements OnInit,OnChanges {
         text:'Asegurese que esta intentanto pegar el item en su nivel correspondiente'
       })
 
-
     }else{
       if(stutuspermitido){
         Swal2.fire({
@@ -3819,12 +3559,9 @@ export class RkmainComponent implements OnInit,OnChanges {
           showCancelButton: true,
           cancelButtonText:'Cancelar',
 
-
-
         }).then((result)=>{
 
           if(result.value){
-
 
             this.copiadoJerarquia(node.key,this.nodocopiar.key)
 
@@ -3841,13 +3578,10 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       }
 
-
     }
   }
 
   drop(event:CdkDragDrop<string[]>){
-
-
 
     console.log(event)
 
@@ -3875,7 +3609,6 @@ export class RkmainComponent implements OnInit,OnChanges {
         text:'Asegurese que esta intentanto pegar el item en su nivel correspondiente'
       })
 
-
     }else{
       if(stutuspermitido){
         Swal2.fire({
@@ -3886,12 +3619,9 @@ export class RkmainComponent implements OnInit,OnChanges {
           showCancelButton: true,
           cancelButtonText:'Cancelar',
 
-
-
         }).then((result)=>{
 
           if(result.value){
-
 
             this.copiadoJerarquia(dad,key)
 
@@ -3908,7 +3638,6 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       }
 
-
     }
 
   }
@@ -3921,10 +3650,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     _atts.push({ name: 'nodoTo', value: nodeto });
     _atts.push({ name: 'nodoFrom', value: nodefrom });
 
-
-
     const spinner = this.controlService.openSpinner();
-
 
     const obj =  this.autentication.generic(_atts);
 
@@ -3945,9 +3671,6 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.nivelpermitido = ''
           this.nodoPadreBloqueo = ''
           this.cambiarColor = false
-
-
-
 
           this.treeControl.collapse(this.CopyPaste);
           this.treeControl.expand(this.CopyPaste);
@@ -3970,11 +3693,7 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
-
-
   //cerrar Session al cerrar pestaña
-
-
 
   @HostListener('window:beforeunload', ['$event'])
 beforeunloadHandler(event) {
@@ -3984,7 +3703,91 @@ beforeunloadHandler(event) {
     this.autentication.BorrarStorage()
 }
 
+mostrarNotificaciones(){
 
+  this.confirm.open(NotificacionesComponent,{
+    hasBackdrop: true,
+    height: 'auto',
+    width: 'auto',
+    data:
+    {
+      title: 'Informacion',
+      message: '',
+      button_confirm: 'Ok',
+      button_close: 'Cerrar'
 
+    }
+  }).afterClosed().subscribe( (valoresEliminar) => {
+      if ( valoresEliminar !== false ) {
+
+        const _atts = [];
+        _atts.push( { name: 'scriptName', value: 'coemdr' } );
+        _atts.push( { name: 'action', value: 'NOTIFICATION_DELETE' } );
+        _atts.push( { name: 'keyValue', value: valoresEliminar } );
+
+        console.log(_atts)
+        this.autentication.generic(_atts)
+        .subscribe( ( data )=> {
+          console.log(data);
+          const result = data.success;
+          if (result) {
+              console.log('eliminados');
+              this.notificacionesPendientes()
+            } else {
+              // this.controlService.closeSpinner(spinner);
+
+              console.log(data.error);
+            }
+          return result;
+        });
+      }
+  });
+}
+
+notificacionesPendientes(){
+  let _atts = [];
+  _atts.push({ name: 'scriptName', value: 'coemdr' });
+  _atts.push({ name: 'action', value: 'NOTIFICACION_STATUS' });
+
+  this.autentication.generic(_atts)
+        .subscribe(
+          (data) => {
+            console.log(data);
+            const result = data.success;
+            if (result) {
+
+              this.notificacionesList = {
+                notificaciones: data.data[0].atts[0].value.trim(),
+
+              };
+              debugger
+              if(data.data[0].atts[0].value.trim() === '1') {
+
+                this.claseNotificacion = 'img-circle bell';
+                this.bloqueado = false ;
+                this.icon = 'notifications';
+                // this.cambiarColorNotificacion()
+                
+              }else{
+                this.claseNotificacion = 'img-circle';
+                this.bloqueado = true ;
+                this.icon = 'notifications';
+                // this.cambiarColorNotificacion()
+
+              }
+
+            } else {
+              // this.controlService.closeSpinner(spinner);
+
+              this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
+            }
+            return result;
+          });
+
+}
+
+cambiarColorNotificacion(){
+  this.estadoPositivo = !this.estadoPositivo;
+}
 
 }
