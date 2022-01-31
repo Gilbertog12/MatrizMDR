@@ -28,7 +28,7 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import * as $ from 'jquery';
 
 import Swal from 'sweetalert'
-// import Swal2 from 
+// import Swal2 from
 
 import Swal2 from 'sweetalert2'
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
@@ -42,6 +42,10 @@ import { NgClass } from '@angular/common';
 import { ServiciocajasService } from '../../shared/services/serviciocajas.service';
 import { AutologoutService } from '../../shared/services/autologout.service';
 import { state } from '@angular/animations';
+import { includes } from 'core-js/fn/array';
+import { isNullOrUndefined } from 'util';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -52,45 +56,46 @@ import { state } from '@angular/animations';
 export class DynamicFlatNode {
   constructor(public item: string, public level = 1, public expandable = false,
     public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [],public hijo:string,public canAdd:string, public permiso:string, public perfiles:string,public pendingDelete:string ,public StatusPadre:boolean, public displayDeleteIcon:string) { }
-    
-    
-    
-    
+
+
+
+
   }
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   // tslint:disable-next-line:max-classes-per-file
   @Injectable()
   export class DynamicDataSource {
-    
-    
-    
-    
+
+
+
+
     dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
-    
+
     get data(): DynamicFlatNode[] { return this.dataChange.value; }
     set data(value: DynamicFlatNode[]) {
       this._treeControl.dataNodes = value;
       this.dataChange.next(value);
     }
-    
+
     public comparador:any
     public response:any
     public SL:string
-  
-  
+
+
 
   constructor(
     public _treeControl: FlatTreeControl<DynamicFlatNode>,
-    private autentication: AuthenticationService) { }
+    private autentication: AuthenticationService,
+    private ControlsService:ControlsService) { }
 
 
-   
-    
+
+
 
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
@@ -113,14 +118,16 @@ export class DynamicFlatNode {
       change.removed.slice().reverse().forEach(node => this.toggleNode(node, false));
     }
   }
-  
 
-  
+
+
   /**
    * Toggle the node, remove from display list
    */
-  toggleNode(node: DynamicFlatNode, expand: boolean) 
+  toggleNode(node: DynamicFlatNode, expand: boolean)
   {
+
+
       // console.log(this.data.indexOf(node))
       const index = this.data.indexOf(node);
       if (!expand) {
@@ -135,43 +142,47 @@ export class DynamicFlatNode {
         else {
           node.isLoading = true;
         //console.log(node);
-  
+
         let params = [];
         params.push({ name: 'scriptName', value: 'coemdr' });
         params.push({ name: 'action', value: 'SEARCH_NODE' });
         params.push({ name: 'level', value: node.level + 1 });
         params.push({ name: 'id', value: node.key });
         let response = [];
-        
+
         let espacios = [];
         for (let _i = 0; _i < node.level + 1; _i++) {
           if(node.level == 8){
 
-            espacios.push(_i+9);
+            espacios.push(_i+5);
           }else{
             espacios.push(_i+2);
-            
+
           }
         }
+
+        const spinner = this.ControlsService.openSpinner();
         
+
         this.autentication.generic(params)
         .subscribe(data => {
           // console.log(data)
           let jsonObject: JSON = data as JSON;
-          
+
           if (data['success'] === true) {
 
-            
-            
+
+
             data['data'].forEach(function (value) {
-              let name = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
+              let name = value['atts'][1]['value'].trim() + ' - ' + value['atts'][2]['value'].trim();
+              name = name.trimRight()
               let key = value['atts'][7]['value'];
               let status = value['atts'][3]['value'];
               let version = value['atts'][4]['value'];
               let hijo = value['atts'][9]['value'];
               let route = '';
               let canAdd = value['atts'][12]['value'];
-          
+
               let perfiles = value['atts'][15]['value']+value['atts'][16]['value']+value['atts'][17]['value']+value['atts'][18]['value']+value['atts'][19]['value']
               let pendingDelete = value['atts'][20]['value'];
 
@@ -180,7 +191,7 @@ export class DynamicFlatNode {
               let flag
               if(parseInt(status)< parseInt(statusParent)){
                 var StatusPadre = true
-                
+
               }else{
                 var StatusPadre = false
               }
@@ -196,9 +207,9 @@ export class DynamicFlatNode {
             let permiso = canAdd+lectura
             //  let permiso = lectura
             localStorage.setItem('sololectura',permiso)
-              
+
               localStorage.setItem('canAdd',canAdd)
-              
+
               switch (node.level + 1) {
                 case 1:
                   route = 'rka/' + key;
@@ -229,24 +240,31 @@ export class DynamicFlatNode {
               });
 
 
-              
-              
+
+
               localStorage.setItem('comparar', JSON.stringify(response))
-              
-              
+
+
               this.data.splice(index + 1, 0, ...response);
-              
+
               // console.log(this.data)
               node.isLoading = false;
               // notify the change
               this.dataChange.next(this.data);
-              
+
+
+              this.ControlsService.closeSpinner(spinner);
+
+
             } else {
+              this.ControlsService.closeSpinner(spinner);
+
               this.autentication.showMessage(data.success, data.message, data['data'], data.redirect);
             }
-            
+
           },
           error => {
+            this.ControlsService.closeSpinner(spinner);
             if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet1', {}, false); }
             console.log(error);
           });
@@ -254,7 +272,7 @@ export class DynamicFlatNode {
       }
 
 
-      
+
       addSubNode(index: number, name: string, isExpandable: boolean ,) {
         const node = this.data[index];
         let espacios = [];
@@ -280,7 +298,7 @@ export class DynamicFlatNode {
       StatusPadre: false,
       displayDeleteIcon: ''
 
-      
+
     }
     this.data.splice(index + 1, 0, ...[dfn]);
     this.dataChange.next(this.data);
@@ -309,7 +327,7 @@ export class DynamicFlatNode {
       pendingDelete: '',
       StatusPadre: false,
       displayDeleteIcon: ''
-      
+
     }
     this.data.splice(index + 1, 0, ...[dfn]);
     this.data = [...this.data];
@@ -348,15 +366,15 @@ export class DynamicFlatNode {
 })
 
 export class RkmainComponent implements OnInit,OnChanges {
-  
+
 
 
   @ViewChild(RkpendComponent) child;
-  
+
   public cambio:DynamicDataSource;
   date = new Date().getFullYear();
-  
-  
+
+
   public href: any = '';
   public showDashboard: Boolean = false;
   public color = 'accent';
@@ -374,7 +392,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   public validador: string;
   public refrescrar : string
   public havechild: string;
-  // 
+  //
   public sw: string;
   public Activo = ''
   public enviar: string;
@@ -426,8 +444,8 @@ export class RkmainComponent implements OnInit,OnChanges {
     TOTAL: 0,
     TOTAL_EV: 0,
     TOTAL_EA: 0,
-    
-    
+
+
   };
   public pendientes: any = {
     AREA: '',
@@ -476,7 +494,7 @@ export class RkmainComponent implements OnInit,OnChanges {
   segundos: number = 59;
 
    // PolarArea
-  
+
    public barChartData: ChartDataSets[] = [
     { data: [300, 100, 40, 120] }
   ];
@@ -519,13 +537,13 @@ export class RkmainComponent implements OnInit,OnChanges {
   display: false,
  }
   };
-   
+
   public barChartLabels: Label[] = ['ITEMS PENDIENTES DE VALIDAR',
                                     'ITEMS PENDIENTES DE VALIDAR',
-                                     'ITEMS RECHAZADOS', 
+                                     'ITEMS RECHAZADOS',
                                      'ITEMS PENDIENTES POR APROBAR'];
 
-  
+
    public chartColors: Array<any> = [
     {
       backgroundColor: [
@@ -536,21 +554,31 @@ export class RkmainComponent implements OnInit,OnChanges {
         "rgba(59, 133, 205, 0.8)"
       ]
     },
-    
+
   ];
 
 
-  
- 
+
+
    public barChartType: ChartType = 'bar';
   t:any;
   PosicionAMover: any;
   accion: { name: string; value: string; };
   mensajeCopiado: string;
 
+  rutaimagen: boolean = true;
+  nodocopiar: any;
+  mostrarLimpiar: boolean = false;
+  nivelpermitido: any;
+  nodoPadreBloqueo: string;
+  nodocopiarkey: any;
+  cambiarColor: boolean = false;
+  accionElmininar: string;
+  nivelEliminar: string;
+
   //mmetodos para hacer logout automatico
 
-  
+
 
   constructor(
     private autentication: AuthenticationService,
@@ -564,21 +592,21 @@ export class RkmainComponent implements OnInit,OnChanges {
     public rutas:ActivatedRoute,
     public logout:AutologoutService) {
       // consola.log(this.comparador)
-      
-      
+
+
       this.rutas.params.subscribe( parametros => {
         // console.log(parametros)
         this.cj = parametros
       })
-    
-    
-   
+
+
+
     // this.aperfil()
-    
+
   }
 
-    
-    
+
+
     ngOnInit() {
       // this.showDashboard = true
       this.href = this.router.url;
@@ -586,32 +614,32 @@ export class RkmainComponent implements OnInit,OnChanges {
 
       const a =  this.router.events.subscribe((val) => {
           // console.log(val)
-          // //debugger;
+          // ////debugger;
         if (val['url'] !== undefined) {
           this.href = val['url'];
           if (this.href === '/rkmain' && this.showDashboard === false) {
             this.showDashboard = true;
-           
+
           }
           else {
             this.showDashboard = false;
           }
-          
+
         }
       });
 
-    
-      
+
+
       // this.cargarDashboard()
       this.Vcompilacion = '4.2.2'
-    var  mensaje = 
+    var  mensaje =
     `    ======================================
-              Version ${this.Vcompilacion}     
+              Version ${this.Vcompilacion}
     ======================================`
 
     // var mensaje  = '======================================'+'\n'+
     //                '=  Version :'+this.Vcompilacion+' '+'='+'\n'+
-    //                '======================================' 
+    //                '======================================'
     let colorM = 'Green'
     console.log(`%c${mensaje}`, `color:${colorM}`)
     // localStorage.setItem('recargarAprobaciones', 'false');
@@ -622,25 +650,25 @@ export class RkmainComponent implements OnInit,OnChanges {
     // this.idleLogout();
     // window.addEventListener('mousemove', this.resetear, true);
 
-							 
-    // this.cargarDashboardData(); 
-    
+
+    // this.cargarDashboardData();
+
     // console.log(this.SL)
-    
+
 
 
     this.Cajas.Recargar$.subscribe(resp=>{
-      if(resp){      
-      debugger
+      if(resp){
+      //debugger
       // this.abrirNodo()
       this.refrescoItemModificado()
-            
+
       }
     })
 
-    
-    
-    
+
+
+
     this.usuario = localStorage.getItem('Usuario')
     this.posicion = localStorage.getItem('Posicion')
     this.distrito = localStorage.getItem('Distrito')
@@ -650,21 +678,21 @@ export class RkmainComponent implements OnInit,OnChanges {
     // if (this.href === '/rkmain') {
     //   this.cargarDashboard();
     // }
-    //observable que mantiene escuchando cambios para el tema del refresh  
+    //observable que mantiene escuchando cambios para el tema del refresh
     this.sub = Observable.interval(3000)
-    .subscribe((val) => { 
+    .subscribe((val) => {
       if(localStorage.getItem('isSendToValidate')==='1'){
-        localStorage.setItem('isSendToValidate', '0');    
+        localStorage.setItem('isSendToValidate', '0');
         let key = localStorage.getItem('keySelected');
         // console.log(key)
         // console.log('ejecuto');
-        
+
 
         // this.abrirNodoYSeleccionar();
         this.recargarPadre();
-        // this.router.navigate(['/rkmain/']); 
-        
-        
+        // this.router.navigate(['/rkmain/']);
+
+
       }
     });
   }
@@ -672,47 +700,47 @@ export class RkmainComponent implements OnInit,OnChanges {
     console.log('limpie')
  }
 
-  
+
   reloj(rset?:boolean){
-  
+
     let t  = setInterval(() =>{
 
       if(--this.segundos<0){
         this.segundos = 59;
         if(--this.minutos < 0){
-          //debugger
+          ////debugger
           clearInterval(t)
           this.autentication.logout()
         }
       }
-      
+
     },1000)
      console.log(`${this.minutos} : ${this.segundos}`)
 
-    
+
 
   }
-  
+
   SinPermisos(){
     //Esta funcion se ejecuta cuando la posicion no tiene permisos de creacion o Elimninacion , despliega un mensaje de error!
-    
+
     Swal2.fire({
       icon:'error',
       html:'Posicion '+this.posicion.bold()+' no tiene Priveligios'
       // background:'#A8A4A3',
-      
+
     })
   }
 
   ngOnChanges(){
 
 
-    
+
   }
 
- 
- 
- 
+
+
+
   public cargarDashboardData() {
         let t;
     const parentThis = this;
@@ -721,17 +749,17 @@ export class RkmainComponent implements OnInit,OnChanges {
         this.minutos = 4;
         this.segundos = 59;
       }
-  
+
       // window.addEventListener('mousemove',this.t)
       if(--this.segundos<0){
         this.segundos = 59;
         if(--this.minutos < 0){
-          //debugger
+          ////debugger
           clearInterval(this.t)
           this.autentication.logout()
         }
       }
-  
+
     }
 
     window.onload = resetTimer;
@@ -740,20 +768,20 @@ export class RkmainComponent implements OnInit,OnChanges {
     function resetTimer() {
 
       clearInterval(t);
-           
+
       t = setTimeout(() => {
-        //console.log(localStorage.getItem('recargarAprobaciones'));  
+        //console.log(localStorage.getItem('recargarAprobaciones'));
         reloj(true)
-        
+
       }, 1000);
 
     }
 
   }
 
-  
 
-  
+
+
 
   cargarDashboard() {
     let _atts = [];
@@ -819,7 +847,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   }
 
-  
+
   switchToTree() {
     this.recargarArbol();
   }
@@ -877,7 +905,7 @@ export class RkmainComponent implements OnInit,OnChanges {
             if (result) {
 
               data.data.forEach((element) => {
-                
+
                 if (element.atts.length > 0) {
                   this.aprobacionesList.push({
                     offset: element.atts[0].value,
@@ -893,7 +921,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
                 }
               });
-              
+
               localStorage.setItem('isSelectedNode', 'false');
               localStorage.setItem('keySelected', '');
               localStorage.setItem('versionSelected', '');
@@ -915,12 +943,12 @@ export class RkmainComponent implements OnInit,OnChanges {
   }
 
   abrirNodo(recarga?) {
-    
+
     // this.treeControl.collapseAll()
 
     // this.treeControl.expandAll()
-    
-    //debugger
+
+    ////debugger
     if(recarga){
 
       this.recargarArbol(true);
@@ -929,13 +957,13 @@ export class RkmainComponent implements OnInit,OnChanges {
     this.treeControl.expand(this.getSelection);
     this.getSelection= this.getSelection
     }
-    
 
-    
+
+
     // console.log(this.getSelection)
     // localStorage.setItem('seleccion',this.getSelection)
     // this.mostrarNivelesSuperiores()
-    
+
   };
 
   mostrarNivelesSuperiores(){
@@ -964,43 +992,43 @@ export class RkmainComponent implements OnInit,OnChanges {
     // console.log(key)
 
     if(key.length == 2){
-      
+
       this.recargarArbol()
         document.getElementById(key).style.backgroundColor= '#cff5e9';
     }else{
-      
+
       // console.log('estoy aqui')
       // console.log(key)
       // console.log(this.getSelection)
       this.treeControl.collapse(JSON.parse(localStorage.getItem('comparar')));
       this.treeControl.expand(JSON.parse(localStorage.getItem('comparar')));
       // console.log(JSON.parse(localStorage.getItem('comparar')))
-     
+
     }
     // this.abrirNodo()
-    
+
     // this.treeControl.collapse(this.treeControl.dataNodes[key])
     // this.treeControl.expand(this.treeControl.dataNodes[key])
-    
+
     // if(key.length == 2){
     //     this.recargarArbol();
 
     // }else{
     //   document.getElementById(key).style.backgroundColor= '#cff5e9';
-      
+
     // }
-    
-    
+
+
       // console.log(document.getElementById(key))
-      
-    
+
+
     // this.ver(localStorage.getItem('keySelected'))
   };
 
   recargarPadre(ruta?) {
     console.log(this.getSelection)
     let getParent
-    // //debugger;
+    // ////debugger;
     console.log(ruta)
     // console.log(this.getSelection)
     // this.getSelection = getParent;
@@ -1012,23 +1040,23 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
- 
-  
+
+
   recargarArbol(arbol?:boolean) {
-    //debugger
+    ////debugger
 
     this.isLoading = true;
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
 
-    this.dataSource = new DynamicDataSource(this.treeControl, this.autentication);
+    this.dataSource = new DynamicDataSource(this.treeControl, this.autentication,this.controlService);
 
     let params = [];
     params.push({ name: 'scriptName', value: 'coemdr' });
     params.push({ name: 'action', value: 'SEARCH_NODE' });
     params.push({ name: 'level', value: '1' });
     params.push({ name: 'id', value: '' });
-   
-    
+
+
 
     let response = [];
     let prueba=[]
@@ -1037,82 +1065,82 @@ export class RkmainComponent implements OnInit,OnChanges {
       .subscribe(data => {
         // console.log(data)
         let jsonObject: JSON = data as JSON;
-        
+
         if (data['success'] === true) {
               // console.log(data)
 
-              
+
 
           data['data'].forEach(function (value) {
             let key: string = value['atts'][7]['value'];
             let name: string = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
             let status = value['atts'][3]['value'];
             let version = value['atts'][4]['value'];
-            let hijo = value['atts'][9]['value'];           
+            let hijo = value['atts'][9]['value'];
 
             let canAdd = value['atts'][12]['value']
-            
+
             var perfiles = value['atts'][15]['value']+value['atts'][16]['value']+value['atts'][17]['value']+value['atts'][18]['value']+value['atts'][19]['value']
             let pendingDelete = value['atts'][20]['value'];
             let statusParent = value['atts'][22]['value'];
             let displayDeleteIcon = value['atts'][23]['value'];
             // this.cargo = perfil
-            
-            
+
+
             if(parseInt(status)< parseInt(statusParent)){
               var StatusPadre = true
-              
+
             }else{
               var StatusPadre = false
             }
-            
+
             switch(perfiles){
                 case 'NNYNN':
                   var NoCreador = 'Y'
                   break;
                 case 'NYYNY'://APROBADORVALIDADOR
-                   NoCreador = 'Y' 
+                   NoCreador = 'Y'
                   break;
-                
+
                 case 'NNYNY'://VALIDADOR
-                   NoCreador = 'Y' 
+                   NoCreador = 'Y'
                   break;
-                
+
                 case 'NYYNN'://APROBADOR
-                   NoCreador = 'Y' 
+                   NoCreador = 'Y'
                   break;
-                
+
                   case 'YYYNY'://Administrador
-                   NoCreador = 'Y' 
+                   NoCreador = 'Y'
                   break;
 
                   case 'YNYNY'://
-                   NoCreador = 'Y' 
+                   NoCreador = 'Y'
                   break;
 
                   case 'YNYNN'://
-                   NoCreador = 'Y' 
+                   NoCreador = 'Y'
                   break;
 
-               
-                
-                
-                
+
+
+
+
                   default:
                      NoCreador  = 'N'
                     break;
-                    
+
             }
 
             localStorage.setItem('noCreador',NoCreador)
-            
+
             if(perfiles === 'NNYNN'){
               var lectura = 'Y'
             }else{
               var lectura = 'N'
             }
 
-            
+
             let BloqueoDesdePadre = StatusPadre
             let permiso = canAdd+lectura
             let Pcreador = NoCreador
@@ -1126,21 +1154,21 @@ export class RkmainComponent implements OnInit,OnChanges {
             localStorage.setItem('canAdd',canAdd)
 
             // console.log(localStorage.getItem('canAdd'))
-            
-            
+
+
             response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [],hijo,canAdd,permiso,perfiles,pendingDelete,StatusPadre,displayDeleteIcon));
-            
+
           });
 
-          
+
           // console.log(prueba);
           // console.log(response);
-          
+
           this.dataSource.data = response;
           console.log(this.dataSource.data)
           this.Cajas.permiso = this.dataSource.data[0].perfiles
           console.log(this.Cajas.permiso)
-          
+
           localStorage.setItem('PerfilRkj', this.Cajas.permiso);
           localStorage.setItem('isSelectedNode', 'false');
           localStorage.setItem('keySelected', '');
@@ -1150,42 +1178,43 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.StatusPadre=localStorage.getItem('StatusPadre')
           this.percreacion = localStorage.getItem('NoCreador')
           // console.log(this.fix )
-          
-          
+
+
         } else {
           // data.success = 'I'
           this.autentication.showMessage(data.success, data.message, data['data'], data.redirect);
         }
         this.isLoading = false;
        // if(arbol){
-          //debugger
+          ////debugger
 
-         // this.ExpandirNodos(this.getSelection.key) 
+         // this.ExpandirNodos(this.getSelection.key)
         //}
         // this.bandera = true;
       },
         error => {
-          if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet3', {}, false); }
           console.log(error);
+
+          if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet3', {}, false); }
         });
 
-        
+
         // let key = localStorage.getItem('UltimoEnviado')
         // if(key != ''){
 
         //   console.log(key)
-      
-      
+
+
         // // console.log(document.getElementById(key))
         // document.getElementById(key).style.backgroundColor= '#cff5e9';
         // // document.getElementById(key).className= 'background-highlight';
         // }
 
-        
+
   }
-  
- 
- 
+
+
+
   addNode() {
     this.dataSource.addNode(0, 'New Node', true);
   }
@@ -1201,13 +1230,13 @@ export class RkmainComponent implements OnInit,OnChanges {
   // dataprueba: DynamicFlatNode;
 
   getLevel = (node: DynamicFlatNode) => node.level;
-  
+
 
   isExpandable = (node: DynamicFlatNode) => node.expandable;
 
   hasChild = (_: number, _nodeData: DynamicFlatNode) => { return _nodeData.expandable; };
 
-  
+
   nuevo(nodo: any) {
 
     this.getSelection = nodo;
@@ -1237,7 +1266,7 @@ export class RkmainComponent implements OnInit,OnChanges {
         break;
       case 8:
 
-      
+
         Swal2.fire({
 
           title:'No hay mas niveles',
@@ -1246,18 +1275,18 @@ export class RkmainComponent implements OnInit,OnChanges {
           timer: 2000
         }
         )
-      
+
         break;
     }
   }
 
   ver(nodo: any) {
-    
+
     // localStorage.setItem('nodo',JSON.stringify(nodo))
 
     this.getSelection= nodo
 
-    
+
 
     this.router.navigate(['/rkmain/' + nodo.route]);
     localStorage.setItem('isSelectedNode', 'true');
@@ -1273,11 +1302,11 @@ export class RkmainComponent implements OnInit,OnChanges {
     this.nodoseleccionado = localStorage.getItem('itemseleccionado')
 
     /*let a:any = localStorage.getItem('itemseleccionado')
-    
-    
+
+
     a= a.slice(4,nodo.route.length)
     // a = a.split('/')
-    
+
     if (a[0]) {
       this.nodoseleccionado =a[0];
     }
@@ -1288,48 +1317,48 @@ export class RkmainComponent implements OnInit,OnChanges {
       this.nodoseleccionado = a[0]+a[1]+a[2]
     }
     if (a[3]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3] 
+      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]
     }
     if (a[4]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4] 
+      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]
     }
     if (a[5]) {
-      this.nodoseleccionado =a[0]+a[1]+a[2]+a[3]+a[4]+a[5] 
+      this.nodoseleccionado =a[0]+a[1]+a[2]+a[3]+a[4]+a[5]
     }
     if (a[6]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6] 
+      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]
     }
     if (a[7]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]+a[7] 
+      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]+a[7]
     }*/
 
     // console.log(this.nodoseleccionado)
 
-    
-    
+
+
     this.HabilitarEnvioValidacion();
     // this.ruta = localStorage.getItem('keySelected');
-    
+
     //console.log(nodo);
   }
-  
+
 
   HabilitarEnvioValidacion(){
 
     this.Activo = localStorage.getItem('statusSelected')
     this.StatusPadre = localStorage.getItem('StatusPadre')
-    
+
 
   }
-  
-  // //debugger;
+
+  // ////debugger;
   verTable(item: any) {
     //alert(item.ruta.trim().length.toString());
     switch (item.key.trim().length.toString()) {
       case '2':
         this.router.navigate(['/rka/' + item.key]);
         // console.log(item.key + 'hola')
-                
+
         break;
       case '6':
         this.router.navigate(['/rkmain/rkp/' + item.key.substring(0, 2) + '/' + item.key.substring(2, 6)]);
@@ -1352,32 +1381,34 @@ export class RkmainComponent implements OnInit,OnChanges {
       case '27':
         this.router.navigate(['/rkmain/rky/' + item.key.substring(0, 2) + '/' + item.key.substring(2, 6) + '/' + item.key.substring(6, 10) + '/' + item.key.substring(10, 14) + '/' + item.key.substring(14, 18) + '/' + item.key.substring(18, 19) + '/' + item.key.substring(19, 23) + '/' + item.key.substring(23, 27)]);
         break;
-        
+
       default:
         this.rutaCjas = '/rkmain/rkapprovals/'+this.cj
         this.router.navigate([this.rutaCjas])
-      
+
     }
   }
 
- 
 
-  
+
+
   @ViewChildren(MatTreeNode, { read: ElementRef }) treeNodes: ElementRef[];
+
+  clase = "background-highlight"
   hasListener: any[] = [];
   oldHighlight: ElementRef;
 
   updateHighlight = (newHighlight: ElementRef) => {
-    this.oldHighlight && this.renderer.removeClass(this.oldHighlight.nativeElement, 'background-highlight');
+    this.oldHighlight && this.renderer.removeClass(this.oldHighlight.nativeElement, this.clase);
 
-    this.renderer.addClass(newHighlight.nativeElement, 'background-highlight');
+    this.renderer.addClass(newHighlight.nativeElement, this.clase);
     this.oldHighlight = newHighlight;
   }
 
   ngAfterViewChecked() {
     this.treeNodes.forEach((reference) => {
       if (!this.hasListener.includes(reference.nativeElement)) {
-        //console.log('* tick');
+        // console.log('* tick');
 
         this.renderer.listen(reference.nativeElement, 'click', () => {
           this.updateHighlight(reference);
@@ -1386,13 +1417,12 @@ export class RkmainComponent implements OnInit,OnChanges {
           this.updateHighlight(reference);
         });
 
-        this.hasListener = this.hasListener.concat([reference.nativeElement]);
+        this.hasListener = this.hasListener.concat([ reference.nativeElement ]);
       }
     });
 
-    //console.log(this.hasListener);
     this.hasListener = this.hasListener.filter((element) => document.contains(element));
-    //console.log('*', this.hasListener.length);
+    // console.log('*', this.hasListener.length);
   }
 
 	 mensajes(status?:string ){
@@ -1414,9 +1444,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                   TOTAL: element.atts[1].value.trim(),
                   TOTAL_EV: element.atts[2].value.trim(),
                   TOTAL_EA: element.atts[3].value.trim(),
-                  
+
                 }
-          
+
         });
 
         // data.data.forEach((element) => {
@@ -1425,21 +1455,21 @@ export class RkmainComponent implements OnInit,OnChanges {
         //       TOTAL: element.atts[1].value.trim(),
         //       TOTAL_EV: element.atts[2].value.trim(),
         //       TOTAL_EA: element.atts[3].value.trim(),
-              
+
         //     });
         //   }
         // this.PendientesNodo ={
         //   TOTAL: data.data[0].atts[1].value.trim(),
         //   TOTAL_EV: data.data[0].atts[2].value.trim(),
         //   TOTAL_EA: data.data[0].atts[3].value.trim(),
-          
+
         // }
         // return this.PendientesNodo
       // }
 
           // console.log(this.PendientesNodo)
         }
-    
+
 
     }))
     this.controlService.closeSpinner(spinner);
@@ -1448,15 +1478,15 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
 
-  }	   
+  }
 
   refrescoItemModificado(){
 
-    debugger
+    //debugger
     for (let i =0 ;i<this.dataSource.data.length; i++){
 
 
-      
+
       if(this.dataSource.data[i] === this.getSelection){
 
         if(this.dataSource.data[i].level === 1){
@@ -1467,14 +1497,240 @@ export class RkmainComponent implements OnInit,OnChanges {
 
           console.log(this.dataSource.data[i])
             let i2 = i-1
-          this.getSelection = this.dataSource.data[i2] 
+          this.getSelection = this.dataSource.data[i2]
           this.recargarPadre()
         }
       }
-    
+
     }
   }
-  
+
+  nivelSuperior(level,key){
+
+    switch(level){
+      case 1:
+        this.nivelEliminar = 'areaId'
+        this.accionElmininar ='AREA_DELETE'
+        return '';
+      case 2:
+        this.nivelEliminar = 'procesoId'
+
+        this.accionElmininar ='PROCESO_DELETE'
+        return key.substring(0,2);
+        case 3:
+        this.nivelEliminar = 'subprocesoId'
+
+        this.accionElmininar ='SUBPROCESO_DELETE'
+        return key.substring(0,6);
+        case 4:
+        this.nivelEliminar = 'actividadId'
+
+        this.accionElmininar ='ACTIVIDAD_DELETE'
+        return key.substring(0,10);
+        case 5:
+        this.nivelEliminar = 'tareaId'
+
+        this.accionElmininar ='TAREA_DELETE'
+        return key.substring(0,14);
+        case 6:
+        this.nivelEliminar = 'dimensionId'
+
+        this.accionElmininar ='DIMENSION_DELETE'
+        return key.substring(0,18);
+        case 7:
+        this.nivelEliminar = 'riesgoId'
+
+        this.accionElmininar ='RIESGO_DELETE'
+        return key.substring(0,19);
+        case 8:
+        this.nivelEliminar = 'consecuenciaId'
+
+        this.accionElmininar ='CONSECUENCIA_DELETE'
+        return key.substring(0,23);
+
+      }
+
+  }
+
+
+
+  async eliminarn(node){
+    for (let i =0 ;i<this.dataSource.data.length; i++){
+
+      if(this.dataSource.data[i] === node){
+
+        let levelUp = this.nivelSuperior(node.level,node.key)
+
+        if(levelUp !== ''){
+
+          for(let i =0 ;i<this.dataSource.data.length; i++){
+            if(this.dataSource.data[i].key === levelUp){
+
+              console.log(this.dataSource.data[i])
+              this.getSelection = this.dataSource.data[i]
+
+            }
+          }
+        }else{
+          this.getSelection = undefined
+        }
+
+        if(node.status === '008'){
+
+          Swal2.fire({
+            title: '<strong style="color:red">ADVERTENCIA !</strong>',
+            html:
+                'Al eliminar este Registro,se eliminarán todos sus HIJOS <br> aún estando <strong style="color:#5672C4">Aprobados</strong>. ' +
+                '</br> <b style="color:#5672C4">¿ Desea continuar?</b>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor: '#d33'
+          }).then(result=>{
+
+            if(result.value){
+
+              let _atts = [];
+              let _ids = [];
+              _ids = node.route.substring(4, node.route.length).split('/');
+
+              _atts.push({ name: 'scriptName', value: 'coemdr' });
+              _atts.push({ name: 'action', value: this.accionElmininar });
+              if (_ids[0]) {
+                _atts.push({ name: 'areaId', value: _ids[0] });
+              }
+              if (_ids[1]) {
+                _atts.push({ name: 'procesoId', value: _ids[1] });
+              }
+              if (_ids[2]) {
+                _atts.push({ name: 'subprocesoId', value: _ids[2] });
+              }
+              if (_ids[3]) {
+                _atts.push({ name: 'actividadId', value: _ids[3] });
+              }
+              if (_ids[4]) {
+                _atts.push({ name: 'tareaId', value: _ids[4] });
+              }
+              if (_ids[5]) {
+                _atts.push({ name: 'dimensionId', value: _ids[5] });
+              }
+              if (_ids[6]) {
+                _atts.push({ name: 'riesgoId', value: _ids[6] });
+              }
+              if (_ids[7]) {
+                _atts.push({ name: 'consecuenciaId', value: _ids[7] });
+              }              
+              _atts.push({ name: 'versionId', value: node.version });
+              _atts.push({ name: 'statusId', value: node.status });
+
+              const spinner = this.controlService.openSpinner();
+
+              this.autentication.generic(_atts).subscribe(
+                (data)=>{
+                  if(data.succes === true){
+                    if (data.data[0].atts[0].value === 'I' ) {
+                    
+                    this.controlService.closeSpinner(spinner);
+                    this.mostrarResponsables(data.data[0].atts[1].value,data.data[0].atts[2].value,_atts)
+                  }else{
+                    // this.mostrarResponsables(data.data[0].atts[1].value,data.data[0].atts[2].value,_atts)
+                  }
+                }else{
+                  Swal2.fire({
+                    icon:'error',
+                    text: data.message
+                  })
+              this.controlService.closeSpinner(spinner);
+                  }
+                }
+              )
+            }
+
+          })
+        }
+
+
+      }
+
+
+    }
+  }
+
+
+  mostrarResponsables(mensaje,responsablesa,jerarquia){
+
+
+    Swal2.fire({
+      html: mensaje,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor: '#d33'
+      // timer: 3500
+
+    }).then(result =>
+      {
+        if(result.value){
+          let re = '/\,/gi'
+                      var Responsables = responsablesa
+                      var responsables = Responsables.split(',')
+                      var texto = '';
+                      for(let i =0 ; i < responsables.length ; i++){
+                         texto = texto + `${responsables[i]}<br>`
+                      }
+                      Swal2.fire({
+                        title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
+
+                        html:  texto,
+                        showCancelButton: true,
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor:'#3085d6',
+                        cancelButtonColor: '#d33'
+
+                      }).then(result =>{
+                        if(result.value){
+                          const spinner = this.controlService.openSpinner();
+                          jerarquia.push({ name: 'warning', value: 'Y' });
+                          
+                          const obj =  this.autentication.generic(jerarquia);
+
+                          obj.subscribe(
+                            (data)=>{
+                              if(data.success === true){
+
+                                Swal2.fire({
+                                  html:'Notificaciones Enviadas',
+                                  icon: 'success',
+                                  // timer: 3500
+                
+                                })
+                              this.controlService.closeSpinner(spinner);
+                
+                
+                                    
+                
+                              }else{
+                
+                                Swal2.fire({
+                                  icon:'error',
+                                  text: data.message
+                                })
+                              this.controlService.closeSpinner(spinner);
+                
+                              }
+                            }
+                          )
+                        }
+                      })
+
+        }
+      })
+  }
 
   async eliminar(node) {
 
@@ -1483,15 +1739,15 @@ export class RkmainComponent implements OnInit,OnChanges {
     // this.getSelection = node;
 
     for (let i =0 ;i<this.dataSource.data.length; i++){
-      
+
       if(this.dataSource.data[i] === node){
         console.log(this.dataSource.data[i])
           let i2 = i-1
-        this.getSelection = this.dataSource.data[i2] 
+        this.getSelection = this.dataSource.data[i2]
         this.recargarPadre()
       }
 
-    
+
     }
 
     // console.log(this.getSelection)
@@ -1511,15 +1767,15 @@ export class RkmainComponent implements OnInit,OnChanges {
         cancelButtonColor: '#d33'
       }).then((result) => {
         if (result.value) {
-          
+
           let recargable = localStorage.getItem('keySelected')
-  
+
           let _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
-  
+
             let _ids = [];
             _ids = node.route.substring(4, node.route.length).split('/');
-  
+
             switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
@@ -1546,7 +1802,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 _atts.push({ name: 'action', value: 'CONSECUENCIA_DELETE' });
                 break;
             }
-  
+
             if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
@@ -1571,13 +1827,13 @@ export class RkmainComponent implements OnInit,OnChanges {
             if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
-  
+
             _atts.push({ name: 'versionId', value: node.version });
             _atts.push({ name: 'statusId', value: node.status });
-  
+
             const spinner = this.controlService.openSpinner();
             const obj =  this.autentication.generic(_atts);
-  
+
             obj.subscribe(
               (data) => {
                 if (data.success === true) {
@@ -1589,37 +1845,37 @@ export class RkmainComponent implements OnInit,OnChanges {
                       html:'Registro Eliminado',
                       icon: 'success',
                       // timer: 3500
-                      
+
                     })
                     let recargable = localStorage.getItem('keySelected')
-              
+
                     if(recargable !==''){
-                      
-                      this.router.navigate(['/rkmain/cargando']);  
+
+                      this.router.navigate(['/rkmain/cargando']);
                       // console.log('main');
-                      setTimeout( () => {  
+                      setTimeout( () => {
                         // console.log('nodo');
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado); 
+                        //this.ver(this.nodoseleccionado);
                       }, 1000 );
-                      
-          
-                      
-                    }else{
-                      
-                      this.recargarPadre();
-                        
-                    }
-                    
-       
-                    
-				   
-				 
-                  }else{
-																									 
 
+
+
+                    }else{
+
+                      this.recargarPadre();
+
+                    }
+
+
+
+
+
+                  }else{
+
+                    
                     // console.log(data.data[0].atts[0])
                     // console.log(data.data[0].atts[1])
                   Swal2.fire({
@@ -1631,7 +1887,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     confirmButtonColor:'#3085d6',
                     cancelButtonColor: '#d33'
                     // timer: 3500
-                    
+
                   }).then((result)=>{
                     if(result.value){
                       let re = '/\,/gi'
@@ -1639,29 +1895,29 @@ export class RkmainComponent implements OnInit,OnChanges {
                       var responsables = Responsables.split(',')
                       var texto = '';
                       for(let i =0 ; i < responsables.length ; i++){
-                         texto = texto + `${responsables[i]}<br>` 
+                         texto = texto + `${responsables[i]}<br>`
                       }
-                      
+
 
                       Swal2.fire({
                         title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
-                        
+
                         html:  texto,
                         showCancelButton: true,
                         confirmButtonText: 'Aceptar',
                         cancelButtonText: 'Cancelar',
                         confirmButtonColor:'#3085d6',
                         cancelButtonColor: '#d33'
-                        
+
                       }).then((result)=>{
                         if(result.value){
 
                           let _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
-  
+
             let _ids = [];
             _ids = node.route.substring(4, node.route.length).split('/');
-  
+
             switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
@@ -1688,7 +1944,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 _atts.push({ name: 'action', value: 'CONSECUENCIA_DELETE' });
                 break;
             }
-  
+
             if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
@@ -1713,11 +1969,11 @@ export class RkmainComponent implements OnInit,OnChanges {
             if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
-  
+
             _atts.push({ name: 'versionId', value: node.version });
             _atts.push({ name: 'statusId', value: node.status });
             _atts.push({ name: 'warning', value: 'Y' });
-  
+
             const spinner = this.controlService.openSpinner();
             const obj =  this.autentication.generic(_atts);
 
@@ -1729,30 +1985,33 @@ export class RkmainComponent implements OnInit,OnChanges {
                   html:'Notificaciones Enviadas',
                   icon: 'success',
                   // timer: 3500
-                  
+
                 })
+                this.controlService.closeSpinner(spinner);
+
                 // this.recargarPadre();
 
                 let recargable = localStorage.getItem('keySelected')
-              
+
                     if(recargable !==''){
-                      
-                      this.router.navigate(['/rkmain/cargando']);  
+
+                      this.router.navigate(['/rkmain/cargando']);
                       // console.log('main');
-                      setTimeout( () => {  
+                      setTimeout( () => {
                         // console.log('nodo');
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado); 
+                        //this.ver(this.nodoseleccionado);
                       }, 1000 );
-                      
-          
-                      
+
+
+
                     }else{
-                      
+                      this.controlService.closeSpinner(spinner);
+
                       this.recargarPadre();
-                        
+
                     }
 
               }else{
@@ -1761,6 +2020,8 @@ export class RkmainComponent implements OnInit,OnChanges {
                   icon:'error',
                   text: data.message
                 })
+              this.controlService.closeSpinner(spinner);
+
 
               }
               this.controlService.closeSpinner(spinner);
@@ -1780,8 +2041,9 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
+              this.controlService.closeSpinner(spinner);
 
-                  
+
                 }
                 this.controlService.closeSpinner(spinner);
               },
@@ -1791,18 +2053,18 @@ export class RkmainComponent implements OnInit,OnChanges {
                 this.controlService.closeSpinner(spinner);
               });
         }
-  
-        
+
+
       })
-  
-        
+
+
     }else{
 
-      let mensajeEliminacion = `Se Eliminará  un componente de la Matriz que posee </br> 
-      __ ítems relacionados </br> 
+      let mensajeEliminacion = `Se Eliminará  un componente de la Matriz que posee </br>
+      __ ítems relacionados </br>
       y __ de ellos en proceso de Validación o Aprobación.</br>
       No se podrá deshacer la eliminación. `
-      
+
       Swal2.fire({
         title: 'Eliminar Registro',
         text: '¿Desea eliminar este registro?',
@@ -1814,15 +2076,15 @@ export class RkmainComponent implements OnInit,OnChanges {
         cancelButtonColor: '#d33'
       }).then((result) => {
         if (result.value) {
-          
+
           let recargable = localStorage.getItem('keySelected')
-  
+
           let _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
-  
+
             let _ids = [];
             _ids = node.route.substring(4, node.route.length).split('/');
-  
+
             switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
@@ -1849,7 +2111,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 _atts.push({ name: 'action', value: 'CONSECUENCIA_DELETE' });
                 break;
             }
-  
+
             if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
@@ -1874,16 +2136,16 @@ export class RkmainComponent implements OnInit,OnChanges {
             if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
-  
+
             _atts.push({ name: 'versionId', value: node.version });
             _atts.push({ name: 'statusId', value: node.status });
-  
+
             const spinner = this.controlService.openSpinner();
             const obj =  this.autentication.generic(_atts);
-  
+
             obj.subscribe(
               (data) => {
-                //debugger;
+                ////debugger;
                 if (data.success === true) {
                   if (data.data[0].atts[0].value === 'I' ) {
 
@@ -1893,38 +2155,41 @@ export class RkmainComponent implements OnInit,OnChanges {
                       html:'Registro Eliminado',
                       icon: 'success',
                       // timer: 3500
-                      
+
                     })
+                    this.controlService.closeSpinner(spinner);
+
                     // this.recargarPadre();
                     let recargable = localStorage.getItem('keySelected')
-              
+
                     if(recargable !==''){
-                      
-                      this.router.navigate(['/rkmain/cargando']);  
+
+                      this.router.navigate(['/rkmain/cargando']);
                       // console.log('main');
-                      setTimeout( () => {  
+                      setTimeout( () => {
                         // console.log('nodo');
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado); 
+                        //this.ver(this.nodoseleccionado);
                       }, 1000 );
-                      
-          
-                      
+
+
+
                     }else{
+                      this.controlService.closeSpinner(spinner);
                       
                       this.recargarPadre();
-                        
+
                     }
-                    
-       
-                    
-				   
-				 
+
+
+
+
+
                   }else{
-																									 
-                    
+
+
                     // console.log(data.data[0].atts[0])
                     // console.log(data.data[0].atts[1])
                   Swal2.fire({
@@ -1936,7 +2201,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                     confirmButtonColor:'#3085d6',
                     cancelButtonColor: '#d33'
                     // timer: 3500
-                    
+
                   }).then((result)=>{
                     if(result.value){
                       let re = '/\,/gi'
@@ -1944,29 +2209,29 @@ export class RkmainComponent implements OnInit,OnChanges {
                       var responsables = Responsables.split(',')
                       var texto = '';
                       for(let i =0 ; i < responsables.length ; i++){
-                         texto = texto + `${responsables[i]}<br>` 
+                         texto = texto + `${responsables[i]}<br>`
                       }
-                      
+
 
                       Swal2.fire({
                         title : '<b>Los siguientes son los usuarios a quienes notificará</b>',
-                        
+
                         html:  texto,
                         showCancelButton: true,
                         confirmButtonText: 'Aceptar',
                         cancelButtonText: 'Cancelar',
                         confirmButtonColor:'#3085d6',
                         cancelButtonColor: '#d33'
-                        
+
                       }).then((result)=>{
                         if(result.value){
 
                           let _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
-  
+
             let _ids = [];
             _ids = node.route.substring(4, node.route.length).split('/');
-  
+
             switch (_ids.length) {
               case 1:
                 _atts.push({ name: 'action', value: 'AREA_DELETE' });
@@ -1993,7 +2258,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 _atts.push({ name: 'action', value: 'CONSECUENCIA_DELETE' });
                 break;
             }
-  
+
             if (_ids[0]) {
               _atts.push({ name: 'areaId', value: _ids[0] });
             }
@@ -2018,11 +2283,11 @@ export class RkmainComponent implements OnInit,OnChanges {
             if (_ids[7]) {
               _atts.push({ name: 'consecuenciaId', value: _ids[7] });
             }
-  
+
             _atts.push({ name: 'versionId', value: node.version });
             _atts.push({ name: 'statusId', value: node.status });
             _atts.push({ name: 'warning', value: 'Y' });
-  
+
             const spinner = this.controlService.openSpinner();
             const obj =  this.autentication.generic(_atts);
 
@@ -2034,29 +2299,31 @@ export class RkmainComponent implements OnInit,OnChanges {
                   html:'Notificaciones Enviadas',
                   icon: 'success',
                   // timer: 3500
-                  
+
                 })
+              this.controlService.closeSpinner(spinner);
+
                 // this.recargarPadre();
                 let recargable = localStorage.getItem('keySelected')
-              
+
                     if(recargable !==''){
-                      
-                      this.router.navigate(['/rkmain/cargando']);  
+
+                      this.router.navigate(['/rkmain/cargando']);
                       // console.log('main');
-                      setTimeout( () => {  
+                      setTimeout( () => {
                         // console.log('nodo');
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado); 
+                        //this.ver(this.nodoseleccionado);
                       }, 1000 );
-                      
-          
-                      
+
+
+
                     }else{
-                      
+
                       this.recargarPadre();
-                        
+
                     }
 
               }else{
@@ -2065,6 +2332,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                   icon:'error',
                   text: data.message
                 })
+              this.controlService.closeSpinner(spinner);
 
               }
               this.controlService.closeSpinner(spinner);
@@ -2084,24 +2352,25 @@ export class RkmainComponent implements OnInit,OnChanges {
                     icon:'error',
                     text: data.message
                   })
-                  
+              this.controlService.closeSpinner(spinner);
+
                 }
                 this.controlService.closeSpinner(spinner);
               },
               (error) => {
               console.log(error)
-                //debugger
+                ////debugger
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
                 this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet5', node, false);
                 this.controlService.closeSpinner(spinner);
               });
         }
-  
-        
-      })
-    } 
 
-    
+
+      })
+    }
+
+
   }
   async nuevaArea() {
 
@@ -2128,19 +2397,19 @@ export class RkmainComponent implements OnInit,OnChanges {
             button_close: 'Cancelar'
           }
         });
-        
+
         conf.afterClosed()
           .subscribe(async (result) => {
-            
+
               this.recargarArbol();
-            
+
           });
       }
 
     })
 
-    
-    
+
+
 
   }
 
@@ -2149,7 +2418,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
               this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                   this.router.navigate([currentRoute]); // navigate to same route
-              }); 
+              });
   }
 
   async nuevoProceso(_areaId: string) {
@@ -2163,9 +2432,9 @@ export class RkmainComponent implements OnInit,OnChanges {
       confirmButtonColor:'#3085d6',
       cancelButtonColor: '#d33'
     }).then((result)=>{
-      
+
       if(result.value){
-        
+
         let conf = this.confirm.open(AddrkpComponent, {
           hasBackdrop: true,
             height: 'auto',
@@ -2178,47 +2447,49 @@ export class RkmainComponent implements OnInit,OnChanges {
               areaId: _areaId
             }
           });
-        
+
           conf.afterClosed()
           .subscribe(async (result) => {
 
-            // console.log(result)  
-            
+            // console.log(result)
+
             if(!result){
-                
-              
+
+
                 let recargable = localStorage.getItem('keySelected')
-              
+
               if(recargable !==''){
-                
-                this.router.navigate(['/rkmain/cargando']);  
+
+                // this.router.navigate(['/rkmain/cargando']);
                 // console.log('main');
-                setTimeout( () => {  
+                // setTimeout( () => {
                   // console.log('nodo');
+                  // this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+                  //this.ver(this.nodoseleccionado);
+                  // }, 1000 );
+
                   this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado); 
-                }, 1000 );
-                
-    
-                
+                  this.Cajas.RecargarDetalle$.emit(true)
+
+
+
               }else{
-                
+
                 this.abrirNodo();
-									
+
               }
             }
-            
-            
-            
-            
+
+
+
+
           });
       }
 
     })
 
-  
-    
+
+
 
   }
 
@@ -2250,69 +2521,44 @@ export class RkmainComponent implements OnInit,OnChanges {
               procesoId: _procesoId
             }
           });
-        
+
         conf.afterClosed()
           .subscribe(async (result) => {
             if(!result){
               let recargable = localStorage.getItem('keySelected')
-            
+
             if(recargable !==''){
 
-              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);  
+              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);  
-                // console.log('main');
-                setTimeout( () => {  
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado); 
-                }, 1000 );
-               
-              
+
+
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
+
+
               // this.RefrescarPantalla()
               // setTimeout(() => {
-                
+
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 6000);
-              
-              
+
+
             }else{
-              
+
               this.abrirNodo();
-															
-						  
-            }
-            
+
+
             }
 
-            
+            }
+
+
           });
       }
 
     })
-    
-    // let conf = this.confirm.open(AddrksComponent, {
-    //   hasBackdrop: true,
-    //   height: 'auto',
-    //   width: '500px',
-    //   data: {
-    //     title: 'Agregar Subproceso',
-    //     message: ``,
-    //     button_confirm: 'Guardar',
-    //     button_close: 'Cancelar',
-    //     areaId: _areaId,
-    //     procesoId: _procesoId
-    //   }
-    // });
-
-    // conf.afterClosed()
-    //   .subscribe(async (result) => {
-    //     if (result) {
-    //       this.abrirNodo();
-    //     }
-    //   });
 
   }
 
@@ -2345,42 +2591,36 @@ export class RkmainComponent implements OnInit,OnChanges {
             subprocesoId: _subprocesoId
           }
         });
-        
+
         conf.afterClosed()
           .subscribe(async (result) => {
-            
+
             if(!result){
               let recargable = localStorage.getItem('keySelected')
-            
+
             if(recargable !==''){
-              
-              
-              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);  
+
+
+              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);  
-                // console.log('main');
-                setTimeout( () => {  
-                  console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado); 
-                }, 1000 );
-               
-              
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
+
+
               // this.RefrescarPantalla()
               // setTimeout(() => {
-                
+
               //   this.ExpandirNodos(this.nodoseleccionado)
               // },7000);
-              
+
             }else{
-              
+
               this.abrirNodo();
-				
-															
+
+
             }
-            
+
             }
 
           });
@@ -2406,9 +2646,9 @@ export class RkmainComponent implements OnInit,OnChanges {
       if(result.value){
 
         let conf = this.confirm.open(AddrktComponent, {
-      
-      
-      
+
+
+
           hasBackdrop: true,
           height: 'auto',
           width: '500px',
@@ -2422,44 +2662,38 @@ export class RkmainComponent implements OnInit,OnChanges {
             subprocesoId: _subprocesoId,
             actividadId: _actividadId
           }
-        });       
+        });
         conf.afterClosed()
         .subscribe(async (result) => {
           if(!result){
             let recargable = localStorage.getItem('keySelected')
-          
+
           if(recargable !==''){
-            
-            
-            // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);  
+
+
+            // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
             // this.abrirNodo();
-            
+
             // console.log(recargable);
             // this.ver(recargable);
 
-            this.router.navigate(['/rkmain/cargando']);  
-            // console.log('main');
-            setTimeout( () => {  
-              // console.log('nodo');
-              this.abrirNodo();
-              this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-              //this.ver(this.nodoseleccionado); 
-            }, 1000 );
-           
+            this.abrirNodo();
+            this.Cajas.RecargarDetalle$.emit(true)
+
             // // this.RefrescarPantalla()
             // setTimeout(() => {
-              
+
             //   this.ExpandirNodos(this.nodoseleccionado)
             // }, 8000);
-           
-            
+
+
           }else{
-            
+
             this.abrirNodo();
-														  
-						
+
+
           }
-          
+
           }
 
         });
@@ -2467,13 +2701,13 @@ export class RkmainComponent implements OnInit,OnChanges {
 
     })
 
-    
+
 
   }
 
   async nuevaDimension(_areaId: string, _procesoId: string, _subprocesoId: string, _actividadId: string, _tareaId: string) {
-    
-    
+
+
     Swal2.fire({
       title: 'Agregar Dimension',
       // text: '¿Desea Agregar este registro?',
@@ -2502,49 +2736,43 @@ export class RkmainComponent implements OnInit,OnChanges {
             actividadId: _actividadId,
             tareaId: _tareaId
           }
-        });    
+        });
         conf.afterClosed()
           .subscribe(async (result) => {
-            
+
             if(!result){
               let recargable = localStorage.getItem('keySelected')
-            
+
             if(recargable !==''){
-              
-              
-              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);  
+
+
+              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);  
-                // console.log('main');
-                setTimeout( () => {  
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado); 
-                }, 1000 );
-               
-              
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
+
+
               // this.RefrescarPantalla()
               // setTimeout(() => {
-                
+
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 9000);
 
             }else{
-              
+
               this.abrirNodo();
-				
-															
+
+
             }
-            
+
             }
 
           });
       }
 
     })
-    
+
   }
 
   async nuevoRiesgo(_areaId: string, _procesoId: string, _subprocesoId: string, _actividadId: string, _tareaId: string, _dimensionId: string) {
@@ -2578,51 +2806,45 @@ export class RkmainComponent implements OnInit,OnChanges {
             tareaId: _tareaId,
             dimensionId: _dimensionId
           }
-        }); 
+        });
         conf.afterClosed()
           .subscribe(async (result) => {
 
             // console.log(result)
             if(!result){
               let recargable = localStorage.getItem('keySelected')
-            
-            if(recargable !==''){
-              
 
-              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);  
+            if(recargable !==''){
+
+
+              // this.router.navigate(['/rkmain/' +this.nodoseleccionado]);
                 // this.abrirNodo();
 
-                this.router.navigate(['/rkmain/cargando']);  
-                // console.log('main');
-                setTimeout( () => {  
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado); 
-                }, 1000 );
-               
-              
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
+
+
               // this.RefrescarPantalla()
               // setTimeout(() => {
-                
+
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 10000);
-              
-              
+
+
             }else{
-              
+
               this.abrirNodo();
-															
-						   
+
+
             }
-            
+
             }
           });
       }
 
     })
-   
-    
+
+
 
   }
 
@@ -2664,47 +2886,40 @@ export class RkmainComponent implements OnInit,OnChanges {
             console.log('entro');
             if(!result){
               let recargable = localStorage.getItem('keySelected')
-            
+
               // console.log(recargable);
 
             if(recargable !==''){
-              
+
                 //aqui*
-                this.router.navigate(['/rkmain/cargando']);  
-                // console.log('main');
-                setTimeout( () => {  
-                  // console.log('nodo');
-                  this.abrirNodo();
-                  this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado); 
-                }, 1000 );
-                
+                this.abrirNodo();
+                this.Cajas.RecargarDetalle$.emit(true)
               // this.RefrescarPantalla()
               // setTimeout(() => {
-                
+
               //   this.ExpandirNodos(this.nodoseleccionado)
               // }, 11000);
-              
-              
+
+
             }else{
-              
+
               this.abrirNodo();
-															
-						   
+
+
             }
-            
+
             }
-            
+
           });
       }
 
     })
-      
-    
+
+
 
   }
 
-  
+
 
   sendValidate() {
     if (localStorage.getItem('isSelectedNode') === 'true') {
@@ -2765,20 +2980,20 @@ export class RkmainComponent implements OnInit,OnChanges {
       return;
     }
     const inputOptions = {
-     
-          
+
+
           'Y': 'Solo Padre',
           'N': 'Padre e Hijos',
-          
-      
+
+
     }
-    
+
     const { value: color } = await Swal2.fire({
       title: 'Enviar a Validar',
       text: '¿Desea Enviar a Validar este registro?',
-      
+
       showCancelButton: true,
-      
+
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       confirmButtonColor:'#3085d6',
@@ -2790,15 +3005,15 @@ export class RkmainComponent implements OnInit,OnChanges {
       return 'Debe Seleccionar una Opcion'
       }
     }
-      
-      
-      
+
+
+
     })
-    
-    
+
+
     if (color ){
-      
-      
+
+
         let _atts = [];
         _atts.push({ name: 'scriptName', value: 'coemdr' });
         _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
@@ -2807,15 +3022,15 @@ export class RkmainComponent implements OnInit,OnChanges {
 
         _atts.push({ name: 'versionId', value: localStorage.getItem('versionSelected') });
         _atts.push({ name: 'statusId', value: localStorage.getItem('statusSelected') });
-  
+
         const spinner = this.controlService.openSpinner();
         const obj =  this.autentication.generic(_atts);
-  
+
         obj.subscribe(
           (data) => {
             if (data.success === true) {
               if (data.data[0].atts[1]) {
-  
+
                 Swal2.fire(
                   {
                     text:'Registro Enviado a Validar',
@@ -2823,18 +3038,18 @@ export class RkmainComponent implements OnInit,OnChanges {
                     timer: 3000
                   }
                 )
-                
+
                 let recargable = localStorage.getItem('keySelected')
-              
+
               if(recargable !==''){
-                
-                this.router.navigate(['/rkmain/cargando']);  
+
+                this.router.navigate(['/rkmain/cargando']);
                 // console.log('main');
-                setTimeout( () => {  
+                setTimeout( () => {
                   // console.log('nodo');
                   this.recargarArbol();
                   this.router.navigate(['/rkmain/' ]);
-                  //this.ver(this.nodoseleccionado); 
+                  //this.ver(this.nodoseleccionado);
                 }, 1000 );
               }else{
 
@@ -2842,7 +3057,7 @@ export class RkmainComponent implements OnInit,OnChanges {
               }
                 // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
               }
-  
+
             } else {
               Swal2.fire({
                 text:data.message,
@@ -2850,7 +3065,7 @@ export class RkmainComponent implements OnInit,OnChanges {
                 timer:3000
               })
               // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-            
+
             }
             this.controlService.closeSpinner(spinner);
           },
@@ -2858,9 +3073,9 @@ export class RkmainComponent implements OnInit,OnChanges {
             // if ( error.status === 401 ) { this.autentication.logout(); return; }
             this.controlService.closeSpinner(spinner);
           });
-           
+
       }
-    
+
 
 
 
@@ -2894,22 +3109,22 @@ export class RkmainComponent implements OnInit,OnChanges {
       });
       conf.afterClosed()
       .subscribe(async (result) => {
-        
+
         if(result === 'undefined' || result === 'falso'){
 
           this.cargarDashboard()
         }else{
 
           if(result){
-        
+
 
             // this.recargarArbol()
                 setTimeout(() => {
                   this.ExpandirNodos(result)
-                  
+
                 }, 3000);
-           
-            
+
+
           }
         }
 
@@ -2920,10 +3135,10 @@ export class RkmainComponent implements OnInit,OnChanges {
   /**
    * pruebaclick
    */
-  
+
 
  ExpandirNodos(key:any){
-  
+
   console.log(key)
   // const spinner = this.controlService.openSpinner()
   // this.PosicionAMover
@@ -2938,23 +3153,23 @@ export class RkmainComponent implements OnInit,OnChanges {
   let dimension = key.substring(0,19)
   let riesgo = key.substring(0,23)
   let consecuencia = key.substring(0,27)
- 
+
   let desplegable = []
 
- 
+
 
   // console.log(this.dataSource.data)
-  
+
   for(let i =0 ;this.dataSource.data.length; i++){
     const spinner = this.controlService.openSpinner()
-    
+
     if(this.dataSource.data[i]['key'] === area)
     {
       let level =this.dataSource.data[i]
-      
+
       const spinner = this.controlService.openSpinner()
       console.log('area')
-      
+
                   let padre = this.dataSource.data.indexOf(level)
                   console.log(padre)
                   console.log(level.key)
@@ -2963,29 +3178,29 @@ export class RkmainComponent implements OnInit,OnChanges {
                   // this.ver(level)
                   if(key.length == area.length ){
                     document.getElementById(area).click()
-                    
+
                     document.getElementById(area).focus()
-                    
-                    
+
+
                     // this.ver(this.nivel2)
                     this.controlService.closeSpinner(spinner);
-                    
+
                   }
-                  
-                  
-                  
+
+
+
                   setTimeout(() => {
-                   
+
                     console.log('proceso')
-        
+
                       desplegable = JSON.parse(localStorage.getItem('comparar'))
-                      
+
                         for(let i = 0 ; desplegable.length; i++){
-        
+
                           if(desplegable[i]['key']  === proceso){
-          
-                            
-          
+
+
+
                             console.log(desplegable[i])
                             this.nivel2 = padre+i+1;
                             console.log(this.nivel2)
@@ -2994,37 +3209,37 @@ export class RkmainComponent implements OnInit,OnChanges {
                               // let pos = document.getElementById(proceso)
                               // pos.scrollIntoView()
                               document.getElementById(proceso).click()
-                              
+
                               document.getElementById(proceso).focus()
                               // document.getElementById(proceso).scrollTo(pos.bottom,pos.left)
-  
+
                               // this.ver(this.nivel2)
                               this.controlService.closeSpinner(spinner);
-                              
+
                             }
-            
+
                           }
-                          
-                        
-                      
+
+
+
                       }
                       // console.log( desplegable)
-                                         
-                    
+
+
                   }, 2000);
-                  
+
                   setTimeout(() => {
-                  
+
                     console.log('subproceso')
-        
+
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-                    
+
 
                       for(let i = 0 ; desplegable.length; i++){
-          
+
                       if(desplegable[i]['key']  === subproceso){
-          
+
                         console.log(desplegable[i])
                         this.nivel3 = this.nivel2+i+1;
                         // console.log(this.nivel3)
@@ -3036,24 +3251,24 @@ export class RkmainComponent implements OnInit,OnChanges {
                           // this.ver(this.nivel3)
                           this.controlService.closeSpinner(spinner);
                         }
-          
+
                       }
                       }
-                    
-        
+
+
                   }, 4000);
-        
+
                   setTimeout(() => {
-                  
+
                     console.log('actividad')
-        
+
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
-        
-                   
+
+
                     for(let i = 0 ; desplegable.length; i++){
-        
+
                     if(desplegable[i]['key']  === actividad){
-        
+
                       console.log(desplegable[i])
                       this.nivel4 = this.nivel3+i+1;
                       // console.log(this.nivel4)
@@ -3063,29 +3278,29 @@ export class RkmainComponent implements OnInit,OnChanges {
                         // pos.scrollIntoView()
                         // this.router.navigate(['/rkmain/cargando']);
                         document.getElementById(actividad).click()
-                        
-                        // this.ver(this.nivel4) 
+
+                        // this.ver(this.nivel4)
                         this.controlService.closeSpinner(spinner);
-                        
+
                       }
-        
+
                     }
                     }
-                  
+
                   }, 6000);
-                  
+
                   setTimeout(() => {
-                  
+
                     console.log('tarea')
-        
+
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-                  
+
 
                       for(let i = 0 ; desplegable.length; i++){
-          
+
                       if(desplegable[i]['key']  === tarea){
-          
+
                         console.log(desplegable[i])
                         this.nivel5 = this.nivel4+i+1;
                         // console.log(this.nivel5)
@@ -3095,28 +3310,28 @@ export class RkmainComponent implements OnInit,OnChanges {
                           // pos.scrollIntoView();
                           document.getElementById(tarea).click()
                           document.getElementById(tarea).focus()
-                          // this.ver(this.nivel5) 
+                          // this.ver(this.nivel5)
                           this.controlService.closeSpinner(spinner);
-                          
+
                         }
-          
+
                       }
                       }
-                    
-        
+
+
                   }, 8500);
                   setTimeout(() => {
-                  
+
                     console.log('dimension')
-        
+
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-                    
-                      
+
+
                       for(let i = 0 ; desplegable.length; i++){
-        
+
                         if(desplegable[i]['key']  === dimension){
-            
+
                           console.log(desplegable[i])
                           this.nivel6 = this.nivel5+i+1;
                           // console.log(this.nivel6)
@@ -3125,31 +3340,31 @@ export class RkmainComponent implements OnInit,OnChanges {
                             // let pos = document.getElementById(dimension)
                             // pos.scrollIntoView();
                             document.getElementById(dimension).click()
-                            
+
                             // this.ver(this.nivel6)
                             this.controlService.closeSpinner(spinner);
-                            
+
                           }
-            
+
                         }
                         }
-                    
-        
-                    
+
+
+
                   }, 10000);
-        
+
                   setTimeout(() => {
-                  
+
                     console.log('dimension')
-        
+
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-                    
+
 
                       for(let i = 0 ; desplegable.length; i++){
-          
+
                       if(desplegable[i]['key']  === riesgo){
-          
+
                         console.log(desplegable[i])
                         this.nivel7 = this.nivel6+i+1;
                         // console.log(this.nivel6)
@@ -3157,32 +3372,32 @@ export class RkmainComponent implements OnInit,OnChanges {
                         if(key.length == riesgo.length ){
                           // let pos = document.getElementById(riesgo)
                           // pos.scrollIntoView();
-                          
+
                           document.getElementById(riesgo).click()
                           document.getElementById(riesgo).focus()
                           // this.ver(this.nivel6)
                           this.controlService.closeSpinner(spinner);
-                          
+
                         }
-          
+
                       }
                       }
-                    
-        
+
+
                   }, 12000);
-        
+
                   setTimeout(() => {
-                  
+
                     console.log('consecuencia')
-        
+
                     desplegable = JSON.parse(localStorage.getItem('comparar'))
 
-                    
+
 
                       for(let i = 0 ; desplegable.length; i++){
-          
+
                       if(desplegable[i]['key']  === consecuencia){
-          
+
                         console.log(desplegable[i])
                         this.nivel8 = this.nivel7+i+1;
                         // console.log(this.nivel8)
@@ -3193,36 +3408,36 @@ export class RkmainComponent implements OnInit,OnChanges {
                         document.getElementById(consecuencia).focus();
                         // this.ver(this.nivel8)
                         this.controlService.closeSpinner(spinner);
-      
-                        
-          
+
+
+
                       }
                       }
-                    
-        
+
+
                   }, 14000);
-                    
+
                   // this.treeControl.expand(this.treeControl.dataNodes[level])
                 // this.controlService.closeSpinner(spinner);
             }
-            
+
             let pos = document.getElementById(key)
             pos.scrollIntoView()
 
             this.controlService.closeSpinner(spinner);
           }
-          
 
-       
 
-        
+
+
+
           // console.log("entre despues de la bandera")s
-         
- 
+
+
 
  }
 
- 
+
 
 
   async VerEnviarAprobar() {
@@ -3253,15 +3468,15 @@ export class RkmainComponent implements OnInit,OnChanges {
       }else{
 
         if(result){
-      
+
 
           // this.recargarArbol()
               setTimeout(() => {
                 this.ExpandirNodos(result)
-                
+
               }, 3000);
-         
-          
+
+
         }
       }
 
@@ -3298,15 +3513,15 @@ export class RkmainComponent implements OnInit,OnChanges {
       }else{
 
         if(result){
-      
+
 
           // this.recargarArbol()
               setTimeout(() => {
                 this.ExpandirNodos(result)
-                
+
               }, 3000);
-         
-          
+
+
         }
       }
 
@@ -3335,25 +3550,25 @@ export class RkmainComponent implements OnInit,OnChanges {
     conf.afterClosed()
     .subscribe(async (result) => {
       console.log(result)
-      
+
         if(result === 'undefined' || result === 'falso'){
 
           this.cargarDashboard()
         }else{
 
           if(result){
-        
+
 
             // this.recargarArbol()
                 setTimeout(() => {
                   this.ExpandirNodos(result)
-                  
+
                 }, 3000);
-           
-            
+
+
           }
         }
-      
+
     })
 
 
@@ -3385,7 +3600,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
 
     //           });
-    //           //debugger
+    //           ////debugger
     //           this.Perfil.forEach((element, index, array) => {
 
     //             this.consulta = element.con;
@@ -3398,35 +3613,35 @@ export class RkmainComponent implements OnInit,OnChanges {
     //             // if (this.cargo === 'NNYNN') {
     //             //   this.propiedad = 'none';
     //             // }
-                
+
     //           });
-              
+
     //         } else {
     //           this.controlService.snackbarError(data.message);
     //         }
     //         return result;
     //       },
     //       (error) => {
-    //         //debugger
+    //         ////debugger
     //         console.log(error)
     //         this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet6');
     //       });
     //     });
-        
-        
+
+
         this.mostrar();
-        
+
       }
-      
+
       async mostrar() {
 
     switch (this.cargo) {
       case 'NNYNN': //SOLO LECTURA
         this.sololectura = true
-        
+
         return;
 
-      
+
 
 
       default:
@@ -3438,7 +3653,7 @@ export class RkmainComponent implements OnInit,OnChanges {
 
   async VerLeyenda(){
 
-    
+
 
     this.confirm.open(LeyendaComponent,{
       hasBackdrop: true,
@@ -3454,21 +3669,57 @@ export class RkmainComponent implements OnInit,OnChanges {
       }
     });
   }
+
+  statusPadreCopy(statusP,level){
+
+    // //debugger
+
+    switch(statusP){
+        case '004':
+          if(level == 4 ){
+            return true
+          }else{
+
+            return false;
+          }
+        case '006':
+          if(level == 4 ){
+            return true
+          }else{
+
+            return false;
+          }
+        case '007':
+          if(level == 4 ){
+            return true
+          }else{
+
+            return false;
+          }
+        case '008':
+        return true;
+        case '001':
+        return true;
+        case '002':
+        return true;
+    }
+
+  }
   compararNiveles(nodeto,nodefrom){
-    
+
     if(nodeto == 1 && nodefrom == 2){
       return true
     }else if(nodeto == 2 && nodefrom == 3){
       return true
     }else if(nodeto == 3 && nodefrom == 4){
       return true
-      
+
     }else if(nodeto == 4 && nodefrom == 5){
       return true
-      
+
     }else if(nodeto == 5 && nodefrom == 6){
       return true
-      
+
     }else if(nodeto == 6 && nodefrom == 7){
       return true
 
@@ -3481,11 +3732,131 @@ export class RkmainComponent implements OnInit,OnChanges {
     }
   }
 
+  limpiarCopiado(){
+    this.rutaimagen = true;
+    this.nodocopiar = ''
+    this.nodoPadreBloqueo = ''
+    this.mostrarLimpiar = false
+  }
+
+  copy(node){
+
+
+    switch(node.level){
+
+      case 2:
+          this.nodoPadreBloqueo = node.key.substring(0,2)
+
+          break
+      case 3:
+        this.nodoPadreBloqueo = node.key.substring(0,6)
+          break
+      case 4:
+        this.nodoPadreBloqueo = node.key.substring(0,10)
+          break
+      case 5:
+        this.nodoPadreBloqueo = node.key.substring(0,14)
+        break
+        case 6:
+          this.nodoPadreBloqueo = node.key.substring(0,18)
+          break
+      case 7:
+        this.nodoPadreBloqueo = node.key.substring(0,19)
+        break
+        case 8:
+          this.nodoPadreBloqueo = node.key.substring(0,23)
+          break
+
+        }
+
+        console.log(this.nodoPadreBloqueo)
+
+        this.rutaimagen = true;
+        this.mostrarLimpiar = true
+        // document.getElementById(this.nodocopiarkey).style.backgroundColor = '#d1f312'
+
+    if(node){
+      this.nodocopiar = node
+      this.nodocopiarkey = node.key
+      this.nivelpermitido = node.level - 1
+      this.rutaimagen = false;
+      this.cambiarColor = true
+      let a = document.getElementById(this.nodocopiarkey)
+
+      // console.log(a.getAttribute('color'))
+
+
+      this.controlService.snackbarSucces('Jerarquia Copiada');
+    }
+
+  }
+
+  paste(node){
+
+    console.log(node)
+    console.log(this.nodocopiar)
+
+
+    let canI = this.compararNiveles(node.level, this.nodocopiar.level)
+    let stutuspermitido = this.statusPadreCopy(node.status,node.level);
+    this.CopyPaste = node
+
+    if(!canI ){
+
+      Swal2.fire({
+        icon:'error',
+        title:'Accion No Valida',
+        text:'Asegurese que esta intentanto pegar el item en su nivel correspondiente'
+      })
+
+
+    }else{
+      if(stutuspermitido){
+        Swal2.fire({
+          title: 'Copiar/Pegar',
+          text: '¿ Seguro que desea Copiar este item ?',
+          icon: 'question',
+          cancelButtonColor:'red',
+          showCancelButton: true,
+          cancelButtonText:'Cancelar',
+
+
+
+        }).then((result)=>{
+
+          if(result.value){
+
+
+            this.copiadoJerarquia(node.key,this.nodocopiar.key)
+
+          }
+        })
+
+      }else{
+
+        Swal2.fire({
+          icon:'error',
+          title:'Accion No Valida',
+          text:'No se perimten adicionar elementos a items en estatus diferentes a creacion o aprobacion'
+        })
+
+      }
+
+
+    }
+  }
+
   drop(event:CdkDragDrop<string[]>){
+
+
+
+    console.log(event)
+
     let dad =this.dataSource.data[event.currentIndex].key
     let levelto = this.dataSource.data[event.currentIndex].level
+    let statusto = this.dataSource.data[event.currentIndex].status
     this.CopyPaste= this.dataSource.data[event.currentIndex]
-    
+
     let key = event.item.data.key
     let levelfrom = event.item.data.level
     console.log(dad)
@@ -3494,142 +3865,91 @@ export class RkmainComponent implements OnInit,OnChanges {
     console.log(levelfrom)
 
     let canI = this.compararNiveles(levelto, levelfrom)
-    
-    if(!canI){
+    let stutuspermitido = this.statusPadreCopy(statusto,levelto);
 
-     
+    //debugger
+    if(!canI ){
+
       Swal2.fire({
         icon:'error',
         title:'Accion No Valida',
         text:'Asegurese que esta intentanto pegar el item en su nivel correspondiente'
       })
 
+
     }else{
-      Swal2.fire({
-        title: 'Copiar/Pegar',
-        text: '¿ Seguro que desea Copiar este item ?',
-        icon: 'question',
-        showCancelButton: true,
-        cancelButtonText:'Cancelar',
-        
-        
-  
-      }).then((result)=>{
-  
-        if(result.value){
-          
-          
-  
-          
-          
-          this.copiadoJerarquia(dad,key)
-          
-        }
-      })
+      if(stutuspermitido){
+        Swal2.fire({
+          title: 'Copiar/Pegar',
+          text: '¿ Seguro que desea Copiar este item ?',
+          icon: 'question',
+          cancelButtonColor:'red',
+          showCancelButton: true,
+          cancelButtonText:'Cancelar',
+
+
+
+        }).then((result)=>{
+
+          if(result.value){
+
+
+            this.copiadoJerarquia(dad,key)
+
+          }
+        })
+
+      }else{
+
+        Swal2.fire({
+          icon:'error',
+          title:'Accion No Valida',
+          text:'No se perimten adicionar elementos a items en estatus diferentes a creacion o aprobacion'
+        })
+
+      }
+
+
     }
-    
+
   }
 
-  copiadoJerarquia(area:string,proceso:string,){
-    
-    let _atts = [];
-    switch(proceso.length){
-      case 6:
-        proceso = proceso.substring(2, 6)
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'PROCESO_CREATE' });
-        _atts.push({ name: 'areaId', value: area });
-       _atts.push({ name: 'procesoId', value: proceso });
-       this.mensajeCopiado = 'Proceso Agregado Correctamente'
-  
-        break;
-        case 10:
-        proceso = proceso.substring(6, 10)
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'SUBPROCESO_CREATE' });
-        _atts.push({ name: 'areaId', value: area.substring(0,2) });
-       _atts.push({ name: 'procesoId', value: area.substring(2,6) });
-       _atts.push({ name: 'subprocesoId', value: proceso });
-       this.mensajeCopiado = 'SubProceso Agregado Correctamente'
-       break;
-        case 14:
-        proceso = proceso.substring(10, 14)
-        _atts.push({ name: "scriptName", value: "coemdr" });
-        _atts.push({ name: "action", value: "ACTIVIDAD_CREATE" });
-        _atts.push({ name: "areaId", value: area.substring(0,2) });
-        _atts.push({ name: "procesoId", value: area.substring(2,6)});
-        _atts.push({ name: "subprocesoId",value: area.substring(6,10)});
-        _atts.push({ name: "actividadId", value: proceso });
-       this.mensajeCopiado = 'Actividad Agregada Correctamente'
-        break;
-        case 18:
-        proceso = proceso.substring(14, 18)
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'TAREA_CREATE' });
-        _atts.push({ name: 'areaId', value: area.substring(0,2) });
-       _atts.push({ name: 'procesoId', value: area.substring(2,6) });
-       _atts.push({ name: 'subprocesoId', value: area.substring(6,10) });
-       _atts.push({ name: 'actividadId', value: area.substring(10,14) });
-       _atts.push({ name: 'tareaId', value: proceso });
-       this.mensajeCopiado = 'Tarea Agregada Correctamente'
-        break;
-        case 19:
-        proceso = proceso.substring(18, 19)
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'DIMENSION_CREATE' });
-        _atts.push({ name: 'areaId', value: area.substring(0,2) });
-       _atts.push({ name: 'procesoId', value: area.substring(2,6) });
-       _atts.push({ name: 'subprocesoId', value: area.substring(6,10) });
-       _atts.push({ name: 'actividadId', value: area.substring(10,14) });
-       _atts.push({ name: 'tareaId', value: area.substring(14,18) });
-       _atts.push({ name: 'dimensionId', value: proceso });
-       this.mensajeCopiado = 'Dimension Agregada Correctamente'
-        break;
-        case 23:
-        proceso = proceso.substring(19, 23)
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'RIESGO_CREATE' });
-        _atts.push({ name: 'areaId', value: area.substring(0,2) });
-       _atts.push({ name: 'procesoId', value: area.substring(2,6) });
-       _atts.push({ name: 'subprocesoId', value: area.substring(6,10) });
-       _atts.push({ name: 'actividadId', value: area.substring(10,14) });
-       _atts.push({ name: 'tareaId', value: area.substring(14,18) });
-       _atts.push({ name: 'dimensionId', value: area.substring(18,19) });
-       _atts.push({ name: 'riesgoId', value: proceso });
-       this.mensajeCopiado = 'Riesgo Agregado Correctamente'
-        break;
-        case 27:
-        proceso = proceso.substring(23, 27)
-        _atts.push({ name: 'scriptName', value: 'coemdr' });
-        _atts.push({ name: 'action', value: 'CONSECUENCIA_CREATE' });
-        _atts.push({ name: 'areaId', value: area.substring(0,2) });
-       _atts.push({ name: 'procesoId', value: area.substring(2,6) });
-       _atts.push({ name: 'subprocesoId', value: area.substring(6,10) });
-       _atts.push({ name: 'actividadId', value: area.substring(10,14) });
-       _atts.push({ name: 'tareaId', value: area.substring(14,18) });
-       _atts.push({ name: 'dimensionId', value: area.substring(18,19) });
-       _atts.push({ name: 'riesgoId', value: area.substring(20,23) });
-       _atts.push({ name: 'consecuenciaId', value: proceso });
-       this.mensajeCopiado = 'Consecuencia Agregada Correctamente'
-        break;
-    }
+  copiadoJerarquia(nodeto:string,nodefrom:string,){
 
-    
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'COPIAR_NODO' });
+    _atts.push({ name: 'nodoTo', value: nodeto });
+    _atts.push({ name: 'nodoFrom', value: nodefrom });
+
+
+
     const spinner = this.controlService.openSpinner();
 
-    
+
     const obj =  this.autentication.generic(_atts);
 
     obj.subscribe((data)=>{
 
       if (data.success === true) {
         console.log(data)
-        
+
         if (data.data[0].atts[1]) {
-          Swal2.fire(this.mensajeCopiado,'','success')
+          Swal2.fire({
+            text:data.data[0].atts[1].value,
+            title:'',
+            icon:'success'})
           this.controlService.closeSpinner(spinner);
           // this.autentication.showMessages( data.data[0].atts[0].value, data.data[0].atts[1].value, this.procesoModel, data.redirect);
-                      
+          this.rutaimagen = true
+          this.mostrarLimpiar = false
+          this.nivelpermitido = ''
+          this.nodoPadreBloqueo = ''
+          this.cambiarColor = false
+
+
+
+
           this.treeControl.collapse(this.CopyPaste);
           this.treeControl.expand(this.CopyPaste);
         }
@@ -3639,49 +3959,30 @@ export class RkmainComponent implements OnInit,OnChanges {
         // data.success = 'I'
         // this.autentication.showMessage(data.success, data.message, this.procesoModel, data.redirect);
         Swal2.fire( '',data.message,'error')
+
         this.controlService.closeSpinner(spinner);
-        
+
       }
+      this.controlService.closeSpinner(spinner);
 
     }), (error) => {
       this.controlService.closeSpinner(spinner);
-      
+
     }
   }
-  
-  
+
+
 
   //cerrar Session al cerrar pestaña
 
-  BorrarStorage(){
 
-    
-    localStorage.removeItem('statusSelected')
-    localStorage.removeItem('urlApi')
-    localStorage.removeItem('canAdd')
-    localStorage.removeItem('show Dashboard')
-    localStorage.removeItem('itemseleccionado')
-    localStorage.removeItem('NoCreador')
-    localStorage.removeItem('versionSelected')
-    localStorage.removeItem('StatusPadre')
-    localStorage.removeItem('keySelected')
-    localStorage.removeItem('sololectura')
-    localStorage.removeItem('seleccionado')
-    localStorage.removeItem('tk')
-    localStorage.removeItem('isSendToValidate')
-    localStorage.removeItem('Distrito')
-    localStorage.removeItem('UltimoEnviado')
-    localStorage.removeItem('isSelectedNode')
-    localStorage.removeItem('noCreador')
-    localStorage.removeItem('isLoggedinApp')
-  }
 
   @HostListener('window:beforeunload', ['$event'])
 beforeunloadHandler(event) {
-  // //debugger
+  // ////debugger
     this.showDashboard = false
     // localStorage.clear();
-    this.BorrarStorage()
+    this.autentication.BorrarStorage()
 }
 
 

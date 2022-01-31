@@ -1,0 +1,5 @@
+{
+    "api": "https://matriz.collahuasi.cl/MatrizRsk/api",
+    "apiN": "http://localhost:54108/MatrizApiNode/api",
+    "text": "Matriz de riesgos, Copyright 2019. <br /> Summa consulting.<br /> Version 2.5.0 <br />Fecha de compilación 2020-11-15 <br />"
+}

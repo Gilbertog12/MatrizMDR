@@ -61,6 +61,7 @@ public Razon : string
   private rid : string;
   EnviarHijos: any;
   permisoValidar: boolean;
+  loading: boolean;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -81,20 +82,23 @@ public Razon : string
                   this.riesgoModel = {};
                   this.consecuenciasList = [];
                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid);
+                  
+
                 });
 
               }
 
   ngOnInit() {
     
-    
+    // this.cargarRiesgo()
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
-    this.Cajas.Recargar$.subscribe(resp=>{
+    this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
         this.riesgoModel = {};
         this.consecuenciasList = [];        
-        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid);        
+        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid);     
+        
       }
     })
 
@@ -221,20 +225,78 @@ public Razon : string
               }
             });
 
-            this.controlService.closeSpinner(spinner);
+            this.cargarRiesgo()
           } else {
             this.controlService.closeSpinner(spinner);
             this.autentication.showMessage(data.success, data.message, this.riesgoModel, data.redirect);
           }
+          
           return result;
-      },
-      (error) => {
-        this.controlService.closeSpinner(spinner);
-        this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.riesgoModel, false);
+        },
+        (error) => {
+          //debugger
+          console.log(error)
+          this.controlService.closeSpinner(spinner);
+          this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.riesgoModel, false);
+        });
       });
-    });
+      
   }
 
+  cargarRiesgo(){
+
+    this.loading = true
+    this.consecuenciasList=[]
+    let _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'ITEM_EVALRISK_DETAIL_READ' });
+    _atts.push({ name: 'key', value:  this.id+this.pid+ this.sid+ this.cid+ this.tid+ this.did+ this.rid });
+    
+    
+    const spinner = this.controlService.openSpinner()
+    const obj =  this.autentication.generic(_atts);
+    
+    
+    obj.subscribe((data)=>{
+      
+      if (data.success === true) {
+        
+        console.log(data)
+        
+        
+        
+        data.data.forEach((element) =>{
+          
+          this.consecuenciasList.push({
+            
+            offset: element.atts[0].value,
+                      Id: element.atts[1].value.trim(),
+                      Descripcion: element.atts[2].value,
+                      consecuenciaRiesgoPuroN: element.atts[3].value,
+                      consecuenciaRiesgoPuroM: element.atts[4].value,
+                      consecuenciaRiesgoPuroS: element.atts[5].value,
+                      consecuenciaRiesgoResidualN: element.atts[6].value,
+                      consecuenciaRiesgoResidualM: element.atts[7].value,
+                      consecuenciaRiesgoResidualS: element.atts[8].value,
+                      estado: element.atts[9].value,
+                      pendingDelete: element.atts[11].value
+          });
+          
+        })
+        
+        this.loading = false
+        this.controlService.closeSpinner(spinner)
+        
+      }else{
+        
+        this.loading = false
+        this.controlService.closeSpinner(spinner)
+      }
+      })
+
+      // this.loading = false
+    
+  }
 
   aperfil() {
     let _atts = [];

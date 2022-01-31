@@ -8,7 +8,7 @@ import Swal2 from 'sweetalert2';
 import Swal from 'sweetalert';
 import { includes } from 'core-js/fn/array';
 import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
-  
+
 
 @Component({
   selector: 'app-rkporaprobar',
@@ -87,7 +87,7 @@ export class RkporaprobarComponent implements OnInit {
     let dia =valor.substring(6,8);
     let hora =valor.substring(9,11);
     let min =valor.substring(11,13);
-                  
+
 
     let fecha= `${mes}/${dia}/${year}`;
     let time = `${hora}:${min}`
@@ -115,9 +115,9 @@ export class RkporaprobarComponent implements OnInit {
                       break;
                     case '10':
                       this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
-                      break;                      
-                      case '14':  
-                        
+                      break;
+                      case '14':
+
                       this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
                        break;
                       case '18':
@@ -133,15 +133,15 @@ export class RkporaprobarComponent implements OnInit {
                         this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
                         break;
                       case '31':
-                        
+
                         this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +ruta.substring(27, 31);
                         break;
                     }
-    
+
   }
 
   recargar() {
-    
+
     this.pendList = []
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -151,10 +151,10 @@ export class RkporaprobarComponent implements OnInit {
     _atts.push({ name: 'statusItem', value: this.data.status });
     if(this.complete == true){
       _atts.push({ name: 'showCompleted', value: 'N' });
-      
+
     }else{
             _atts.push({ name: 'showCompleted', value: 'Y' });
-      
+
     }
     const spinner = this.controlService.openSpinner();
 
@@ -166,15 +166,39 @@ export class RkporaprobarComponent implements OnInit {
             const result = data.success;
             if (result) {
 
+
+
+              
+              if(data.data[0].atts[0].name === 'TIMEOUT'){
+                // debugger
+                this.controlService.closeSpinner(spinner);
+
+                Swal2.fire({
+                  icon:'info',
+                  text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`  
+                  
+                }).then((resultado)=>{
+                  if(resultado.value){
+                    
+                    this.dialogRef.close(true);
+                  }
+                })
+                
+                return
+                
+              }
+
               data.data.forEach((element) => {
+
+
                 if (element.atts.length > 0) {
 
                   let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
-                  
-                  this.obtenerRuta(element.atts[16].value.trim())
-                  
 
-                  
+                  this.obtenerRuta(element.atts[16].value.trim())
+
+
+
 
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
@@ -198,41 +222,44 @@ export class RkporaprobarComponent implements OnInit {
                     check: false,
                     status:element.atts[19].value.trim(),
                     TipoControl:element.atts[21].value,
-                    rutaJerarquia:this.rutaJerarquia 
-                    
-                    
+                    rutaJerarquia:this.rutaJerarquia
+
+
                   });
-                  
+
                 }
 
-                
-              
+
+
               }
 
-              
+
               );
 
               // this.comprobarPadre()
               console.log([this.pendList])
-              
+
               this.TotalRegistros = this.pendList.length
               this.controlService.closeSpinner(spinner);
 
             } else {
+              this.controlService.closeSpinner(spinner);
               this.controlService.snackbarError(data.message);
             }
+            this.controlService.closeSpinner(spinner);
             return result;
           },
           (error) => {
             this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
           });
-    });
+        });
+        // this.controlService.closeSpinner(spinner);
 
-  }
+      }
 
-  
-  imprime(){
-    console.log(this.FechaDesde=this.FechaDesde.split('-').join(''))  
+
+      imprime(){
+    console.log(this.FechaDesde=this.FechaDesde.split('-').join(''))
     console.log(this.FechaHasta=this.FechaHasta.split('-').join('') )
 
     // let a = this.FechaDesde.substring(0,4);
@@ -244,12 +271,12 @@ export class RkporaprobarComponent implements OnInit {
     // let e = this.FechaHasta.substring(7,5);
     // let f = this.FechaHasta.substring(8,10);
     // let total=a+b+c
-    
-  
+
+
     this.FechaDesdeServicio =this.FechaDesde
-   
+
     this.FechaHastaServicio = this.FechaHasta
-        
+
 
   }
 
@@ -263,14 +290,14 @@ export class RkporaprobarComponent implements OnInit {
     _atts.push({ name: 'status', value: 'IA' });
     if(this.complete == true){
       _atts.push({ name: 'showCompleted', value: 'N' });
-      
+
     }else{
             _atts.push({ name: 'showCompleted', value: 'Y' });
-      
+
     }
     _atts.push({ name: 'startDate', value: this.FechaDesdeServicio });
     _atts.push({ name: 'endDate', value: this.FechaHastaServicio });
-    
+
     const spinner = this.controlService.openSpinner();
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
@@ -280,7 +307,7 @@ export class RkporaprobarComponent implements OnInit {
             const result = data.success;
             if (result) {
               // console.log(data)
-              
+
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
@@ -301,9 +328,9 @@ export class RkporaprobarComponent implements OnInit {
                       break;
                     case '10':
                       this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
-                      break;                      
-                      case '14':  
-                        
+                      break;
+                      case '14':
+
                       this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
                        break;
                       case '18':
@@ -319,12 +346,12 @@ export class RkporaprobarComponent implements OnInit {
                         this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
                         break;
                       case '31':
-                        
+
                         this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
                         break;
                     }
 
-                  
+
 
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
@@ -348,24 +375,24 @@ export class RkporaprobarComponent implements OnInit {
                     check: false,
                     status:element.atts[19].value.trim(),
                     TipoControl:element.atts[21].value,
-                    rutaJerarquia:this.rutaJerarquia 
-                    
-                    
+                    rutaJerarquia:this.rutaJerarquia
+
+
                   });
-                  
+
                 }
 
-                
-              
+
+
               }
 
-              
+
               );
 
               // this.comprobarPadre()
               console.log([this.pendList])
               this.TotalRegistros = this.pendList.length
-              
+
 
               this.controlService.closeSpinner(spinner);
             } else {
@@ -382,109 +409,109 @@ export class RkporaprobarComponent implements OnInit {
  MarcarJerarquia(Value,status,chek){
 
 
-      
+
     let key = Value
     let Istatus = status;
 
-    
+
 
     // console.log(Istatus)
     // let entidadActual
     // console.log(key)
-    
+
     // console.error('Entro al For')
     for(let i = 0; i < this.pendList.length; i++){
       // console.log(key)
-      
+
       // console.log(i)
       if(this.pendList[i]['key'].startsWith(key)){
-        
-        
-        
+
+
+
         if(this.pendList[i]['key'] !== key){
-          
+
           if(this.pendList[i]['check'] == false){
-            
+
             this.pendList[i]['check'] = true
-            
+
             // this.totalMarcados = this.totalMarcados +1;
-            
+
             // console.log(this.totalMarcados)
-            
-            
+
+
             // this.pendList[i]['permiso'] = true
-            
+
           }else{
             this.pendList[i]['check'] = false
             if(this.pendList[i]['check'] ==false && this.totalMarcados >=0 ){
-              
-              
+
+
             }
-            
+
             }
           }
-          
+
           if(this.pendList[i]['check'] == true){
             this.totalMarcados = this.totalMarcados+1
-            
+
           }else if(this.pendList[i]['check'] == false && this.totalMarcados>0){
 
             this.totalMarcados = this.totalMarcados-1
           }
-          
-          
-         
-            
-      }
-      
-      
+
+
+
+
       }
 
 
-      
+      }
+
+
+
 
       console.log(this.totalMarcados)
 
-      
+
     }
 
 
     ejecutar(){
       this._Recargarble.Recargar$.emit(true)
     }
-    
-  
-  
- 
+
+
+
+
     cerrar(mensaje:any) {
       // console.log(mensaje)
-  
+
       if(mensaje !=='' && this.sendSome ){
-        
-  
+
+
           this.ejecutar()
           this.dialogRef.close(mensaje);
-           
-      
-      this.router.navigate(['/rkmain/cargando']);  
+
+
+      this.router.navigate(['/rkmain/cargando']);
       setTimeout(() => {
         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-          
+
       }, 1000);
-       
+
       }else{
-  
+
         this.ejecutar()
         this.dialogRef.close(false);
-        this.router.navigate(['/rkmain/cargando']);  
+        this.router.navigate(['/rkmain/cargando']);
       setTimeout(() => {
         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-          
+
       }, 1000);
-        
-        
+
+
       }
-  
+
     }
 
   checkUncheckAll() {
@@ -493,10 +520,10 @@ export class RkporaprobarComponent implements OnInit {
       this.pendList[i].check = this.masterSelected;
       if(this.masterSelected == true){
         this.totalMarcados = this.pendList.length
-        
+
       }else{
         this.totalMarcados = 0
-        
+
       }
     }
 
@@ -522,47 +549,48 @@ export class RkporaprobarComponent implements OnInit {
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.value) {
-            
+
             const _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: 'VALIDATE' });
               _atts.push({ name: 'onlyActualNode', value: 'Y' });
               _atts.push({ name: 'key', value: this.valor });
-    
+
               const spinner = this.controlService.openSpinner();
               const obj = this.autentication.generic(_atts);
-    
+
                         obj.subscribe(
                         (data) => {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    
+
                             Swal2.fire('Registro Aprobado','', 'success' )
                             // this.cerrar('falso');
                             this.sendSome = true
                             this.totalMarcados = 0
                             this.recargar()
 
-    
-                            
+
+
                           } else {
                             // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
                             Swal2.fire('',data.message,'error')
                           }
-            
+
                           this.controlService.closeSpinner(spinner);
-            
+
                         },
                         (error) => {
                           // if ( error.status === 401 ) { this.autentication.logout(); return; }
                           this.controlService.closeSpinner(spinner);
                         });
-                    }
-            
+                        this.controlService.closeSpinner(spinner);
+                      }
+
           })
-  
+
       } else {
-        
+
         Swal2.fire({
           html: '<h3><strong>Aprobar</strong></h3>',
           icon: 'info',
@@ -573,55 +601,56 @@ export class RkporaprobarComponent implements OnInit {
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.value) {
-            
+
             const _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: 'VALIDATE' });
               _atts.push({ name: 'onlyActualNode', value: 'Y' });
               _atts.push({ name: 'key', value: this.valor });
-    
+
               const spinner = this.controlService.openSpinner();
               const obj = this.autentication.generic(_atts);
-    
+
                         obj.subscribe(
                         (data) => {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    
+
                             Swal2.fire('Registro Aprobado','', 'success' )
                             // this.cerrar('falso');
                             this.totalMarcados = 0
                             this.recargar()
 
-    
-                            
+
+
                           } else {
                             // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
                             Swal2.fire('',data.message,'error')
                           }
-            
+
                           this.controlService.closeSpinner(spinner);
-            
+
                         },
                         (error) => {
                           // if ( error.status === 401 ) { this.autentication.logout(); return; }
                           this.controlService.closeSpinner(spinner);
                         });
-                    }
-            
-          })
+                        this.controlService.closeSpinner(spinner);
+                      }
+
+                    })
       }
     }else{
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
       return;
 
     }
-    
-    
 
 
 
-    
+
+
+
 
   }
 
@@ -700,10 +729,10 @@ export class RkporaprobarComponent implements OnInit {
         this.btn = 'lectura';
         return;
 
-      case 'NNYYN'://LECTURA Y CREACION 
+      case 'NNYYN'://LECTURA Y CREACION
         this.btn = 'creacion';
         return;
-      case 'NNYNY'://LECTURA Y VALIDACION 
+      case 'NNYNY'://LECTURA Y VALIDACION
         this.btn = 'Validacion';
         return;
       case 'NYYNN'://LECTURA Y APROBACION
@@ -713,7 +742,7 @@ export class RkporaprobarComponent implements OnInit {
         this.btn = 'creacionvalidacion';
 
         return;
-        
+
         case 'YYYYY'://Administrador
         this.btn = 'administrador';
 
@@ -740,12 +769,12 @@ export class RkporaprobarComponent implements OnInit {
 
   }
 
-  
+
   ActivarFuncion(){
-      
+
     setTimeout(function(){ location.reload(); }, 500);
-       
-  
+
+
 }
 
 
@@ -755,87 +784,87 @@ verTable(item: any) {
   // for (let i = 0; i < this.pendList.length; i++) {
 
   //   if (this.pendList[i]['key'] === item.key) {
-  //     this.jerarquia  = this.pendList[i]['key'] 
-      
+  //     this.jerarquia  = this.pendList[i]['key']
+
   //   }
 
   // }
-  
+
   this.pendList.forEach((element)=>{
       if(element.key === item){
-        
+
         this.jerarquia = element.key
       }
   })
- 
+
   console.log(this.jerarquia)
   switch (this.jerarquia.trim().length.toString()) {
-    
+
 
     case '2':
     this.router.navigate(['/rkmain/rka/' + this.jerarquia]);
-    this.cerrar(this.jerarquia) 
+    this.cerrar(this.jerarquia)
 
-    
+
     break;
   case '6':
     console.log('aqui')
     this.router.navigate(['/rkmain/rkp/' + this.jerarquia.substring(0, 2) + '/' + this.jerarquia.substring(2, 6)]);
-    this.cerrar(this.jerarquia) 
+    this.cerrar(this.jerarquia)
     break;
   case '10':
     this.router.navigate(['/rkmain/rks/' +this.jerarquia.substring(0, 2) + '/' +this.jerarquia.substring(2, 6) + '/' +this.jerarquia.substring(6, 10)]);
-    this.cerrar(this.jerarquia) 
+    this.cerrar(this.jerarquia)
     break;
- 
-    
+
+
     case '14':
-      
-        
-      
-      
+
+
+
+
       this.router.navigate(['/rkmain/rkc/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14)]);
-      
-      this.cerrar(this.jerarquia) 
-      // 
-      
+
+      this.cerrar(this.jerarquia)
+      //
+
       // window.location.reload()
-      
-             
+
+
       break;
     case '18':
       this.router.navigate(['/rkmain/rkt/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18)]);
-      this.cerrar( this.jerarquia) 
-      
+      this.cerrar( this.jerarquia)
+
       break;
     case '19':
       this.router.navigate(['/rkmain/rkd/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19)]);
-      this.cerrar( this.jerarquia) 
-      
-      
+      this.cerrar( this.jerarquia)
+
+
       break;
     case '23':
       this.router.navigate(['/rkmain/rkr/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23)]);
-      this.cerrar( this.jerarquia) 
-      
+      this.cerrar( this.jerarquia)
+
       break;
     case '27':
       this.router.navigate(['/rkmain/rky/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23) + '/' + item.substring(23, 27)]);
-      this.cerrar( this.jerarquia) 
-      
+      this.cerrar( this.jerarquia)
+
       break;
     case '31':
       this.router.navigate(['/rkmain/rky/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23) + '/' + item.substring(23, 27)]);
-      this.cerrar( this.jerarquia.substring(0,27)) 
-      
+      this.cerrar( this.jerarquia.substring(0,27))
+
       break;
   }
 }
-  
+
 isOnlyControl(arreglo)
       {
         console.log(arreglo=arreglo.split(','))
-        
+
 
 
         for(let i =0 ; i < arreglo.length; i++)
@@ -851,7 +880,7 @@ isOnlyControl(arreglo)
           }
 
         }
-        
+
       }
 
   consola(accion: string) {
@@ -869,7 +898,7 @@ isOnlyControl(arreglo)
 
       }else{
         this.valor = this.valor + ','+ this.pendList[i]['key']+','+'N'  ;
-            
+
       }
 
     }
@@ -882,9 +911,9 @@ isOnlyControl(arreglo)
     //AQUI COLOCA EL LLAMADO EL SRVICIIO
 
     if(accion === 'aprobar'){
-    
+
       this.sendvalidate()
-        
+
     }else{
        this.Rechazar();
     }
@@ -892,7 +921,7 @@ isOnlyControl(arreglo)
 
   }
 
- 
+
   Rechazar(){
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
@@ -903,7 +932,7 @@ isOnlyControl(arreglo)
       if(this.soloControles){
 
         Swal2.fire({
-  
+
           title: '<strong style="color:red">ADVERTENCIA !</strong>',
           html:
             'La modificación de los controles afecta al Riesgo Residual. ' +
@@ -914,10 +943,10 @@ isOnlyControl(arreglo)
           cancelButtonText: 'Cancelar',
           confirmButtonColor:'#3085d6',
           cancelButtonColor: '#d33'
-    
+
         }).then(async (result)=>{
             if(result.value){
-    
+
               // const conf = this.confirm.open(RkReasonRejectComponent,{
               //   hasBackdrop: true,
               //   height: 'auto',
@@ -938,54 +967,55 @@ isOnlyControl(arreglo)
               _atts.push({ name: 'key', value: this.valor });
               _atts.push({ name: 'version', value: this.version});
               _atts.push({ name: 'approveInd', value: 'U' });
-              // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });      
+              // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });
               _atts.push({ name: 'comments', value: this.comments });
               const spinner = this.controlService.openSpinner();
               const obj = await this.autentication.generic(_atts);
-              
+
               obj.subscribe(
-                
+
                 (data) => {
                   if (data.success === true) {
                     if (data.data[0].atts[1]) {
                       Swal2.fire({
                         text:'Registro Rechazado',
                         icon:'success',
-                        
+
                       })
                       // this.cerrar('falso')
                       this.sendSome = true
                       this.totalMarcados = 0
                       this.recargar()
 
-              
+
                     }
-              
+
                   } else {
                     // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
                     Swal2.fire({
                       text: data.message,
                       icon:'error',
-                      
+
                     })
                     // this.cerrar()
-        
+
                   }
                   this.controlService.closeSpinner(spinner);
-              
+
                 },(error) =>{
                   this.controlService.closeSpinner(spinner);
-                  }
-              )
-    
-    
-            }
+                }
+                )
+
+                this.controlService.closeSpinner(spinner);
+
+              }
         })
-  
+
       }else{
-  
+
         Swal2.fire({
-    
+
           title:'Rechazar Aprobacion',
           text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
           icon: 'info',
@@ -994,10 +1024,10 @@ isOnlyControl(arreglo)
           cancelButtonText: 'Cancelar',
           confirmButtonColor:'#3085d6',
           cancelButtonColor: '#d33'
-    
+
         }).then(async (result)=>{
             if(result.value){
-    
+
               /*const conf = this.confirm.open(RkReasonRejectComponent,{
                 hasBackdrop: true,
                 height: 'auto',
@@ -1017,52 +1047,53 @@ isOnlyControl(arreglo)
       _atts.push({ name: 'key', value: this.valor });
       _atts.push({ name: 'version', value: this.version});
       _atts.push({ name: 'approveInd', value: 'U' });
-      // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });      
+      // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });
       _atts.push({ name: 'comments', value: this.comments });
       const spinner = this.controlService.openSpinner();
       const obj = await this.autentication.generic(_atts);
-      
+
       obj.subscribe(
-        
+
         (data) => {
           if (data.success === true) {
             if (data.data[0].atts[1]) {
               Swal2.fire({
                 text:'Registro Rechazado',
                 icon:'success',
-                
+
               })
               // this.cerrar('falso')
               this.totalMarcados = 0
               this.recargar()
 
-      
+
             }
-      
+
           } else {
             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
             Swal2.fire({
               text: data.message,
               icon:'error',
-              
+
             })
             // this.cerrar()
 
           }
           this.controlService.closeSpinner(spinner);
-      
+
         },(error) =>{
           this.controlService.closeSpinner(spinner);
-          }
-      )
-             
-    
-            }
-        })
+        }
+        )
+
+
+        this.controlService.closeSpinner(spinner);
       }
+    })
+  }
 
     }else{
-      
+
       Swal2.fire('','Debe Seleccionar al menos 1 item','info')
       return;
     }

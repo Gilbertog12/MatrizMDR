@@ -1,0 +1,1566 @@
+<section class="container-fluid no-breadcrumbs">
+    <div class="row">
+        <div *ngIf="checked === true" class="col-xl-4" style="padding-left: 10px; padding-right: 5px">
+            <div class="box box-default">
+                <div style="position: absolute; right: 0px">
+                    <button class="btn btn-sm btn-light btn-round" (click)="verSinAprobar()">
+            <img
+              class="img-circle"
+              src="assets/images/Refresh.png"
+              style="width: 10px; height: 10px"
+            />
+            Refrescar
+          </button>
+                </div>
+
+
+            </div>
+        </div>
+        <div *ngIf="checked === false" class="col-xl-4" style="padding-left: 10px; padding-right: 5px">
+            <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="position: sChecky">
+                <div style="position: absolute; right: 0px">
+                    <button *ngIf="mostrarLimpiar" alt class="btn btn-sm btn-light btn-round float-left" (click)="limpiarCopiado()">
+            <img
+              class="img-circle"
+              title="Deshacer Copiado"
+              src="assets/images/clean.png"
+              style="width: 10px; height: 10px; text-align: left !important;"
+            />
+          </button>
+
+                    <button alt class="btn btn-sm btn-light btn-round" (click)="VerLeyenda()">
+            <img
+              class="img-circle"
+              title="Mostrar Leyenda"
+              src="assets/images/Help.png"
+              style="width: 10px; height: 10px"
+            />
+          </button>
+
+                    <button [style.display]="AgregarArea" *ngIf="percreacion === 'N'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()">
+            <img
+              class="img-circle"
+              src="assets/images/Add.png"
+              style="width: 10px; height: 10px"
+              title="Agregar Area"
+            />
+          </button>
+                    <button [style.display]="AgregarArea" *ngIf="percreacion === 'Y'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()" disabled>
+            <img
+              class="img-circle"
+              src="assets/images/Add_Disabled.png"
+              style="width: 10px; height: 10px"
+              title="Agregar Area"
+            />
+          </button>
+
+                    <button class="btn btn-sm btn-light btn-round" (click)="recargarArbol(true)">
+            <img
+              class="img-circle"
+              src="assets/images/Refresh.png"
+              style="width: 10px; height: 10px"
+            />
+            Refrescar
+          </button>
+                </div>
+
+                <br />
+
+                <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar>
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                        <button mat-icon-button></button>
+                        <b *ngFor="let item of node.sp">&nbsp;&nbsp;&nbsp;</b>
+                        <a *ngIf="node.status !== '008'" style="color: blue" [routerLink]="" (click)="ver(node)">{{ node.item }}</a
+            >
+            <a
+              *ngIf="node.status === '008'"
+              style="color: black"
+              [routerLink]=""
+              (click)="ver(node)"
+              >{{ node.item }}</a
+            >
+          </mat-tree-node>
+
+          <mat-tree-node
+            *matTreeNodeDef="let node; when: hasChild"
+            matTreeNodePadding
+            id="{{ node.key }}"
+            
+            >
+            <div [ngSwitch]="node.permiso">
+              <div *ngSwitchCase="'YY'">
+                <button
+                  *ngIf="node.level != 8"
+                  [style.display]="AgregarNodo"
+                  id="SinPermisos"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="SinPermisos()"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/Add_Disabled.png"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+
+                <button
+                  *ngIf="node.level == 8"
+                  [style.display]="EliminarNodo"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="eliminar(node)"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/botn_blanco.jng"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  [style.display]="EliminarNodo"
+                  id="SinPermisos"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="SinPermisos()"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/Delete_Disabled.png"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  *ngIf="rutaimagen && node.level>1"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="copy(node)"
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/copy.png"
+                    title="Copiar Jerarquia"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  *ngIf="rutaimagen && node.level ===1"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="copy(node)"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/cancel.png"
+                    title="Copiar Jerarquia"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+              <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+          </button>
+          <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+              <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+          </button>
+              </div>
+              <div *ngSwitchCase="'NN'">
+                <button
+                  *ngIf="node.level != 8"
+                  [style.display]="AgregarNodo"
+                  id="SinPermisos"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="SinPermisos()"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/Add_Disabled.png"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+
+                <button
+                  *ngIf="node.level == 8"
+                  [style.display]="EliminarNodo"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="eliminar(node)"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/botn_blanco.jng"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  [style.display]="EliminarNodo"
+                  id="SinPermisos"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="SinPermisos()"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/Delete_Disabled.png"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  *ngIf="rutaimagen && node.level>1"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="copy(node)"
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/copy.png"
+                    title="Copiar Jerarquia"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  *ngIf="rutaimagen && node.level ===1"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="copy(node)"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/cancel.png"
+                    title="Copiar Jerarquia"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                  <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+              </button>
+              <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+              </div>
+              <div *ngSwitchCase="'NY'">
+                <button
+                  *ngIf="node.level != 8"
+                  [style.display]="AgregarNodo"
+                  id="SinPermisos"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="SinPermisos()"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/Add_Disabled.png"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+
+                <button
+                  *ngIf="node.level == 8"
+                  [style.display]="EliminarNodo"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="eliminar(node)"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/botn_blanco.jng"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  [style.display]="EliminarNodo"
+                  id="SinPermisos"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="SinPermisos()"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/Delete_Disabled.png"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  *ngIf="rutaimagen && node.level>1"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="copy(node)"
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/copy.png"
+                    title="Copiar Jerarquia"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button
+                  *ngIf="rutaimagen && node.level ===1"
+                  class="btn btn-sm btn-light btn-round"
+                  (click)="copy(node)"
+                  disabled
+                >
+                  <img
+                    class="img-circle"
+                    src="assets/images/cancel.png"
+                    title="Copiar Jerarquia"
+                    style="width: 10px; height: 10px"
+                  />
+                </button>
+                <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                  <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+              </button>
+              <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+              </div>
+              <div *ngSwitchCase="'YN'">
+                <div [ngSwitch]="node.status">
+                  <div *ngSwitchCase="006">
+                    <ng-template
+                      [ngIf]="node.pendingDelete === 'Y'"
+                      [ngIfElse]="sinmarca"
+                    >
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+                    <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+                  </button>
+                  <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                      <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+                  </button>
+                    </ng-template>
+
+                    <ng-template #sinmarca>
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+          
+                    </ng-template>
+                  </div>
+                  <div *ngSwitchCase="010">
+                    <ng-template
+                      [ngIf]="node.pendingDelete === 'Y'"
+                      [ngIfElse]="sinmarca"
+                    >
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+
+                    <ng-template #sinmarca>
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+                  </div>
+
+                  <div *ngSwitchCase="000">
+                    <ng-template
+                      [ngIf]="node.pendingDelete === 'Y'"
+                      [ngIfElse]="sinmarca"
+                    >
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+
+                    <ng-template #sinmarca>
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+                  </div>
+                  <div *ngSwitchCase="004">
+                    <ng-template
+                      [ngIf]="node.pendingDelete === 'Y'"
+                      [ngIfElse]="sinmarca"
+                    >
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
+                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+
+                    <ng-template #sinmarca>
+                      <ng-template
+                        [ngIf]="node.level == 4"
+                        [ngIfElse]="SinCreacion"
+                      >
+                        <button
+                          *ngIf="percreacion !== 'Y'"
+                          [style.display]="AgregarNodo"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="nuevo(node)"
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Add.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+
+                        <button
+                          [style.display]="EliminarNodo"
+                          id="SinPermisos"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="eliminar(node)"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Delete_Disabled.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button
+                          *ngIf="rutaimagen"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="copy(node)"
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/copy.png"
+                            title="Copiar Jerarquia"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button *ngIf="!rutaimagen && node.level === nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)">
+                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+                      </ng-template>
+
+                      <ng-template #SinCreacion>
+                        <button
+                          *ngIf="node.level != 8"
+                          [style.display]="AgregarNodo"
+                          id="SinPermisos"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="SinPermisos()"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Add_Disabled.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+
+                        <button
+                          *ngIf="node.level == 8"
+                          [style.display]="EliminarNodo"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="eliminar(node)"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/botn_blanco.jng"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button
+                          [style.display]="EliminarNodo"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="eliminar(node)"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Delete_Disabled.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button
+                          *ngIf="rutaimagen"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="copy(node)"
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/copy.png"
+                            title="Copiar Jerarquia"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                          <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                      </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+                      </ng-template>
+                    </ng-template>
+                  </div>
+                  <div *ngSwitchCase="007">
+                    <ng-template
+                      [ngIf]="node.pendingDelete === 'Y'"
+                      [ngIfElse]="sinmarca"
+                    >
+                      <button
+                        *ngIf="node.level != 8"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="node.level == 8"
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        [style.display]="EliminarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="SinPermisos()"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                        <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                    </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+
+                    <ng-template #sinmarca>
+                      <ng-template
+                        [ngIf]="node.level == 4"
+                        [ngIfElse]="SinCreacion"
+                      >
+                        <button
+                          *ngIf="percreacion !== 'Y'"
+                          [style.display]="AgregarNodo"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="nuevo(node)"
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Add.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+
+                        <button
+                          [style.display]="EliminarNodo"
+                          id="SinPermisos"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="eliminar(node)"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Delete_Disabled.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button
+                          *ngIf="rutaimagen"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="copy(node)"
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/copy.png"
+                            title="Copiar Jerarquia"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                          <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                      </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+                      </ng-template>
+
+                      <ng-template #SinCreacion>
+                        <button
+                          *ngIf="node.level != 8"
+                          [style.display]="AgregarNodo"
+                          id="SinPermisos"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="SinPermisos()"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Add_Disabled.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+
+                        <button
+                          *ngIf="node.level == 8"
+                          [style.display]="EliminarNodo"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="eliminar(node)"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/botn_blanco.jng"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button
+                          [style.display]="EliminarNodo"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="eliminar(node)"
+                          disabled
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/Delete_Disabled.png"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button
+                          *ngIf="rutaimagen"
+                          class="btn btn-sm btn-light btn-round"
+                          (click)="copy(node)"
+                        >
+                          <img
+                            class="img-circle"
+                            src="assets/images/copy.png"
+                            title="Copiar Jerarquia"
+                            style="width: 10px; height: 10px"
+                          />
+                        </button>
+                        <button  *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)" id="SinPermisos" disabled>
+                          <img   class="img-circle" src="assets/images/paste2.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+                      </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+                      </ng-template>
+                    </ng-template>
+                  </div>
+                  <div *ngSwitchDefault>
+                    <ng-template [ngIf]="node.level != 8" [ngIfElse]="Eliminar">
+                      <button
+                        *ngIf="percreacion !== 'Y'"
+                        [style.display]="AgregarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="nuevo(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="percreacion === 'Y'"
+                        [style.display]="AgregarNodo"
+                        id="SinPermisos"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="nuevo(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Add_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="
+                          percreacion !== 'Y' && node.displayDeleteIcon === 'N'
+                        "
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="
+                          percreacion !== 'Y' && node.displayDeleteIcon === 'Y'
+                        "
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="
+                          percreacion === 'Y' && node.displayDeleteIcon === 'N'
+                        "
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="
+                          percreacion === 'Y' && node.displayDeleteIcon === 'Y'
+                        "
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
+                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+
+                    <ng-template #Eliminar>
+                      <button
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/botn_blanco.jng"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="
+                          percreacion !== 'Y' && node.displayDeleteIcon === 'N'
+                        "
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete_Disabled.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="
+                          percreacion !== 'Y' && node.displayDeleteIcon === 'Y'
+                        "
+                        [style.display]="EliminarNodo"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="eliminar(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/Delete.png"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+
+                      <button
+                        *ngIf="rutaimagen && node.level > 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/copy.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                      <button
+                        *ngIf="rutaimagen && node.level === 1"
+                        class="btn btn-sm btn-light btn-round"
+                        (click)="copy(node)"
+                        disabled
+                      >
+                        <img
+                          class="img-circle"
+                          src="assets/images/cancel.png"
+                          title="Copiar Jerarquia"
+                          style="width: 10px; height: 10px"
+                        />
+                      </button>
+                       <button *ngIf="!rutaimagen && node.level === nivelpermitido && node.key !== nodoPadreBloqueo" class="btn btn-sm btn-light btn-round" (click)="paste(node)">
+                <img   class="img-circle" src="assets/images/paste.png" title="Pegar Jerarquia" style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key !== nodocopiarkey  || node.key === nodoPadreBloqueo " class="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" src="assets/images/cancel.png"  style="width: 10px; height: 10px; ">
+            </button>
+            <button *ngIf="!rutaimagen && node.level !== nivelpermitido && node.key === nodocopiarkey "lass="btn btn-sm btn-light btn-round" (click)="paste(node)" disabled>
+                <img   class="img-circle" title="Jerarquia Copiada" src="assets/images/Tick.png"  style="width: 10px; height: 10px; ">
+            </button>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+              <div *ngSwitchDefault></div>
+            </div>
+
+            <b *ngFor="let item of node.sp"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b
+            >
+
+            <div *ngIf="treeControl.isExpanded(node)">
+              <div [ngSwitch]="node.hijo">
+                <div *ngSwitchCase="'N'">
+                  <button
+                    *ngIf="node.level !== 8"
+                    class="btn btn-sm btn-light btn-round"
+                    mat-icon-button
+                    [attr.aria-label]="'toggle ' + node.filename"
+                    matTreeNodeToggle
+                  >
+                    <img
+                      *ngIf="node.level !== 8"
+                      class="img-circle"
+                      src="assets/images/SinFondo.png"
+                      style="width: 10px; height: 10px"
+                      disabled
+                    />
+                  </button>
+                </div>
+                <div *ngSwitchCase="'Y'">
+                  <div>
+                    <button
+                      *ngIf="node.level !== 8"
+                      class="btn btn-sm btn-light btn-round"
+                      mat-icon-button
+                      [attr.aria-label]="'toggle ' + node.filename"
+                      matTreeNodeToggle
+                    >
+                      <img
+                        *ngIf="node.level !== 8"
+                        class="img-circle"
+                        src="assets/images/ArrowDown.png"
+                        style="width: 10px; height: 10px"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!treeControl.isExpanded(node)">
+              <div [ngSwitch]="node.hijo">
+                <div *ngSwitchCase="'N'">
+                  <button
+                    *ngIf="node.level !== 8"
+                    class="btn btn-sm btn-light btn-round"
+                    mat-icon-button
+                    [attr.aria-label]="'toggle ' + node.filename"
+                    matTreeNodeToggle
+                  >
+                    <img
+                      *ngIf="node.level !== 8"
+                      class="img-circle"
+                      src="assets/images/SinFondo.png"
+                      style="width: 10px; height: 10px"
+                      disabled
+                    />
+                  </button>
+                </div>
+                <div *ngSwitchCase="'Y'">
+                  <div>
+                    <button
+                      *ngIf="node.level !== 8"
+                      class="btn btn-sm btn-light btn-round"
+                      mat-icon-button
+                      [attr.aria-label]="'toggle ' + node.filename"
+                      matTreeNodeToggle
+                    >
+                      <img
+                        *ngIf="node.level !== 8 && node.hijo === 'Y'"
+                        class="img-circle"
+                        src="assets/images/ArrowRigth.png"
+                        style="width: 10px; height: 10px"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <a
+              *ngIf="node.level === 1"
+              title="Area"
+              style="background-color: #bdf987e6; font-size: 8px"
+              >AR-
+            </a>
+                        <a *ngIf="node.level === 2" title="Proceso" style="background-color: #bdf987e6; font-size: 8px">PR-
+            </a>
+                        <a *ngIf="node.level === 3" title="SubProceso" style="background-color: #bdf987e6; font-size: 8px">SP-
+            </a>
+                        <a *ngIf="node.level === 4" title="Actividad" style="background-color: #bdf987e6; font-size: 8px">AC-
+            </a>
+                        <a *ngIf="node.level === 5" title="Tarea" style="background-color: #bdf987e6; font-size: 8px">TA-
+            </a>
+                        <a *ngIf="node.level === 6" title="Dimension" style="background-color: #bdf987e6; font-size: 8px">DM-
+            </a>
+                        <a *ngIf="node.level === 7" title="Riesgo" style="background-color: #bdf987e6; font-size: 8px">RG-
+            </a>
+                        <a *ngIf="node.level === 8" title="Consecuencia" style="background-color: #bdf987e6; font-size: 8px">CS-
+            </a>
+                        <a *ngIf="node.level === 9" title="Control" style="background-color: #bdf987e6; font-size: 8px">CT-
+            </a>
+                        <a *ngIf="
+                node.status === '001' ||
+                node.status === '002' ||
+                node.status === '003'
+              " title="Ítem pendiente por enviar a validar." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(*)</a>
+                        </a>
+                        <a *ngIf="node.status === '006' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(*)</a>
+                        </a>
+
+                        <a *ngIf="node.status === '006' && node.pendingDelete === 'N'" title="Pendiente Inactivacion (Eliminacion)." Style=" color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(*)</a>
+                        </a>
+
+                        <a *ngIf="node.status === '008'" title="Aprobado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }}
+            </a>
+                        <a *ngIf="node.status === '004' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." style="color: black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(**)</a>
+                        </a>
+                        <a *ngIf="node.status === '004' && node.pendingDelete === 'N'" title="Ítem pendiente de validar." style="color: black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(**)</a>
+                        </a>
+                        <a *ngIf="node.status === '007' && node.pendingDelete === 'Y'" title="Pendiente Inactivacion (Eliminacion)." Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(***)</a>
+                        </a>
+                        <a *ngIf="node.status === '007' && node.pendingDelete === 'N'" title="Ítem pendiente por Aprobar" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(***)</a>
+                        </a>
+
+                        <a *ngIf="node.status === '000'" title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }} <a style="font-size: 11px; color: red">(R)</a></a>
+                        <a *ngIf="node.status === '010'" title="Ítem Archivado" Style="color:black" [routerLink]="" (click)="ver(node)">{{ node.item }}
+              <a style="font-size: 11px; color: red">(Ar)</a></a>
+                        <!-- <a *ngIf="node.status === '010' " title="Ítem Rechazado" Style="color:black" [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px ;color: red;">(AR)</a></a> -->
+                        <!-- <a *ngIf="node.status === '005'" title="Ítem pendiente por enviar a aprobar" style="color: black;  " [routerLink]="" (click)="ver(node)">{{node.item}}<a style="font-size: 11px;color: red;">(*)</a></a> -->
+
+                        <mat-progress-bar *ngIf="node.isLoading" style="width: 50px" mode="buffer"></mat-progress-bar>
+                    </mat-tree-node>
+                </mat-tree>
+            </div>
+        </div>
+        <!--Pantalla de Detalle-->
+
+        <div class="col-xl-8" id="refrescar">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+    <a style="
+      padding-top: 0px;
+      text-align: right;
+      display: inline;
+      padding-left: 1080px;
+    ">Desarrollado por SUMMA CONSULTING @{{ date }}</a
+  >
+</section>
+
+<!-- <div style="margin-left:20px; margin-top: 0cm;">
+
+</div> -->

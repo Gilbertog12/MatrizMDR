@@ -64,7 +64,7 @@ export class RkyComponent implements OnInit {
   public aprobacion = 'aprobacion';
   public validacionaprobacion = 'validacionaprobacion';
   creacionaprobacion ='creacionaprobacion'
-  
+
 public key:string
 public version : string
 public Razon : string
@@ -83,14 +83,14 @@ public Razon : string
   controlesstatus: any ='';
   statusc: any = '';
   controlesstatusa: boolean;
-  
+
   constructor(private autentication: AuthenticationService,
     private methodService: HttpMethodService,
     private controlService: ControlsService,
     private confirm: MatDialog,
     private route: ActivatedRoute,
     private Cajas:ServiciocajasService) {
-      
+
       //this.aperfil()
       this.canAdd=localStorage.getItem('canAdd')
     this.route.params.subscribe(params => {
@@ -108,44 +108,41 @@ public Razon : string
       this.cDurosList = [];
       this.docsList = [];
       this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
-      
+
     });
-    
+
   }
 
   ngOnInit() {
-    this.mostrar()
+    // this.mostrar()
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
     this.percreacion = localStorage.getItem('NoCreador')
     // console.log(this.controlesstatus)
     this.controlesstatus = ''
-    this.Cajas.Recargar$.subscribe(resp=>{
+    this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
-       
-  
+
+
         this.consecuenciaModel = {};
       this.epfList = [];
       this.cBlandosList = [];
       this.cDurosList = [];
       this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+      
 
-
-
-     
-        
       }
     })
 
-  
+
 
   }
 
 
 
-  
-  
+
+
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string, dimensionId: string, riesgoId: string, consecuenciaId: string) {
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -172,7 +169,7 @@ public Razon : string
               console.log(data)
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
-                  if (element.atts[0].value === '0') {  
+                  if (element.atts[0].value === '0') {
                     this.consecuenciaModel = {
                       offset: element.atts[0],
                       areaId: element.atts[1].value.trim(),
@@ -220,7 +217,7 @@ public Razon : string
                       CanAdd:element.atts[43].value.trim(),
                       CanModify:element.atts[44].value.trim(),
                       Creador:element.atts[45].value.trim()
-                     
+
 
 
                     };
@@ -237,7 +234,7 @@ public Razon : string
                       var StatusTempP = parseInt(this.consecuenciaModel.statusParent)
                     }
 
-                    
+
                     if(StatusTemp<StatusTempP){
                       this.permisoValidar = true
                     }else{
@@ -259,7 +256,7 @@ public Razon : string
 
                       if(element.atts[5].value === '008' && this.btn==='lectura'){
                         this.epfListLectura.push({
-                        
+
                           offset: element.atts[0].value,
                           controlId: element.atts[1].value.trim(),
                           controlDesc:  element.atts[2].value.trim(),
@@ -274,7 +271,7 @@ public Razon : string
 
 
                         });
-                        
+
 
                         console.log(this.epfListLectura);
 
@@ -283,7 +280,7 @@ public Razon : string
                         let a = element.atts[2].value.trim();
 
                         this.epfList.push({
-                          
+
                           offset: element.atts[0].value,
                           controlId: element.atts[1].value.trim(),
                           controlDesc:  element.atts[2].value.trim(),
@@ -297,14 +294,14 @@ public Razon : string
                           controlDescExt:element.atts[10].value.trim()
 
                         });
-        
-                        // if(element.atts[5].value.trim() !== '008'){
-                            
 
-                          
+                        // if(element.atts[5].value.trim() !== '008'){
+
+
+
 
                         //     this.statusc = element.atts[5].value.trim()
-                          
+
                         // }
                         if(element.atts[5].value.trim() !== '008'){
 
@@ -318,13 +315,13 @@ public Razon : string
                         // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
 
                         // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
-                        
 
-                       
-                        
+
+
+
                       }
-                      
-                      
+
+
                       // console.log(this.epfList)
                     }
                     else if (_s.includes('cblando')) {
@@ -344,7 +341,7 @@ public Razon : string
                           cblandoDescripcionExt:element.atts[9].value.trim()
 
 
-  
+
                         });
 
                       }else{
@@ -360,7 +357,7 @@ public Razon : string
                           displayDeleteIcon:element.atts[8].value.trim(),
                           cblandoDescripcionExt:element.atts[9].value.trim()
 
-  
+
                         });
                         // if(element.atts[5].value.trim() !== '008'){
                         //   this.statusc = element.atts[5].value.trim()
@@ -373,7 +370,7 @@ public Razon : string
 
                         console.log(this.controlesstatus)
                       }
-                      
+
                     }
                     else if (_s.includes('cduro')) {
 
@@ -473,119 +470,124 @@ public Razon : string
                   }
                 }
               });
-              
+
               this.controlesstatusa = this.validarcontroles(this.controlesstatus)
               this.controlesstatus = ''
               this.controlService.closeSpinner(spinner);
             } else {
+              
               this.controlService.closeSpinner(spinner);
               this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
             }
+            // this.controlService.closeSpinner(spinner);
             return result;
           },
           (error) => {
+            //debugger
+          console.log(error)
             this.controlService.closeSpinner(spinner);
             this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.consecuenciaModel, false);
           });
-    });
+        });
 
-    // this.controlesstatus = !this.controlesstatus.includes('008')
-    // console.log(this.controlesstatus)
+        // this.controlesstatus = !this.controlesstatus.includes('008')
+        // console.log(this.controlesstatus)
 
-    // this.validarcontroles(this.controlesstatus)
-  }
-  
-  validarcontroles(string:string){
+        // this.validarcontroles(this.controlesstatus)
+        // this.controlService.closeSpinner(spinner);
+      }
 
-    
-    
-    if(string !==''){  
+      validarcontroles(string:string){
+
+
+
+    if(string !==''){
       var arry = string.split(' ')
-    switch (this.btn) {
-      
-      
-      case 'creacion'://LECTURA Y CREACION 
-      
+      switch (this.btn) {
+
+
+        case 'creacion'://LECTURA Y CREACION
+
         arry = arry.sort()
         arry.filter(status => {
 
           if(this.statusc === ''){
 
             if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
-                  
+
               this.statusc = status
 
-              
+
 
         }else if(status === '004'){
               this.statusc = status
-              
-                
+
+
         }else{
 
           if(status === '007'){
             this.statusc = status
-            
+
           }
 
-        } }       
-          
-        }                   
+        } }
+
+        }
           )
-          
-        break;        
-        case 'Validacion'://LECTURA Y VALIDACION 
-        
+
+        break;
+        case 'Validacion'://LECTURA Y VALIDACION
+
         // var arry = string.split(' ')
         arry = arry.sort();
         arry.filter(status => {
 
           if(this.statusc === '000' && status === '004' ||this.statusc === '001' &&  status === '004' ||this.statusc === '002' && status === '004' ||this.statusc === '003' && status === '004'||this.statusc === '006' && status === '004'){
             this.statusc = status
-              
+
           }
           if(this.statusc === '000' && status === '007' ||this.statusc === '001' &&  status === '007' ||this.statusc === '002' && status === '007' ||this.statusc === '003' && status === '007'||this.statusc === '006' && status === '007'){
             this.statusc = status
-              
+
           }
 
           if(this.statusc ===''){
 
             if(status === '004'){
-            
+
               this.statusc = status
-              
+
               }else{
                 if(status === '007'){
-                  
+
                   this.statusc = status
                 }else{
                   if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
                     this.statusc = status
-  
+
                   }
               }
             }
-          }  
-          
-          
-      }                   
+          }
+
+
+      }
       )
-        
+
       break;
 
-    /*  case 'validacionaprobacion'://LECTURA Y VALIDACION 
-      
+    /*  case 'validacionaprobacion'://LECTURA Y VALIDACION
+
       var arry = string.split(' ')
       arry.filter(status => {
-        
+
         if(status === '004'){
-          
+
           this.statusc = status
-          
+
         }else{
           if(status === '007'){
-            
+
             this.statusc = status
           }else{
             if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
@@ -594,38 +596,38 @@ public Razon : string
             }
           }
         }
-      }                   
+      }
       )
-        
+
       return !string.includes('008');*/
-      
-     /* case 'creacionvalidacion'://LECTURA Y VALIDACION 
-      
+
+     /* case 'creacionvalidacion'://LECTURA Y VALIDACION
+
       var arry = string.split(' ')
       arry.filter(status => {
-        
+
         if(status === '004'){
-          
+
           this.statusc = status
-          
+
         }else{
           if(status === '007'){
-            
+
             this.statusc = status
           }else{
             if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
               this.statusc = status
-              
+
           }
         }
     }
-  }                   
+  }
         )
-        
+
       return !string.includes('008');*/
-      
+
       case 'aprobacion'://LECTURA Y APROBACION
-      
+
 
       // var arry = string.split(' ')
       arry = arry.sort().reverse()
@@ -633,23 +635,23 @@ public Razon : string
 
         if(this.statusc === '004' && status === '000' ||this.statusc === '004' &&  status === '001' ||this.statusc === '004' && status === '002' ||this.statusc === '004' && status === '003'||this.statusc === '004' && status === '006'){
           this.statusc = status
-            
+
         }
 
 
         if(this.statusc === '' ){
 
-        
+
 
           if(status === '007'){
-                  
+
             this.statusc = '007'
-  
+
           }else{
 
             if(status === '000' || status === '001' || status === '002'||status === '003'||status === '006'){
               this.statusc = status
-              
+
           }else{
 
             if(status === '004'){
@@ -659,17 +661,17 @@ public Razon : string
 
           }
         }
-        
-      }                   
+
+      }
       )
-      break;   
-      
+      break;
+
       default:
         break;
-        
+
       }
       return !string.includes('008');
-    
+
   }
 
 
@@ -677,7 +679,7 @@ public Razon : string
 
   }
 
-  
+
 
   async guardarcblando() {
 
@@ -776,6 +778,7 @@ public Razon : string
                 })
               }
               this.controlService.closeSpinner(spinner);
+              
             },
             (error) => {
               this.controlService.closeSpinner(spinner);
@@ -893,7 +896,7 @@ public Razon : string
 
   }
 
-  
+
 
   async guardarepf() {
 
@@ -925,8 +928,8 @@ public Razon : string
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
-        
-        
+
+
       }else{
         this.consecuenciaModel = {};
         this.epfList = [];
@@ -982,8 +985,8 @@ public Razon : string
               if (data.success === true) {
                 if (data.data[0].atts[1]) {
                 Swal2.fire('','Registro eliminado', 'success')
-                
-                  
+
+
                 }
                 this.consecuenciaModel = {};
                 this.epfList = [];
@@ -1073,7 +1076,7 @@ public Razon : string
     conf.afterClosed()
       .subscribe(async (result) => {
         if (result) {
-  
+
           let _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'DOCUMENTO_DELETE' });
@@ -1425,10 +1428,10 @@ public Razon : string
         this.btn = 'lectura';
         return;
 
-      case 'NNYYN'://LECTURA Y CREACION 
+      case 'NNYYN'://LECTURA Y CREACION
         this.btn = 'creacion';
         return;
-      case 'NNYNY'://LECTURA Y VALIDACION 
+      case 'NNYNY'://LECTURA Y VALIDACION
         this.btn = 'Validacion';
         return;
       case 'NYYNN'://LECTURA Y APROBACION
@@ -1438,12 +1441,12 @@ public Razon : string
         this.btn = 'creacionvalidacion';
 
         return;
-        
+
         case 'YYYYY'://Administrador
         this.btn = 'administrador';
 
         return;
-        
+
         case 'NYYYY'://Administrador
         this.btn = 'administrador';
 
@@ -1467,51 +1470,51 @@ public Razon : string
 
   consola(accion : string){
 
-    this.key = this.consecuenciaModel.key 
+    this.key = this.consecuenciaModel.key
     this.version = localStorage.getItem('versionSelected')
-    
-    
+
+
     switch(accion){
-      
+
     case 'aprobar':
       this.sendvalidate()
       return;
-    
+
       case 'validaraprobar':
       this.ValidarAprobar()
       return;
-  
+
     case 'rechazar':
         this.Rechazar()
         return;
-  
+
     case 'archivar':
           this.Archivar()
           return;
-    
+
     case 'restaurar':
           this.RestaurarItem()
           return;
-    
+
     }
-    
-    
-    
-    
-    
+
+
+
+
+
   }
-  
+
   async ValidarAprobar(){
-  
+
     let title=''
       let resp= ''
-  
+
       switch (this.consecuenciaModel.areaStatus) {
-        
+
         case 'ENVIADO A VALIDACION':
           title= 'Validar'
           resp = 'Validado'
-          
+
           break;
         case 'PENDIENTE DE APROBACION':
           title= 'Aprobar'
@@ -1521,35 +1524,35 @@ public Razon : string
 
           case 'PENDIENTE INACTIVACION':
             title= 'Validar'
-          resp = 'Validado'  
-            
+          resp = 'Validado'
+
             break;
-  
+
           case 'ENVIADO A APROBACION':
             title= 'Aprobar'
             resp = 'Aprobado'
           break;
-          
-        
-      
+
+
+
         default:
           break;
       }
-  
+
       const inputOptions = {
-  
+
         'Y': 'Solo Padre',
         'N': 'Padre e Hijos',
-        
-    
+
+
   }
-  
+
   const { value: color } = await Swal2.fire({
     title: title,
     text: '¿ Está seguro que desea'+' '+ title +' ' + 'este registro ?',
-    
+
     showCancelButton: true,
-    
+
     confirmButtonText: 'Aceptar',
     cancelButtonText: 'Cancelar',
     confirmButtonColor:'#3085d6',
@@ -1561,13 +1564,13 @@ public Razon : string
   //   return 'Debe Seleccionar una Opcion'
   //   }
   // }
-    
-    
-    
+
+
+
   })
   if(color ){
     // console.log(color)
-  
+
     // if(color == 1){
     //   this.EnviarHijos = 'Y'
     // }else{
@@ -1582,72 +1585,72 @@ public Razon : string
 
     _atts.push({ name: 'comments', value: '' });
     _atts.push({ name: 'key', value: this.key });
-  
+
     const spinner = this.controlService.openSpinner();
     const obj = this.autentication.generic(_atts);
-  
+
     obj.subscribe(
               (data) => {
                 if (data.success === true) {
                   // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-  
+
                   Swal2.fire('Registro'+' '+resp,'', 'success' )
                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                                   //  console.log('estoy aqui')
                   localStorage.setItem('isSendToValidate', '1');
-                  
-                  
+
+
                 } else {
                   // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
                   Swal2.fire('',data.message,'error')
                 }
-  
+
                 this.controlService.closeSpinner(spinner);
-  
+
               },
               (error) => {
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
                 this.controlService.closeSpinner(spinner);
               });
-  
+
   }
-    
-  
-  
-  
+
+
+
+
     }
 
     Rechazar(){
-      
+
       let title=''
       let resp=''
       switch (this.consecuenciaModel.consecuenciaStatus) {
-       
+
         case 'ENVIADO A VALIDACION':
           title= 'Validacion'
           resp = 'Validado'
-          
+
           break;
         case 'PENDIENTE DE APROBACION':
           title= 'AprobacionS'
           resp = 'Aprobado'
-          
-        
-      
+
+
+
         default:
           break;
       }
       console.log(this.consecuenciaModel.consecuenciaVersion)
-     
+
       this.key = this.consecuenciaModel.key + ','
       this.version = this.consecuenciaModel.consecuenciaVersion + ','
 
       localStorage.setItem('Llave', this.key);
       localStorage.setItem('VersionL', this.version);
       localStorage.setItem('isValidatingFromTree', 'Y');
-  
+
       Swal2.fire({
-  
+
         title:'Rechazar '+title,
         text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
         icon: 'question',
@@ -1656,10 +1659,10 @@ public Razon : string
         cancelButtonText: 'Cancelar',
         confirmButtonColor:'#3085d6',
         cancelButtonColor: '#d33'
-  
+
       }).then((result)=>{
           if(result.value){
-  
+
             const conf1 = this.confirm.open(RkReasonRejectComponent,{
               hasBackdrop: true,
               height: 'auto',
@@ -1670,11 +1673,11 @@ public Razon : string
                 button_close: 'Cancelar'
               }
             });
-  
-           
+
+
           }
       })
-  
+
   //     const conf = this.confirm.open(ConfirmationComponent, {
   //       hasBackdrop: true,
   //       height: 'auto',
@@ -1687,11 +1690,11 @@ public Razon : string
   //         button_close: 'Cancelar'
   //       }
   //     });
-  
+
   //     conf.afterClosed()
   //       .subscribe(async (result) => {
     //       if (result) {
-  
+
     //         const conf1 = this.confirm.open(RkReasonRejectComponent,{
     //           hasBackdrop: true,
     //           height: 'auto',
@@ -1702,13 +1705,13 @@ public Razon : string
     //             button_close: 'Cancelar'
     //           }
     //         });
-  
+
     //         conf1.afterClosed().subscribe
     //         (async ( result1) =>{
     //           console.log( result1)
-  
+
     //          if(result1){
-  
+
     //             this.Razon = localStorage.getItem('RazonRechazo')
     //                let _atts = [];
     //         _atts.push({ name: 'scriptName', value: 'coemdr'});
@@ -1717,79 +1720,79 @@ public Razon : string
     //         _atts.push({ name: 'version', value: this.version});
     //         _atts.push({ name: 'approveInd', value: 'U' });
     //         _atts.push({ name: 'comments', value: this.Razon });
-  
+
     //         const spinner = this.controlService.openSpinner();
     //         const obj = await this.autentication.generic(_atts);
-  
+
     //         obj.subscribe(
     //           (data) => {
     //             if (data.success === true) {
     //               if (data.data[0].atts[1]) {
     //                 this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
     //                 localStorage.removeItem('RazonRechazo')
-    
+
     //               }
-  
+
     //             } else {
     //               this.autentication.showMessage(data.success, data.message, {}, data.redirect);
     //             }
     //             this.controlService.closeSpinner(spinner);
-  
+
     //           },
     //           (error) => {
     //             // if ( error.status === 401 ) { this.autentication.logout(); return; }
     //             this.controlService.closeSpinner(spinner);
     //           });
-  
+
     //           }
     //         } )
-  
-         
+
+
     //       //   console.log('Aqui Estoy..!')
     //       }
           // this.cerrar();
-            
-          
+
+
     //     });
     }
-      
-  
+
+
       async sendvalidate() {
-  
+
         let title=''
         let resp= ''
-  
+
         switch (this.consecuenciaModel.consecuenciaStatus) {
           case 'CREADO':
             title= 'Enviar a Validar'
             resp = 'Enviado a Validar'
-            
+
             break;
-          
+
           case 'MODIFICADO':
             title= 'Enviar a Validar'
             resp = 'Enviado a Validar'
-            
+
             break;
-                
+
           default:
             break;
         }
-          
+
         const inputOptions = {
-     
+
           'Y': 'Solo Padre',
           'N': 'Padre e Hijos',
-          
-      
+
+
     }
-    
+
     const { value: color } = await Swal2.fire({
       title: title,
       text: '¿ Está seguro que desea'+' '+ title +' ' + 'este registro ?',
-      
+
       showCancelButton: true,
-      
+
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       confirmButtonColor:'#3085d6',
@@ -1801,12 +1804,12 @@ public Razon : string
     //   return 'Debe Seleccionar una Opcion'
     //   }
     // }
-      
-      
-      
+
+
+
     })
     if(color ){
-      
+
       const _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
@@ -1814,45 +1817,45 @@ public Razon : string
               _atts.push({ name: 'isValidatingFromTree', value: 'Y' });
 
               _atts.push({ name: 'key', value: this.key });
-    
+
               const spinner = this.controlService.openSpinner();
               const obj = this.autentication.generic(_atts);
-    
+
               obj.subscribe(
                         (data) => {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    
+
                             Swal2.fire('Registro'+' '+resp,'', 'success' )
                             this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                             localStorage.setItem('isSendToValidate', '1');
                             //recargar arbol
-                            
+
                           } else {
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
                             Swal2.fire('',data.message,'error')
                           }
-            
+
                           this.controlService.closeSpinner(spinner);
-            
+
                         },
                         (error) => {
                           // if ( error.status === 401 ) { this.autentication.logout(); return; }
                           this.controlService.closeSpinner(spinner);
                         });
-            
+
     }
-          
-       
-  
+
+
+
       }
-  
-  
+
+
       async Archivar() {
-  
-        
+
+
         const { value: accept } = await Swal2.fire({
-  
+
           title:'Enviar a Archivar',
           text: 'Tenga en cuenta que una vez archivado no podrá visualizar ni utilizar más éste Registro',
           icon:'question',
@@ -1867,28 +1870,28 @@ public Razon : string
           return !result && 'Debe Aceptar los Terminos'
       }
         })
-    
+
         if (accept) {
 
           console.log(this.consecuenciaModel.key)
           this.key =this.key+ ','
           console.log(this.key)
-    
+
           let _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr' });
               _atts.push({ name: 'action', value: 'ENVIAR_ARCHIVAR' });
               _atts.push({ name: 'key', value: this.key });
-    
-    
+
+
               const spinner = this.controlService.openSpinner();
               const obj = await this.autentication.generic(_atts);
-    
+
                 obj.subscribe((data)=>{
-    
+
                   if (data.success === true) {
                                 if (data.data[0].atts[1]) {
                                   // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    
+
                                   Swal2.fire(
                                     {
                                       icon:'success',
@@ -1899,11 +1902,11 @@ public Razon : string
                                   )
                                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                                   localStorage.setItem('isSendToValidate', '1');
-      
+
                                 }
-                
+
                               }else {
-                                
+
                                   Swal2.fire(
                                     {
                                       icon:'error',
@@ -1912,30 +1915,30 @@ public Razon : string
                                       timer: 3000
                                     }
                                   )
-                                    
+
                               // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                                
-                              }  
+
+                              }
                               this.controlService.closeSpinner(spinner);
-                                
-                              
-    
+
+
+
                 },(error)=>{
                   this.controlService.closeSpinner(spinner);
-                })   
-              //  this.cerrar();       
+                })
+              //  this.cerrar();
         //       obj.subscribe(
         //         (data) => {
         //           if (data.success === true) {
         //             if (data.data[0].atts[1]) {
         //               this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
         //             }
-    
+
         //           } else {
         //             this.autentication.showMessage(data.success, data.message, {}, data.redirect);
         //           }
         //           this.controlService.closeSpinner(spinner);
-    
+
         //         },
         //         (error) => {
         //           // if ( error.status === 401 ) { this.autentication.logout(); return; }
@@ -1944,18 +1947,18 @@ public Razon : string
         //     }
         //     this.cerrar();
         //   });
-    
-          
-    
-          
+
+
+
+
         }
-      
+
     }
-    
+
     async RestaurarItem() {
-    
+
       const { value: accept } = await Swal2.fire({
-  
+
         title:'Restaurar Registro',
         text: '¿Desea Restaurar este Item ?',
         icon:'question',
@@ -1970,28 +1973,28 @@ public Razon : string
         return !result && 'Debe Aceptar los Terminos'
     }
       })
-    
+
       if (accept) {
 
         console.log(this.consecuenciaModel.key)
         this.key =this.key+ ','
         console.log(this.key)
-    
+
         let _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
             _atts.push({ name: 'action', value: 'ENVIAR_RESTAURAR' });
             _atts.push({ name: 'key', value: this.key });
-    
-    
+
+
             const spinner = this.controlService.openSpinner();
             const obj = await this.autentication.generic(_atts);
-    
+
               obj.subscribe((data)=>{
-    
+
                 if (data.success === true) {
                               if (data.data[0].atts[1]) {
                                 // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
-    
+
                                 Swal2.fire(
                                   {
                                     icon:'success',
@@ -2002,11 +2005,11 @@ public Razon : string
                                 )
                                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
                                 localStorage.setItem('isSendToValidate', '1');
-      
+
                               }
-              
+
                             }else {
-                              
+
                                 Swal2.fire(
                                   {
                                     icon:'error',
@@ -2015,27 +2018,27 @@ public Razon : string
                                     timer: 3000
                                   }
                                 )
-                                  
+
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                              
-                            }  
+
+                            }
                             this.controlService.closeSpinner(spinner);
-                              
-                            
-    
+
+
+
               },(error)=>{
                 this.controlService.closeSpinner(spinner);
-              })   
-            //  this.cerrar();       
-         
-        
+              })
+            //  this.cerrar();
+
+
       }
-    
-    
+
+
     }
-    
+
     Caja(key,status,statusc?){
-      // debugger
+      // //debugger
 
       let conf;
 
@@ -2045,7 +2048,7 @@ public Razon : string
 
       switch(status){
        case  '001' :
-  
+
         conf=this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
@@ -2060,22 +2063,22 @@ public Razon : string
                 button_close: 'Cerrar',
                 id: key,
                 status: status
-      
+
               },
               // panelClass : 'tabla'
-      
-      
+
+
             });
             conf.afterClosed().suscribe(async (result) => {
-            
+
               if(result === 'undefined' || result === 'falso'){
-  
+
                 this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
               }
             })
         break;
        case  '000' :
-  
+
         conf= this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
@@ -2090,22 +2093,22 @@ public Razon : string
                 button_close: 'Cerrar',
                 id: key,
                 status: '001'
-      
+
               },
               // panelClass : 'tabla'
-      
-      
+
+
             });
             conf.afterClosed().suscribe(async (result) => {
-            
+
               if(result === 'undefined' || result === 'falso'){
-  
+
                 this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
               }
             })
         break;
        case  '002' :
-  
+
         conf= this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
@@ -2120,22 +2123,22 @@ public Razon : string
                 button_close: 'Cerrar',
                 id: key,
                 status: status
-      
+
               },
               // panelClass : 'tabla'
-      
-      
+
+
             });
             conf.afterClosed().suscribe(async (result) => {
-            
+
               if(result === 'undefined' || result === 'falso'){
-  
+
                 this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
               }
             })
         break;
        case  '003' :
-  
+
         conf =this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
@@ -2150,22 +2153,22 @@ public Razon : string
                 button_close: 'Cerrar',
                 id: key,
                 status: status
-      
+
               },
               // panelClass : 'tabla'
-      
-      
+
+
             });
             conf.afterClosed().suscribe(async (result) => {
-            
+
               if(result === 'undefined' || result === 'falso'){
-  
+
                 this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
               }
             })
         break;
        case  '006' :
-  
+
         conf=  this.confirm.open(CajasdashboardComponent,
             {
               hasBackdrop: true,
@@ -2180,21 +2183,21 @@ public Razon : string
                 button_close: 'Cerrar',
                 id: key,
                 status: status
-      
+
               },
               // panelClass : 'tabla'
-      
-      
+
+
             });
             conf.afterClosed().suscribe(async (result) => {
-            
+
               if(result === 'undefined' || result === 'falso'){
-  
+
                 this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
               }
             })
         break;
-  
+
         case '004':
           conf= this.confirm.open(RkvalidarComponent, {
             hasBackdrop: true,
@@ -2208,26 +2211,26 @@ public Razon : string
               button_close: 'Cerrar',
               id: key,
               status: status
-      
+
             }
-      
+
           });
           conf.afterClosed().suscribe(async (result) => {
-            
+
             if(result === 'undefined' || result === 'falso'){
 
               this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
             }
           })
-              
+
           break;
-          
+
         case '007':
           conf= this.confirm.open(RkporaprobarComponent, {
             hasBackdrop: true,
             height: 'auto',
             width: 'auto',
-      
+
             data:
             {
               title: 'Items Pendientes por Aprobar',
@@ -2236,24 +2239,24 @@ public Razon : string
               button_close: 'Cerrar',
               id: key,
               status: status
-      
+
             }
-      
+
           });
 
           conf.afterClosed().suscribe(async (result) => {
-            
+
             if(result === 'undefined' || result === 'falso'){
 
               this.ver(this.id, this.pid,this.sid,this.cid,this.tid,this.rid,this.rid,this.yid);
             }
           })
           break;
-        
-  
+
+
       }
-      
+
     }
-  
+
 
 }

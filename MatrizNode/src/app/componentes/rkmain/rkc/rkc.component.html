@@ -111,10 +111,32 @@
     </div>
 
     <div class="col-xl-12" *ngIf="btn !== 'lectura'">
-        <mat-tab-group (selectedTabChange)="test($event)" >
+        <mat-tab-group (selectedTabChange)="test($event)" [(selectedIndex)]="tabDefault">
+
             <mat-tab label="Evaluación Riesgo">
+
+
+
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin" >
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+
+
+                    <!--  Detalle Riesgo-->
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin">
                         <thead>
                             <tr>
                                 <th>
@@ -171,8 +193,21 @@
             </mat-tab>
             <mat-tab label="Std. Job">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
-                    <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin"  *ngIf="!loading">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
                             <tr>
                                 <th style="text-align: left; height: 30px;"></th>
@@ -250,28 +285,28 @@
                                                             <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                                         </button>
 
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='000' && item.pendingDelete ==='N' && item.DeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)">
                                                 <img class="img-circle" src="assets/images/Delete.png" style="width: 10px; height: 10px;">
                                             </button>
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'
                                                         ||item.statusId ==='000' && item.pendingDelete ==='Y' && item.DeleteIcon === 'Y'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" disabled>
                                                 <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                             </button>
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'N' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='000' && item.pendingDelete ==='N' && item.DeleteIcon === 'N'" class="btn btn-sm btn-light btn-round" (click)="eliminarstdjob(item)" disabled>
                                                 <img class="img-circle" src="assets/images/Delete_Disabled.png" style="width: 10px; height: 10px;">
                                             </button>
-                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N' 
+                                                    <button *ngIf="item.statusId ==='001' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='006' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='002' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
                                                         ||item.statusId ==='008' && item.pendingDelete ==='Y' && item.DeleteIcon === 'N'
@@ -328,14 +363,30 @@
                     </table>
                 </div>
             </mat-tab>
+            <!-- checkList -->
+
+
             <mat-tab label="Detalle ">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
-                    <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                     <table class="mdl-data-table table-bordered table-striped cf no-margin " *ngIf="!loading">
                         <thead>
                             <tr>
-                                <th colspan="2 " rowspan="2 " style="text-align: center; ">Riesgo</th>
                                 <th colspan="2 " rowspan="2 " style="text-align: center; ">Tarea</th>
+                                <th colspan="2 " rowspan="2 " style="text-align: center; ">Riesgo</th>
                                 <th colspan="2 " rowspan="2 " style="text-align: center; ">Consecuencia</th>
                                 <th colspan=2 style="text-align: center; "> Seguridad y Salud Ocupacional</th>
                                 <th colspan=2 style="text-align: center; ">Medio ambiente</th>
@@ -352,10 +403,10 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of detalleList ">
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.riesgoId}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.riesgoDesc}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.tareaId}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.tareaDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric ">{{item.tareaId}}</td>
+                                <td class="mdl-data-table__cell--non-numeric ">{{item.riesgoDesc}}</td>
+                                <td class="mdl-data-table__cell--non-numeric ">{{item.riesgoId}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.consecuenciaId}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.consecuenciaDesc}}</td>
                                 <td class="mdl-data-table__cell--non-numeric ">{{item.probabilidadM}}</td>
@@ -369,10 +420,24 @@
                     </table>
                 </div>
             </mat-tab>
+
             <mat-tab label="Log ">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
-                    <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin"  *ngIf="!loading">
+                    <div class="lds-spinner div_centrado" *ngIf="loading">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                         <thead>
                             <tr>
                                 <th style="text-align: left; ">Fecha y Hora </th>
@@ -410,12 +475,24 @@
                     </table>
                 </div>
             </mat-tab>
+
+            <!-- <mat-tab disabled>
+                <ng-template mat-tab-label>
+                    <button *ngIf="!habilitar" mat-icon-button (click)="mensaje() " disabled>
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button *ngIf="habilitar" mat-icon-button (click)="mensaje()">
+                        <mat-icon style="color:green">add_circle</mat-icon>
+                    </button>
+                </ng-template>
+            </mat-tab> -->
+
         </mat-tab-group>
 
     </div>
 
     <div class="col-xl-12 " *ngIf="btn==='lectura' ">
-        <mat-tab-group (selectedTabChange)="test($event)" >
+        <mat-tab-group (selectedTabChange)="test($event)" [(selectedIndex)]="tabDefault">
             <mat-tab label="Evaluación Riesgo ">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
                     <table class="mdl-data-table table-bordered table-striped cf no-margin ">
@@ -445,7 +522,7 @@
                         </thead>
                         <tbody>
                             <tbody cdkDropList (cdkDropListDropped)="drop($event) ">
-                                <tr *ngFor="let item of tareasListLectura " cdkDrag>
+                                <tr *ngFor="let item of tareasList " cdkDrag>
                                     <!-- <td *ngIf=' item.estado ==="001" || item.estado ==="002" || item.estado ==="003" || item.estado ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (*)</a></td>
                                     <td *ngIf=' item.estado ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (**)</a></td>
                                     <td *ngIf=' item.estado ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (***)</a></td>
@@ -466,9 +543,22 @@
                 </div>
             </mat-tab>
             <mat-tab label="Std. Job ">
-                <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="lds-spinner div_centrado" *ngIf="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
 
-                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; " *ngIf="!loading" >
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; " *ngIf="!loading">
                     <table class="mdl-data-table table-bordered table-striped cf no-margin ">
                         <thead>
                             <tr>
@@ -497,7 +587,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of stdJobListLectura; let indice=i ndex ">
+                            <tr *ngFor="let item of stdJobList; let indice=i ndex ">
                                 <td>{{indice+1}}</td>
 
                                 <td class="mdl-data-table__cell--non-numeric ">
@@ -532,7 +622,20 @@
                 </div>
             </mat-tab>
             <mat-tab label="Detalle ">
-                <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="lds-spinner div_centrado" *ngIf="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
 
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; " *ngIf="!loading">
                     <table class="mdl-data-table table-bordered table-striped cf no-margin ">
@@ -575,9 +678,22 @@
             </mat-tab>
             <mat-tab label="Log ">
 
-                <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="lds-spinner div_centrado" *ngIf="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
 
-                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; " *ngIf="!loading" >
+                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; " *ngIf="!loading">
                     <table class="mdl-data-table table-bordered table-striped cf no-margin ">
                         <thead>
                             <tr>
@@ -616,6 +732,8 @@
                     </table>
                 </div>
             </mat-tab>
+            <button (click)="mensaje()">Mas</button>
+
         </mat-tab-group>
 
     </div>

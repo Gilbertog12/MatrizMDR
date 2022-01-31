@@ -9,7 +9,6 @@ import Swal from 'sweetalert';
 import { includes } from 'core-js/fn/array';
 import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
 
-
 @Component({
   selector: 'app-rkporaprobar',
   templateUrl: './rkporaprobar.component.html',
@@ -17,50 +16,53 @@ import { ServiciocajasService } from '../../../shared/services/serviciocajas.ser
 })
 export class RkporaprobarComponent implements OnInit {
 
-
-  Razon:string;
-  filtro1 = ''
-  FechaDesde= ''
-  FechaDesdeServicio= ''
-  FechaHastaServicio= ''
-  FechaHasta= ''
-  public jerarquia:any
+  Razon: string;
+  filtro1 = '';
+  FechaDesde = '';
+  FechaDesdeServicio = '';
+  FechaHastaServicio = '';
+  FechaHasta = '';
+  public jerarquia: any;
   EnviarHijos: string;
-  aprobar = 'aprobar'
-  rechazar = 'rechazar'
+  aprobar = 'aprobar';
+  rechazar = 'rechazar';
   permi: boolean;
   rutaJerarquia: any;
   controles: string;
   soloControles: boolean;
-  comments: string ='';
-  entidadfiltro: string ='';
-  TotalRegistros :number =0
+  comments: string = '';
+  entidadfiltro: string = '';
+  TotalRegistros: number = 0;
   totalMarcados: number = 0;
-  sendSome:boolean = false
+  sendSome: boolean = false;
   nodoseleccionado: string;
 
+  vArrayKeys: any;
+  nodo: any;
+  bloquearNodos: boolean = false;
+
   constructor(public dialogRef: MatDialogRef<RkporaprobarComponent>,
-    private controlService: ControlsService,
-    private autentication: AuthenticationService,
-    private confirm: MatDialog,
-    private router: Router,
-    private _Recargarble:ServiciocajasService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+              private controlService: ControlsService,
+              private autentication: AuthenticationService,
+              private confirm: MatDialog,
+              private router: Router,
+              private _Recargarble: ServiciocajasService,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
       this.data.key,
-      this.data.status
-    this.recargar();
-    this.mostrar();
+      this.data.status;
+      this.recargar();
+      this.mostrar();
   }
 
   ngOnInit() {
 
-    this.nodoseleccionado = localStorage.getItem('itemseleccionado')
+    this.nodoseleccionado = localStorage.getItem('itemseleccionado');
 
   }
   public pendList: any[] = [];
   masterSelected = false;
   valor: string;
-  version : string;
+  version: string;
   public Perfil: any[] = [];
   public consulta: string;
   public admin: string;
@@ -69,7 +71,7 @@ export class RkporaprobarComponent implements OnInit {
   public validador: string;
   public cargo: string;
   public btn: string;
-  complete:boolean=false
+  complete: boolean = false;
   //
   public administrador = 'administrador';
   public creacion = 'creacion' ;
@@ -78,63 +80,62 @@ export class RkporaprobarComponent implements OnInit {
   public validacion = 'Validacion';
   public aprobacion = 'aprobacion';
   public validacionaprobacion = 'validacionaprobacion';
-  creacionaprobacion = 'creacionaprobacion'
+  creacionaprobacion = 'creacionaprobacion';
 
-  convertiFechaYhora(valor){
+  convertiFechaYhora(valor) {
 
-    let year =valor.substring(0,4);
-    let mes =valor.substring(4,6);
-    let dia =valor.substring(6,8);
-    let hora =valor.substring(9,11);
-    let min =valor.substring(11,13);
+    const year = valor.substring(0, 4);
+    const mes = valor.substring(4, 6);
+    const dia = valor.substring(6, 8);
+    const hora = valor.substring(9, 11);
+    const min = valor.substring(11, 13);
 
+    const fecha = `${mes}/${dia}/${year}`;
+    const time = `${hora}:${min}`;
 
-    let fecha= `${mes}/${dia}/${year}`;
-    let time = `${hora}:${min}`
-
-    return `${fecha} ${time}`
+    return `${fecha} ${time}`;
 
   }
 
-  obtenerRuta(rutaJerarquia){
+  obtenerRuta(rutaJerarquia) {
 
-                  let rutaLongitud = rutaJerarquia.length
-                  let ruta = rutaJerarquia
+                  const rutaLongitud = rutaJerarquia.length;
+                  const ruta = rutaJerarquia;
                   // console.log(ruta)
-                  console.group()
-                  console.log(rutaLongitud.toString())
-                  console.groupEnd()
-                  switch(rutaLongitud.toString()) {
+                  console.group();
+                  console.log(rutaLongitud.toString());
+                  console.groupEnd();
+                  switch (rutaLongitud.toString()) {
 
                     case '2':
-                      this.rutaJerarquia = ruta
-                      console.log(this.rutaJerarquia)
+                      this.rutaJerarquia = ruta;
+                      console.log(this.rutaJerarquia);
                       break;
                     case '6':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6);
                       break;
                     case '10':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10);
                       break;
                       case '14':
 
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
-                       break;
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14);
+                      break;
                       case '18':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18);
                         break;
                       case '19':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
                         break;
                       case '23':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
                         break;
                       case '27':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27);
                         break;
                       case '31':
 
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +ruta.substring(27, 31);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27) + '-' + ruta.substring(27, 31);
                         break;
                     }
 
@@ -142,17 +143,17 @@ export class RkporaprobarComponent implements OnInit {
 
   recargar() {
 
-    this.pendList = []
-    let _atts = [];
+    this.pendList = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IA' });
     _atts.push({ name: 'key', value: this.data.id });
     _atts.push({ name: 'statusItem', value: this.data.status });
-    if(this.complete == true){
+    if (this.complete == true) {
       _atts.push({ name: 'showCompleted', value: 'N' });
 
-    }else{
+    } else {
             _atts.push({ name: 'showCompleted', value: 'Y' });
 
     }
@@ -166,39 +167,32 @@ export class RkporaprobarComponent implements OnInit {
             const result = data.success;
             if (result) {
 
-
-
-              
-              if(data.data[0].atts[0].name === 'TIMEOUT'){
+              if (data.data[0].atts[0].name === 'TIMEOUT') {
                 // debugger
                 this.controlService.closeSpinner(spinner);
 
                 Swal2.fire({
-                  icon:'info',
-                  text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`  
-                  
-                }).then((resultado)=>{
-                  if(resultado.value){
-                    
+                  icon: 'info',
+                  text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+                }).then((resultado) => {
+                  if (resultado.value) {
+
                     this.dialogRef.close(true);
                   }
-                })
-                
-                return
-                
+                });
+
+                return;
+
               }
 
               data.data.forEach((element) => {
 
-
                 if (element.atts.length > 0) {
 
-                  let fecha = this.convertiFechaYhora(element.atts[15].value.trim())
+                  const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
 
-                  this.obtenerRuta(element.atts[16].value.trim())
-
-
-
+                  this.obtenerRuta(element.atts[16].value.trim());
 
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
@@ -220,26 +214,22 @@ export class RkporaprobarComponent implements OnInit {
                     Comentarios : element.atts[18].value.trim(),
                     // permiso: this.permi,
                     check: false,
-                    status:element.atts[19].value.trim(),
-                    TipoControl:element.atts[21].value,
-                    rutaJerarquia:this.rutaJerarquia
-
+                    status: element.atts[19].value.trim(),
+                    TipoControl: element.atts[21].value,
+                    rutaJerarquia: this.rutaJerarquia
 
                   });
 
                 }
 
-
-
               }
-
 
               );
 
               // this.comprobarPadre()
-              console.log([this.pendList])
+              console.log([this.pendList]);
 
-              this.TotalRegistros = this.pendList.length
+              this.TotalRegistros = this.pendList.length;
               this.controlService.closeSpinner(spinner);
 
             } else {
@@ -257,10 +247,9 @@ export class RkporaprobarComponent implements OnInit {
 
       }
 
-
-      imprime(){
-    console.log(this.FechaDesde=this.FechaDesde.split('-').join(''))
-    console.log(this.FechaHasta=this.FechaHasta.split('-').join('') )
+      imprime() {
+    console.log(this.FechaDesde = this.FechaDesde.split('-').join(''));
+    console.log(this.FechaHasta = this.FechaHasta.split('-').join('') );
 
     // let a = this.FechaDesde.substring(0,4);
     // console.log(a)
@@ -272,26 +261,24 @@ export class RkporaprobarComponent implements OnInit {
     // let f = this.FechaHasta.substring(8,10);
     // let total=a+b+c
 
+    this.FechaDesdeServicio = this.FechaDesde;
 
-    this.FechaDesdeServicio =this.FechaDesde
-
-    this.FechaHastaServicio = this.FechaHasta
-
+    this.FechaHastaServicio = this.FechaHasta;
 
   }
 
-  Filtrar(){
-    this.pendList=[]
-    this.imprime()
+  Filtrar() {
+    this.pendList = [];
+    this.imprime();
 
-    let _atts = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IA' });
-    if(this.complete == true){
+    if (this.complete == true) {
       _atts.push({ name: 'showCompleted', value: 'N' });
 
-    }else{
+    } else {
             _atts.push({ name: 'showCompleted', value: 'Y' });
 
     }
@@ -311,47 +298,45 @@ export class RkporaprobarComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
-                  let rutaLongitud = element.atts[16].value.trim().length
-                  let ruta = element.atts[16].value.trim()
+                  const rutaLongitud = element.atts[16].value.trim().length;
+                  const ruta = element.atts[16].value.trim();
                   // console.log(ruta)
-                  console.group()
-                  console.log(rutaLongitud.toString())
-                  console.groupEnd()
-                  switch(rutaLongitud.toString()) {
+                  console.group();
+                  console.log(rutaLongitud.toString());
+                  console.groupEnd();
+                  switch (rutaLongitud.toString()) {
 
                     case '2':
-                      this.rutaJerarquia = ruta
-                      console.log(this.rutaJerarquia)
+                      this.rutaJerarquia = ruta;
+                      console.log(this.rutaJerarquia);
                       break;
                     case '6':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6)
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6);
                       break;
                     case '10':
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10);
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10);
                       break;
                       case '14':
 
-                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14);
-                       break;
+                      this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14);
+                      break;
                       case '18':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18);
                         break;
                       case '19':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
                         break;
                       case '23':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
                         break;
                       case '27':
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27);
                         break;
                       case '31':
 
-                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' +ruta.substring(6, 10)+ '-' + ruta.substring(10, 14)+ '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23)+ '-' + ruta.substring(23, 27) + '-' +element.atts[21].value.trim()+ruta.substring(28, 31);
+                        this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27) + '-' + element.atts[21].value.trim() + ruta.substring(28, 31);
                         break;
                     }
-
-
 
                   this.pendList.push({
                     Accion: element.atts[1].value.trim(),
@@ -373,26 +358,21 @@ export class RkporaprobarComponent implements OnInit {
                     Comentarios : element.atts[18].value.trim(),
                     // permiso: this.permi,
                     check: false,
-                    status:element.atts[19].value.trim(),
-                    TipoControl:element.atts[21].value,
-                    rutaJerarquia:this.rutaJerarquia
-
+                    status: element.atts[19].value.trim(),
+                    TipoControl: element.atts[21].value,
+                    rutaJerarquia: this.rutaJerarquia
 
                   });
 
                 }
 
-
-
               }
-
 
               );
 
               // this.comprobarPadre()
-              console.log([this.pendList])
-              this.TotalRegistros = this.pendList.length
-
+              console.log([this.pendList]);
+              this.TotalRegistros = this.pendList.length;
 
               this.controlService.closeSpinner(spinner);
             } else {
@@ -406,109 +386,86 @@ export class RkporaprobarComponent implements OnInit {
     });
   }
 
- MarcarJerarquia(Value,status,chek){
+ MarcarJerarquia(Value, status, chek) {
 
-
-
-    let key = Value
-    let Istatus = status;
-
-
+    const key = Value;
+    const Istatus = status;
 
     // console.log(Istatus)
     // let entidadActual
     // console.log(key)
 
     // console.error('Entro al For')
-    for(let i = 0; i < this.pendList.length; i++){
+    for (let i = 0; i < this.pendList.length; i++) {
       // console.log(key)
 
       // console.log(i)
-      if(this.pendList[i]['key'].startsWith(key)){
+      if (this.pendList[i]['key'].startsWith(key)) {
 
+        if (this.pendList[i]['key'] !== key) {
 
+          if (this.pendList[i]['check'] == false) {
 
-        if(this.pendList[i]['key'] !== key){
-
-          if(this.pendList[i]['check'] == false){
-
-            this.pendList[i]['check'] = true
+            this.pendList[i]['check'] = true;
 
             // this.totalMarcados = this.totalMarcados +1;
 
             // console.log(this.totalMarcados)
 
-
             // this.pendList[i]['permiso'] = true
 
-          }else{
-            this.pendList[i]['check'] = false
-            if(this.pendList[i]['check'] ==false && this.totalMarcados >=0 ){
-
+          } else {
+            this.pendList[i]['check'] = false;
+            if (this.pendList[i]['check'] == false && this.totalMarcados >= 0 ) {
 
             }
 
             }
           }
 
-          if(this.pendList[i]['check'] == true){
-            this.totalMarcados = this.totalMarcados+1
+        if (this.pendList[i]['check'] == true) {
+            this.totalMarcados = this.totalMarcados + 1;
 
-          }else if(this.pendList[i]['check'] == false && this.totalMarcados>0){
+          } else if (this.pendList[i]['check'] == false && this.totalMarcados > 0) {
 
-            this.totalMarcados = this.totalMarcados-1
+            this.totalMarcados = this.totalMarcados - 1;
           }
 
-
-
+      }
 
       }
 
-
-      }
-
-
-
-
-      console.log(this.totalMarcados)
-
+    console.log(this.totalMarcados);
 
     }
 
-
-    ejecutar(){
-      this._Recargarble.Recargar$.emit(true)
+    ejecutar() {
+      this._Recargarble.Recargar$.emit(true);
     }
 
-
-
-
-    cerrar(mensaje:any) {
+    cerrar(mensaje: any) {
       // console.log(mensaje)
 
-      if(mensaje !=='' && this.sendSome ){
+      if (mensaje !== '' && this.sendSome ) {
 
-
-          this.ejecutar()
+          this.ejecutar();
           this.dialogRef.close(mensaje);
 
-
-      this.router.navigate(['/rkmain/cargando']);
-      setTimeout(() => {
+          this.router.navigate(['/rkmain/cargando']);
+          setTimeout(() => {
         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
       }, 1000);
 
-      }else{
+      } else {
 
-        this.ejecutar()
+        this.ejecutar();
         this.dialogRef.close(false);
         this.router.navigate(['/rkmain/cargando']);
-      setTimeout(() => {
+        setTimeout(() => {
         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
       }, 1000);
-
 
       }
 
@@ -518,11 +475,11 @@ export class RkporaprobarComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
-      if(this.masterSelected == true){
-        this.totalMarcados = this.pendList.length
+      if (this.masterSelected == true) {
+        this.totalMarcados = this.pendList.length;
 
-      }else{
-        this.totalMarcados = 0
+      } else {
+        this.totalMarcados = 0;
 
       }
     }
@@ -551,34 +508,32 @@ export class RkporaprobarComponent implements OnInit {
           if (result.value) {
 
             const _atts = [];
-              _atts.push({ name: 'scriptName', value: 'coemdr' });
-              _atts.push({ name: 'action', value: 'VALIDATE' });
-              _atts.push({ name: 'onlyActualNode', value: 'Y' });
-              _atts.push({ name: 'key', value: this.valor });
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'VALIDATE' });
+            _atts.push({ name: 'onlyActualNode', value: 'Y' });
+            _atts.push({ name: 'key', value: this.valor });
 
-              const spinner = this.controlService.openSpinner();
-              const obj = this.autentication.generic(_atts);
+            const spinner = this.controlService.openSpinner();
+            const obj = this.autentication.generic(_atts);
 
-                        obj.subscribe(
+            obj.subscribe(
                         (data) => {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Aprobado','', 'success' )
+                            Swal2.fire('Registro Aprobado', '', 'success' );
                             // this.cerrar('falso');
-                            this.sendSome = true
-                            this.totalMarcados = 0
-                            
+                            this.sendSome = true;
+                            this.totalMarcados = 0;
+
                             // this.recargar()
 
                             this._Recargarble.notificaciones$.emit(true);
                             this.cerrar('cerrar');
 
-
-
                           } else {
                             // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
-                            Swal2.fire('',data.message,'error')
+                            Swal2.fire('', data.message, 'error');
                           }
 
                           this.controlService.closeSpinner(spinner);
@@ -588,10 +543,10 @@ export class RkporaprobarComponent implements OnInit {
                           // if ( error.status === 401 ) { this.autentication.logout(); return; }
                           this.controlService.closeSpinner(spinner);
                         });
-                        this.controlService.closeSpinner(spinner);
+            this.controlService.closeSpinner(spinner);
                       }
 
-          })
+          });
 
       } else {
 
@@ -607,31 +562,29 @@ export class RkporaprobarComponent implements OnInit {
           if (result.value) {
 
             const _atts = [];
-              _atts.push({ name: 'scriptName', value: 'coemdr' });
-              _atts.push({ name: 'action', value: 'VALIDATE' });
-              _atts.push({ name: 'onlyActualNode', value: 'Y' });
-              _atts.push({ name: 'key', value: this.valor });
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'VALIDATE' });
+            _atts.push({ name: 'onlyActualNode', value: 'Y' });
+            _atts.push({ name: 'key', value: this.valor });
 
-              const spinner = this.controlService.openSpinner();
-              const obj = this.autentication.generic(_atts);
+            const spinner = this.controlService.openSpinner();
+            const obj = this.autentication.generic(_atts);
 
-                        obj.subscribe(
+            obj.subscribe(
                         (data) => {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Aprobado','', 'success' )
+                            Swal2.fire('Registro Aprobado', '', 'success' );
                             // this.cerrar('falso');
-                            this.totalMarcados = 0
+                            this.totalMarcados = 0;
                             // this.recargar()
                             this._Recargarble.notificaciones$.emit(true);
                             this.cerrar('cerrar');
 
-
-
                           } else {
                             // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
-                            Swal2.fire('',data.message,'error')
+                            Swal2.fire('', data.message, 'error');
                           }
 
                           this.controlService.closeSpinner(spinner);
@@ -641,27 +594,21 @@ export class RkporaprobarComponent implements OnInit {
                           // if ( error.status === 401 ) { this.autentication.logout(); return; }
                           this.controlService.closeSpinner(spinner);
                         });
-                        this.controlService.closeSpinner(spinner);
+            this.controlService.closeSpinner(spinner);
                       }
 
-                    })
+                    });
       }
-    }else{
-      Swal2.fire('','Debe Seleccionar al menos 1 item','info')
+    } else {
+      Swal2.fire('', 'Debe Seleccionar al menos 1 item', 'info');
       return;
 
     }
 
-
-
-
-
-
-
   }
 
   aperfil() {
-    let _atts = [];
+    const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'SESSION' });
 
@@ -684,7 +631,6 @@ export class RkporaprobarComponent implements OnInit {
                   });
                 }
 
-
               });
 
               this.Perfil.forEach((element, index, array) => {
@@ -695,12 +641,11 @@ export class RkporaprobarComponent implements OnInit {
                 this.creador = element.cre;
                 this.validador = element.val;
 
-                if(this.admin === 'Y'){
+                if (this.admin === 'Y') {
                   this.aprobador = 'Y';
                   this.creador = 'Y';
                   this.validador = 'Y';
                   this.consulta = 'Y';
-
 
                 }
                 this.cargo = this.admin + this.aprobador + this.consulta + this.creador + this.validador;
@@ -721,40 +666,38 @@ export class RkporaprobarComponent implements OnInit {
           });
     });
 
-
   }
 
   async mostrar()  {
 
-    this.cargo= localStorage.getItem('PerfilRkj')
-
+    this.cargo = localStorage.getItem('PerfilRkj');
 
     switch (this.cargo) {
-      case 'NNYNN': //SOLO LECTURA
+      case 'NNYNN': // SOLO LECTURA
 
         this.btn = 'lectura';
         return;
 
-      case 'NNYYN'://LECTURA Y CREACION
+      case 'NNYYN': // LECTURA Y CREACION
         this.btn = 'creacion';
         return;
-      case 'NNYNY'://LECTURA Y VALIDACION
+      case 'NNYNY': // LECTURA Y VALIDACION
         this.btn = 'Validacion';
         return;
-      case 'NYYNN'://LECTURA Y APROBACION
+      case 'NYYNN': // LECTURA Y APROBACION
         this.btn = 'aprobacion';
         return;
-      case 'NNYYY'://LECTURA , CREACION , VALIDACION
+      case 'NNYYY': // LECTURA , CREACION , VALIDACION
         this.btn = 'creacionvalidacion';
 
         return;
 
-        case 'YYYYY'://Administrador
+        case 'YYYYY': // Administrador
         this.btn = 'administrador';
 
         return;
 
-        case 'NYYYY'://Administrador
+        case 'NYYYY': // Administrador
         this.btn = 'administrador';
 
         return;
@@ -764,29 +707,24 @@ export class RkporaprobarComponent implements OnInit {
 
         return;
 
-
         case 'NYYYN':
-          this.btn='creacionaprobacion'
+          this.btn = 'creacionaprobacion';
 
       default:
         break;
     }
 
-
   }
 
+  ActivarFuncion() {
 
-  ActivarFuncion(){
-
-    setTimeout(function(){ location.reload(); }, 500);
-
+    setTimeout(function() { location.reload(); }, 500);
 
 }
 
-
 verTable(item: any) {
-  //alert(item.ruta.trim().length.toString());
-  console.log(item)
+  // alert(item.ruta.trim().length.toString());
+  console.log(item);
   // for (let i = 0; i < this.pendList.length; i++) {
 
   //   if (this.pendList[i]['key'] === item.key) {
@@ -796,93 +734,81 @@ verTable(item: any) {
 
   // }
 
-  this.pendList.forEach((element)=>{
-      if(element.key === item){
+  this.pendList.forEach((element) => {
+      if (element.key === item) {
 
-        this.jerarquia = element.key
+        this.jerarquia = element.key;
       }
-  })
+  });
 
-  console.log(this.jerarquia)
+  console.log(this.jerarquia);
   switch (this.jerarquia.trim().length.toString()) {
-
 
     case '2':
     this.router.navigate(['/rkmain/rka/' + this.jerarquia]);
-    this.cerrar(this.jerarquia)
-
+    this.cerrar(this.jerarquia);
 
     break;
   case '6':
-    console.log('aqui')
+    console.log('aqui');
     this.router.navigate(['/rkmain/rkp/' + this.jerarquia.substring(0, 2) + '/' + this.jerarquia.substring(2, 6)]);
-    this.cerrar(this.jerarquia)
+    this.cerrar(this.jerarquia);
     break;
   case '10':
-    this.router.navigate(['/rkmain/rks/' +this.jerarquia.substring(0, 2) + '/' +this.jerarquia.substring(2, 6) + '/' +this.jerarquia.substring(6, 10)]);
-    this.cerrar(this.jerarquia)
+    this.router.navigate(['/rkmain/rks/' + this.jerarquia.substring(0, 2) + '/' + this.jerarquia.substring(2, 6) + '/' + this.jerarquia.substring(6, 10)]);
+    this.cerrar(this.jerarquia);
     break;
-
 
     case '14':
 
-
-
-
       this.router.navigate(['/rkmain/rkc/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14)]);
 
-      this.cerrar(this.jerarquia)
+      this.cerrar(this.jerarquia);
       //
 
       // window.location.reload()
 
-
       break;
     case '18':
       this.router.navigate(['/rkmain/rkt/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18)]);
-      this.cerrar( this.jerarquia)
+      this.cerrar( this.jerarquia);
 
       break;
     case '19':
       this.router.navigate(['/rkmain/rkd/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19)]);
-      this.cerrar( this.jerarquia)
-
+      this.cerrar( this.jerarquia);
 
       break;
     case '23':
       this.router.navigate(['/rkmain/rkr/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23)]);
-      this.cerrar( this.jerarquia)
+      this.cerrar( this.jerarquia);
 
       break;
     case '27':
       this.router.navigate(['/rkmain/rky/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23) + '/' + item.substring(23, 27)]);
-      this.cerrar( this.jerarquia)
+      this.cerrar( this.jerarquia);
 
       break;
     case '31':
       this.router.navigate(['/rkmain/rky/' + item.substring(0, 2) + '/' + item.substring(2, 6) + '/' + item.substring(6, 10) + '/' + item.substring(10, 14) + '/' + item.substring(14, 18) + '/' + item.substring(18, 19) + '/' + item.substring(19, 23) + '/' + item.substring(23, 27)]);
-      this.cerrar( this.jerarquia.substring(0,27))
+      this.cerrar( this.jerarquia.substring(0, 27));
 
       break;
   }
 }
 
-isOnlyControl(arreglo)
-      {
-        console.log(arreglo=arreglo.split(','))
+isOnlyControl(arreglo) {
+        console.log(arreglo = arreglo.split(','));
 
+        for (let i = 0 ; i < arreglo.length; i++) {
 
-
-        for(let i =0 ; i < arreglo.length; i++)
-        {
-
-          console.log(arreglo)
-          if(arreglo[i].includes('CONTROLES')){
+          console.log(arreglo);
+          if (arreglo[i].includes('CONTROLES')) {
             // console.log('soy solo controles')
 
-            return true
-          }else{
-            return false
+            return true;
+          } else {
+            return false;
           }
 
         }
@@ -890,52 +816,49 @@ isOnlyControl(arreglo)
       }
 
   consola(accion: string) {
-    this.valor = "";
-    this.version = ""
-    this.controles ='';
+    this.valor = '';
+    this.version = ''
+    this.controles = '';
     for (let i = 0; i < this.pendList.length; i++) {
 
-      if (this.pendList[i]["check"] === true) {
-          this.valor = this.valor + ','+ this.pendList[i]['key']+','+'Y'  ;
-          this.version = this.version+","+this.pendList[i]['version'];
-          this.comments= this.comments+'^~|'+ this.pendList[i]['Comentarios']
-          this.controles = this.controles + ','+ this.pendList[i]['Entidad']
-          this.soloControles = this.isOnlyControl(this.controles.slice(1))
+      if (this.pendList[i]['check'] === true) {
+          this.valor = this.valor + ',' + this.pendList[i]['key'] + ',' + 'Y'  ;
+          this.version = this.version +','+ this.pendList[i]['version'];
+          this.comments = this.comments + '^~|' + this.pendList[i]['Comentarios'];
+          this.controles = this.controles + ',' + this.pendList[i]['Entidad'];
+          this.soloControles = this.isOnlyControl(this.controles.slice(1));
 
-      }else{
-        this.valor = this.valor + ','+ this.pendList[i]['key']+','+'N'  ;
+      } else {
+        this.valor = this.valor + ',' + this.pendList[i]['key'] + ',' + 'N'  ;
 
       }
 
     }
     console.log(this.valor = this.valor.slice(1));
     console.log(this.version = this.version.slice(1));
-    this.comments = this.comments.slice(3)
+    this.comments = this.comments.slice(3);
 
+    console.log(this.valor);
+    // AQUI COLOCA EL LLAMADO EL SRVICIIO
 
-    console.log(this.valor)
-    //AQUI COLOCA EL LLAMADO EL SRVICIIO
+    if (accion === 'aprobar') {
 
-    if(accion === 'aprobar'){
+      this.sendvalidate();
 
-      this.sendvalidate()
-
-    }else{
+    } else {
        this.Rechazar();
     }
 
-
   }
 
-
-  Rechazar(){
+  Rechazar() {
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
 
-      localStorage.setItem('Llave',this.valor)
-      localStorage.setItem('VersionL',this.version)
+      localStorage.setItem('Llave', this.valor);
+      localStorage.setItem('VersionL', this.version);
 
-      if(this.soloControles){
+      if (this.soloControles) {
 
         Swal2.fire({
 
@@ -947,11 +870,11 @@ isOnlyControl(arreglo)
           showCancelButton: true,
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
-          confirmButtonColor:'#3085d6',
+          confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33'
 
-        }).then(async (result)=>{
-            if(result.value){
+        }).then(async (result) => {
+            if (result.value) {
 
               // const conf = this.confirm.open(RkReasonRejectComponent,{
               //   hasBackdrop: true,
@@ -967,7 +890,7 @@ isOnlyControl(arreglo)
               //   // this.cerrar('falso');
               // })
 
-              let _atts = [];
+              const _atts = [];
               _atts.push({ name: 'scriptName', value: 'coemdr'});
               _atts.push({ name: 'action', value: 'VALIDATE'});
               _atts.push({ name: 'key', value: this.valor });
@@ -984,15 +907,14 @@ isOnlyControl(arreglo)
                   if (data.success === true) {
                     if (data.data[0].atts[1]) {
                       Swal2.fire({
-                        text:'Registro Rechazado',
-                        icon:'success',
+                        text: 'Registro Rechazado',
+                        icon: 'success',
 
-                      })
+                      });
                       // this.cerrar('falso')
-                      this.sendSome = true
-                      this.totalMarcados = 0
-                      this.recargar()
-
+                      this.sendSome = true;
+                      this.totalMarcados = 0;
+                      this.recargar();
 
                     }
 
@@ -1000,39 +922,39 @@ isOnlyControl(arreglo)
                     // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
                     Swal2.fire({
                       text: data.message,
-                      icon:'error',
+                      icon: 'error',
 
-                    })
+                    });
                     // this.cerrar()
 
                   }
                   this.controlService.closeSpinner(spinner);
 
-                },(error) =>{
+                }, (error) => {
                   this.controlService.closeSpinner(spinner);
                 }
-                )
+                );
 
-                this.controlService.closeSpinner(spinner);
+              this.controlService.closeSpinner(spinner);
 
               }
-        })
+        });
 
-      }else{
+      } else {
 
         Swal2.fire({
 
-          title:'Rechazar Aprobacion',
-          text:'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
+          title: 'Rechazar Aprobacion',
+          text: 'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
           icon: 'info',
           showCancelButton: true,
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
-          confirmButtonColor:'#3085d6',
+          confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33'
 
-        }).then(async (result)=>{
-            if(result.value){
+        }).then(async (result) => {
+            if (result.value) {
 
               /*const conf = this.confirm.open(RkReasonRejectComponent,{
                 hasBackdrop: true,
@@ -1047,31 +969,30 @@ isOnlyControl(arreglo)
               conf.afterClosed().subscribe(async(result)=>{
                 // this.cerrar('falso');
               })*/
-              let _atts = [];
-      _atts.push({ name: 'scriptName', value: 'coemdr'});
-      _atts.push({ name: 'action', value: 'VALIDATE'});
-      _atts.push({ name: 'key', value: this.valor });
-      _atts.push({ name: 'version', value: this.version});
-      _atts.push({ name: 'approveInd', value: 'U' });
+              const _atts = [];
+              _atts.push({ name: 'scriptName', value: 'coemdr'});
+              _atts.push({ name: 'action', value: 'VALIDATE'});
+              _atts.push({ name: 'key', value: this.valor });
+              _atts.push({ name: 'version', value: this.version});
+              _atts.push({ name: 'approveInd', value: 'U' });
       // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });
-      _atts.push({ name: 'comments', value: this.comments });
-      const spinner = this.controlService.openSpinner();
-      const obj = await this.autentication.generic(_atts);
+              _atts.push({ name: 'comments', value: this.comments });
+              const spinner = this.controlService.openSpinner();
+              const obj = await this.autentication.generic(_atts);
 
-      obj.subscribe(
+              obj.subscribe(
 
         (data) => {
           if (data.success === true) {
             if (data.data[0].atts[1]) {
               Swal2.fire({
-                text:'Registro Rechazado',
-                icon:'success',
+                text: 'Registro Rechazado',
+                icon: 'success',
 
-              })
+              });
               // this.cerrar('falso')
-              this.totalMarcados = 0
-              this.recargar()
-
+              this.totalMarcados = 0;
+              this.recargar();
 
             }
 
@@ -1079,31 +1000,222 @@ isOnlyControl(arreglo)
             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
             Swal2.fire({
               text: data.message,
-              icon:'error',
+              icon: 'error',
 
-            })
+            });
             // this.cerrar()
 
           }
           this.controlService.closeSpinner(spinner);
 
-        },(error) =>{
+        }, (error) => {
           this.controlService.closeSpinner(spinner);
         }
-        )
+        );
 
-
-        this.controlService.closeSpinner(spinner);
+              this.controlService.closeSpinner(spinner);
       }
-    })
+    });
   }
 
-    }else{
+    } else {
 
-      Swal2.fire('','Debe Seleccionar al menos 1 item','info')
+      Swal2.fire('', 'Debe Seleccionar al menos 1 item', 'info');
       return;
     }
 
    }
+
+   // Nueva Logica para marcado de jerarquia en la tabla
+   marcar(key) {
+
+    this.bloquearNodos = true;
+    console.log(this.bloquearNodos);
+    const vLargo = [2, 6, 10, 14, 18, 19, 23, 27, 31]; // Array para el largo de los 9 niveles area-->control
+    const vKeys = this.crearArrayKeys(); // Array de todos los KEY que retornó el Json
+    const qKeys = vKeys.length; // Cantidad de KEY que retornó el Jdon
+    let nodoMarcado = ''; // Cual nodo marcó el usuario
+    let nivel = 0;   //                                         ' Nivel (area-->control) del nodo marcado
+    const vPadre = [];  //
+    nodoMarcado = this.buscarMarca(key); //                               ' Obtener el nodo que marcó el usuario
+    nivel = this.buscarNivel(nodoMarcado); //                        ' Determinar nivel del nodo basado en su largo
+    this.armarPadres(nodoMarcado, vLargo, vPadre); //                  ' Armar nodos padres
+    this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
+    // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
+    this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
+    this.contarMarcados()
+    }
+  
+    crearArrayKeys() {
+      const keys = [];
+  
+      // for(let i = 0 ; i <= this.pendList.length ; i++ ){
+      //   keys.push(this.pendList[i]['key']);
+      // }
+  
+      this.pendList.forEach((element) => {
+        keys.push(element.key);
+  
+      });
+      // console.log(keys);
+      return keys;
+    }
+  
+  
+    buscarMarca(key?) {
+  
+      for ( let i = 0 ; i <=  this.pendList.length; i++) {
+            if ( this.pendList[i]['key'] === key ) {
+                // console.log(this.pendList[i]['key']);
+                this.pendList[i]['bloqueo'] = true;
+                return this.pendList[i]['key'];
+            }
+  
+      }
+  
+    }
+  
+  buscarNivel(key) {
+    console.log('entre a buscar el nivel');
+    switch (key.length) {
+        case 2 :
+          return 0;
+        case 6 :
+          return 1;
+        case 10 :
+          return 2;
+        case 14 :
+          return 3;
+        case 18 :
+          return 4;
+        case 19 :
+          return 5;
+        case 23 :
+          return 6;
+        case 27 :
+          return 7;
+        case 31 :
+          return 8;
+  
+    }
+  }
+  
+  armarPadres(nodomarcado, largo, padre) {
+    //  Notar que marco los 9 niveles (0..8) para evitar algún NULL en el arreglo vPadre
+    console.log('entre a armarPadres');
+    for ( let i = 0 ; i <= 8 ; i++) {
+      padre[i] = nodomarcado.substring(0, largo[i]);
+      }
+  }
+  
+  marcarPadres(vKeys, qKeys, vPadre, nivel) {  
+    console.log('entre a marcarPadres');
+  
+    // ' Marcar todos los padres, abuelos (jerarquía ascendente)
+    // ' Si el nodo marcado fuera un AREA, no tiene padres, nada que buscar hacia arriba
+  
+    if (nivel > 0) {
+      let padre = '';
+      for ( let i = 0 ; i <= nivel - 1 ; i++) {
+          padre = vPadre[i];
+  
+          let seguir = true;
+          let j = 0;
+          while (seguir) {
+        if (j > qKeys) {
+          seguir = false;
+        } else if (vKeys[j] === padre) {
+          // debugger
+  
+          this.pendList[j]['check'] = true;
+          this.pendList[j]['bloqueo'] = true;
+  
+        }
+        j = j + 1 ;
+      }
+      }
+  
+    }
+  
+  }
+  marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
+  
+    console.log('entre a marcarHijosTodos');
+    // console.log(vKeys)
+    const VkeysArray = [];
+    vKeys.forEach( (element) => {
+      VkeysArray.push(element);
+    });
+    let hijo = '' ;
+    let largo = 0 ;
+    if (nivel < 8 ) {
+      this.vArrayKeys = VkeysArray;
+      hijo = nodoMarcado;
+      largo = vLargo[nivel];
+      hijo = hijo.substring(0, largo) ;
+      // debugger;
+      // console.log(hijo);
+      let j = 0;
+      let seguir = true;
+      while ( seguir) {
+  
+        // console.log(this.vArrayKeys);
+        // console.log(VkeysArray);
+        if ( j > qKeys ) {
+          seguir = false;
+        } else {
+  
+          // console.log(this.vArrayKeys[j]);
+          // debugger;
+          this.nodo = this.vArrayKeys[j];
+          // console.log(this.nodo);
+          // console.log(largo);
+          if(this.nodo ===  undefined){
+              return
+          }else{
+  
+            if ( this.nodo.length > largo) {
+              
+              if (this.nodo.substring(0, largo) === hijo) {
+                // debugger;
+                this.pendList[j]['check'] = true;
+                this.pendList[j]['bloqueo'] = true;
+              }
+            }
+          }
+        }
+        j = j + 1;
+      }
+    }
+  }
+  
+  restablerSeleccion() {
+    this.bloquearNodos = false;
+    for (let i = 0; i < this.pendList.length; i++) {
+      this.pendList[i].check = false;
+      this.pendList[i].bloqueo = false;
+      this.totalMarcados = 0 ;
+      if(this.masterSelected === true){
+          this.masterSelected = false
+      }
+    }
+  }
+  
+  contarMarcados(){
+    
+    for(let i = 0 ; i < this.pendList.length ; i++){
+  
+      if (this.pendList[i]['check'] === true && this.totalMarcados === 0) {
+        this.totalMarcados = this.totalMarcados + 1;
+  
+      } else if (this.pendList[i]['check'] === false && this.totalMarcados > 0) {
+  
+        this.totalMarcados = this.totalMarcados - 1;
+      }
+    }
+  }
+  
+  
+  /* =============================== Fin Logica Marcado ========================================================*/
 
 }

@@ -36,7 +36,7 @@ export class AddrkyComponent implements OnInit {
     riesgoResidualC: '',
     name:''
   };
-  
+
 
   public consecuenciasList: any[] = [];
   public descripcion: string
@@ -53,7 +53,7 @@ export class AddrkyComponent implements OnInit {
   riesgoResidualCControl = new FormControl('', [Validators.required]);
   bankMultiFilterCtrl = new FormControl()
   criticidadLevel: any[] = [];
-  
+
 
     constructor(public dialogRef: MatDialogRef<AddrkyComponent>,
                 private controlService: ControlsService,
@@ -116,7 +116,7 @@ export class AddrkyComponent implements OnInit {
               }
             });
 
-          } 
+          }
           else {
             this.autentication.showMessage(data.success, data.message, this.consecuenciasList, data.redirect);
           }
@@ -237,7 +237,7 @@ export class AddrkyComponent implements OnInit {
     }).then((result)=>{
 		if(result.value){
 			 let ids = this.consecuenciaModel.consecuenciaId.toString();
-    
+
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr'});
     _atts.push({ name: 'action', value: 'CONSECUENCIA_CREATE'});
@@ -282,9 +282,9 @@ export class AddrkyComponent implements OnInit {
         };
         this.consecuenciasList = [];
         this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-        
+
         this.cancelar();
-      } 
+      }
       else {
         // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
         Swal2.fire('',data.message,'error')
@@ -306,14 +306,14 @@ export class AddrkyComponent implements OnInit {
 
 
 
-    
+
 
   }
 
   Criticidad(){
 
     if(this.consecuenciaModel.riesgoPuroP !="" && this.consecuenciaModel.riesgoPuroS !=""){
-      
+
       this.criticidadLevel=[]
 
     let _atts = [];
@@ -354,9 +354,9 @@ export class AddrkyComponent implements OnInit {
     });
     }
 
-    
 
-    
+
+
   }
 
   cancelar() {
@@ -380,7 +380,7 @@ export class AddrkyComponent implements OnInit {
 
     conf.afterClosed()
     .subscribe(async (result) => {
-      if (result) { 
+      if (result) {
         if ( _type === 'RP' ) {
           this.consecuenciaModel.riesgoPuroP = localStorage.getItem('selRp').trim();
         }
@@ -421,9 +421,9 @@ export class AddrkyComponent implements OnInit {
 
   async Buscar(event) {
     if (event.key === "Enter") {
-      
+
       // this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-    
+
 
       if (this.consecuenciasList.length === 0) {
         // alert("No Hay datos que coincidad con la busqueda");
@@ -433,12 +433,12 @@ export class AddrkyComponent implements OnInit {
         this.consecuenciasList = [];
 
         this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-      
-        
+
+
       }else{
         this.consecuenciasList = [];
       this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-     
+
       console.log(this.consecuenciasList);
       }
     }

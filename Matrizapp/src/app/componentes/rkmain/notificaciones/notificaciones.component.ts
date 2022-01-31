@@ -15,15 +15,16 @@ export interface PeriodicElement {
   templateUrl: './notificaciones.component.html',
   styleUrls: ['./notificaciones.component.scss']
 })
-export class NotificacionesComponent implements OnInit {
+export class NotificacionesComponent  {
   notificaciones: any = [];
   valor: string;
+  deshabilitar: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<NotificacionesComponent>,
               private controlService: ControlsService,
               private autentication: AuthenticationService,
               private confirm: MatDialog,
-              private ControlsService:ControlsService,
+              private ControlsService: ControlsService,
 
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
@@ -31,9 +32,7 @@ export class NotificacionesComponent implements OnInit {
 
               }
 
-  ngOnInit() {
-
-  }
+  
 
   cargarNotificiaciones() {
     const spinner = this.ControlsService.openSpinner();
@@ -51,18 +50,20 @@ export class NotificacionesComponent implements OnInit {
               console.log(data);
               data.data.forEach((element) => {
 
-                console.log(element.atts[5].value.trim().substring(0, 8 ));
-                console.log(element.atts[5].value.trim().substring(9 , 15));
+                if (element.atts[7].value.trim() !== localStorage.getItem('Usuario')) {
+                  this.deshabilitar = true;
+                }
 
                 this.notificaciones.push({
                   jerarquia: element.atts[1].value.trim(),
                   comentario: element.atts[2].value.trim(),
                   estado: element.atts[3].value.trim(),
                   key_value: element.atts[4].value.trim(),
-                  fecha: element.atts[5].value.trim().substring(0, 8 ),
-                  hora: element.atts[5].value.trim().substring(9, 15 ),
+                  fecha: element.atts[5].value.trim(),
                   no_items: element.atts[6].value.trim(),
-                  check: false
+                  usuario: element.atts[7].value.trim(),
+                  check: false,
+                  habilitado : this.deshabilitar
 
                 });
 
@@ -104,7 +105,6 @@ export class NotificacionesComponent implements OnInit {
     // debugger
     if (valores !== '') {
 
-        
         this.dialogRef.close(valores);
 
     } else {

@@ -23,16 +23,14 @@ export class HttpMethodService {
     this.getJSON().subscribe(
       (data) => {
         if ( this.baseUrl === undefined || this.baseUrl === null || this.baseUrl === '' ) {
-          this.baseUrl = data['apiN'];
-          localStorage.setItem('urlApi', data['apiN']);
+          this.baseUrl = data['api'];
+          localStorage.setItem('urlApi', data['api']);
         }
         // this.baseUrl = 'http://localhost:54108/MatrizApi';
       },
       (error) => {  });
     // this.baseUrl = 'https://coemat.com';
     // this.baseUrl = '';
-
-    
   }
 
   public getJSON(): Observable<any> {
@@ -49,7 +47,7 @@ export class HttpMethodService {
         (data) => {
           console.log(data);
           
-              switch (data['apiN']) {
+              switch (data['api']) {
   
                 case this.E9Dev:
                   this.Ambiente = 'Matriz de Riesgos E9' + ' - ' + 'DESARROLLO' 
@@ -116,7 +114,7 @@ export class HttpMethodService {
 
   
   public getAPI(): Observable<any> {
-    return this.http.get(this.baseUrl );
+    return this.http.get(this.baseUrl);
   }
 
   GET<T>(url: string, data: any = {}) {

@@ -25,10 +25,12 @@
   .example-tree {
       min-height: 500px;
       height: 800px;
+      min-width: 520px;
       white-space: nowrap;
       font-family: 'Open Sans', Arial, Helvetica, sans-serif;
       overflow-x: auto;
-      overflow-y: scroll;
+      // overflow-y: scroll;
+      overflow: scroll;
   }
   
   .example-tree-invisible {
@@ -59,29 +61,28 @@
       font-size: 11px;
       font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   }
-
-  @import '~@angular/material/theming';
-
-  .mat-tree-node {
-    background-color: white;
-    user-select: none;
-    cursor: move;
-    &.cdk-drag-preview { // while dragging
-      @include mat-elevation(12);
-    }
-    &.cdk-drag-placeholder { // potential drop area
-      opacity: 0;
-    }
-  }
-  /* items moving away to make room for drop */
-  .cdk-drop-list-dragging .mat-tree-node:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  /* item being dropped */
-  .cdk-drag-animating {
-    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
-  }
   
+  //colocar mouse como cruz para el arrastre
+  // @import '~@angular/material/theming';
+  // .mat-tree-node {
+  //   background-color: white;
+  //   user-select: none;
+  //   cursor: move;
+  //   &.cdk-drag-preview { // while dragging
+  //     @include mat-elevation(12);
+  //   }
+  //   &.cdk-drag-placeholder { // potential drop area
+  //     opacity: 0;
+  //   }
+  // }
+  // /* items moving away to make room for drop */
+  // .cdk-drop-list-dragging .mat-tree-node:not(.cdk-drag-placeholder) {
+  //   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  // }
+  // /* item being dropped */
+  // .cdk-drag-animating {
+  //   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  // }
   mat-tree-node {
       padding-left: 0px!important;
   }
@@ -200,10 +201,30 @@
       background-color: #cff5e9 !important;
   }
   
+  .seleccionado:visited {
+      background-color: #cfd6f5 !important;
+  }
+  
+  .seleccionado:visited::after {
+      background-color: #cfd6f5 !important;
+  }
+  
+  .seleccionado:visited::after {
+      background-color: #d1f312 !important;
+  }
+  
   .card .card-content {
       padding: 10px;
       border-radius: 0 0 2px 2px;
       height: 135px;
+  }
+  
+  .text {
+      float: right;
+      display: flex;
+      align-items: center;
+      word-break: break-all;
+      margin: 0 0 1em 1em;
   }
   
   // .card .card-content {

@@ -145,7 +145,7 @@ export class AuthenticationService {
 
     const _url = this.httpService.baseUrl + '/values/positions/';
     const online = navigator.onLine;
-    this.BorrarStorage()
+    // this.BorrarStorage()
 
     // console.log("======" + _url);
 
@@ -181,7 +181,7 @@ export class AuthenticationService {
 
     const _url = this.httpService.baseUrl + '/values/generic/';
     const online = navigator.onLine;
-
+    // this.limpiar()
     if (!online) {
       //this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
       this.logout()
@@ -254,6 +254,33 @@ export class AuthenticationService {
     localStorage.removeItem('comparar')
     
     
+  }
+
+  limpiar(){
+    localStorage.removeItem('statusSelected')
+    localStorage.removeItem('urlApi')
+    localStorage.removeItem('canAdd')
+    localStorage.removeItem('show Dashboard')
+    localStorage.removeItem('itemseleccionado')
+    localStorage.removeItem('NoCreador')
+    localStorage.removeItem('versionSelected')
+    localStorage.removeItem('StatusPadre')
+    localStorage.removeItem('keySelected')
+    localStorage.removeItem('sololectura')
+    localStorage.removeItem('seleccionado')
+    localStorage.removeItem('tk')
+    localStorage.removeItem('isSendToValidate')
+    localStorage.removeItem('Distrito')
+    localStorage.removeItem('UltimoEnviado')
+    localStorage.removeItem('isSelectedNode')
+    localStorage.removeItem('noCreador')
+    localStorage.removeItem('isLoggedinApp')
+    localStorage.removeItem('STORE_KEY')
+    localStorage.removeItem('PerfilRkj')
+    localStorage.removeItem('tokenApp')
+    localStorage.removeItem('lastAction')
+    
+    localStorage.removeItem('comparar')
   }
 
   logout() {

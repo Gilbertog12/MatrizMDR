@@ -7,12 +7,12 @@
 
             <tr>
 
-                <th class="sticky-top"><b>Fecha</b></th>
-                <th class="sticky-top"><b>Hora</b></th>
+                <th class="sticky-top"><b>Usuario</b></th>
+                <th class="sticky-top"><b>Fecha y Hora</b></th>
                 <th class="sticky-top"><b>Jerarquia</b></th>
                 <th class="sticky-top"><b>Estado</b></th>
                 <th class="sticky-top"><b>Comentarios</b></th>
-                <th class="sticky-top"><b>No_Items</b></th>
+                <th class="sticky-top"><b>Items</b></th>
                 <th class="sticky-top "><b id='check'>Eliminar</b></th>
 
 
@@ -24,14 +24,15 @@
         <tbody>
             <tr *ngFor="let notificacion of notificaciones" [ngClass]="{success: notificacion.comentario==='OK',proceso:notificacion.comentario ==='EN PROCESO',error:notificacion.comentario !=='OK' && notificacion.comentario !=='EN PROCESO'}">
 
+                <td>{{notificacion.usuario}}</td>
                 <td>{{notificacion.fecha}}</td>
-                <td>{{notificacion.hora}}</td>
                 <td>{{notificacion.jerarquia}}</td>
                 <td>{{notificacion.comentario}}</td>
                 <td>{{notificacion.estado}}</td>
                 <td>{{notificacion.no_items}}</td>
+
                 <td style="align-items: center; text-align: center;">
-                    <input type="checkbox" [value]="notificacion.check" style="align-items: center; text-align: center;" [(ngModel)]="notificacion.check">
+                    <input type="checkbox" [value]="notificacion.check" style="align-items: center; text-align: center;" [(ngModel)]="notificacion.check" [disabled]='notificacion.habilitado'>
 
                 </td>
             </tr>

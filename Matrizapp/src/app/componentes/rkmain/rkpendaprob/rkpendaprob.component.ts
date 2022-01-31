@@ -59,6 +59,10 @@ export class RkpendaprobComponent implements OnInit {
   sendSome: boolean = false;
   nodoseleccionado: string;
 
+  vArrayKeys: any;
+  nodo: any;
+  bloquearNodos: boolean = false;
+
   constructor(public dialogRef: MatDialogRef<RkpendaprobComponent>,
               private controlService: ControlsService,
               private autentication: AuthenticationService,
@@ -1070,5 +1074,199 @@ verTable(item: any) {
       break;
   }
 }
+
+
+
+ // Nueva Logica para marcado de jerarquia en la tabla
+ marcar(key) {
+
+  this.bloquearNodos = true;
+  console.log(this.bloquearNodos);
+  const vLargo = [2, 6, 10, 14, 18, 19, 23, 27, 31]; // Array para el largo de los 9 niveles area-->control
+  const vKeys = this.crearArrayKeys(); // Array de todos los KEY que retornó el Json
+  const qKeys = vKeys.length; // Cantidad de KEY que retornó el Jdon
+  let nodoMarcado = ''; // Cual nodo marcó el usuario
+  let nivel = 0;   //                                         ' Nivel (area-->control) del nodo marcado
+  const vPadre = [];  //
+  nodoMarcado = this.buscarMarca(key); //                               ' Obtener el nodo que marcó el usuario
+  nivel = this.buscarNivel(nodoMarcado); //                        ' Determinar nivel del nodo basado en su largo
+  this.armarPadres(nodoMarcado, vLargo, vPadre); //                  ' Armar nodos padres
+  this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
+  // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
+  this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
+  this.contarMarcados()
+  }
+
+  crearArrayKeys() {
+    const keys = [];
+
+    // for(let i = 0 ; i <= this.pendList.length ; i++ ){
+    //   keys.push(this.pendList[i]['key']);
+    // }
+
+    this.pendList.forEach((element) => {
+      keys.push(element.key);
+
+    });
+    // console.log(keys);
+    return keys;
+  }
+
+
+  buscarMarca(key?) {
+
+    for ( let i = 0 ; i <=  this.pendList.length; i++) {
+          if ( this.pendList[i]['key'] === key ) {
+              // console.log(this.pendList[i]['key']);
+              this.pendList[i]['bloqueo'] = true;
+              return this.pendList[i]['key'];
+          }
+
+    }
+
+  }
+
+buscarNivel(key) {
+  console.log('entre a buscar el nivel');
+  switch (key.length) {
+      case 2 :
+        return 0;
+      case 6 :
+        return 1;
+      case 10 :
+        return 2;
+      case 14 :
+        return 3;
+      case 18 :
+        return 4;
+      case 19 :
+        return 5;
+      case 23 :
+        return 6;
+      case 27 :
+        return 7;
+      case 31 :
+        return 8;
+
+  }
+}
+
+armarPadres(nodomarcado, largo, padre) {
+  //  Notar que marco los 9 niveles (0..8) para evitar algún NULL en el arreglo vPadre
+  console.log('entre a armarPadres');
+  for ( let i = 0 ; i <= 8 ; i++) {
+    padre[i] = nodomarcado.substring(0, largo[i]);
+    }
+}
+
+marcarPadres(vKeys, qKeys, vPadre, nivel) {  
+  console.log('entre a marcarPadres');
+
+  // ' Marcar todos los padres, abuelos (jerarquía ascendente)
+  // ' Si el nodo marcado fuera un AREA, no tiene padres, nada que buscar hacia arriba
+
+  if (nivel > 0) {
+    let padre = '';
+    for ( let i = 0 ; i <= nivel - 1 ; i++) {
+        padre = vPadre[i];
+
+        let seguir = true;
+        let j = 0;
+        while (seguir) {
+      if (j > qKeys) {
+        seguir = false;
+      } else if (vKeys[j] === padre) {
+        // debugger
+
+        this.pendList[j]['check'] = true;
+        this.pendList[j]['bloqueo'] = true;
+
+      }
+      j = j + 1 ;
+    }
+    }
+
+  }
+
+}
+marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
+
+  console.log('entre a marcarHijosTodos');
+  // console.log(vKeys)
+  const VkeysArray = [];
+  vKeys.forEach( (element) => {
+    VkeysArray.push(element);
+  });
+  let hijo = '' ;
+  let largo = 0 ;
+  if (nivel < 8 ) {
+    this.vArrayKeys = VkeysArray;
+    hijo = nodoMarcado;
+    largo = vLargo[nivel];
+    hijo = hijo.substring(0, largo) ;
+    // debugger;
+    // console.log(hijo);
+    let j = 0;
+    let seguir = true;
+    while ( seguir) {
+
+      // console.log(this.vArrayKeys);
+      // console.log(VkeysArray);
+      if ( j > qKeys ) {
+        seguir = false;
+      } else {
+
+        // console.log(this.vArrayKeys[j]);
+        // debugger;
+        this.nodo = this.vArrayKeys[j];
+        // console.log(this.nodo);
+        // console.log(largo);
+        if(this.nodo ===  undefined){
+            return
+        }else{
+
+          if ( this.nodo.length > largo) {
+            
+            if (this.nodo.substring(0, largo) === hijo) {
+              // debugger;
+              this.pendList[j]['check'] = true;
+              this.pendList[j]['bloqueo'] = true;
+            }
+          }
+        }
+      }
+      j = j + 1;
+    }
+  }
+}
+
+restablerSeleccion() {
+  this.bloquearNodos = false;
+  for (let i = 0; i < this.pendList.length; i++) {
+    this.pendList[i].check = false;
+    this.pendList[i].bloqueo = false;
+    this.totalMarcados = 0 ;
+    if(this.masterSelected === true){
+        this.masterSelected = false
+    }
+  }
+}
+
+contarMarcados(){
+  
+  for(let i = 0 ; i < this.pendList.length ; i++){
+
+    if (this.pendList[i]['check'] === true && this.totalMarcados === 0) {
+      this.totalMarcados = this.totalMarcados + 1;
+
+    } else if (this.pendList[i]['check'] === false && this.totalMarcados > 0) {
+
+      this.totalMarcados = this.totalMarcados - 1;
+    }
+  }
+}
+
+
+/* =============================== Fin Logica Marcado ========================================================*/
 
 }

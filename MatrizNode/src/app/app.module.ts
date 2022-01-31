@@ -43,7 +43,7 @@ import {
   MatFormFieldModule,
   MatDialogRef,
   MatPaginatorIntl
-  
+
 } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
@@ -101,6 +101,7 @@ import { rkHelpModule } from './rkmain/rkhelp/rkhelp.module';
 import { CajasdashboardComponent } from './rkmain/cajasdashboard/cajasdashboard.component';
 import { CajaslinkComponent } from './cajaslink/cajaslink.component';
 import { ChartsModule } from './charts/charts.module';
+// import { ChecklistComponent } from './checklist/checklist.component';
 
 
 
@@ -157,9 +158,9 @@ import { ChartsModule } from './charts/charts.module';
     rkHelpModule,
     NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.circleSwish}),
     ReactiveFormsModule,
-    
-    
-    
+
+
+
   ],
   declarations: [
     AppComponent,
@@ -191,31 +192,21 @@ import { ChartsModule } from './charts/charts.module';
     PageLayoutFullscreenComponent,
     SpinnerComponent,
     ComponentesComponent,
-    
-    
+
+
     FilterdataPipe,
-    
-    
+
+
+    // ChecklistComponent,
+
+
     // CajaslinkComponent,
-    
-    
+
+
     // CajasdashboardComponent,
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
- 
-    
-    
-    
-    
-    
+
+
   ],
   providers: [AuthGuard, AuthenticationService, HttpMethodService, ControlsService,
               { provide: MatPaginatorIntl, useClass: CustomPaginator}],

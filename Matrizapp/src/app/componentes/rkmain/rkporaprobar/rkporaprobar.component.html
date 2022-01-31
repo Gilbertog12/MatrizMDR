@@ -19,7 +19,15 @@
 
 
             <tr>
-                <th class="sticky sticky-top "><input type="checkbox" style="background-color: green !important;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" /><b id='check'>Todos</b></th>
+                <th class="sticky sticky-top ">
+                    <ng-template [ngIf]="bloquearNodos" [ngIfElse]="todos">
+                        <b class="limpiar" (click)="restablerSeleccion()">Desmarcar</b>
+
+                    </ng-template>
+                    <ng-template #todos>
+                        <input type="checkbox" style="background-color: green !important;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" [disabled]="bloquearNodos" /><b id='check'>Todos</b>
+                    </ng-template>
+                </th>
                 <th class="sticky2 sticky-top"><b>Accion</b></th>
                 <th class="sticky-top"><b>Comentarios</b></th>
                 <th class="sticky-top fecha"><b>Fecha</b><br></th>
@@ -47,7 +55,7 @@
         <tbody>
             <tr *ngFor="let item of pendList | filtro:entidadfiltro">
                 <td class="sticky">
-                    <input type="checkbox" class="checkmark" (change)="MarcarJerarquia(item.key,item.status,item.check)" [value]="item.check" [(ngModel)]="item.check">
+                    <input type="checkbox" class="checkmark" (change)="marcar(item.key)" [value]="item.check" [(ngModel)]="item.check" [disabled]="bloquearNodos">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
         
                                 </ng-template>
@@ -108,6 +116,7 @@
         <button mat-raised-button color="primary" (click)="cerrar()">{{ data.button_close }}</button>
         <button *ngIf="btn === aprobacion || btn === validacionaprobacion || btn === creacionaprobacion || btn === administrador" mat-raised-button color="accent" (click)="consola(aprobar)">Aprobar</button>
         <button *ngIf="btn === aprobacion || btn === validacionaprobacion  || btn === creacionaprobacion|| btn === administrador" mat-raised-button color="warn" (click)="consola(rechazar)">Rechazar</button>
+
     </ng-template>
     <ng-template #incompletos>
         <button mat-raised-button color="primary" (click)="cerrar()">{{ data.button_close }}</button>

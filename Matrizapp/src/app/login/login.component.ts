@@ -293,7 +293,7 @@ export class LoginComponent implements OnInit {
 
     Swal2.fire({
       icon: 'info',
-      html:'Matriz de riesgos, Copyright 2022. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.2.T <br />Fecha de compilación: 2022-01-25<br />',
+      html:'Matriz de riesgos, Copyright 2022. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.2.8 <br />Fecha de compilación: 2022-01-29<br />',
       showCloseButton: true
 
     });

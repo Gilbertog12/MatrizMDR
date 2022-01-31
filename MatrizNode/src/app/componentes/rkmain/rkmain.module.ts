@@ -40,7 +40,7 @@ import { CajaslinkModule } from '../../cajaslink/cajaslink.module';
 import { CajaslinkComponent } from '../../cajaslink/cajaslink.component';
 import { ChartsModule } from 'ng2-charts';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { ScrollingModule } from '@angular/cdk/scrolling'
 
 
 //
@@ -75,7 +75,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     LeyendaModule,
     PdfViewerModule,
     ChartsModule,
-    DragDropModule
+    DragDropModule,
+    ScrollingModule
 
     // CajaslinkModule,    
     // cajadashboardModule

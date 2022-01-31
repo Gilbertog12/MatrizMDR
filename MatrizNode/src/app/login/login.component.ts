@@ -28,10 +28,7 @@ export class LoginComponent implements OnInit {
   disDefault: any;
   min:number;
   sec:number;
-  E9Dev:string='https://prd-p01-col.ellipsehosting.com/ews/services/'
-  E9TST:string='https://tst-n01-col.ellipsehosting.com/ews/services/'
-  E9PRD:string='https://prd-p02-col.ellipsehosting.com/ews/services/'
-  
+
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
               private controlService: ControlsService,
@@ -54,14 +51,15 @@ export class LoginComponent implements OnInit {
 
   public model: any = {};
   returnUrl: string;
-  
-  
-  
+
+
+
 
   ngOnInit() {
      //get return url from route parameters or default to '/'
+     this.autentication.BorrarStorage()
      this.returnUrl = isNullOrUndefined(this.route.snapshot.queryParams['returnUrl']) || this.route.snapshot.queryParams['returnUrl'] === '/' || this.route.snapshot.queryParams['returnUrl'] === '' ? '/rkmain' : this.route.snapshot.queryParams['returnUrl'];
-    
+
     if(localStorage.getItem('recordar') === 'true'){
 
         this.model.username = localStorage.getItem('Usuario')
@@ -70,13 +68,13 @@ export class LoginComponent implements OnInit {
         console.log('epa la arepa')
     }else{
       this.recordar = false
-      this.model.recordar = this.recordar 
+      this.model.recordar = this.recordar
     }
-    
+
     console.log(this.recordar)
-    
-    
-     
+
+
+
   }
 
   positions: any = [] ;
@@ -91,23 +89,23 @@ export class LoginComponent implements OnInit {
 
   //   this.methodService.Ambiente(this.Ambiente,this.pass)
   //   console.info(this.Ambiente +' '+ this.pass)
-    
+
   // }
 
   login() {
     localStorage.setItem('isLoggedinApp', 'false');
     const spinner = this.controlService.openSpinner();
 
-    
+
     this.model.position = this.posDefault
-     
+
 
     this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
 
-    
-    
+
     this.autentication.login_token(this.model.username, this.model.password, this.model.district, this.model.position)
-     .subscribe(
+    .subscribe(
+      
        (data) => {
 
         console.log(data)
@@ -122,7 +120,7 @@ export class LoginComponent implements OnInit {
              localStorage.setItem('ps', this.model.position.toUpperCase());
              localStorage.setItem('showDashboard', 'true');*/
 
-             
+
             //  console.log(result);
              localStorage.setItem('isLoggedinApp', 'true');
              localStorage.setItem('tk', result);
@@ -134,10 +132,10 @@ export class LoginComponent implements OnInit {
                localStorage.setItem('recordar','true')
               }else{
                localStorage.setItem('recordar','false')
-               
+
              }
 
-             
+
 
              localStorage.setItem('Usuario',this.model.username );
              localStorage.setItem('Distrito', this.model.district);
@@ -150,45 +148,58 @@ export class LoginComponent implements OnInit {
         return result;
      },
      (error) => {
+       debugger
        this.controlService.closeSpinner(spinner);
-       this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet ');
+       console.log(error)
+       console.log(error.error.error_description)
+       this.controlService.snackbarError(error.error.error_description);
+       debugger
+       Swal2.fire({
+         title: error.error.error_description,
+         icon:'error',
+         text:error.error.error_description
+       })
      });
 
   }
-  
-  
+
+
 
   defaultvalues() {
 
     const spinner = this.controlService.openSpinner();
 
-  
+
       this.pass = false;
       this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
-
+      // debugger
       this.autentication.districts(this.model.username, this.model.password)
      .subscribe(
-       
+
        (data) => {
-        
+
         this.array1 = [];
-        this.array2 = [];  
+        this.array2 = [];
         if (data['success'] === true){
           console.log(data)
-          
+
           for(var key in data['data'][0]['atts']){
-            
+
             // if(data['data'][0]['atts'].hasOwnProperty(key)){
             //   // console.log(JSON.stringify(data['data'][0]['atts'][key]));
             // }
-            
+
             this.array1.push(data['data'][0]['atts'][key]);
-            
+
             this.districts = this.array1;
-                    
+
           }
-            this.districts.forEach(element => {
-              this.disDefault = element.name
+            this.districts.forEach((element,index) => {
+
+              if(index == 0){
+                this.disDefault = element.name
+
+               }
             });
 
             console.log(this.disDefault)
@@ -200,9 +211,10 @@ export class LoginComponent implements OnInit {
           this.districts = [];
           this.controlService.closeSpinner(spinner);
         }
-        
+
      },
      (error) => {
+       debugger
        this.controlService.closeSpinner(spinner);
        this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
        alert(error.error);
@@ -212,38 +224,38 @@ export class LoginComponent implements OnInit {
      this.autentication.positions(this.model.username, this.model.password)
      .subscribe(
        (data) => {
-        
+
          console.log(data)
         if (data['success'] === true){
-          
+
           for(var key in data['data'][0]['atts']){
             if(data['data'][0]['atts'].hasOwnProperty(key)){
               // console.log(JSON.stringify(data['data'][0]['atts'][key]));
             }
-            
+
             this.array2.push(data['data'][0]['atts'][key]);
-            this.positions = this.array2; 
+            this.positions = this.array2;
             this.posiciones.Posiciones = this.positions
-            
-            
-            
+
+
+
           }
           // console.log(this.positions[0])
           // if(this.positions.length == 1){
             // this.model.position= this.positions
             // }
-            
+
             this.controlService.closeSpinner(spinner);
 
-            
+
 
             this.positions.forEach((element,index) => {
-              
+
               if(index == 0){
                this.posDefault = element.name
               }
-            
-              
+
+
             });
             // console.log( this.posDefault)
 
@@ -260,41 +272,42 @@ export class LoginComponent implements OnInit {
           this.model.password=''
           this.model.position=''
           this.model.district=''
-          
+
           this.controlService.closeSpinner(spinner);
-          
-     
-          
+
+
+
         }
       },
       (error) => {
+        debugger
         this.controlService.closeSpinner(spinner);
-        this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
+        this.controlService.snackbarError(error.error_description);
         alert(error.error);
       });
       // this.login()
-      
+
       // debugger;
-      
+
       // this.model.district =this.districts[0].value
       // console.log(this.model.position)
       // console.log(this.model.district)
 
-      
-      
-      
-      
-      
-      
-    }
-    
 
-    
+
+
+
+
+
+    }
+
+
+
 
     copyright() {
     // this.methodService.getJSON().subscribe(
     //   (data) => {
-        
+
     //     this.methodService.getAPI().subscribe(
     //       (data2) => {
 
@@ -306,58 +319,24 @@ export class LoginComponent implements OnInit {
     //       let nuevaleyenda = cadena1.replace(cadena2,nuevaversion)
 
     //       // console.log(nuevaleyenda)
-          
-            
+
+
     //         this.autentication.showInfo(true, nuevaleyenda + data2[0], {}, false);
     //     });
     // });
 
     Swal2.fire({
       icon:'info',
-      html:"Matriz de riesgos, Copyright 2021. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.2.4 <br />Fecha de compilación: 2021-18-08 <br />",
+      html:"Matriz de riesgos, Copyright 2021. <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.2.8 <br />Fecha de compilación: 2021-11-18<br />",
       showCloseButton: true
-      
+
     })
   }
 
   Version() {
-
-    // var _0x18a8=["\x6C\x6F\x67","\x41\x6D\x62\x69\x65\x6E\x74\x65","\x4D\x61\x74\x72\x69\x7A\x20\x64\x65\x20\x52\x69\x65\x73\x67\x6F\x73\x20\x45\x39","\x20\x2D\x20","\x44\x45\x53\x41\x52\x52\x4F\x4C\x4C\x4F","\x76\x65\x72","\x73\x6C\x69\x63\x65","\x74\x65\x78\x74","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x54\x45\x53\x54","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x74\x73\x74\x2D\x6E\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x50\x52\x4F\x44\x55\x43\x54\x49\x56\x4F","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x32\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x73\x75\x62\x73\x63\x72\x69\x62\x65","\x67\x65\x74\x41\x50\x49","\x6D\x65\x74\x68\x6F\x64\x53\x65\x72\x76\x69\x63\x65","\x67\x65\x74\x4A\x53\x4F\x4E"];this[_0x18a8[15]][_0x18a8[16]]()[_0x18a8[13]]((_0xd5bdx1)=>{console[_0x18a8[0]](_0xd5bdx1);this[_0x18a8[15]][_0x18a8[14]]()[_0x18a8[13]]((_0xd5bdx2)=>{switch(_0xd5bdx2[0]){case _0x18a8[8]:this[_0x18a8[1]]= _0x18a8[2]+ _0x18a8[3]+ _0x18a8[4];this[_0x18a8[5]]= _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65,80);return;case _0x18a8[10]:this[_0x18a8[1]]= _0x18a8[2]+ _0x18a8[3]+ _0x18a8[9];this[_0x18a8[5]]= _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65,80);return;case _0x18a8[12]:this[_0x18a8[1]]= _0x18a8[2]+ _0x18a8[3]+ _0x18a8[11];this[_0x18a8[5]]= _0xd5bdx1[_0x18a8[7]][_0x18a8[6]](65,80);return;default:break}})})
-
-    this.methodService.getJSON().subscribe(
-      (data) => {
-        console.log(data);
-        
-            switch (data['apiN']) {
-
-              case this.E9Dev:
-                this.ambiente = 'Matriz de Riesgos E9' + ' - ' + 'DESARROLLO' 
-                // this.ver =data['text'].slice(65,80);
-
-                // this.AmbienteVersion
-
-
-                return;
-
-              case this.E9TST:
-                this.ambiente = 'Matriz de Riesgos E9' + ' - ' + 'TEST' 
-                // this.ver=data['text'].slice(65,80);
-                return;
-
-              case this.E9PRD:
-                this.ambiente = 'Matriz de Riesgos E9' + ' - ' + 'PRODUCTIVO' 
-                // this.ver= data['text'].slice(65,80);
-                return;
-
-              
-    
-              default:
-                break;
-            }
-          });
-    
+    var _0x4e79=["\x6C\x6F\x67","\x41\x6D\x62\x69\x65\x6E\x74\x65","\x4D\x61\x74\x72\x69\x7A\x20\x64\x65\x20\x52\x69\x65\x73\x67\x6F\x73\x20\x45\x39","\x20\x2D\x20","\x44\x45\x53\x41\x52\x52\x4F\x4C\x4C\x4F","\x61\x6D\x62\x69\x65\x6E\x74\x65","\x45\x6C\x6C\x69\x70\x73\x65\x20\x39\x20\x44\x65\x76","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x54\x45\x53\x54","\x45\x6C\x6C\x69\x70\x73\x65\x20\x39\x20\x54\x53\x54","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x74\x73\x74\x2D\x6E\x30\x31\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x50\x52\x4F\x44\x55\x43\x54\x49\x56\x4F","\x45\x6C\x6C\x69\x70\x73\x65\x20\x39\x20\x50\x52\x44","\x68\x74\x74\x70\x73\x3A\x2F\x2F\x70\x72\x64\x2D\x70\x30\x32\x2D\x63\x6F\x6C\x2E\x65\x6C\x6C\x69\x70\x73\x65\x68\x6F\x73\x74\x69\x6E\x67\x2E\x63\x6F\x6D\x2F\x65\x77\x73\x2F\x73\x65\x72\x76\x69\x63\x65\x73\x2F","\x73\x75\x62\x73\x63\x72\x69\x62\x65","\x67\x65\x74\x41\x50\x49","\x6D\x65\x74\x68\x6F\x64\x53\x65\x72\x76\x69\x63\x65","\x67\x65\x74\x4A\x53\x4F\x4E"];this[_0x4e79[16]][_0x4e79[17]]()[_0x4e79[14]]((_0x27c1x1)=>{console[_0x4e79[0]](_0x27c1x1);this[_0x4e79[16]][_0x4e79[15]]()[_0x4e79[14]]((_0x27c1x2)=>{switch(_0x27c1x2[0]){case _0x4e79[7]:this[_0x4e79[1]]= _0x4e79[2]+ _0x4e79[3]+ _0x4e79[4];this[_0x4e79[5]]= _0x4e79[6];return;case _0x4e79[10]:this[_0x4e79[1]]= _0x4e79[2]+ _0x4e79[3]+ _0x4e79[8];this[_0x4e79[5]]= _0x4e79[9];return;case _0x4e79[13]:this[_0x4e79[1]]= _0x4e79[2]+ _0x4e79[3]+ _0x4e79[11];this[_0x4e79[5]]= _0x4e79[12];return;default:break}})})
   }
-  
+
 
 
 }

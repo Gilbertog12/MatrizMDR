@@ -88,7 +88,9 @@
 
     <div class="col-xl-12" *ngIf="btn !== 'lectura'">
         <div class="box box-default table-box table-responsive mdl-shadow--2dp" style="height: 500px;">
-            <table class="mdl-data-table table-bordered table-striped cf no-margin">
+            <div class="lds-spinner div_centrado" *ngIf="loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+            <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
                 <thead>
                     <tr>
                         <th>
