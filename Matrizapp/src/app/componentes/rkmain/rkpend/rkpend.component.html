@@ -146,6 +146,8 @@
 <mat-dialog-actions align="end" cdkDragHandle>
 
     <button mat-raised-button color="warn" (click)="cerrar()">{{ data.button_close }}</button>
+
+
     <!-- <button mat-raised-button color="warn" (click)="ejecutar()">{{ data.button_close }}</button> -->
     <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
         <button *ngIf="btn === creacion || btn === administrador || btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola('enviar a validar')">Enviar a Validar</button>

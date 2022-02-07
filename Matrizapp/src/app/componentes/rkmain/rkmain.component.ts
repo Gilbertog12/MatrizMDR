@@ -563,9 +563,19 @@ export class RkmainComponent implements OnInit,OnChanges {
         this.cj = parametros
       })
 
-      this.Cajas.notificaciones$.subscribe ( recarga => 
-      { 
+      this.Cajas.notificaciones$.subscribe ( recarga =>
+      {
         this.notificacionesPendientes()
+      }
+      )
+      
+      this.Cajas.arbol$.subscribe ( acciones =>
+      {
+        if(acciones[0]){
+
+          this.encontrarNodoStatusCambiado(acciones[1])
+         
+        }
       }
       )
     // this.aperfil()
@@ -655,7 +665,8 @@ export class RkmainComponent implements OnInit,OnChanges {
   }
   resetear(){
     console.log('limpie')
- }
+ }  
+ 
 
   reloj(rset?:boolean){
 
@@ -3788,6 +3799,66 @@ notificacionesPendientes(){
 
 cambiarColorNotificacion(){
   this.estadoPositivo = !this.estadoPositivo;
+}
+
+encontrarNodoStatusCambiado(key){
+
+  this.dataSource.data.forEach((id,index) => {
+          
+    if(id.key === key){
+
+        switch(id.key.length){
+
+          case 2 :
+              this.recargarArbol()
+            break;
+            case 6 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,4))
+            break;
+          case 10 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,6))
+            break;
+          case 14 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,10))
+            break;
+          case 18 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,14))
+            break;
+          case 19:
+            this.expandirStatusNodoCambiado(id.key.substring(0,18))
+            break;
+          case 23 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,19))
+            break;
+          case 27 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,23))
+            break;
+          case 31 :
+            this.expandirStatusNodoCambiado(id.key.substring(0,27))
+            break;
+          
+        }
+        console.log(id.key.substring(0,10))
+        
+        
+
+    }
+  });
+
+}
+expandirStatusNodoCambiado(id){
+
+
+  this.dataSource.data.forEach( (key,indice) => {
+
+    if( id === key.key){
+      
+      this.treeControl.collapse(this.dataSource.data[indice])
+      this.treeControl.expand(this.dataSource.data[indice])
+      
+    }
+    
+  })
 }
 
 }

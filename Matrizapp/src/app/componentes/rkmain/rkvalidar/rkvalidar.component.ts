@@ -562,12 +562,13 @@ checkUncheckAll() {
   // tslint:disable-next-line: prefer-for-of
   for (let i = 0; i < this.pendList.length; i++) {
     this.pendList[i].check = this.masterSelected;
+    this.pendList[i].bloqueo = true;
     if (this.masterSelected === true) {
       this.totalMarcados = this.pendList.length;
 
     } else {
       this.totalMarcados = 0;
-
+      this.pendList[i].bloqueo = false;
     }
   }
 
@@ -910,39 +911,35 @@ checkUncheckAll() {
 
               obj.subscribe(
 
-        (data) => {
-          if (data.success === true) {
-            if (data.data[0].atts[1]) {
-              Swal2.fire({
-                text: 'Registro Rechazado',
-                icon: 'success',
+                (data) => {
+                  if (data.success === true) {
+                    // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-              });
-              // this.cerrar('falso')
-              this.sendSome = true;
-              this.totalMarcados = 0;
-              this.recargar();
+                    Swal2.fire('Registro Aprobado', '', 'success' );
+                    // this.cerrar('falso');
+                    this.sendSome = true;
+                    this.totalMarcados = 0;
 
-            }
+                    // this.recargar()
 
-          } else {
-            // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-            Swal2.fire({
-              text: data.message,
-              icon: 'error',
+                    this._Recargarble.notificaciones$.emit(true);
+                    this.recargaArbol()
+                    this.cerrar('cerrar');
 
-            });
-            // this.cerrar()
+                  } else {
+                    // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
+                    Swal2.fire('', data.message, 'error');
+                  }
 
-          }
-          this.controlService.closeSpinner(spinner);
+                  this.controlService.closeSpinner(spinner);
 
-        }, (error) => {
-          this.controlService.closeSpinner(spinner);
-          }
-      );
-
-       }
+                },
+                (error) => {
+                  // if ( error.status === 401 ) { this.autentication.logout(); return; }
+                  this.controlService.closeSpinner(spinner);
+                });
+    this.controlService.closeSpinner(spinner);
+              }
         });
       } else {
 
@@ -989,36 +986,33 @@ checkUncheckAll() {
 
                 (data) => {
                   if (data.success === true) {
-                    if (data.data[0].atts[1]) {
-                      Swal2.fire({
-                        text: 'Registro Rechazado',
-                        icon: 'success',
+                    // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                      });
-                      // this.cerrar('falso')
-                      this.totalMarcados = 0;
-                      this.recargar();
+                    Swal2.fire('Registro Aprobado', '', 'success' );
+                    // this.cerrar('falso');
+                    this.sendSome = true;
+                    this.totalMarcados = 0;
 
-                    }
+                    // this.recargar()
+
+                    this._Recargarble.notificaciones$.emit(true);
+                    this.recargaArbol()
+                    this.cerrar('cerrar');
 
                   } else {
-                    // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
-                    Swal2.fire({
-                      text: data.message,
-                      icon: 'error',
-
-                    });
-                    // this.cerrar()
-
+                    // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
+                    Swal2.fire('', data.message, 'error');
                   }
+
                   this.controlService.closeSpinner(spinner);
 
-                }, (error) => {
+                },
+                (error) => {
+                  // if ( error.status === 401 ) { this.autentication.logout(); return; }
                   this.controlService.closeSpinner(spinner);
-                  }
-              );
-
-             }
+                });
+    this.controlService.closeSpinner(spinner);
+              }
         });
       }
 
@@ -1046,7 +1040,7 @@ checkUncheckAll() {
   this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
   // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
   this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
-  this.contarMarcados()
+  this.contarMarcados();
   }
 
   crearArrayKeys() {
@@ -1063,7 +1057,6 @@ checkUncheckAll() {
     // console.log(keys);
     return keys;
   }
-
 
   buscarMarca(key?) {
 
@@ -1111,7 +1104,7 @@ armarPadres(nodomarcado, largo, padre) {
     }
 }
 
-marcarPadres(vKeys, qKeys, vPadre, nivel) {  
+marcarPadres(vKeys, qKeys, vPadre, nivel) {
   console.log('entre a marcarPadres');
 
   // ' Marcar todos los padres, abuelos (jerarquía ascendente)
@@ -1173,12 +1166,12 @@ marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
         this.nodo = this.vArrayKeys[j];
         // console.log(this.nodo);
         // console.log(largo);
-        if(this.nodo ===  undefined){
-            return
-        }else{
+        if (this.nodo ===  undefined) {
+            return;
+        } else {
 
           if ( this.nodo.length > largo) {
-            
+
             if (this.nodo.substring(0, largo) === hijo) {
               // debugger;
               this.pendList[j]['check'] = true;
@@ -1198,27 +1191,32 @@ restablerSeleccion() {
     this.pendList[i].check = false;
     this.pendList[i].bloqueo = false;
     this.totalMarcados = 0 ;
-    if(this.masterSelected === true){
-        this.masterSelected = false
+    if (this.masterSelected === true) {
+        this.masterSelected = false;
     }
   }
 }
 
-contarMarcados(){
-  
-  for(let i = 0 ; i < this.pendList.length ; i++){
+contarMarcados() {
 
-    if (this.pendList[i]['check'] === true && this.totalMarcados === 0) {
-      this.totalMarcados = this.totalMarcados + 1;
-
-    } else if (this.pendList[i]['check'] === false && this.totalMarcados > 0) {
-
-      this.totalMarcados = this.totalMarcados - 1;
+  this.pendList.forEach( (contar) => {
+    if (contar.check) {
+      this.totalMarcados++;
     }
-  }
-}
+  });
 
+}
 
 /* =============================== Fin Logica Marcado ========================================================*/
+
+
+/* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
+recargaArbol(){
+  this._Recargarble.arbol$.emit([true,this.data.id]);
+  // this.dialogRef.close(false);
+}
+
+/* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
+
 
 }

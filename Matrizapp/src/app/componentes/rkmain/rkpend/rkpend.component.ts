@@ -14,6 +14,7 @@ import { RkmainComponent } from '../rkmain.component';
 import Swal2 from 'sweetalert2';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
+import { check } from '../interfaces/checklist.interfaces';
 
 export const MY_FORMATS = {
   parse: {
@@ -208,12 +209,14 @@ export class RkpendComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
+      this.pendList[i].bloqueo = true;
       if (this.masterSelected === true) {
         this.totalMarcados = this.pendList.length;
 
+
       } else {
         this.totalMarcados = 0;
-
+        this.pendList[i].bloqueo = false;
       }
     }
 
@@ -255,17 +258,8 @@ export class RkpendComponent implements OnInit {
             obj.subscribe(
                         (data) => {
 
-                          debugger;
-                          console.log(data['data'][0]['atts'][0]['value']);
-                          console.log(data['data'][0]['atts'][0]['name']);
-                          console.log(data['data'][0]['atts'][1]['value']);
-                          console.log(data['data'][0]['atts'][1]['name']);
-
-                          localStorage.setItem('contadorNotificaciones', this.TotalRegistros.toString());
-                          localStorage.setItem('type', data['data'][0]['atts'][0]['value']);
-                          localStorage.setItem('valorType', data['data'][0]['atts'][0]['name']);
-                          localStorage.setItem('message', data['data'][0]['atts'][1]['value']);
-                          localStorage.setItem('valorMessage', data['data'][0]['atts'][1]['name']);
+                          // debugger;
+                          
 
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
@@ -277,6 +271,8 @@ export class RkpendComponent implements OnInit {
                             this.totalMarcados = 0;
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
+                            
+                            this.recargaArbol()
                             this.cerrar('cerrar');
 
                           } else {
@@ -326,16 +322,7 @@ export class RkpendComponent implements OnInit {
                         (data) => {
                           if (data.success === true) {
 
-                            debugger;
-                            console.log(data['data'][0]['atts'][0]['value']);
-                            console.log(data['data'][0]['atts'][0]['name']);
-                            console.log(data['data'][0]['atts'][1]['value']);
-                            console.log(data['data'][0]['atts'][1]['name']);
-
-                            localStorage.setItem('type', data['data'][0]['atts'][0]['value']);
-                            localStorage.setItem('valorType', data['data'][0]['atts'][0]['name']);
-                            localStorage.setItem('message', data['data'][0]['atts'][1]['value']);
-                            localStorage.setItem('valorMessage', data['data'][0]['atts'][1]['name']);
+                            
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
                             Swal2.fire('Registro Enviado a Validar', '', 'success' );
@@ -344,6 +331,7 @@ export class RkpendComponent implements OnInit {
                             this.totalMarcados = 0;
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
+                            this.recargaArbol()
                             this.cerrar('cerrar');
 
                           } else {
@@ -370,6 +358,8 @@ export class RkpendComponent implements OnInit {
     }
 
   }
+
+  
 
 //
 
@@ -874,7 +864,7 @@ export class RkpendComponent implements OnInit {
   this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
   // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
   this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
-  this.contarMarcados()
+  this.contarMarcados();
   }
 
   crearArrayKeys() {
@@ -1033,19 +1023,27 @@ restablerSeleccion() {
 }
 
 contarMarcados(){
-  
-  for(let i = 0 ; i < this.pendList.length ; i++){
 
-    if (this.pendList[i]['check'] === true && this.totalMarcados === 0) {
-      this.totalMarcados = this.totalMarcados + 1;
 
-    } else if (this.pendList[i]['check'] === false && this.totalMarcados > 0) {
 
-      this.totalMarcados = this.totalMarcados - 1;
+  this.pendList.forEach( (contar) => {
+    if(contar.check){
+      this.totalMarcados++;
     }
-  }
+  })
+  
+  
 }
 
 
 /* =============================== Fin Logica Marcado ========================================================*/
+
+/* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
+recargaArbol(){
+  this._Recargarble.arbol$.emit([true,this.data.id]);
+  // this.dialogRef.close(false);
+}
+
+/* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
+
 }

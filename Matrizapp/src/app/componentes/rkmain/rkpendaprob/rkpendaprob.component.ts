@@ -454,12 +454,14 @@ export class RkpendaprobComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
+      this.pendList[i].bloqueo = true;
       if (this.masterSelected === true) {
         this.totalMarcados = this.pendList.length;
 
+
       } else {
         this.totalMarcados = 0;
-
+        this.pendList[i].bloqueo = false;
       }
     }
 
@@ -519,6 +521,7 @@ export class RkpendaprobComponent implements OnInit {
                                       this.sendSome = true
                                       this.totalMarcados = 0;
                                       this._Recargarble.notificaciones$.emit(true);
+                                      this.recargaArbol()
                                       this.cerrar('cerrar');
                                       // this.recargar();
 
@@ -594,6 +597,7 @@ export class RkpendaprobComponent implements OnInit {
                                       this.totalMarcados = 0;
                                       // this.recargar();
                                       this._Recargarble.notificaciones$.emit(true);
+                                      this.recargaArbol()
                                       this.cerrar('cerrar');
 
                                       }
@@ -1252,21 +1256,29 @@ restablerSeleccion() {
   }
 }
 
+
 contarMarcados(){
-  
-  for(let i = 0 ; i < this.pendList.length ; i++){
 
-    if (this.pendList[i]['check'] === true && this.totalMarcados === 0) {
-      this.totalMarcados = this.totalMarcados + 1;
 
-    } else if (this.pendList[i]['check'] === false && this.totalMarcados > 0) {
 
-      this.totalMarcados = this.totalMarcados - 1;
+  this.pendList.forEach( (contar) => {
+    if(contar.check){
+      this.totalMarcados++;
     }
-  }
+  })
+  
+  
 }
 
 
 /* =============================== Fin Logica Marcado ========================================================*/
+
+/* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
+recargaArbol(){
+  this._Recargarble.arbol$.emit([true,this.data.id]);
+  // this.dialogRef.close(false);
+}
+
+/* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
 
 }

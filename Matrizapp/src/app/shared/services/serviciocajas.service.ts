@@ -8,6 +8,7 @@ export class ServiciocajasService {
   Recargar$ = new EventEmitter<boolean>();
   RecargarDetalle$ = new EventEmitter<boolean>();
   notificaciones$ = new EventEmitter<boolean>();
+  arbol$ = new EventEmitter<any>();
 
   constructor() {
     
