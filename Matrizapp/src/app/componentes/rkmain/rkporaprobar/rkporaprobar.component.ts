@@ -167,76 +167,90 @@ export class RkporaprobarComponent implements OnInit {
             const result = data.success;
             if (result) {
 
-              if (data.data[0].atts[0].name === 'TIMEOUT') {
-                // debugger
-                this.controlService.closeSpinner(spinner);
+              debugger;
+              console.log(data.data.length);
+              if (data.data.length > 0) {
 
-                Swal2.fire({
-                  icon: 'info',
-                  text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
 
-                }).then((resultado) => {
-                  if (resultado.value) {
+                if (data.data[0].atts[0].name === 'TIMEOUT') {
+                  // debugger
+                  this.controlService.closeSpinner(spinner);
 
-                    this.dialogRef.close(true);
-                  }
-                });
+                  Swal2.fire({
+                    icon: 'info',
+                    text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
 
-                return;
+                  }).then((resultado) => {
+                    if (resultado.value) {
 
-              }
-
-              data.data.forEach((element) => {
-
-                if (element.atts.length > 0) {
-
-                  const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
-
-                  this.obtenerRuta(element.atts[16].value.trim());
-
-                  this.pendList.push({
-                    Accion: element.atts[1].value.trim(),
-                    Entidad: element.atts[2].value.trim(),
-                    Id: element.atts[3].value.trim(),
-                    Descripcion: element.atts[4].value.trim(),
-                    Area: element.atts[5].value.trim(),
-                    Proceso: element.atts[6].value.trim(),
-                    Subproceso: element.atts[7].value.trim(),
-                    Actividad: element.atts[8].value.trim(),
-                    Tarea: element.atts[9].value.trim(),
-                    Dimension: element.atts[10].value.trim(),
-                    Riesgo: element.atts[11].value.trim(),
-                    Consecuencia: element.atts[12].value.trim(),
-                    Controles : element.atts[13].value.trim(),
-                    Fecha: fecha,
-                    key: element.atts[16].value.trim(),
-                    version : element.atts[17].value.trim(),
-                    Comentarios : element.atts[18].value.trim(),
-                    // permiso: this.permi,
-                    check: false,
-                    status: element.atts[19].value.trim(),
-                    TipoControl: element.atts[21].value,
-                    rutaJerarquia: this.rutaJerarquia
-
+                      this.dialogRef.close(true);
+                    }
                   });
+
+                  return;
 
                 }
 
+                data.data.forEach((element) => {
+
+                  if (element.atts.length > 0) {
+
+                    const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
+
+                    this.obtenerRuta(element.atts[16].value.trim());
+
+                    this.pendList.push({
+                      Accion: element.atts[1].value.trim(),
+                      Entidad: element.atts[2].value.trim(),
+                      Id: element.atts[3].value.trim(),
+                      Descripcion: element.atts[4].value.trim(),
+                      Area: element.atts[5].value.trim(),
+                      Proceso: element.atts[6].value.trim(),
+                      Subproceso: element.atts[7].value.trim(),
+                      Actividad: element.atts[8].value.trim(),
+                      Tarea: element.atts[9].value.trim(),
+                      Dimension: element.atts[10].value.trim(),
+                      Riesgo: element.atts[11].value.trim(),
+                      Consecuencia: element.atts[12].value.trim(),
+                      Controles : element.atts[13].value.trim(),
+                      Fecha: fecha,
+                      key: element.atts[16].value.trim(),
+                      version : element.atts[17].value.trim(),
+                      Comentarios : element.atts[18].value.trim(),
+                      // permiso: this.permi,
+                      check: false,
+                      status: element.atts[19].value.trim(),
+                      TipoControl: element.atts[21].value,
+                      rutaJerarquia: this.rutaJerarquia
+
+                    });
+
+                  }
+
+                }
+
+                );
+
+                console.log([this.pendList]);
+
+                this.TotalRegistros = this.pendList.length;
+                this.controlService.closeSpinner(spinner);
+              } else {
+                
+                this.controlService.closeSpinner(spinner);
+                this.dialogRef.close(false);
+                // this.mostrarMensaje();
+
               }
 
-              );
-
               // this.comprobarPadre()
-              console.log([this.pendList]);
-
-              this.TotalRegistros = this.pendList.length;
-              this.controlService.closeSpinner(spinner);
+             
 
             } else {
               this.controlService.closeSpinner(spinner);
               this.controlService.snackbarError(data.message);
             }
-            this.controlService.closeSpinner(spinner);
+            // this.controlService.closeSpinner(spinner);
             return result;
           },
           (error) => {
@@ -440,7 +454,7 @@ export class RkporaprobarComponent implements OnInit {
     }
 
     ejecutar() {
-      this._Recargarble.Recargar$.emit(true);
+      this._Recargarble.RecargarDetalle$.emit(true);
     }
 
     cerrar(mensaje: any) {
@@ -451,21 +465,17 @@ export class RkporaprobarComponent implements OnInit {
           this.ejecutar();
           this.dialogRef.close(mensaje);
 
-          this.router.navigate(['/rkmain/cargando']);
-          setTimeout(() => {
-        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+        //   this.router.navigate(['/rkmain/cargando']);
+        //   setTimeout(() => {
+        // this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
-      }, 1000);
+      // }, 1000);
 
       } else {
 
-        this.ejecutar();
+        // this.ejecutar();
         this.dialogRef.close(false);
-        this.router.navigate(['/rkmain/cargando']);
-        setTimeout(() => {
-        this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-
-      }, 1000);
+      //
 
       }
 
@@ -473,19 +483,19 @@ export class RkporaprobarComponent implements OnInit {
 
     checkUncheckAll() {
       // tslint:disable-next-line: prefer-for-of
+      this.totalMarcados = 0;
       for (let i = 0; i < this.pendList.length; i++) {
         this.pendList[i].check = this.masterSelected;
         this.pendList[i].bloqueo = true;
         if (this.masterSelected === true) {
           this.totalMarcados = this.pendList.length;
-  
-  
+
         } else {
           this.totalMarcados = 0;
           this.pendList[i].bloqueo = false;
         }
       }
-  
+
     }
 
   async sendvalidate() {
@@ -523,7 +533,7 @@ export class RkporaprobarComponent implements OnInit {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Aprobado', '', 'success' );
+                            this.mostrarMensaje();
                             // this.cerrar('falso');
                             this.sendSome = true;
                             this.totalMarcados = 0;
@@ -531,8 +541,8 @@ export class RkporaprobarComponent implements OnInit {
                             // this.recargar()
 
                             this._Recargarble.notificaciones$.emit(true);
-                            this.recargaArbol()
-                            this.cerrar('cerrar');
+                            ////this.recargaArbol();
+                            this.dialogRef.close(false);
 
                           } else {
                             // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
@@ -578,13 +588,13 @@ export class RkporaprobarComponent implements OnInit {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Aprobado', '', 'success' );
+                            this.mostrarMensaje();
                             // this.cerrar('falso');
                             this.totalMarcados = 0;
                             // this.recargar()
                             this._Recargarble.notificaciones$.emit(true);
-                            this.recargaArbol()
-                            this.cerrar('cerrar');
+                            ////this.recargaArbol();
+                            this.dialogRef.close(false);
 
                           } else {
                             // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
@@ -821,13 +831,13 @@ isOnlyControl(arreglo) {
 
   consola(accion: string) {
     this.valor = '';
-    this.version = ''
+    this.version = '';
     this.controles = '';
     for (let i = 0; i < this.pendList.length; i++) {
 
       if (this.pendList[i]['check'] === true) {
           this.valor = this.valor + ',' + this.pendList[i]['key'] + ',' + 'Y'  ;
-          this.version = this.version +','+ this.pendList[i]['version'];
+          this.version = this.version + ',' + this.pendList[i]['version'];
           this.comments = this.comments + '^~|' + this.pendList[i]['Comentarios'];
           this.controles = this.controles + ',' + this.pendList[i]['Entidad'];
           this.soloControles = this.isOnlyControl(this.controles.slice(1));
@@ -911,7 +921,7 @@ isOnlyControl(arreglo) {
                   if (data.success === true) {
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                    Swal2.fire('Registro Aprobado', '', 'success' );
+                    this.mostrarMensaje();
                     // this.cerrar('falso');
                     this.sendSome = true;
                     this.totalMarcados = 0;
@@ -919,8 +929,8 @@ isOnlyControl(arreglo) {
                     // this.recargar()
 
                     this._Recargarble.notificaciones$.emit(true);
-                    this.recargaArbol()
-                    this.cerrar('cerrar');
+                    ////this.recargaArbol();
+                    this.dialogRef.close(false);
 
                   } else {
                     // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
@@ -934,7 +944,7 @@ isOnlyControl(arreglo) {
                   // if ( error.status === 401 ) { this.autentication.logout(); return; }
                   this.controlService.closeSpinner(spinner);
                 });
-    this.controlService.closeSpinner(spinner);
+              this.controlService.closeSpinner(spinner);
               }
         });
 
@@ -984,7 +994,8 @@ isOnlyControl(arreglo) {
                   if (data.success === true) {
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                    Swal2.fire('Registro Aprobado', '', 'success' );
+                    // Swal2.fire('Registro Aprobado', '', 'success' );
+                    this.mostrarMensaje();
                     // this.cerrar('falso');
                     this.sendSome = true;
                     this.totalMarcados = 0;
@@ -992,8 +1003,9 @@ isOnlyControl(arreglo) {
                     // this.recargar()
 
                     this._Recargarble.notificaciones$.emit(true);
-                    this.recargaArbol()
-                    this.cerrar('cerrar');
+                    ////this.recargaArbol();
+                    // this.cerrar('cerrar');
+                    this.dialogRef.close(false);
 
                   } else {
                     // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
@@ -1007,7 +1019,7 @@ isOnlyControl(arreglo) {
                   // if ( error.status === 401 ) { this.autentication.logout(); return; }
                   this.controlService.closeSpinner(spinner);
                 });
-    this.controlService.closeSpinner(spinner);
+              this.controlService.closeSpinner(spinner);
               }
     });
   }
@@ -1037,38 +1049,37 @@ isOnlyControl(arreglo) {
     this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
     // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
     this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
-    this.contarMarcados()
+    this.contarMarcados();
     }
-  
+
     crearArrayKeys() {
       const keys = [];
-  
+
       // for(let i = 0 ; i <= this.pendList.length ; i++ ){
       //   keys.push(this.pendList[i]['key']);
       // }
-  
+
       this.pendList.forEach((element) => {
         keys.push(element.key);
-  
+
       });
       // console.log(keys);
       return keys;
     }
-  
-  
+
     buscarMarca(key?) {
-  
+
       for ( let i = 0 ; i <=  this.pendList.length; i++) {
             if ( this.pendList[i]['key'] === key ) {
                 // console.log(this.pendList[i]['key']);
                 this.pendList[i]['bloqueo'] = true;
                 return this.pendList[i]['key'];
             }
-  
+
       }
-  
+
     }
-  
+
   buscarNivel(key) {
     console.log('entre a buscar el nivel');
     switch (key.length) {
@@ -1090,10 +1101,10 @@ isOnlyControl(arreglo) {
           return 7;
         case 31 :
           return 8;
-  
+
     }
   }
-  
+
   armarPadres(nodomarcado, largo, padre) {
     //  Notar que marco los 9 niveles (0..8) para evitar algún NULL en el arreglo vPadre
     console.log('entre a armarPadres');
@@ -1101,18 +1112,18 @@ isOnlyControl(arreglo) {
       padre[i] = nodomarcado.substring(0, largo[i]);
       }
   }
-  
-  marcarPadres(vKeys, qKeys, vPadre, nivel) {  
+
+  marcarPadres(vKeys, qKeys, vPadre, nivel) {
     console.log('entre a marcarPadres');
-  
+
     // ' Marcar todos los padres, abuelos (jerarquía ascendente)
     // ' Si el nodo marcado fuera un AREA, no tiene padres, nada que buscar hacia arriba
-  
+
     if (nivel > 0) {
       let padre = '';
       for ( let i = 0 ; i <= nivel - 1 ; i++) {
           padre = vPadre[i];
-  
+
           let seguir = true;
           let j = 0;
           while (seguir) {
@@ -1120,20 +1131,20 @@ isOnlyControl(arreglo) {
           seguir = false;
         } else if (vKeys[j] === padre) {
           // debugger
-  
+
           this.pendList[j]['check'] = true;
           this.pendList[j]['bloqueo'] = true;
-  
+
         }
         j = j + 1 ;
       }
       }
-  
+
     }
-  
+
   }
   marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
-  
+
     console.log('entre a marcarHijosTodos');
     // console.log(vKeys)
     const VkeysArray = [];
@@ -1152,24 +1163,24 @@ isOnlyControl(arreglo) {
       let j = 0;
       let seguir = true;
       while ( seguir) {
-  
+
         // console.log(this.vArrayKeys);
         // console.log(VkeysArray);
         if ( j > qKeys ) {
           seguir = false;
         } else {
-  
+
           // console.log(this.vArrayKeys[j]);
           // debugger;
           this.nodo = this.vArrayKeys[j];
           // console.log(this.nodo);
           // console.log(largo);
-          if(this.nodo ===  undefined){
-              return
-          }else{
-  
+          if (this.nodo ===  undefined) {
+              return;
+          } else {
+
             if ( this.nodo.length > largo) {
-              
+
               if (this.nodo.substring(0, largo) === hijo) {
                 // debugger;
                 this.pendList[j]['check'] = true;
@@ -1182,41 +1193,49 @@ isOnlyControl(arreglo) {
       }
     }
   }
-  
+
   restablerSeleccion() {
     this.bloquearNodos = false;
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = false;
       this.pendList[i].bloqueo = false;
       this.totalMarcados = 0 ;
-      if(this.masterSelected === true){
-          this.masterSelected = false
+      if (this.masterSelected === true) {
+          this.masterSelected = false;
       }
     }
   }
-  
-  contarMarcados(){
 
+  contarMarcados() {
 
-
+    this.totalMarcados = 0;
     this.pendList.forEach( (contar) => {
-      if(contar.check){
+      if (contar.check) {
         this.totalMarcados++;
       }
-    })
-    
-    
+    });
+
   }
-  
-  
+
   /* =============================== Fin Logica Marcado ========================================================*/
 
   /* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
-recargaArbol(){
-  this._Recargarble.arbol$.emit([true,this.data.id]);
+recargaArbol() {
+  this._Recargarble.arbol$.emit([true, this.data.id]);
   // this.dialogRef.close(false);
 }
 
 /* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
+
+mostrarMensaje() {
+  Swal2.fire({
+    icon : 'info',
+    title : 'Registro Aprobado',
+    html : '<p>Verifique el avance del proceso  en el icono de notificaciones  <i style="color:red" class="fa fa-bell"></i></p>',
+  });
+
+  this.router.navigate(['/rkmain']);
+
+}
 
 }

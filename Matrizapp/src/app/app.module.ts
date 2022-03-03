@@ -52,7 +52,7 @@ import { AppComponent } from './app.component';
 // Layout
 import { PreloaderDirective } from './layout/preloader.directive';
 // Header
-import { AppHeaderComponent } from './layout/header/header.component';
+// import { AppHeaderComponent } from './layout/header/header.component';
 // Sidenav
 import { AppSidenavComponent } from './layout/sidenav/sidenav.component';
 import { ToggleOffcanvasNavDirective } from './layout/sidenav/toggle-offcanvas-nav.directive';
@@ -90,7 +90,7 @@ import { NgxLoadingModule,ngxLoadingAnimationTypes } from 'ngx-loading';
 import { RkmessagesModule } from './componentes/rkmain/rkmessages/rkmessages.module';
 import { InfoModule } from './componentes/rkmain/info/info.module';
 import { ConfirmationModule } from './controls/confirmation/confirmation.module';
-import { AddrkaModule } from './componentes/rkmain/addrka/addrka.module';
+
 
 
 import { FilterdataPipe } from './filterdata.pipe';
@@ -103,6 +103,8 @@ import { CajasdashboardComponent } from './rkmain/cajasdashboard/cajasdashboard.
 import { CajaslinkComponent } from './cajaslink/cajaslink.component';
 import { ChartsModule } from './charts/charts.module';
 // import { ChecklistComponent } from './checklist/checklist.component';
+import { HeaderModule } from './layout/header/header.module';
+import { AddModule } from './AddPages/add.module';
 
 
 
@@ -155,11 +157,12 @@ import { ChartsModule } from './charts/charts.module';
     RkmessagesModule,
     InfoModule,
     ConfirmationModule,
-    AddrkaModule,
+    AddModule,
     rkHelpModule,
     NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.circleSwish}),
     ReactiveFormsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    HeaderModule
 
 
 
@@ -170,7 +173,7 @@ import { ChartsModule } from './charts/charts.module';
     // PlanEntrenamientoComponent,
     PreloaderDirective,
     // Header
-    AppHeaderComponent,
+    // AppHeaderComponent,
     // Sidenav
     AppSidenavComponent,
     ToggleOffcanvasNavDirective,

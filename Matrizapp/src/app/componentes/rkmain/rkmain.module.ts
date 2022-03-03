@@ -14,14 +14,6 @@ import { MatInputModule } from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AddrkaModule } from './addrka/addrka.module';
-import { AddrkpModule } from './addrkp/addrkp.module';
-import { AddrksModule } from './addrks/addrks.module';
-import { AddrkcModule } from './addrkc/addrkc.module';
-import { AddrktModule } from './addrkt/addrkt.module';
-import { AddrkdModule } from './addrkd/addrkd.module';
-import { AddrkrModule } from './addrkr/addrkr.module';
-import { AddrkyModule } from './addrky/addrky.module';
 import { RkpendModule } from './rkpend/rkpend.module';
 import { RKporaprobarmodule } from './rkporaprobar/rkporaprobar.module';
 
@@ -42,6 +34,7 @@ import { ChartsModule } from 'ng2-charts';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
+import { AddModule } from '../../AddPages/add.module';
 
 
 
@@ -62,14 +55,8 @@ import { NotificacionesModule } from './notificaciones/notificaciones.module';
     MatDialogModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    AddrkaModule,
-    AddrkpModule,
-    AddrksModule,
-    AddrkcModule,
-    AddrktModule,
-    AddrkdModule,
-    AddrkrModule,
-    AddrkyModule,
+    
+    AddModule,
     RkpendModule,
     Rkvalidarmodule,
     RKporaprobarmodule,

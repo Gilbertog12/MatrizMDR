@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-md-2">
                             <mat-form-field>
-                                <a (click)="tablero(actividadModel.actividadStatus)"><input matInput type="text" name="actividadDescripcion" placeholder="" [(ngModel)]="actividadModel.actividadDescripcion" #actividadDescripcion="ngModel" readonly="true" /></a>
+                                <a><input matInput type="text" name="actividadDescripcion" placeholder="" [(ngModel)]="actividadModel.actividadDescripcion" #actividadDescripcion="ngModel" readonly="true" /></a>
                             </mat-form-field>
                         </div>
                     </div>
@@ -449,6 +449,23 @@
                                             class="img-circle"
                                             [src]= rutaImgAdd
                                             title="Añadir Item"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+
+                                        <button *ngIf="checklistEllipse.length == 0" class="btn btn-sm btn-light btn-round" (click)="CopiarCheckList()" disabled>
+                                            <img
+                                            class="img-circle"
+                                            [src]=rutaImgCopy
+                                            title="Copiar CheckList"
+                                            style="width: 15px; height: 15px"
+                                          />
+                                        </button>
+                                        <button *ngIf="checklistEllipse.length != 0" class="btn btn-sm btn-light btn-round" (click)="CopiarCheckList()">
+                                            <img
+                                            class="img-circle"
+                                            src='assets/images/copy2.png'
+                                            title="Copiar CheckList"
                                             style="width: 15px; height: 15px"
                                           />
                                         </button>

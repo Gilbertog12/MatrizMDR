@@ -54,7 +54,7 @@
         <tbody>
             <tr *ngFor="let item of pendList |filtro:entidadfiltro">
                 <td class="sticky">
-                    <input type="checkbox" class="checkmark" (change)="marcar(item.key)" [value]="item.check" [(ngModel)]="item.check" [disabled]="bloquearNodos">
+                    <input type="checkbox" class="checkmark" (change)="marcar(item.key)" [value]="item.check" [(ngModel)]="item.check" [disabled]="item.bloqueo">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
         
                                 </ng-template>

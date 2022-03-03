@@ -114,4 +114,17 @@ export class NotificacionesComponent  {
 
     }
   }
+
+  getClass(estado) {
+      switch ( estado ) {
+
+        case 'En Proceso':
+          return 'proceso';
+        case 'OK' :
+          return 'success';
+        default :
+          return 'error';
+      }
+
+  }
 }

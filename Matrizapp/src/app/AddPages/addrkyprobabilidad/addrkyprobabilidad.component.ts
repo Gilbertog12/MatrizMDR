@@ -1,26 +1,26 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AuthenticationService, ControlsService } from '../../../shared';
+import { AuthenticationService, ControlsService } from '../../shared';
 
 @Component({
-  selector: 'app-addrkyseveridad',
-  templateUrl: './addrkyseveridad.component.html',
-  styleUrls: ['./addrkyseveridad.component.scss']
+  selector: 'app-addrkyprobabilidad',
+  templateUrl: './addrkyprobabilidad.component.html',
+  styleUrls: ['./addrkyprobabilidad.component.scss']
 })
 
-export class AddrkyseveridadComponent implements OnInit {
+export class AddrkyprobabilidadComponent implements OnInit {
 
   public riesgoPuroModel: any = {
-    severidadId: ''
+    probabilidadId: ''
   };
 
   public dataList: any[] = [];
 
-  constructor(public dialogRef: MatDialogRef<AddrkyseveridadComponent>,
+  constructor(public dialogRef: MatDialogRef<AddrkyprobabilidadComponent>,
               private controlService: ControlsService,
               private autentication: AuthenticationService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-                this.cargarTablaSeveridad();
+                this.cargarTablaProbabilidad();
               }
 
   ngOnInit() { }
@@ -33,16 +33,16 @@ export class AddrkyseveridadComponent implements OnInit {
       }
     });
 
-    this.riesgoPuroModel.severidadId = '';
+    this.riesgoPuroModel.probabilidadId = '';
     if ( item.selected === true ) {
-      this.riesgoPuroModel.severidadId = item.id;
+      this.riesgoPuroModel.probabilidadId = item.id;
     }
   }
 
-  cargarTablaSeveridad() {
+  cargarTablaProbabilidad() {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
-    _atts.push({name: 'action', value: 'CONSECUENCIA_SEV_LIST'});
+    _atts.push({name: 'action', value: 'CONSECUENCIA_PRO_LIST'});
 
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
@@ -51,23 +51,19 @@ export class AddrkyseveridadComponent implements OnInit {
           const result = data.success;
           if (result) {
 
-            this.riesgoPuroModel.severidadId = this.riesgoPuroModel.severidad;
-
-            //alert(this.riesgoPuroModel.severidadId);
+            this.riesgoPuroModel.probabilidadId = this.riesgoPuroModel.probabilidad;
 
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
 
                   this.dataList.push({
-                    selected: element.atts[1].value.trim() === this.riesgoPuroModel.severidadId ? true : false,
+                    selected: element.atts[1].value.trim() === this.riesgoPuroModel.probabilidadId ? true : false,
                     offset: element.atts[0].value,
                     id: element.atts[1].value,
                     descripcion: element.atts[2].value,
-                    danosPersonas: element.atts[3].value,
-                    medioAmbiente: element.atts[4].value,
-                    interrupcionOperacion: element.atts[5].value,
-                    reputacionSocial: element.atts[6].value,
-                    legal: element.atts[7].value
+                    valoracion: element.atts[3].value,
+                    cualitativo: element.atts[4].value,
+                    cuantitativo: element.atts[5].value
                   });
               }
             });
@@ -85,13 +81,13 @@ export class AddrkyseveridadComponent implements OnInit {
 
   aceptar() {
     if ( this.data.type === 'RP' ) {
-      localStorage.setItem('selRp', this.riesgoPuroModel.severidadId);
+      localStorage.setItem('selRp', this.riesgoPuroModel.probabilidadId);
       localStorage.setItem('selRr', '');
     }
 
     if ( this.data.type === 'RR' ) {
       localStorage.setItem('selRp', '');
-      localStorage.setItem('selRr', this.riesgoPuroModel.severidadId);
+      localStorage.setItem('selRr', this.riesgoPuroModel.probabilidadId);
     }
 
     this.dialogRef.close(true);

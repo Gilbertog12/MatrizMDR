@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, Inject } from '@angular/core';
-import { AuthenticationService, ControlsService } from '../../shared';
+import { AuthenticationService, ControlsService,ServiciocajasService } from '../../shared';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RkpendaprobComponent } from '../../componentes/rkmain/rkpendaprob/rkpendaprob.component';
 import { RkpendComponent } from '../../componentes/rkmain/rkpend/rkpend.component';
 import { Router } from '@angular/router';
 import Swal2 from 'sweetalert2';
+
 
 @Component({
   selector: 'app-cajasdashboard',
@@ -28,6 +29,7 @@ export class CajasdashboardComponent implements OnInit {
   constructor(private autentication: AuthenticationService,
               private confirm: MatDialog ,
               private router: Router,
+              private Cajas: ServiciocajasService,
               private controlService: ControlsService,
               public dialogRef: MatDialogRef<CajasdashboardComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -234,12 +236,14 @@ export class CajasdashboardComponent implements OnInit {
 
   cancelar() {
 
-    this.dialogRef.close(true);
-    this.router.navigate(['/rkmain/cargando']);
-    setTimeout(() => {
-      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+    // this.Cajas.RecargarDetalle$.emit(true)
+    this.dialogRef.close(false);
+    
+        // this.router.navigate(['/rkmain/cargando']);
+    // setTimeout(() => {
+    //   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
-    }, 1000);
+    // }, 1000);
   }
 
 }

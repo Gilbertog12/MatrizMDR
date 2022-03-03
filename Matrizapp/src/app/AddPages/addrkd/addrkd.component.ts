@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject, ɵConsole, Output, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
-import { AuthenticationService, ControlsService } from '../../../shared';
+import { AuthenticationService, ControlsService } from '../../shared';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { ConfirmationComponent } from '../../../controls/confirmation/confirmation.component';
+
 import { MatDialog } from '@angular/material';
 import Swal2 from 'sweetalert2'
 

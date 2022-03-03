@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, HttpMethodService, ControlsService } from '../../../shared';
+import { AuthenticationService, HttpMethodService, ControlsService,ServiciocajasService } from '../../../shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationComponent } from '../../../controls/confirmation/confirmation.component';
 import { RkpendComponent } from '../rkpend/rkpend.component';
@@ -15,7 +15,8 @@ import { MatDialog } from '@angular/material';
 import { RkmainComponent } from '../rkmain.component';
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
 import { async } from '@angular/core/testing';
-import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-rka',
@@ -60,6 +61,7 @@ public Razon: string;
   valorType: string;
   message: string;
   valorMessage: string;
+  arrayPrueba: any;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -88,10 +90,10 @@ public Razon: string;
 
     this.Cajas.RecargarDetalle$.subscribe((resp)=> {
       if (resp) {
-        this.areaModel = {};
+        // this.areaModel = {};
         this.procesosList = [];
         this.procesosListLectura = [];
-        this.ver(this.id);
+        this.cargarRiesgo();
 
       }
     });
@@ -102,11 +104,7 @@ public Razon: string;
 
   }
 
-  ejemplo() {
-    Swal2.fire({
-        text : `${this.type} ${this.valorType} ${this.message} ${this.valorMessage} `
-    });
-  }
+  
 
   async ver(areaId: string) {
 
@@ -137,6 +135,10 @@ public Razon: string;
             const result = data.success;
             console.log(data);
             if (result) {
+
+              
+
+            
 
               // console.info('aqui esta el cambio')
               data.data.forEach( (element) => {
@@ -295,28 +297,7 @@ public Razon: string;
 
       switch (status) {
 
-        case  '000' :
-            this.VerCajasdashboard(key);
-
-            break;
-       case  '001' :
-
-        this.VerCajasdashboard(key);
-
-        break;
-       case  '002' :
-
-        this.VerCajasdashboard(key);
-
-        break;
-       case  '003' :
-
-        this.VerCajasdashboard(key);
-       case  '006' :
-
-        this.VerCajasdashboard(key);
-
-        break;
+     
 
         case '004':
 
@@ -326,6 +307,11 @@ public Razon: string;
         case '007':
           this.VerRkporaprobar(key);
 
+          break;
+          
+          default:
+            this.VerCajasdashboard(key);
+            
           break;
 
       }
@@ -339,6 +325,10 @@ public Razon: string;
       this.message = localStorage.getItem('message');
       this.valorMessage = localStorage.getItem('valorMessage');
 
+    }
+
+    seleccionCajaDashboard(){
+      
     }
 
    async VerCajasdashboard(key) {

@@ -97,7 +97,7 @@ public Razon : string
     this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
         this.riesgosList = [];
-        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did);
+        // this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did);
         this.cargarRiesgo()
       }
     })

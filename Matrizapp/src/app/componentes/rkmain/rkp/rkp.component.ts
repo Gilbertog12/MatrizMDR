@@ -85,9 +85,9 @@ ngOnInit() {
   // this.cargarRiesgo()
   this.Cajas.RecargarDetalle$.subscribe(resp=>{
     if(resp){
-      this.procesoModel = {};
+      // this.procesoModel = {};
       this.subprocesosList = [];
-      this.ver(this.id, this.pid);
+      this.cargarRiesgo();
       
 
     }

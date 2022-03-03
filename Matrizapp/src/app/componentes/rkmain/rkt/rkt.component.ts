@@ -132,12 +132,12 @@ public canAdd : string
 
     this.Cajas.RecargarDetalle$.subscribe(resp=>{
       if(resp){
-        this.tareaModel = {};
+        // this.tareaModel = {};
             this.dimensionesList = [];
             this.detalleList = [];
             this.stdJobList = [];
-            this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
-        
+            // this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
+            this.cargarRiesgo()        
 
 
       }

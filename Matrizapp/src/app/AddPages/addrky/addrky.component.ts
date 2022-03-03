@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AuthenticationService, ControlsService } from '../../../shared';
+import { AuthenticationService, ControlsService } from '../../shared';
 import { FormControl, Validators } from '@angular/forms';
-import { ConfirmationComponent } from '../../../controls/confirmation/confirmation.component';
+import { ConfirmationComponent } from '../../controls/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material';
 import { async } from '@angular/core/testing';
 import { AddrkyprobabilidadComponent } from '../addrkyprobabilidad/addrkyprobabilidad.component';

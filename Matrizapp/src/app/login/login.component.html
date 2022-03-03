@@ -6,7 +6,7 @@
                     <div class="top-nav-left">
                         <a [routerLink]="['/login']"><img src="assets/images/logo_collahuasi.png" style="width: 100px; height: 40px;"></a>
                     </div>
-                    <div class="top-nav-right"><b style="font-size: 10px;">Matriz de Riesgos <br> {{ambiente}}</b></div>
+                    <div class="top-nav-right"><b style="font-size: 10px;">Matriz de Riesgos <br> desarrollo</b></div>
                 </div>
 
 
@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <mat-form-field class="full-width">
                                 <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
-                                <input matInput type="password" name="password" placeholder="Contraseña" (change)="defaultvalues()" [(ngModel)]="model.password" #password="ngModel" required>
+                                <input matInput type="password" name="password" placeholder="Contraseña" (change)="deafultValues()" [(ngModel)]="model.password" #password="ngModel" required>
 
 
                             </mat-form-field>
@@ -37,7 +37,7 @@
                                 <label for="position">Posicion</label>
                                 <!-- <input required matInput type="text" name="position" placeholder="Posición" [(ngModel)]="model.position" #position="ngModel"> -->
                                 <mat-select class="full-width" name="position" [(ngModel)]="posDefault" required>
-                                    <mat-option *ngFor="let item of positions" [value]="item.name">{{item.name}} - {{item.value}}</mat-option>
+                                    <mat-option *ngFor="let item of posicionesEllipse" [value]="item.name">{{item.name}} - {{item.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>

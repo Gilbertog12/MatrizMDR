@@ -170,7 +170,7 @@ export class RkpendComponent implements OnInit {
   cerrar(mensaje: any) {
     console.log(mensaje);
 
-    // debugger
+    // //debugger
     if (mensaje !== '' && this.sendSome) {
 
         this.ejecutar();
@@ -207,12 +207,12 @@ export class RkpendComponent implements OnInit {
 
   checkUncheckAll() {
     // tslint:disable-next-line: prefer-for-of
+    this.totalMarcados = 0;
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
       this.pendList[i].bloqueo = true;
       if (this.masterSelected === true) {
         this.totalMarcados = this.pendList.length;
-
 
       } else {
         this.totalMarcados = 0;
@@ -258,22 +258,22 @@ export class RkpendComponent implements OnInit {
             obj.subscribe(
                         (data) => {
 
-                          // debugger;
-                          
+                          // //debugger;
 
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Enviado a Validar', '', 'success' );
+                            // Swal2.fire('Registro Enviado a Validar', '', 'success' );
 
+                            this.mostrarMensaje();
                             // localStorage.setItem('isSendToValidate','1')
                             // this.cerrar('falso');
                             this.totalMarcados = 0;
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
-                            
-                            this.recargaArbol()
-                            this.cerrar('cerrar');
+
+                            //this.recargaArbol(); 
+                            this.dialogRef.close(false);
 
                           } else {
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
@@ -322,17 +322,18 @@ export class RkpendComponent implements OnInit {
                         (data) => {
                           if (data.success === true) {
 
-                            
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Enviado a Validar', '', 'success' );
+                            this.mostrarMensaje();
+                            // Swal2.fire('Registro Enviado a Validar', '', 'success' );
                             // localStorage.setItem('isSendToValidate','1')
                             // this.cerrar('falso');
                             this.totalMarcados = 0;
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
-                            this.recargaArbol()
-                            this.cerrar('cerrar');
+                            //this.recargaArbol();
+                            // this.cerrar('cerrar');
+                            this.dialogRef.close(false);
 
                           } else {
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
@@ -358,8 +359,6 @@ export class RkpendComponent implements OnInit {
     }
 
   }
-
-  
 
 //
 
@@ -391,8 +390,6 @@ export class RkpendComponent implements OnInit {
             if (this.pendList[i]['check'] === false) {
 
               this.pendList[i]['check'] = true;
-
-              
 
             } else {
               this.pendList[i]['check'] = false;
@@ -634,77 +631,86 @@ export class RkpendComponent implements OnInit {
         .subscribe(
           (data) => {
             // console.log("RES:" + JSON.stringify(data));
+
             console.log(data);
             const result = data.success;
             if (result) {
 
-              data.data.forEach((element) => {
-                if (element.atts.length > 0) {
+              if (data.data.length > 0) {
 
-                  // Bloquear Checks
-                  // if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
-                  //   var StatusTemp = 2
-                  // }else{
-                  //   var StatusTemp = parseInt(element.atts[19].value.trim())
-                  // }
-                  // if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
-                  //   var StatusTempP = 2
-                  // }else{
-                  //   var StatusTempP = parseInt(element.atts[20].value.trim())
-                  // }
+                data.data.forEach((element) => {
+                  if (element.atts.length > 0) {
 
-                  // if(StatusTemp < StatusTempP){
-                  //   this.permi = true
-                  //   // console.log(this.permi)
-                  // }else{
-                  //   this.permi= false
-                  //   // console.log(this.permi)
+                    // Bloquear Checks
+                    // if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
+                    //   var StatusTemp = 2
+                    // }else{
+                    //   var StatusTemp = parseInt(element.atts[19].value.trim())
+                    // }
+                    // if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
+                    //   var StatusTempP = 2
+                    // }else{
+                    //   var StatusTempP = parseInt(element.atts[20].value.trim())
+                    // }
 
-                  // }
+                    // if(StatusTemp < StatusTempP){
+                    //   this.permi = true
+                    //   // console.log(this.permi)
+                    // }else{
+                    //   this.permi= false
+                    //   // console.log(this.permi)
 
-                  const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
+                    // }
 
-                  this.obtenerRuta(element.atts[16].value.trim());
+                    const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
 
-                  this.pendList.push({
-                    Accion: element.atts[1].value.trim(),
-                    Entidad: element.atts[2].value.trim(),
-                    Id: element.atts[3].value.trim(),
-                    Descripcion: element.atts[4].value.trim(),
-                    Area: element.atts[5].value.trim(),
-                    Proceso: element.atts[6].value.trim(),
-                    Subproceso: element.atts[7].value.trim(),
-                    Actividad: element.atts[8].value.trim(),
-                    Tarea: element.atts[9].value.trim(),
-                    Dimension: element.atts[10].value.trim(),
-                    Riesgo: element.atts[11].value.trim(),
-                    Consecuencia: element.atts[12].value.trim(),
-                    Controles : element.atts[13].value.trim(),
-                    Fecha: fecha,
-                    key: element.atts[16].value.trim(),
-                    version : element.atts[17].value.trim(),
-                    Comentarios : element.atts[18].value.trim(),
-                    // permiso: this.permi,
-                    check: false,
-                    status: element.atts[19].value.trim(),
-                    TipoControl: element.atts[21].value,
-                    rutaJerarquia: this.rutaJerarquia,
-                    bloqueo : false
+                    this.obtenerRuta(element.atts[16].value.trim());
 
-                  });
+                    this.pendList.push({
+                      Accion: element.atts[1].value.trim(),
+                      Entidad: element.atts[2].value.trim(),
+                      Id: element.atts[3].value.trim(),
+                      Descripcion: element.atts[4].value.trim(),
+                      Area: element.atts[5].value.trim(),
+                      Proceso: element.atts[6].value.trim(),
+                      Subproceso: element.atts[7].value.trim(),
+                      Actividad: element.atts[8].value.trim(),
+                      Tarea: element.atts[9].value.trim(),
+                      Dimension: element.atts[10].value.trim(),
+                      Riesgo: element.atts[11].value.trim(),
+                      Consecuencia: element.atts[12].value.trim(),
+                      Controles : element.atts[13].value.trim(),
+                      Fecha: fecha,
+                      key: element.atts[16].value.trim(),
+                      version : element.atts[17].value.trim(),
+                      Comentarios : element.atts[18].value.trim(),
+                      // permiso: this.permi,
+                      check: false,
+                      status: element.atts[19].value.trim(),
+                      TipoControl: element.atts[21].value,
+                      rutaJerarquia: this.rutaJerarquia,
+                      bloqueo : false
+
+                    });
+
+                  }
 
                 }
 
+                );
+
+                console.log([this.pendList]);
+
+                this.TotalRegistros = this.pendList.length;
+
+              } else {
+                this.controlService.closeSpinner(spinner);
+                this.dialogRef.close(false);
+                this.mostrarMensaje();
               }
 
-              );
-
               // this.comprobarPadre()
-              console.log([this.pendList]);
-              this.crearArrayKeys();
-              this.TotalRegistros = this.pendList.length;
 
-              this.controlService.closeSpinner(spinner);
             } else {
               this.controlService.closeSpinner(spinner);
               this.controlService.snackbarError(data.message);
@@ -862,7 +868,7 @@ export class RkpendComponent implements OnInit {
   nivel = this.buscarNivel(nodoMarcado); //                        ' Determinar nivel del nodo basado en su largo
   this.armarPadres(nodoMarcado, vLargo, vPadre); //                  ' Armar nodos padres
   this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
-  // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
+  // //debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
   this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
   this.contarMarcados();
   }
@@ -881,7 +887,6 @@ export class RkpendComponent implements OnInit {
     // console.log(keys);
     return keys;
   }
-
 
   buscarMarca(key?) {
 
@@ -929,7 +934,7 @@ armarPadres(nodomarcado, largo, padre) {
     }
 }
 
-marcarPadres(vKeys, qKeys, vPadre, nivel) {  
+marcarPadres(vKeys, qKeys, vPadre, nivel) {
   console.log('entre a marcarPadres');
 
   // ' Marcar todos los padres, abuelos (jerarquía ascendente)
@@ -946,7 +951,7 @@ marcarPadres(vKeys, qKeys, vPadre, nivel) {
       if (j > qKeys) {
         seguir = false;
       } else if (vKeys[j] === padre) {
-        // debugger
+        // //debugger
 
         this.pendList[j]['check'] = true;
         this.pendList[j]['bloqueo'] = true;
@@ -974,7 +979,7 @@ marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
     hijo = nodoMarcado;
     largo = vLargo[nivel];
     hijo = hijo.substring(0, largo) ;
-    // debugger;
+    // //debugger;
     // console.log(hijo);
     let j = 0;
     let seguir = true;
@@ -987,18 +992,18 @@ marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
       } else {
 
         // console.log(this.vArrayKeys[j]);
-        // debugger;
+        // //debugger;
         this.nodo = this.vArrayKeys[j];
         // console.log(this.nodo);
         // console.log(largo);
-        if(this.nodo ===  undefined){
-            return
-        }else{
+        if (this.nodo ===  undefined) {
+            return;
+        } else {
 
           if ( this.nodo.length > largo) {
-            
+
             if (this.nodo.substring(0, largo) === hijo) {
-              // debugger;
+              // //debugger;
               this.pendList[j]['check'] = true;
               this.pendList[j]['bloqueo'] = true;
             }
@@ -1016,34 +1021,41 @@ restablerSeleccion() {
     this.pendList[i].check = false;
     this.pendList[i].bloqueo = false;
     this.totalMarcados = 0 ;
-    if(this.masterSelected === true){
-        this.masterSelected = false
+    if (this.masterSelected === true) {
+        this.masterSelected = false;
     }
   }
 }
 
-contarMarcados(){
-
-
-
+contarMarcados() {
+  this.totalMarcados = 0;
   this.pendList.forEach( (contar) => {
-    if(contar.check){
+    if (contar.check) {
       this.totalMarcados++;
     }
-  })
-  
-  
-}
+  });
 
+}
 
 /* =============================== Fin Logica Marcado ========================================================*/
 
 /* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
-recargaArbol(){
-  this._Recargarble.arbol$.emit([true,this.data.id]);
+recargaArbol() {
+  this._Recargarble.arbol$.emit([true, this.data.id]);
   // this.dialogRef.close(false);
 }
 
 /* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
+
+mostrarMensaje() {
+  Swal2.fire({
+    icon : 'info',
+    title : 'Registro Enviado a Validar',
+    html : '<p>Verifique el avance del proceso  en el icono de notificaciones  <i style="color:red" class="fa fa-bell"></i></p>',
+  });
+
+  this.router.navigate(['/rkmain']);
+
+}
 
 }

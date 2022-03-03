@@ -364,21 +364,20 @@ public Razon: string;
     localStorage.setItem('isSendToValidate', '0');
     localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
     this.percreacion = localStorage.getItem('NoCreador');
-    this.actividadModel = {};
+    // this.actividadModel = {};
     this.tareasList = [];
     this.logList = [];
     this.detalleList = [];
     this.stdJobList = [];
     this.Cajas.RecargarDetalle$.subscribe((resp) => {
         if (resp) {
-          this.actividadModel = {};
+          
           this.tareasList = [];
           this.logList = [];
           this.detalleList = [];
           this.stdJobList = [];
-          this.ver(this.id, this.pid, this.sid, this.cid, true);
-          debugger
-          this.activarNotificaciones()
+          
+          this.cargarRiesgo()
 
         }
       });

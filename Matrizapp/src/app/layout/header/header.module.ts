@@ -24,8 +24,8 @@ import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
     MatIconModule,
     rkHelpModule
   ],
-  declarations: [AppHeaderComponent, RkhelpComponent],
-  entryComponents: [AppHeaderComponent, RkhelpComponent],
+  declarations: [AppHeaderComponent],
+  entryComponents: [AppHeaderComponent],
   exports: [AppHeaderComponent]
 })
 

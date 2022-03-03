@@ -6,7 +6,7 @@ import { APPCONFIG } from '../../config';
 import { AuthenticationService, ControlsService, HttpMethodService } from '../../shared';
 import { Router } from '@angular/router';
 import { ConfirmationComponent } from '../../controls/confirmation/confirmation.component';
-import { AddrkaComponent } from '../../componentes/rkmain/addrka/addrka.component';
+import { AddrkaComponent } from '../../AddPages/addrka/addrka.component';
 import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
 import { ServiciocajasService } from '../../shared/services/serviciocajas.service';
 
@@ -32,7 +32,7 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string;
-  public version: string = 'Version: 4.2.8';
+  public version: string = 'Version: 4.3.0';
   public posicion: string;
   public distrito: string;
   public usuario2: string;

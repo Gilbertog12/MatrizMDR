@@ -88,7 +88,7 @@ public Razon: string;
               private route: ActivatedRoute,
               private Cajas: ServiciocajasService) {
 
-      // this.aperfil()
+      // this.aperfil();
       this.canAdd = localStorage.getItem('canAdd');
       this.route.params.subscribe((params) => {
       this.id = params['id'];
@@ -454,6 +454,9 @@ public Razon: string;
 
     if (string !== '') {
       let arry = string.split(' ');
+
+      debugger
+      this.mostrar(localStorage.getItem('PerfilRkj'))
       switch (this.btn) {
 
         case 'creacion': // LECTURA Y CREACION
@@ -573,6 +576,41 @@ public Razon: string;
       return !string.includes('008');*/
 
       case 'aprobacion': // LECTURA Y APROBACION
+
+      // var arry = string.split(' ')
+      arry = arry.sort().reverse();
+      arry.filter((status) => {
+
+        if (this.statusc === '004' && status === '000' || this.statusc === '004' &&  status === '001' || this.statusc === '004' && status === '002' || this.statusc === '004' && status === '003' || this.statusc === '004' && status === '006') {
+          this.statusc = status;
+
+        }
+
+        if (this.statusc === '' ) {
+
+          if (status === '007') {
+
+            this.statusc = '007';
+
+          } else {
+
+            if (status === '000' || status === '001' || status === '002' || status === '003' || status === '006') {
+              this.statusc = status;
+
+          } else {
+
+            if (status === '004') {
+              this.statusc = '004';
+            }
+          }
+
+          }
+        }
+
+      }
+      );
+      break;
+      case 'administrador': // LECTURA Y APROBACION
 
       // var arry = string.split(' ')
       arry = arry.sort().reverse();
@@ -1289,71 +1327,11 @@ public Razon: string;
 
   }
 
-  aperfil() {
-    const _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr' });
-    _atts.push({ name: 'action', value: 'SESSION' });
+  
 
-    const promiseView = new Promise((resolve, reject) => {
-      this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            console.log('RES:' + JSON.stringify(data));
-            const result = data.success;
-            if (result) {
+   mostrar(perfil)  {
 
-              data.data.forEach((element) => {
-                if (element.atts.length > 0) {
-                  this.Perfil.push({
-                    adm: element.atts[1].value,
-                    apr: element.atts[2].value,
-                    con: element.atts[3].value,
-                    cre: element.atts[4].value,
-                    val: element.atts[5].value,
-                  });
-                }
-
-              });
-
-              this.Perfil.forEach((element, index, array) => {
-
-                this.consulta = element.con;
-                this.admin = element.adm;
-                this.aprobador = element.apr;
-                this.creador = element.cre;
-                this.validador = element.val;
-
-                if (this.admin === 'Y') {
-                  this.aprobador = 'Y';
-                  this.creador = 'Y';
-                  this.validador = 'Y';
-                  this.consulta = 'Y';
-
-                }
-
-                this.cargo = this.admin + this.aprobador + this.consulta + this.creador + this.validador;
-                // if (this.cargo === 'NNYNN') {
-                //   this.propiedad = 'none';
-                // }
-                this.mostrar();
-
-              });
-
-            } else {
-              this.controlService.snackbarError(data.message);
-            }
-            return result;
-          },
-          (error) => {
-            this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
-          });
-    });
-
-  }
-
-  async mostrar()  {
-
-    switch (this.cargo) {
+    switch (perfil) {
       case 'NNYNN': // SOLO LECTURA
 
         this.btn = 'lectura';

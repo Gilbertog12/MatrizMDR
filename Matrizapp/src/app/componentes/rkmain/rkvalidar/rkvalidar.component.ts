@@ -170,77 +170,75 @@ export class RkvalidarComponent implements OnInit {
 
             if (result) {
                   console.log(data);
-                  debugger;
-                  console.log(data.message);
+                  // debugger;
 
-                  console.log(data.data[0].atts[0]['name']);
-                  // console.log(data.data[0].atts['name'])
+                  
+                    if (data.data[0].atts[0].name === 'TIMEOUT') {
+                      // debugger
+                      this.controlService.closeSpinner(spinner);
 
-                  // debugger
-                  if (data.data[0].atts[0].name === 'TIMEOUT') {
-                    // debugger
-                    this.controlService.closeSpinner(spinner);
+                      Swal2.fire({
+                        icon: 'info',
+                        text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
 
-                    Swal2.fire({
-                      icon: 'info',
-                      text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+                      }).then((resultado) => {
+                        if (resultado.value) {
 
-                    }).then((resultado) => {
-                      if (resultado.value) {
+                          this.dialogRef.close(true);
+                        }
+                      });
 
-                        this.dialogRef.close(true);
-                      }
+                      return;
+
+                    }
+
+                    data.data.forEach((element) => {
+
+                  if (element.atts.length > 0) {
+
+                    const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
+
+                    this.obtenerRuta(element.atts[16].value.trim());
+
+                    this.pendList.push({
+                      Accion: element.atts[1].value.trim(),
+                      Entidad: element.atts[2].value.trim(),
+                      Id: element.atts[3].value.trim(),
+                      Descripcion: element.atts[4].value.trim(),
+                      Area: element.atts[5].value.trim(),
+                      Proceso: element.atts[6].value.trim(),
+                      Subproceso: element.atts[7].value.trim(),
+                      Actividad: element.atts[8].value.trim(),
+                      Tarea: element.atts[9].value.trim(),
+                      Dimension: element.atts[10].value.trim(),
+                      Riesgo: element.atts[11].value.trim(),
+                      Consecuencia: element.atts[12].value.trim(),
+                      Controles : element.atts[13].value.trim(),
+                      Fecha: fecha,
+                      key: element.atts[16].value.trim(),
+                      version : element.atts[17].value.trim(),
+                      Comentarios : element.atts[18].value.trim(),
+                      // permiso: this.permi,
+                      check: false,
+                      status: element.atts[19].value.trim(),
+                      TipoControl: element.atts[21].value,
+                      rutaJerarquia: this.rutaJerarquia
+
                     });
-
-                    return;
 
                   }
 
-                  data.data.forEach((element) => {
-
-                if (element.atts.length > 0) {
-
-                  const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
-
-                  this.obtenerRuta(element.atts[16].value.trim());
-
-                  this.pendList.push({
-                    Accion: element.atts[1].value.trim(),
-                    Entidad: element.atts[2].value.trim(),
-                    Id: element.atts[3].value.trim(),
-                    Descripcion: element.atts[4].value.trim(),
-                    Area: element.atts[5].value.trim(),
-                    Proceso: element.atts[6].value.trim(),
-                    Subproceso: element.atts[7].value.trim(),
-                    Actividad: element.atts[8].value.trim(),
-                    Tarea: element.atts[9].value.trim(),
-                    Dimension: element.atts[10].value.trim(),
-                    Riesgo: element.atts[11].value.trim(),
-                    Consecuencia: element.atts[12].value.trim(),
-                    Controles : element.atts[13].value.trim(),
-                    Fecha: fecha,
-                    key: element.atts[16].value.trim(),
-                    version : element.atts[17].value.trim(),
-                    Comentarios : element.atts[18].value.trim(),
-                    // permiso: this.permi,
-                    check: false,
-                    status: element.atts[19].value.trim(),
-                    TipoControl: element.atts[21].value,
-                    rutaJerarquia: this.rutaJerarquia
-
-                  });
-
                 }
 
-              }
+                );
 
-              );
+                    console.log([this.pendList]);
+
+                    this.TotalRegistros = this.pendList.length;
+                    this.controlService.closeSpinner(spinner);
+                  
 
               // this.comprobarPadre()
-                  console.log([this.pendList]);
-
-                  this.TotalRegistros = this.pendList.length;
-                  this.controlService.closeSpinner(spinner);
 
             } else {
               this.controlService.snackbarError(data.message);
@@ -282,7 +280,7 @@ export class RkvalidarComponent implements OnInit {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'IV' });
-    if (this.complete == true) {
+    if (this.complete === true) {
       _atts.push({ name: 'showCompleted', value: 'N' });
 
     } else {
@@ -446,7 +444,7 @@ export class RkvalidarComponent implements OnInit {
 
     // emite el valor del observable para ejecutar la funcion para recargar ell arbol
     ejecutar() {
-      this._Recargarble.Recargar$.emit(true);
+      this._Recargarble.RecargarDetalle$.emit(true);
     }
 
   cerrar(mensaje: any) {
@@ -457,21 +455,21 @@ export class RkvalidarComponent implements OnInit {
         this.ejecutar();
         this.dialogRef.close(mensaje);
 
-        this.router.navigate(['/rkmain/cargando']);
-        setTimeout(() => {
-      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+      //   this.router.navigate(['/rkmain/cargando']);
+      //   setTimeout(() => {
+      // this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
-    }, 1000);
+    // }, 1000);
 
     } else {
 
-      this.ejecutar();
+      // this.ejecutar();
       this.dialogRef.close(false);
-      this.router.navigate(['/rkmain/cargando']);
-      setTimeout(() => {
-      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+    //   this.router.navigate(['/rkmain/cargando']);
+    //   setTimeout(() => {
+    //   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
-    }, 1000);
+    // }, 1000);
 
     }
 
@@ -559,6 +557,7 @@ verTable(item: any) {
 }
 
 checkUncheckAll() {
+  this.totalMarcados = 0;
   // tslint:disable-next-line: prefer-for-of
   for (let i = 0; i < this.pendList.length; i++) {
     this.pendList[i].check = this.masterSelected;
@@ -617,13 +616,16 @@ checkUncheckAll() {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Enviado a Aprobar', '', 'success' );
+                            // Swal2.fire('Registro Enviado a Aprobar', '', 'success' );
+                            this.mostrarMensaje();
                             // this.cerrar('falso');
                             this.sendSome = true;
                             this.totalMarcados = 0;
+                            //this.recargaArbol();
                             this._Recargarble.notificaciones$.emit(true);
                             // this.recargar()
-                            this.cerrar('cerrar');
+                            // this.cerrar('cerrar');
+                            this.dialogRef.close(false);
 
                           } else {
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
@@ -669,12 +671,13 @@ checkUncheckAll() {
                           if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            Swal2.fire('Registro Enviado a Aprobar', '', 'success' );
+                            this.mostrarMensaje();
                             // this.cerrar('falso');
                             this.totalMarcados = 0;
+                            //this.recargaArbol();
                             this._Recargarble.notificaciones$.emit(true);
                             // this.recargar()
-                            this.cerrar('cerrar');
+                            this.dialogRef.close(false);
 
                           } else {
                             // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
@@ -915,7 +918,7 @@ checkUncheckAll() {
                   if (data.success === true) {
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                    Swal2.fire('Registro Aprobado', '', 'success' );
+                    this.mostrarMensaje();
                     // this.cerrar('falso');
                     this.sendSome = true;
                     this.totalMarcados = 0;
@@ -923,8 +926,8 @@ checkUncheckAll() {
                     // this.recargar()
 
                     this._Recargarble.notificaciones$.emit(true);
-                    this.recargaArbol()
-                    this.cerrar('cerrar');
+                    //this.recargaArbol();
+                    this.dialogRef.close(false);
 
                   } else {
                     // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
@@ -938,7 +941,7 @@ checkUncheckAll() {
                   // if ( error.status === 401 ) { this.autentication.logout(); return; }
                   this.controlService.closeSpinner(spinner);
                 });
-    this.controlService.closeSpinner(spinner);
+              this.controlService.closeSpinner(spinner);
               }
         });
       } else {
@@ -988,7 +991,7 @@ checkUncheckAll() {
                   if (data.success === true) {
                     // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                    Swal2.fire('Registro Aprobado', '', 'success' );
+                    this.mostrarMensaje();
                     // this.cerrar('falso');
                     this.sendSome = true;
                     this.totalMarcados = 0;
@@ -996,8 +999,8 @@ checkUncheckAll() {
                     // this.recargar()
 
                     this._Recargarble.notificaciones$.emit(true);
-                    this.recargaArbol()
-                    this.cerrar('cerrar');
+                    //this.recargaArbol();
+                    this.dialogRef.close(false);
 
                   } else {
                     // this.autentication.showMesage(data.success, data.message, {}, data.redirect);
@@ -1011,7 +1014,7 @@ checkUncheckAll() {
                   // if ( error.status === 401 ) { this.autentication.logout(); return; }
                   this.controlService.closeSpinner(spinner);
                 });
-    this.controlService.closeSpinner(spinner);
+              this.controlService.closeSpinner(spinner);
               }
         });
       }
@@ -1198,7 +1201,7 @@ restablerSeleccion() {
 }
 
 contarMarcados() {
-
+  this.totalMarcados = 0;
   this.pendList.forEach( (contar) => {
     if (contar.check) {
       this.totalMarcados++;
@@ -1209,14 +1212,23 @@ contarMarcados() {
 
 /* =============================== Fin Logica Marcado ========================================================*/
 
-
 /* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
-recargaArbol(){
-  this._Recargarble.arbol$.emit([true,this.data.id]);
+recargaArbol() {
+  this._Recargarble.arbol$.emit([true, this.data.id]);
   // this.dialogRef.close(false);
 }
 
 /* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
 
+mostrarMensaje() {
+  Swal2.fire({
+    icon : 'info',
+    title : 'Registro Enviado a Aprobar',
+    html : '<p>Verifique el avance del proceso  en el icono de notificaciones  <i style="color:red" class="fa fa-bell"></i></p>',
+  });
+  this.router.navigate(['/rkmain']);
+
+  
+}
 
 }

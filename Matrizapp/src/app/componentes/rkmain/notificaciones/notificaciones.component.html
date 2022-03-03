@@ -1,4 +1,4 @@
-<h4>STATUS PROCESOS DE VALIDACION</h4>
+<h4>NOTIFICACIÓN <br> STATUS PROCESOS DE VALIDACION</h4>
 
 <mat-dialog-content>
     <table class="table cebra">
@@ -22,7 +22,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let notificacion of notificaciones" [ngClass]="{success: notificacion.comentario==='OK',proceso:notificacion.comentario ==='EN PROCESO',error:notificacion.comentario !=='OK' && notificacion.comentario !=='EN PROCESO'}">
+            <tr *ngFor="let notificacion of notificaciones" [ngClass]="getClass(notificacion.comentario)">
 
                 <td>{{notificacion.usuario}}</td>
                 <td>{{notificacion.fecha}}</td>
@@ -49,6 +49,7 @@
 <mat-dialog-actions align="end" cdkDragHandle>
 
     <button mat-raised-button color="primary" (click)="validarEliminacion()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="accent" (click)="cargarNotificiaciones()">Recargar</button>
 
 
 

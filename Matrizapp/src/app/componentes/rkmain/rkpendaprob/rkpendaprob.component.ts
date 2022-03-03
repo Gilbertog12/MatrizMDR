@@ -4,7 +4,7 @@ import { AuthenticationService, ControlsService } from '../../../shared';
 import { ConfirmationComponent } from '../../../controls/confirmation/confirmation.component';
 import { Router } from '@angular/router';
 import { RkarchivarComponent } from '../../../rkmain/rkarchivar/rkarchivar.component';
-import { FreshPipe } from '../../../fresh.pipe';
+
 import Swal2 from 'sweetalert2';
 import { includes } from 'core-js/fn/array';
 import { ServiciocajasService } from '../../../shared/services/serviciocajas.service';
@@ -166,6 +166,30 @@ export class RkpendaprobComponent implements OnInit {
             const result = data.success;
             if (result) {
 
+              debugger;
+              console.log(data.data.length);
+              if (data.data.length > 0) {
+
+                if (data.data[0].atts[0].name === 'TIMEOUT') {
+                  // debugger
+                  this.controlService.closeSpinner(spinner);
+
+                  Swal2.fire({
+                    icon: 'info',
+                    text: `Numero de items en Validación/Construcción excedido: ${data.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+                  }).then((resultado) => {
+                    if (resultado.value) {
+
+                      this.dialogRef.close(true);
+                    }
+                  });
+
+                  return;
+
+                }
+                
+
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
@@ -199,12 +223,19 @@ export class RkpendaprobComponent implements OnInit {
 
                   });
 
+                }else{
+                  this.controlService.closeSpinner(spinner);
+                  this.dialogRef.close(false);
                 }
 
               }
 
               );
-
+            } else {
+                  this.controlService.closeSpinner(spinner);
+                  this.dialogRef.close(false);
+                  // this.mostrarMensaje();
+            }
               // this.comprobarPadre()
               console.log([this.pendList]);
 
@@ -438,13 +469,13 @@ export class RkpendaprobComponent implements OnInit {
 
     } else {
 
-      this.ejecutar();
+      // this.ejecutar();
       this.dialogRef.close(false);
-      this.router.navigate(['/rkmain/cargando']);
-      setTimeout(() => {
-      this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
+    //   this.router.navigate(['/rkmain/cargando']);
+    //   setTimeout(() => {
+    //   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
-    }, 1000);
+    // }, 1000);
 
     }
 
@@ -452,12 +483,12 @@ export class RkpendaprobComponent implements OnInit {
 
   checkUncheckAll() {
     // tslint:disable-next-line: prefer-for-of
+    this.totalMarcados = 0;
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
       this.pendList[i].bloqueo = true;
       if (this.masterSelected === true) {
         this.totalMarcados = this.pendList.length;
-
 
       } else {
         this.totalMarcados = 0;
@@ -521,7 +552,7 @@ export class RkpendaprobComponent implements OnInit {
                                       this.sendSome = true
                                       this.totalMarcados = 0;
                                       this._Recargarble.notificaciones$.emit(true);
-                                      this.recargaArbol()
+                                      //this.recargaArbol();
                                       this.cerrar('cerrar');
                                       // this.recargar();
 
@@ -597,7 +628,7 @@ export class RkpendaprobComponent implements OnInit {
                                       this.totalMarcados = 0;
                                       // this.recargar();
                                       this._Recargarble.notificaciones$.emit(true);
-                                      this.recargaArbol()
+                                      //this.recargaArbol();
                                       this.cerrar('cerrar');
 
                                       }
@@ -1079,8 +1110,6 @@ verTable(item: any) {
   }
 }
 
-
-
  // Nueva Logica para marcado de jerarquia en la tabla
  marcar(key) {
 
@@ -1098,7 +1127,7 @@ verTable(item: any) {
   this.marcarPadres(vKeys, qKeys, vPadre, nivel);  //                ' Marcar nodos padre
   // debugger                                //  ' KEY a buscar como padre, abuelo, bisabuelo del nodo marcado
   this.marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel);
-  this.contarMarcados()
+  this.contarMarcados();
   }
 
   crearArrayKeys() {
@@ -1115,7 +1144,6 @@ verTable(item: any) {
     // console.log(keys);
     return keys;
   }
-
 
   buscarMarca(key?) {
 
@@ -1163,7 +1191,7 @@ armarPadres(nodomarcado, largo, padre) {
     }
 }
 
-marcarPadres(vKeys, qKeys, vPadre, nivel) {  
+marcarPadres(vKeys, qKeys, vPadre, nivel) {
   console.log('entre a marcarPadres');
 
   // ' Marcar todos los padres, abuelos (jerarquía ascendente)
@@ -1225,12 +1253,12 @@ marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
         this.nodo = this.vArrayKeys[j];
         // console.log(this.nodo);
         // console.log(largo);
-        if(this.nodo ===  undefined){
-            return
-        }else{
+        if (this.nodo ===  undefined) {
+            return;
+        } else {
 
           if ( this.nodo.length > largo) {
-            
+
             if (this.nodo.substring(0, largo) === hijo) {
               // debugger;
               this.pendList[j]['check'] = true;
@@ -1250,35 +1278,37 @@ restablerSeleccion() {
     this.pendList[i].check = false;
     this.pendList[i].bloqueo = false;
     this.totalMarcados = 0 ;
-    if(this.masterSelected === true){
-        this.masterSelected = false
+    if (this.masterSelected === true) {
+        this.masterSelected = false;
     }
   }
 }
 
-
-contarMarcados(){
-
-
-
+contarMarcados() {
+  this.totalMarcados = 0;
   this.pendList.forEach( (contar) => {
-    if(contar.check){
+    if (contar.check) {
       this.totalMarcados++;
     }
-  })
-  
-  
-}
+  });
 
+}
 
 /* =============================== Fin Logica Marcado ========================================================*/
 
 /* ================================= Inicio Emitir Señal para Recargar Arbol ========================================*/
-recargaArbol(){
-  this._Recargarble.arbol$.emit([true,this.data.id]);
+recargaArbol() {
+  this._Recargarble.arbol$.emit([true, this.data.id]);
   // this.dialogRef.close(false);
 }
 
 /* ================================= Fin Emitir Señal para Recargar Arbol ========================================*/
 
+mostrarMensaje() {
+  Swal2.fire({
+    icon : 'info',
+    text : 'Los items se encuentran en proceso..... Favor revisar el status en el icono de notificaciones 🔔'
+  });
+
+}
 }

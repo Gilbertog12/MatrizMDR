@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnChanges, ViewChild } from '@angular/core';
 import { MatDialogRef, MatSelect, MAT_DIALOG_DATA } from "@angular/material";
-import { AuthenticationService, ControlsService } from "../../../shared";
+import { AuthenticationService, ControlsService } from "../../shared";
 import { FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material";
 
