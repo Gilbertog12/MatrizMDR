@@ -636,7 +636,7 @@ export class RkpendComponent implements OnInit {
             const result = data.success;
             if (result) {
 
-              if (data.data.length > 0) {
+              
 
                 data.data.forEach((element) => {
                   if (element.atts.length > 0) {
@@ -703,11 +703,7 @@ export class RkpendComponent implements OnInit {
 
                 this.TotalRegistros = this.pendList.length;
 
-              } else {
-                this.controlService.closeSpinner(spinner);
-                this.dialogRef.close(false);
-                this.mostrarMensaje();
-              }
+              
 
               // this.comprobarPadre()
 

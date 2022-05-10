@@ -34,9 +34,30 @@ li#iconos {
     padding-top: 9px;
 }
 
+nav {
+    border: 0.3px solid #175641;
+    height: 45px;
+}
+
 .logo {
-    width: 120px;
-    height: 40px;
+    width: 120px !important;
+    height: 40px !important;
+}
+
+.version {
+    font-size: 20px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    color: #175641;
+}
+
+.informacion {
+    font-size: 11px;
+    color: #175641;
+}
+
+img {
+    width: 120px !important;
+    height: 40px !important;
 }
 
 // @media only screen and (max-width: 400px) {

@@ -671,6 +671,10 @@ public Razon: string;
     });
   }*/
 
+ /**
+  * The function is called when the user drags and drops a task from one column to another.
+  * @param event - CdkDragDrop<string[]>
+  */
   drop(event: CdkDragDrop<string[]>) {
 
     moveItemInArray(this.tareasList, event.previousIndex, event.currentIndex);
@@ -888,6 +892,10 @@ public Razon: string;
 
   }
 
+ /**
+  * I'm trying to pass a value from a table to a modal.
+  * @param item - the object that is being passed to the modal
+  */
   async cargarequipo(item) {
 
     this.confirm.open(RkcequipComponent, {
@@ -1189,9 +1197,7 @@ public Razon: string;
                 this.pegar = this.anonimmo(this.checklistEllipse, this.checklistEllipse.length, this.actividadModel.actividadStatusId);
   });
 
-  // this.paste = localStorage.getItem('checklist')
-
-  // console.log(this.paste.length)
+  
 
       }
 
@@ -1212,21 +1218,7 @@ public Razon: string;
 
               } else if ( longitud > 0 ) {
 
-                // console.log(  checklist.some( (item) => {
-                  //   console.log(item.statusId)
-                  //   item.statusId !== '001' || item.statusId !== '002' || item.statusId !== '003'
-                  // } ))
-
-                  // console.log(checklist.some( (item) => {item.statusId === '008' || item.statusId === '007' || item.statusId === '006' || item.statusId === '004' } ))
-                  // if (checklist.some( (item) => {item.statusId === '008' || item.statusId === '007' || item.statusId === '006' || item.statusId === '004' } ) ) {
-
-                    //   return true;
-                    // } else {
-
-                      //    return false;
-                      // }
-
-                      // debugger;
+                
                       // let permitido = 0;
                       for (let i = 0 ; i < longitud; i++) {
                         // debugger;
@@ -1244,11 +1236,25 @@ public Razon: string;
 
       }
 
+/**
+ * If the statusId is 001, 006, 007, or 008 and the pendingDelete is N and the DeleteIcon is Y, then
+ * return true.
+ * 
+ * I'm trying to write a test for this function. 
+ * 
+ * Here's what I have so far:
+ * @param creador - true or false
+ * @param statusId - The status of the record.
+ * @param pendingDelete - 'N'
+ * @param DeleteIcon - Y or N
+ * @returns A boolean value.
+ */
       mostrarDelete(creador, statusId, pendingDelete, DeleteIcon ) {
 
         if (creador === 'true') {
 
-          if ((statusId === '001' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '008' && pendingDelete === 'N' && DeleteIcon === 'Y')) {
+          // if ((statusId === '001' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '008' && pendingDelete === 'N' && DeleteIcon === 'Y')) {
+          if ((statusId === '001' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y') || (statusId === '006' && pendingDelete === 'N' && DeleteIcon === 'Y')) {
               return true ;
           }
         }
@@ -1349,6 +1355,12 @@ public Razon: string;
 
       }
 
+         /**
+          * It's a function that takes two parameters, a key and a status, and depending on the status,
+          * it will call a different function.
+          * @param key - is the key of the object in the database
+          * @param status - is the status of the request
+          */
           async Caja(key, status) {
 
             switch (status) {
@@ -1676,6 +1688,10 @@ public Razon: string;
 
           }
 
+          /**
+           * It's a function that enables the save button when the user clicks on the ellipse.
+           * @param indice - index of the array
+           */
           habilitarSave(indice) {
 
             for (let i = 0; i < this.checklistEllipse.length; i++) {

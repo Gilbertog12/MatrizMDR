@@ -565,7 +565,8 @@
 
                                     </ng-container>
                                     <ng-container *ngIf='chk.statusId ==="004" || chk.statusId ==="006" || chk.statusId ==="007" || chk.statusId ==="008" '>
-                                        <mat-slide-toggle [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small" disabled>{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+                                        <mat-slide-toggle *ngIf='chk.statusId !=="008"' [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small" disabled>{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
+                                        <mat-slide-toggle *ngIf='chk.statusId ==="008"' [(ngModel)]="chk.check" (change)="cambiarValidation(indice)" size="small">{{chk.check === true ? 'Si' : 'No'}}</mat-slide-toggle>
 
                                     </ng-container>
                                     <!-- <label class="example-margin">Si</label> -->
@@ -580,7 +581,8 @@
                                 <ng-container *ngIf='chk.statusId ==="004" || chk.statusId ==="006" || chk.statusId ==="007" || chk.statusId ==="008" '>
 
 
-                                    <td class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment" (ngModelChange)="habilitarSave(indice)" disabled>{{chk.checkComment}}</textarea></td>
+                                    <td *ngIf=' chk.statusId ==="008" ' class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment" (ngModelChange)="habilitarSave(indice)">{{chk.checkComment}}</textarea></td>
+                                    <td *ngIf=' chk.statusId !=="008" ' class="mdl-data-table__cell--non-numeric"><textarea id="comentario" [(ngModel)]="chk.checkComment" (ngModelChange)="habilitarSave(indice)" disabled>{{chk.checkComment}}</textarea></td>
                                 </ng-container>
                             </tr>
                         </tbody>

@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
               private fb: FormBuilder,
               private posiciones: ServiciocajasService,
               ) {
-    // this.Version();
+    this.Version();
     this.min = 4;
     this.sec = 59;
     // this.prueba();
@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
     this.model.position = this.posDefault;
 
     this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
-
+    debugger;
     this.autentication.login_token(this.model.username, this.model.password, this.model.district, this.model.position)
     .subscribe(
 
@@ -106,9 +106,9 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('tokenApp', JSON.stringify(data));
         if (result) {
 
+          this.router.navigate([this.returnUrl]);
              localStorage.setItem('isLoggedinApp', 'true');
              localStorage.setItem('tk', result);
-             this.router.navigate([this.returnUrl]);
              this.controlService.closeSpinner(spinner);
              localStorage.setItem('show Dashboard', 'true');
              if (this.recordar) {
@@ -119,7 +119,9 @@ export class LoginComponent implements OnInit {
 
              }
 
-             localStorage.setItem('Usuario', this.model.username );
+             
+
+             localStorage.setItem('Usuario', this.model.username.toUpperCase() );
              localStorage.setItem('Distrito', this.model.district);
              localStorage.setItem('Posicion', this.model.position);
 
@@ -130,12 +132,12 @@ export class LoginComponent implements OnInit {
         return result;
      },
      (error) => {
-       debugger;
+       
        this.controlService.closeSpinner(spinner);
        console.log(error);
        console.log(error.error.error_description);
        this.controlService.snackbarError(error.error.error_description);
-       debugger;
+       
        Swal2.fire({
          title: error.error.error_description,
          icon: 'error',
@@ -181,28 +183,9 @@ export class LoginComponent implements OnInit {
   }
 
     copyright() {
-    // this.methodService.getJSON().subscribe(
-    //   (data) => {
-
-    //     this.methodService.getAPI().subscribe(
-    //       (data2) => {
-
-    //         // console.log(data['text'])
-
-    //       let cadena1 = data['text']
-    //       let cadena2 = cadena1.slice(65,80)
-    //       let nuevaversion = ' version 4.1.2 '
-    //       let nuevaleyenda = cadena1.replace(cadena2,nuevaversion)
-
-    //       // console.log(nuevaleyenda)
-
-    //         this.autentication.showInfo(true, nuevaleyenda + data2[0], {}, false);
-    //     });
-    // });
-
     Swal2.fire({
       icon: 'info',
-      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.0 <br />Fecha de compilación: 2022-02-23<br />',
+      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.2 <br />Fecha de compilación: 2022-04-13<br />',
       showCloseButton: true
 
     });

@@ -32,11 +32,11 @@ export class NotificacionesComponent  {
 
               }
 
-  
-
   cargarNotificiaciones() {
     const spinner = this.ControlsService.openSpinner();
+    this.notificaciones = [];
     const _atts = [];
+
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'NOTIFICACION_LIST' });
 
@@ -50,11 +50,20 @@ export class NotificacionesComponent  {
               console.log(data);
               data.data.forEach((element) => {
 
-                if (element.atts[7].value.trim() !== localStorage.getItem('Usuario')) {
-                  this.deshabilitar = true;
+                  if (localStorage.getItem('Usuario').includes('@')) {
+
+                  if (element.atts[7].value.trim() !== localStorage.getItem('Usuario').split('@', 1 ).toString() ) {
+                    this.deshabilitar = true;
+                  }
+                } else {
+                  if (element.atts[7].value.trim() !== localStorage.getItem('Usuario')) {
+                    this.deshabilitar = true;
+                  }
                 }
 
-                this.notificaciones.push({
+                // this.deshabilitar = localStorage.getItem('Usuario').includes(element.atts[7].value.trim());
+
+                  this.notificaciones.push({
                   jerarquia: element.atts[1].value.trim(),
                   comentario: element.atts[2].value.trim(),
                   estado: element.atts[3].value.trim(),
@@ -126,5 +135,17 @@ export class NotificacionesComponent  {
           return 'error';
       }
 
+  }
+
+  getText( texto: string){
+    switch ( texto ) {
+
+      case 'En Proceso':
+        return 'En Ejecución';
+        case 'OK' :
+          return 'Ejecución Exitosa';
+      default :
+        return `Ejecución fallida ${texto}`;
+    }
   }
 }

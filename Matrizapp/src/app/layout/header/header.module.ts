@@ -9,6 +9,7 @@ import { AppHeaderComponent } from './header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { rkHelpModule } from '../../rkmain/rkhelp/rkhelp.module';
 import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
-    rkHelpModule
+    rkHelpModule,
+    MatMenuModule
   ],
   declarations: [AppHeaderComponent],
   entryComponents: [AppHeaderComponent],

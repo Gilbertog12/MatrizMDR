@@ -51,7 +51,7 @@ element.style {
 }
 
 .mat-tree-node {
-    width: 500px;
+    //width: 500px;
     display: flex;
     align-items: center;
     min-height: 25px;
@@ -184,11 +184,6 @@ h4 {
     height: auto;
     position: sticky;
     top: 0px;
-}
-
-a {
-    color: #2196F3;
-    font-weight: 500;
 }
 
 .background-highlight:visited {
@@ -774,3 +769,40 @@ footer input {
         transform: rotate(0);
     }
 }
+
+.estado {
+    text-decoration: none;
+    color: #212529;
+}
+
+a .indicadorEstado {
+    font-size: 11px;
+    color: #E83845
+}
+
+.nivel {
+    background-color: #bdf987e6 !important;
+    font-size: 8px !important;
+}
+
+.botonHabilitado {
+    width: 10px;
+    height: 10px
+}
+
+.botonDeshabilitado {
+    width: 10px;
+    height: 10px;
+    cursor: not-allowed;
+}
+
+.botonesAccion {
+    position: absolute;
+    right: 0px;
+    padding-top: 10px;
+}
+
+// .botonesAccion .mat-icon {
+//     height: 50px;
+//     width: 50px;
+// }

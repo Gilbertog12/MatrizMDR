@@ -227,56 +227,9 @@ export class AuthenticationService {
       'bearer ' + localStorage.getItem('tk')
     );
 
-    const _post = this.http.post<any>(_url, body, { headers: headersV });
+    return this.http.post<any>(_url, body, { headers: headersV });
 
-    // let Reintentar = true;
-    // let Reintentos = 9;
-    // const SegundosDeEspera = 3;
-    // while ( Reintentar ) {
-    //     debugger;
-    //     const a  = _post.subscribe(
-    //         (data) => {
-    //             console.log('Generic se ejecuto satisfactoriamente!' );
-    //             console.log(data);
-    //             Reintentar = false;
-    //                         // Vamos a modificar el API para devolver 'Retry:' + ex.Message bajo determinadas condiciones
-    //                         // String Atrapar = data;
-    //                         // if ( Atrapar.length () > 10 ) {
-    //                         //     if ( Atrapar.Substring(0,4) === 'Retry' ) {
-    //                         //         Atrapar = 'Retry';
-    //                         //     }
-    //                         // }
-    //                         // if ( Atrapar === 'Retry' ) {
-    //             if ( true ) {
-    //                 Reintentos = Reintentos - 1;
-    //                 console.log( 'Reintentos', Reintentos );
-    //                 if ( Reintentos > 0 ) {
-    //                     Reintentar = true;
-    //                     console.log( 'Seguimos' );
-    //                 }
-    //             }
-    //         },
-    //         (error) => {
-    //             Reintentar = false;
-    //             console.log(error);
-    //             // Veamos qué queda en error antes de decidir si también re-intentamos errores Angular
-    //             // Reintentos = Reintentos - 1;
-    //             // console.log( 'Retry exception:', Reintentos );
-    //             // if ( Reintentos <= 0 ) {
-    //             //     Reintentar = false;
-    //             //     console.log( 'Abortar' );
-    //             // }
-    //             if ( error.status === 401 ) {
-    //                 console.log(error);
-    //                 // alert('Sesión de usuario ha expirado');
-    //                 this.showMessage(false, 'Sesión de usuario ha expirado', {}, true);
-    //             }
-    //         }
-    //     );
-    // }
-
-    // console.log(_post);
-    return _post;
+    
   }
 
   BorrarStorage() {

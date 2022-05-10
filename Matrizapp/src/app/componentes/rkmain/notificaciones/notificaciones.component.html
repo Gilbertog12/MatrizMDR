@@ -11,7 +11,7 @@
                 <th class="sticky-top"><b>Fecha y Hora</b></th>
                 <th class="sticky-top"><b>Jerarquia</b></th>
                 <th class="sticky-top"><b>Estado</b></th>
-                <th class="sticky-top"><b>Comentarios</b></th>
+                <th class="sticky-top"><b>Acción</b></th>
                 <th class="sticky-top"><b>Items</b></th>
                 <th class="sticky-top "><b id='check'>Eliminar</b></th>
 
@@ -27,7 +27,7 @@
                 <td>{{notificacion.usuario}}</td>
                 <td>{{notificacion.fecha}}</td>
                 <td>{{notificacion.jerarquia}}</td>
-                <td>{{notificacion.comentario}}</td>
+                <td>{{getText(notificacion.comentario)}}</td>
                 <td>{{notificacion.estado}}</td>
                 <td>{{notificacion.no_items}}</td>
 
@@ -49,7 +49,7 @@
 <mat-dialog-actions align="end" cdkDragHandle>
 
     <button mat-raised-button color="primary" (click)="validarEliminacion()">{{ data.button_confirm }}</button>
-    <button mat-raised-button color="accent" (click)="cargarNotificiaciones()">Recargar</button>
+    <button mat-raised-button color="accent" (click)="cargarNotificiaciones()">Actualizar</button>
 
 
 

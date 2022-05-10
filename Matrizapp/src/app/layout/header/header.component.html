@@ -1,106 +1,43 @@
-<section class="app-header" style="height: 45px; width: 100%;">
+<!-- <header style=" border: 0.3px solid #175641;"> -->
 
+<nav class="navbar navbar-expand-md sticky-top navbar-light bg-light">
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="app-header-inner" [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
-'bg-color-dark': AppConfig.colorOption === '31',
-'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
-'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
-'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,
-'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,
-'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}" style="height: 45px; background-color: white; border: 0.3px solid #175641;">
+    <div class="collapse navbar-collapse justify-content-center text-center bg-light" id="collapse_target">
+        <a (click)="goToDashboard()" class="navbar-brand"><img src="assets/images/Collahuasi.png" class="img-fluid " alt="logo MDR" /></a>
 
-
-
-        <a (click)="goToDashboard()"><img src="assets/images/Collahuasi.png" id="dashboard" style="width: 120px; height: 40px;"></a>
-
-        <span class='bt'>
-  
-    {{Ambiente}}
-     <sub *ngIf="VersionCoemdr.Version" style="
-      position: relative;
-      font-size: 50%;
-      line-height: 0;
-      vertical-align: text-bottom;
-  " >{{VersionCoemdr.Version}}</sub>   
-    <sub *ngIf="VersionCoemdr.Version ===''" style="
-      position: relative;
-      font-size: 50%;
-      line-height: 0;
-      vertical-align: text-bottom;
-  " >{{version}}</sub>   
-  
-  </span>
-
-
-        <div class="top-nav-right">
-
-            <ul class="list-unstyled list-inline">
-
-                <li style="font-size: 11px; color: #175641; padding-top: 9px; ">
-                    {{informacion}}
-                </li>
-                <li class="list-inline-item">
-                    <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>help</mat-icon></button> </a>
-                </li>
-                <li class="list-inline-item">
-                    <button style="color: #175641 " (click)="logout()" mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 ">exit_to_app</mat-icon>Cerrar Sesion</button>
-                </li>
-
-
-
-
-            </ul>
-
-
-        </div>
-
-
-
-
-    </div>
-
-</section>
-<!-- <section class="app-header" style="height: 45px; width: 100%;">
-
-    <div class="app-header-inner" [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
-      'bg-color-dark': AppConfig.colorOption === '31',
-      'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
-      'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
-      'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,
-      'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,
-      'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}" style="height: 45px; background-color: white; border: 0.3px solid #175641;">
-
-        <nav class="navbar navbar-light bg-light">
-
-            <a class="navbar-brand" (click)="goToDashboard()">
-                <img src="assets/images/Collahuasi.png" style="width: 120px; height: 40px;" alt="Collahuasi Mucho mas que cobre">
-            </a>
-
-            <span class="navbar-text">
-      {{Ambiente}}
-      <sub *ngIf="VersionCoemdr.Version" >{{VersionCoemdr.Version}}</sub>
-      <sub *ngIf="VersionCoemdr.Version ===''" >{{version}}</sub>
+        <span class="mx-auto version">
+      {{ Ambiente }}
+      <sub>
+        {{ VersionCoemdr.Version }}
+      </sub>
     </span>
-
-
-            <div class="top-nav-right">
-
-                <ul class="list-unstyled list-inline">
-                    <li class="list-inline-item">
-                        <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>help</mat-icon></button> </a>
-
-
-                    </li>
-
-
-                    <li class="list-inline-item">
-                        <button style="color: #175641 " (click)="logout()" mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 ">exit_to_app</mat-icon>Cerrar Sesion</button>
-
-                    </li>
-
-                </ul>
-            </div>
-        </nav>
-
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="informacion">{{informacion}}</a>
+            </li>
+            <li class="nav-item">
+                <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>help</mat-icon></button> </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>summarize</mat-icon></button> </a>
+            </li> -->
+            <button mat-button [matMenuTriggerFor]="beforeMenu">Reporte</button>
+            <mat-menu #beforeMenu="matMenu" xPosition="before">
+                <button mat-menu-item>Items Pendientes por Enviar a Validar</button>
+                <button mat-menu-item>Items Pendientes por Validar</button>
+                <button mat-menu-item>Items Pendientes por Aprobar</button>
+            </mat-menu>
+            <li class="nav-item">
+                <button style="color: #175641" (click)="logout()" mat-button class="mat-button header-btn" myOpenSearchOverlay>
+          <mat-icon mat-list-icon style="color: #175641">exit_to_app</mat-icon
+          >Cerrar Sesion
+        </button>
+            </li>
+        </ul>
     </div>
-</section> -->
+</nav>
+
+<!-- </header> -->

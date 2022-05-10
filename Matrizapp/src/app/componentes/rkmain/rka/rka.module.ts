@@ -12,6 +12,7 @@ import { MatDialogModule, MatButtonModule, MatBadgeModule } from '@angular/mater
 import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboa
     Rkvalidarmodule,
     RkpendaprobModule,
     cajadashboardModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatMenuModule
   ],
   declarations: [RkaComponent]
 })

@@ -12,7 +12,7 @@ import { ServiciocajasService } from '../../shared/services/serviciocajas.servic
 
 @Component({
   selector: 'my-app-header',
-  styles: [],
+  styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html'
 })
 
@@ -32,7 +32,7 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string;
-  public version: string = 'Version: 4.3.0';
+  public version: string = 'Version: 4.3.1';
   public posicion: string;
   public distrito: string;
   public usuario2: string;

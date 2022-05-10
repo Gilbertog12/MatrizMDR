@@ -10,10 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmationModule } from '../../controls/confirmation/confirmation.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, MatBadgeModule } from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { RkpendModule } from './rkpend/rkpend.module';
 import { RKporaprobarmodule } from './rkporaprobar/rkporaprobar.module';
 
@@ -55,7 +56,6 @@ import { AddModule } from '../../AddPages/add.module';
     MatDialogModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    
     AddModule,
     RkpendModule,
     Rkvalidarmodule,
@@ -66,7 +66,8 @@ import { AddModule } from '../../AddPages/add.module';
     ChartsModule,
     DragDropModule,
     ScrollingModule,
-    NotificacionesModule
+    NotificacionesModule,
+    MatBadgeModule
 
     // CajaslinkModule,    
     // cajadashboardModule

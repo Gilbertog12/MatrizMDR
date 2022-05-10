@@ -105,7 +105,7 @@ public Razon: string;
   }
 
   
-
+  
   async ver(areaId: string) {
 
     this.permisoValidar = localStorage.getItem('canAdd');
