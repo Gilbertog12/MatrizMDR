@@ -1229,9 +1229,12 @@ recargaArbol() {
 
 mostrarMensaje() {
   Swal2.fire({
-    icon : 'info',
-    title : 'Registro Aprobado',
-    html : '<p>Verifique el avance del proceso  en el icono de notificaciones  <i style="color:red" class="fa fa-bell"></i></p>',
+    title: 'Aprobación en Proceso',
+    text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
+    imageUrl: 'assets/images/notificacion.png',
+    imageWidth: 150,
+  imageHeight: 150,
+    imageAlt: 'Notificacion',
   });
 
   this.router.navigate(['/rkmain']);

@@ -66,7 +66,7 @@ export class RkydocComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.doList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -109,12 +109,12 @@ export class RkydocComponent implements OnInit {
 
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'DOCUMENTO_LIST'});
-    _atts.push({name: 'documentNo', value: this.filterModel.documentNo });
-    _atts.push({name: 'documentType', value: this.filterModel.documentType });
-    _atts.push({name: 'documentTypeDesc', value: this.filterModel.documentTypeDesc });
-    _atts.push({name: 'startWith', value: this.filterModel.startWith });
-    _atts.push({name: 'keyword1', value: this.filterModel.keyword1 });
-    _atts.push({name: 'keyword2', value: this.filterModel.keyword2 });
+    _atts.push({name: 'documentNo', value: this.filterModel.documentNo.toUpperCase() });
+    _atts.push({name: 'documentType', value: this.filterModel.documentType.toUpperCase( ) });
+    _atts.push({name: 'documentTypeDesc', value: this.filterModel.documentTypeDesc.toUpperCase( ) });
+    _atts.push({name: 'startWith', value: this.filterModel.startWith.toUpperCase() });
+    _atts.push({name: 'keyword1', value: this.filterModel.keyword1.toUpperCase( )});
+    _atts.push({name: 'keyword2', value: this.filterModel.keyword2.toUpperCase( ) });
     _atts.push({name: 'startId', value: startId });
     _atts.push({name: 'direction', value: direction });
 
@@ -133,11 +133,11 @@ export class RkydocComponent implements OnInit {
                   this.dataList.push({
                     selected: element.atts[1].value.trim() === this.docModel.documentNo ? true : false,
                     offset: element.atts[0].value,
-                    documentNo: element.atts[1].value,
-                    documentName: element.atts[2].value,
-                    documentType: element.atts[3].value,
-                    documentTypeDesc: element.atts[4].value,
-                    documentAuthor: element.atts[5].value
+                    documentNo: element.atts[1].value.trim(),
+                    documentName: element.atts[2].value.trim(),
+                    documentType: element.atts[3].value.trim(),
+                    documentTypeDesc: element.atts[4].value.trim(),
+                    documentAuthor: element.atts[5].value.trim()
                   });
 
                   this.last = parseInt(element.atts[0].value, 0);

@@ -78,7 +78,7 @@ export class AddrkrComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
                   this.riesgosList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
                 }
@@ -109,7 +109,10 @@ export class AddrkrComponent implements OnInit {
       cancelButtonColor: '#d33'
     }).then((result)=>{
 		if(result.value){
-			let ids = this.riesgoModel.riesgoId.toString();
+			
+      let ids = this.riesgoModel.riesgoId.toString();
+      
+
           let _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'RIESGO_CREATE' });
@@ -119,7 +122,7 @@ export class AddrkrComponent implements OnInit {
           _atts.push({ name: 'actividadId', value: this.riesgoModel.actividadId });
           _atts.push({ name: 'tareaId', value: this.riesgoModel.tareaId });
           _atts.push({ name: 'dimensionId', value: this.riesgoModel.dimensionId });
-          _atts.push({ name: 'riesgoId', value: ids });
+          _atts.push({ name: 'riesgoId', value: ids.trim() });
 
           const spinner = this.controlService.openSpinner();
           const obj =  this.autentication.generic(_atts);

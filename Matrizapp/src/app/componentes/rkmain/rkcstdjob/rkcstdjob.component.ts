@@ -103,7 +103,7 @@ export class RkcstdjobComponent implements OnInit {
                 if (element.atts.length > 0) {
                 this.StdJobList.push({
                   pagina:element.atts[0].value,
-                  STD_JOB_NO: element.atts[1].value,
+                  STD_JOB_NO: element.atts[1].value.trim(),
                   STD_JOB_DESC:element.atts[2].value,
                   STD_JOB_NO_TASK:element.atts[3].value
                   

@@ -12,6 +12,11 @@ import { InfoComponent } from '../../componentes/rkmain/info/info.component';
 export class AuthenticationService {
   private clientId = '';
   private clientSecret = '';
+  public _nodoDetalle: any[] = [];
+
+  get nodoArea(){
+    return [...this._nodoDetalle];
+  }
 
   constructor(
     private http: HttpClient,
@@ -21,28 +26,6 @@ export class AuthenticationService {
     private router: Router
   ) {}
 
-  // posicion(usernameV: string, passwordV: string){
-
-  //   const _url = this.httpService.baseUrl + '/values/positions/';
-  //   const online = navigator.onLine;
-
-  //   if (!online) {
-  //     this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
-  //     return;
-  //   }
-
-  //   let body: any;
-
-  //   body = {
-  //     username: usernameV,
-  //     pwd: passwordV === 'undefined' ? '' : passwordV
-  //   };
-
-  //   let headersV = new HttpHeaders();
-  //   headersV = headersV.append('Content-Type', 'application/json');
-  //   return this.http.post<any>(_url, body, { headers : headersV });
-  //   console.log( body );
-  // }
 
   login(
     usernameV: string,
@@ -195,6 +178,36 @@ export class AuthenticationService {
     return _post;
   }
 
+  genericMejorado(listParams: any[]) {
+    const _url = this.httpService.baseUrl + '/values/generic/';
+    const online = navigator.onLine;
+    // this.limpiar()
+    if (!online) {
+      // this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout();
+
+      return;
+    }
+
+    let body: any;
+
+    body = {
+      atts: listParams,
+    };
+    let headersV = new HttpHeaders();
+    headersV = headersV.append('Content-Type', 'application/json');
+    headersV = headersV.append(
+      'Authorization',
+      'bearer ' + localStorage.getItem('tk')
+    );
+
+    return this.http.post(_url, body, { headers: headersV })
+    .subscribe( (resp: any) => {
+      this._nodoDetalle = resp.data[0]['atts']
+      console.log(this._nodoDetalle);
+    });
+
+  }
   generic(listParams: any[]) {
     const _url = this.httpService.baseUrl + '/values/generic/';
     const online = navigator.onLine;
@@ -229,7 +242,6 @@ export class AuthenticationService {
 
     return this.http.post<any>(_url, body, { headers: headersV });
 
-    
   }
 
   BorrarStorage() {

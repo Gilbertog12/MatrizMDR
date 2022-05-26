@@ -63,7 +63,7 @@ export class RkyepfComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.epfList.push({
-                    controlId: element.atts[1].value,
+                    controlId: element.atts[1].value.trim(),
                     controlDesc: element.atts[2].value,
                     epfId: element.atts[3].value,
                     epfDesc: element.atts[4].value,

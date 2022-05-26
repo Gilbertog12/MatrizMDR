@@ -4,6 +4,8 @@
         <div class="col-xl-7">
             <mat-form-field>
                 <mat-select [formControl]="areaControl" [(ngModel)]="areaModel.areaId" #areaId placeholder="Seleccione un Area" [multiple]="true">
+                    
+                  
                     <mat-option style="height: 50px !important;">
 
                         <ngx-mat-select-search [placeholderLabel]="'Buscar'" [noEntriesFoundLabel]="'Not Found...'" [(ngModel)]="descripcion" name="descripcion"></ngx-mat-select-search>

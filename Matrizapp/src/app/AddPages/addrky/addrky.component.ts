@@ -110,7 +110,7 @@ export class AddrkyComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.consecuenciasList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -143,7 +143,7 @@ export class AddrkyComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.probabilidadList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -175,7 +175,7 @@ export class AddrkyComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.severidadList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -207,7 +207,7 @@ export class AddrkyComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.criticidadList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -316,15 +316,15 @@ export class AddrkyComponent implements OnInit {
 
       this.criticidadLevel=[]
 
-    let _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr'});
-    _atts.push({ name: 'action', value: 'READ_CRITICIDAD'});
-    _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
-    _atts.push({ name: 'severidadId', value: this.consecuenciaModel.riesgoPuroP });
-    _atts.push({ name: 'probabilidadId', value: this.consecuenciaModel.riesgoPuroS });
+      let _atts = [];
+      _atts.push({ name: 'scriptName', value: 'coemdr'});
+      _atts.push({ name: 'action', value: 'READ_CRITICIDAD'});
+      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
+      _atts.push({ name: 'severidadId', value: this.consecuenciaModel.riesgoPuroP });
+      _atts.push({ name: 'probabilidadId', value: this.consecuenciaModel.riesgoPuroS });
 
 
-    const promiseView = new Promise((resolve, reject) => {
+      const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
       .subscribe(
         (data) => {
@@ -334,7 +334,7 @@ export class AddrkyComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.criticidadLevel.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -437,9 +437,9 @@ export class AddrkyComponent implements OnInit {
 
       }else{
         this.consecuenciasList = [];
-      this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
+        this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
 
-      console.log(this.consecuenciasList);
+        console.log(this.consecuenciasList);
       }
     }
 

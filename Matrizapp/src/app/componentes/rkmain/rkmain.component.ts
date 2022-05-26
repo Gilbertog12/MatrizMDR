@@ -2153,6 +2153,7 @@ export class RkmainComponent implements OnInit, OnChanges {
           data: {
             title: 'Agregar Area',
             message: ``,
+            
             button_confirm: 'Guardar',
             button_close: 'Cancelar'
           }

@@ -4,13 +4,11 @@
 
 
     <button *ngIf="areaModel.areaStatusId !=='008' && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button mat-button [matMenuTriggerFor]="beforeMenu">Reporte</button>
-    <mat-menu #beforeMenu="matMenu" xPosition="before">
-        <button mat-menu-item>Items Pendientes por Enviar a Validar</button>
-        <button mat-menu-item>Items Pendientes por Validar</button>
-        <button mat-menu-item>Items Pendientes por Aprobar</button>
-    </mat-menu>
+
+
 </h6>
+
+
 <!-- <p>{{areaModel.areaStatusId}}</p> -->
 <div class="row">
     <div class="col-xl-12">

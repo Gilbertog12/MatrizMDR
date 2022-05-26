@@ -57,7 +57,7 @@ export class RktareastdComponent implements OnInit {
             data.data.forEach((element) => {
                 if (element.atts.length > 0) {
                 this.StdJobTareasList.push({
-                  STD_JOB_NO: element.atts[1].value,
+                  STD_JOB_NO: element.atts[1].value.trim(),
                   STD_JOB_DESC:element.atts[2].value
                   
                 });

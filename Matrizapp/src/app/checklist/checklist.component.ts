@@ -137,7 +137,7 @@ export class ChecklistComponent implements OnInit {
             data.data.forEach((element) => {
               if (element.atts.length > 0) {
                 this.areasList.push({
-                  Id: element.atts[0].value,
+                  Id: element.atts[0].value.trim(),
                   chkDescripcion : element.atts[1].value,
                   chkDescripcionSola: element.atts[2].value,
                   comentario : this.comentarios,

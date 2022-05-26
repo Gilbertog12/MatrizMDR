@@ -78,7 +78,7 @@ export class RkycblandoComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.cBlandosList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }

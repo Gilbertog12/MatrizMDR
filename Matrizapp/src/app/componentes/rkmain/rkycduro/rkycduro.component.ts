@@ -74,7 +74,7 @@ export class RkycduroComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.cDurosList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -206,7 +206,7 @@ export class RkycduroComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.cDuroClasificacionList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -238,7 +238,7 @@ export class RkycduroComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.  cDuroTipos1List.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -270,7 +270,7 @@ export class RkycduroComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.cDuroTipos2List.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }
@@ -302,7 +302,7 @@ export class RkycduroComponent implements OnInit {
             data.data.forEach( (element) => {
               if ( element.atts.length > 0) {
                   this.cDuroEfectividadList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
               }

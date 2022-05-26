@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MatSelect, MAT_DIALOG_DATA } from "@angular/material";
 import { AuthenticationService, ControlsService } from "../../shared";
 import { FormControl, Validators } from "@angular/forms";
@@ -24,7 +24,7 @@ export class AddrkaComponent implements OnInit,OnChanges {
   public descripcion: string
   areaControl = new FormControl("", [Validators.required]);
   aux: any;
-
+  @ViewChild('txtBuscar') txtBuscar!:ElementRef<HTMLInputElement>;
   protected banks = this.areasList;
 
   /** control for the selected bank for multi-selection */
@@ -98,12 +98,25 @@ export class AddrkaComponent implements OnInit,OnChanges {
     this.areaModel.areaDescripcion = descripcion;
   }
 
+  
+    buscar() {
+    
+      const valor = this.txtBuscar.nativeElement.value;
+  
+      if ( valor.trim().length === 0 ) {
+        return;
+      }
+      this.cargarAreas(this.areaModel.areaId,valor);
+      this.txtBuscar.nativeElement.value = '';
+    }
+  
+
   cargarAreas(areaId: string, name: string) {
     let _atts = [];
     _atts.push({ name: "scriptName", value: "coemdr" });
     _atts.push({ name: "action", value: "AREA_LIST" });
     _atts.push({ name: "areaId", value: areaId });
-    _atts.push({ name: "name", value: name });
+    _atts.push({ name: "lookupName", value: name });
 
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts).subscribe(
@@ -113,7 +126,7 @@ export class AddrkaComponent implements OnInit,OnChanges {
             data.data.forEach((element) => {
               if (element.atts.length > 0) {
                 this.areasList.push({
-                  Id: element.atts[0].value,
+                  Id: element.atts[0].value.trim(),
                   Descripcion: element.atts[1].value,
                   check: false
                 });

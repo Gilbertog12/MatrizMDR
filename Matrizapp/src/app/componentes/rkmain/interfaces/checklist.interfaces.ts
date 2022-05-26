@@ -13,3 +13,21 @@ export interface check  {
     check: boolean;
 
   }
+export interface Nodo  {
+    areaId: string;
+    areaDescripcion: string;
+    areaDescripcionExt: string;
+    areaPosicion: string;
+    areaPosicionDesc: string;
+    areaIdClasificacion: string;
+    areaDescClasificacion: string;
+    areaRiesgoPuroDesc: string;
+    areaRiesgoResidualDesc: string;
+    areaStatus: string;
+    areaStatusId: string;
+    key: string;
+    statusParent: string;
+    CanAdd: string;
+    CanModify: string;
+
+  }

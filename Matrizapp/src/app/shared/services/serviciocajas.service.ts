@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import Swal2 from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class ServiciocajasService {
     
    }
 
+
+   
   caja1: any [] = [];
   caja12: any [] = [];
   caja3: any [] = [];

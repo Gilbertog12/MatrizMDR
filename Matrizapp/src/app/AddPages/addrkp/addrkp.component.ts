@@ -68,7 +68,7 @@ export class AddrkpComponent implements OnInit {
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
                   this.procesosList.push({
-                    Id: element.atts[0].value,
+                    Id: element.atts[0].value.trim(),
                     Descripcion: element.atts[1].value
                   });
                 }
