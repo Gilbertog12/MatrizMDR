@@ -3,8 +3,11 @@
     <!--</div> -->
 <h6 class="article-title">Area > Proceso > Subproceso > Actividad
 
-    <button *ngIf="actividadModel.actividadStatusId !=='008' &&actividadModel.CanAdd=== 'true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-
+    <!-- <button *ngIf="actividadModel.actividadStatusId !=='008' &&actividadModel.CanAdd=== 'true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button> -->
+    <button *ngIf="(actividadModel.actividadStatusId ==='001'|| actividadModel.actividadStatusId ==='002'||actividadModel.actividadStatusId ==='006') &&actividadModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="(actividadModel.actividadStatusId ==='004'|| actividadModel.actividadStatusId ==='007') &&actividadModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)">Editar</button>
+    <button *ngIf="(actividadModel.actividadStatusId ==='004') &&actividadModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId,'IV')">Validar</button>
+    <button *ngIf="( actividadModel.actividadStatusId ==='007') &&actividadModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId,'IA')">Aprobar</button>
 
 </h6>
 

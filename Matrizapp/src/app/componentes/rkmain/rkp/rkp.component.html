@@ -1,7 +1,10 @@
 <h6 class="article-title">
     Area > Proceso
-    <button *ngIf="procesoModel.procesoStatusId !=='008' && procesoModel.CanAdd " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(procesoModel.key,procesoModel.procesoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-
+    <!-- <button *ngIf="procesoModel.procesoStatusId !=='008' && procesoModel.CanAdd " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(procesoModel.key,procesoModel.procesoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button> -->
+    <button *ngIf="(procesoModel.procesoStatusId ==='001'|| procesoModel.procesoStatusId ==='002'||procesoModel.procesoStatusId ==='006') &&procesoModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(procesoModel.key,procesoModel.procesoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="(procesoModel.procesoStatusId ==='004'|| procesoModel.procesoStatusId ==='007') &&procesoModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(procesoModel.key,procesoModel.procesoStatusId)">Editar</button>
+    <button *ngIf="(procesoModel.procesoStatusId ==='004') &&procesoModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(procesoModel.key,procesoModel.procesoStatusId,'IV')">Validar</button>
+    <button *ngIf="( procesoModel.procesoStatusId ==='007') &&procesoModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(procesoModel.key,procesoModel.procesoStatusId,'IA')">Aprobar</button>
 </h6>
 
 

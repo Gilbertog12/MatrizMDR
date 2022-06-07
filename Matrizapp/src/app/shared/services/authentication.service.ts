@@ -275,6 +275,8 @@ export class AuthenticationService {
     localStorage.removeItem('idCheckCopiado');
     localStorage.removeItem('isCreador');
     localStorage.removeItem('statusSelected');
+    localStorage.removeItem('CanAddCheck');
+    localStorage.removeItem('lastAction');
   }
 
   limpiar() {

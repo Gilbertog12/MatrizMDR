@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { MatDialogRef, MatPaginator, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../../shared';
 import { FormControl, Validators } from '@angular/forms';
 import { ConfirmationComponent } from '../../controls/confirmation/confirmation.component';
@@ -9,6 +9,7 @@ import { AddrkyprobabilidadComponent } from '../addrkyprobabilidad/addrkyprobabi
 import { AddrkyseveridadComponent } from '../addrkyseveridad/addrkyseveridad.component';
 // import Swal from 'sweetAlert';
 import Swal2 from 'sweetalert2';
+import { AddItem } from '../addrka/addrka.component';
 
 @Component({
   selector: 'app-addrky',
@@ -37,7 +38,13 @@ export class AddrkyComponent implements OnInit {
     name:''
   };
 
-
+  public columnas : string[] = ['select', 'Id', 'Descripcion'];
+  public datasource: MatTableDataSource<AddItem>;
+  removable = true;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  bloquearFiltro: boolean;
+  isLoading: boolean;
+  public areasListSeleccionadas: AddItem[] = [];
   public consecuenciasList: any[] = [];
   public descripcion: string
   public probabilidadList: any[] = [];
@@ -53,7 +60,7 @@ export class AddrkyComponent implements OnInit {
   riesgoResidualCControl = new FormControl('', [Validators.required]);
   bankMultiFilterCtrl = new FormControl()
   criticidadLevel: any[] = [];
-
+  isLinear: boolean = true
 
     constructor(public dialogRef: MatDialogRef<AddrkyComponent>,
                 private controlService: ControlsService,
@@ -79,7 +86,7 @@ export class AddrkyComponent implements OnInit {
                     name: this.data.name
                   };
                   this.consecuenciasList = [];
-                  this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
+                  this.cargarconsecuencias(this.consecuenciaModel.name);
                   this.cargarprobabilidad();
                   this.cargarseveridad();
                   this.cargarcriticidad();
@@ -87,44 +94,84 @@ export class AddrkyComponent implements OnInit {
 
   ngOnInit() { }
 
-  cargarconsecuencias(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string, dimensionId: string, riesgoId: string, name : string) {
+  cargarconsecuencias( name? : string) {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'CONSECUENCIA_LIST'});
-    _atts.push({name: 'areaId', value: areaId });
-    _atts.push({name: 'procesoId', value: procesoId });
-    _atts.push({name: 'subprocesoId', value: subprocesoId });
-    _atts.push({name: 'actividadId', value: actividadId });
-    _atts.push({name: 'tareaId', value: tareaId });
-    _atts.push({name: 'dimensionId', value: dimensionId });
-    _atts.push({name: 'riesgoId', value: riesgoId });
-    _atts.push({name: 'name', value: name})
+    _atts.push({name: 'areaId', value: this.consecuenciaModel.areaId });
+    _atts.push({name: 'procesoId', value: this.consecuenciaModel.procesoId });
+    _atts.push({name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
+    _atts.push({name: 'actividadId', value: this.consecuenciaModel.actividadId });
+    _atts.push({name: 'tareaId', value: this.consecuenciaModel.tareaId });
+    _atts.push({name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
+    _atts.push({name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
+    _atts.push({ name: "lookupName", value: name });
+    this.isLoading = true
 
     const promiseView = new Promise((resolve, reject) => {
-      this.autentication.generic(_atts)
-      .subscribe(
+      this.autentication.generic(_atts).subscribe(
         (data) => {
           const result = data.success;
           if (result) {
+            // if(data.data.length > 0){
+              
+            // }
 
-            data.data.forEach( (element) => {
-              if ( element.atts.length > 0) {
-                  this.consecuenciasList.push({
-                    Id: element.atts[0].value.trim(),
-                    Descripcion: element.atts[1].value
-                  });
+            if(data.data.length === 0){
+              this.isLoading = false
+              this.bloquearFiltro = false
+              return Swal2.fire({
+                icon : 'info',
+                text : 'Codigo/Descripcion no encontrada'
+              })
+            }
+            data.data.forEach((element) => {
+              if (element.atts.length > 0) {
+                this.consecuenciasList.unshift({
+                  Id: element.atts[0].value.trim(),
+                  Descripcion: element.atts[2].value.trim(),
+                  selected : false
+                });
+                this.bloquearFiltro = false
+              }else{
+               
               }
             });
 
+            // console.log(this.areasList);
+            this.consecuenciasList.sort( (a, b) => {
+              if (a.Id > b.Id) {
+                return 1;
+              }
+              if (a.Id < b.Id) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+            });
+            this.datasource= new MatTableDataSource<AddItem>(this.consecuenciasList);
+            console.log(this.datasource.data);
+            this.datasource.paginator = this.paginator;
+          } else {
+            this.autentication.showMessage(
+              data.success,
+              data.message,
+              this.consecuenciasList,
+              data.redirect
+            );
           }
-          else {
-            this.autentication.showMessage(data.success, data.message, this.consecuenciasList, data.redirect);
-          }
+          this.isLoading = false
           return result;
-      },
-      (error) => {
-        this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.consecuenciasList, false);
-      });
+        },
+        (error) => {
+          this.autentication.showMessage(
+            false,
+            'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet',
+            [],
+            false
+          );
+        }
+      );
     });
   }
 
@@ -236,7 +283,20 @@ export class AddrkyComponent implements OnInit {
       cancelButtonColor: '#d33'
     }).then((result)=>{
 		if(result.value){
-			 let ids = this.consecuenciaModel.consecuenciaId.toString();
+
+      let ids = []
+      if(this.areasListSeleccionadas.length >0){
+        
+        this.areasListSeleccionadas.forEach( id => {
+          ids.push(id.Id)
+       })
+      }else{
+        return Swal2.fire({
+          icon: 'warning',
+          text : 'Debe seleccionar al menos una consecuencia'
+        })
+      }
+      
 
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr'});
@@ -248,7 +308,7 @@ export class AddrkyComponent implements OnInit {
     _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
     _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
     _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-    _atts.push({ name: 'consecuenciaId', value: ids });
+    _atts.push({ name: 'consecuenciaId', value: ids.toString() });
     _atts.push({ name: 'riesgoPuroP', value: this.consecuenciaModel.riesgoPuroP });
     _atts.push({ name: 'riesgoPuroS', value: this.consecuenciaModel.riesgoPuroS });
     _atts.push({ name: 'riesgoPuroC', value: this.consecuenciaModel.riesgoPuroC });
@@ -280,8 +340,8 @@ export class AddrkyComponent implements OnInit {
           riesgoResidualP: '',
           riesgoResidualS: ''
         };
-        this.consecuenciasList = [];
-        this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
+        // this.consecuenciasList = [];
+        // this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
 
         this.cancelar();
       }
@@ -341,6 +401,8 @@ export class AddrkyComponent implements OnInit {
             });
 
             console.log(this.criticidadLevel)
+
+            
 
           } else {
 
@@ -419,36 +481,64 @@ export class AddrkyComponent implements OnInit {
   }
 
 
-  async Buscar(event) {
-    if (event.key === "Enter") {
+ 
 
-      // this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
+  remove(fruit: AddItem): void {
+    const index = this.areasListSeleccionadas.indexOf(fruit);
 
+    if (index >= 0) {
+      this.areasListSeleccionadas.splice(index, 1);
 
-      if (this.consecuenciasList.length === 0) {
-        // alert("No Hay datos que coincidad con la busqueda");
-
-        this.autentication.showMessage(false, 'No Hay coincidencias',this.consecuenciaModel, false)
-        this.consecuenciaModel.name = "";
-        this.consecuenciasList = [];
-
-        this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-
-
-      }else{
-        this.consecuenciasList = [];
-        this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
-
-        console.log(this.consecuenciasList);
-      }
     }
 
-    // this.tareasList = [];
+    this.deseleccionar(fruit)
 
-    //  setTimeout( () => {
-
-    // }, 4000 );
-    // console.log(this.tareasList);
   }
+
+  seleccionar( id: AddItem ) {
+    for (let i  = 0; i < this.datasource.data.length; i++) {
+      if ( this.datasource.data[i]['selected'] === true ) {
+
+        this.areasListSeleccionadas.push(this.datasource.data[i]) ;
+        this.areasListSeleccionadas = this.areasListSeleccionadas.filter((item, index) => {
+          return this.areasListSeleccionadas.indexOf(item) === index;
+        });
+      }else{
+        debugger
+        if(this.datasource.data[i]['selected'] === false){
+
+          this.remove(this.datasource.data[i])
+        }
+      }
+    }
+  }
+
+  deseleccionar(item:AddItem){
+    for(let i  = 0; i < this.datasource.data.length; i++){
+
+      if(this.datasource.data[i] === item && this.datasource.data[i].selected === true){
+        this.datasource.data[i].selected = false ;
+      }
+    }
+  }
+  applyFilter(filterValue: string) {
+    console.log(filterValue);
+
+    filterValue = filterValue.trim().toLowerCase()
+
+    
+      this.datasource.filter = filterValue
+
+      if(this.datasource.filteredData.length === 0){
+        this.bloquearFiltro = true
+        this.cargarconsecuencias(filterValue)
+
+      }
+    
+    
+    
+    
+  }
+
 
 }

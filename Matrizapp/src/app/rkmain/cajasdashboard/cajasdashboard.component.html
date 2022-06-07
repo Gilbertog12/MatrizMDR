@@ -16,13 +16,18 @@
                         <div class="card-content">
                             <span class="card-title " style="color: black; font-size: 30px;">{{dashboardData.ENVIAR_A_VALIDAR}}</span>
 
-                            <p style="font-weight: bold"><a style="color: black; font-size: 13px; font-weight: bold;" [routerLink]="" (click)="VerEnviarValidar()">ITEMS PENDIENTES ENVIAR A VALIDAR
+                            <!-- <p style="font-weight: bold"><a style="color: black; font-size: 13px; font-weight: bold;" [routerLink]="" (click)="VerEnviarValidar()">ITEMS PENDIENTES ENVIAR A VALIDAR -->
+                            <p style="font-weight: bold"><a style="color: black; font-size: 13px; font-weight: bold;" [routerLink]="" >ITEMS PENDIENTES ENVIAR A VALIDAR
   
           </a>
                             </p>
 
                             <p style="font-weight: bold">ITEMS EN CONSTRUCCION {{dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION}}</p>
                             <!-- <a style="font-size: 11px;">(Items en fase de creación, modificación o borrado)</a> -->
+                        </div>
+                        <div>
+                            <button (click)="enviarAvalidar()">Enviar</button>
+                            <button (click)="VerEnviarValidar()">Editar</button>
                         </div>
                     </div>
                 </div>

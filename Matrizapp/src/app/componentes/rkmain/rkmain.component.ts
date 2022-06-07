@@ -27,12 +27,6 @@ import { ServiciocajasService } from '../../shared/services/serviciocajas.servic
 import { AutologoutService } from '../../shared/services/autologout.service';
 import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 import { AddrkaComponent } from '../../AddPages/addrka/addrka.component';
-import { AddrkpComponent } from '../../AddPages/addrkp/addrkp.component';
-import { AddrksComponent } from '../../AddPages/addrks/addrks.component';
-import { AddrkcComponent } from '../../AddPages/addrkc/addrkc.component';
-import { AddrktComponent } from '../../AddPages/addrkt/addrkt.component';
-import { AddrkdComponent } from '../../AddPages/addrkd/addrkd.component';
-import { AddrkrComponent } from '../../AddPages/addrkr/addrkr.component';
 import { AddrkyComponent } from '../../AddPages/addrky/addrky.component';
 
 @Injectable({
@@ -2148,12 +2142,14 @@ export class RkmainComponent implements OnInit, OnChanges {
 
         const conf = this.confirm.open(AddrkaComponent, {
           hasBackdrop: true,
-          height: 'auto',
-          width: '500px',
+          height: '600px',
+          width: '950px',
           data: {
             title: 'Agregar Area',
             message: ``,
-            
+            accion: 'AREA_LIST',
+            crear : 'AREA_CREATE',
+            ok : 'Area Agregada',
             button_confirm: 'Guardar',
             button_close: 'Cancelar'
           }
@@ -2185,13 +2181,16 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       if (result.value) {
 
-        const conf = this.confirm.open(AddrkpComponent, {
+        const conf = this.confirm.open(AddrkaComponent, {
           hasBackdrop: true,
-            height: 'auto',
-            width: '500px',
+          height: '600px',
+          width: '950px',
             data: {
               title: 'Agregar Proceso',
               message: ``,
+              accion: 'PROCESO_LIST',
+              crear : 'PROCESO_CREATE',
+              ok : 'Proceso Agregado',
               button_confirm: 'Guardar',
               button_close: 'Cancelar',
               areaId: _areaId
@@ -2258,15 +2257,18 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       if (result.value) {
 
-        const conf = this.confirm.open(AddrksComponent, {
+        const conf = this.confirm.open(AddrkaComponent, {
             hasBackdrop: true,
-            height: 'auto',
-            width: '500px',
+            height: '600px',
+          width: '950px',
             data: {
               title: 'Agregar Subproceso',
               message: ``,
               button_confirm: 'Guardar',
               button_close: 'Cancelar',
+              accion: 'SUBPROCESO_LIST',
+              crear : 'SUBPROCESO_CREATE',
+              ok: 'Subproceso Agregado',
               areaId: _areaId,
               procesoId: _procesoId
             }
@@ -2330,15 +2332,18 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       if (result.value) {
 
-        const conf = this.confirm.open(AddrkcComponent, {
+        const conf = this.confirm.open(AddrkaComponent, {
           hasBackdrop: true,
-          height: 'auto',
-          width: '500px',
+          height: '600px',
+          width: '950px',
           data: {
             title: 'Agregar Actividad',
             message: ``,
             button_confirm: 'Guardar',
             button_close: 'Cancelar',
+            accion: 'ACTIVIDAD_LIST',
+            crear : 'ACTIVIDAD_CREATE',
+            ok : 'Actividad Agregada',
             areaId: _areaId,
             procesoId: _procesoId,
             subprocesoId: _subprocesoId
@@ -2404,16 +2409,19 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       if (result.value) {
 
-        const conf = this.confirm.open(AddrktComponent, {
+        const conf = this.confirm.open(AddrkaComponent, {
 
           hasBackdrop: true,
-          height: 'auto',
-          width: '500px',
+          height: '600px',
+          width: '950px',
           data: {
             title: 'Agregar Tarea',
             message: ``,
             button_confirm: 'Guardar',
             button_close: 'Cancelar',
+            accion: 'TAREA_LIST',
+            crear : 'TAREA_CREATE',
+            ok : 'Tarea Agregada',
             areaId: _areaId,
             procesoId: _procesoId,
             subprocesoId: _subprocesoId,
@@ -2481,15 +2489,18 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       if (result.value) {
 
-        const conf = this.confirm.open(AddrkdComponent, {
+        const conf = this.confirm.open(AddrkaComponent, {
           hasBackdrop: true,
-          height: 'auto',
-          width: '500px',
+          height: '600px',
+          width: '950px',
           data: {
             title: 'Agregar Dimensión',
             message: ``,
             button_confirm: 'Guardar',
             button_close: 'Cancelar',
+            accion: 'DIMENSION_LIST',
+            crear : 'DIMENSION_CREATE',
+            ok : 'Dimension Agregada',
             areaId: _areaId,
             procesoId: _procesoId,
             subprocesoId: _subprocesoId,
@@ -2527,7 +2538,7 @@ export class RkmainComponent implements OnInit, OnChanges {
             } else {
                   this.abrirNodo();
 
-                  this.abrirNodo();
+                  // this.abrirNodo();
 
             }
 
@@ -2557,15 +2568,18 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       if (result.value) {
 
-        const conf = this.confirm.open(AddrkrComponent, {
+        const conf = this.confirm.open(AddrkaComponent, {
           hasBackdrop: true,
-          height: 'auto',
-          width: '500px',
+          height: '600px',
+          width: '950px',
           data: {
             title: 'Agregar Riesgo',
             message: ``,
             button_confirm: 'Guardar',
             button_close: 'Cancelar',
+            accion: 'RIESGO_LIST',
+            crear : 'RIESGO_CREATE',
+            ok : 'Riesgo Agregado',
             areaId: _areaId,
             procesoId: _procesoId,
             subprocesoId: _subprocesoId,
@@ -2635,8 +2649,8 @@ export class RkmainComponent implements OnInit, OnChanges {
 
         const conf = this.confirm.open(AddrkyComponent, {
           hasBackdrop: true,
-          height: 'auto',
-          width: '500px',
+          height: '600px',
+          width: '950px',
           data: {
             title: 'Agregar Consecuencia',
             message: ``,
@@ -3376,12 +3390,12 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
   const _atts = [];
   _atts.push({ name: 'scriptName', value: 'coemdr' });
   _atts.push({ name: 'action', value: 'NOTIFICACION_STATUS' });
-
   this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            console.log(data);
-            const result = data.success;
+  .subscribe(
+    (data) => {
+      console.log(data);
+      const result = data.success;
+      debugger
             if (result) {
 
               this.notificacionesList = {
@@ -3391,7 +3405,7 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
               ////debugger;
               if (data.data[0].atts[0].value.trim() === '1') {
                 
-                debugger
+                // debugger
                 this.contadorNotificaciones();
                 this.getClass(false);
                 this.bloqueado = false ;
@@ -3406,6 +3420,7 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
                 this.bloqueado = true ;
                 this.icon = 'notifications';
                 this.visible = false;
+                this.notificacionesContador = 0
                 // this.cambiarColorNotificacion()
 
               }
@@ -3426,7 +3441,7 @@ getClass(notificacion:boolean) {
 
 contadorNotificaciones() {
 
-  debugger
+  // debugger
   let aux = this.notificacionesContador;
   this.notificacionesContador = 0;
   const _atts = [];
@@ -3765,11 +3780,24 @@ BotonesAccion(node: DynamicFlatNode) {
       }
 
       default:
-        return this.botones = ['assets/images/Add.png', 'assets/images/Delete.png', false , false , 'img-circle botonHabilitado'  , ' img-circle botonDeshabilitado'];
+        if (node.level !== 8) {
+          // return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+          return this.botones = ['assets/images/Add.png', 'assets/images/Delete.png', false , false , 'img-circle botonHabilitado'  , ' img-circle botonDeshabilitado'];
+        } else {
+          debugger
+        return this.botones =  ['assets/images/botn_blanco.jpg', 'assets/images/Delete.png' , true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+      }
 
     }
 } else {
-    return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+    // return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+    if (node.level !== 8) {
+      // return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+      return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+    } else {
+      
+    return this.botones =  ['assets/images/botn_blanco.jpg', 'assets/images/Delete_Disabled.png' , true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+  }
 
   }
 }

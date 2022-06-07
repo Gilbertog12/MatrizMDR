@@ -641,27 +641,6 @@ export class RkpendComponent implements OnInit {
                 data.data.forEach((element) => {
                   if (element.atts.length > 0) {
 
-                    // Bloquear Checks
-                    // if( parseInt(element.atts[19].value.trim()) == 1 ||  parseInt(element.atts[19].value.trim()) == 2 ||  parseInt(element.atts[19].value.trim()) == 6){
-                    //   var StatusTemp = 2
-                    // }else{
-                    //   var StatusTemp = parseInt(element.atts[19].value.trim())
-                    // }
-                    // if( parseInt(element.atts[20].value.trim()) == 1 ||  parseInt(element.atts[20].value.trim()) == 2 ||  parseInt(element.atts[20].value.trim()) == 6){
-                    //   var StatusTempP = 2
-                    // }else{
-                    //   var StatusTempP = parseInt(element.atts[20].value.trim())
-                    // }
-
-                    // if(StatusTemp < StatusTempP){
-                    //   this.permi = true
-                    //   // console.log(this.permi)
-                    // }else{
-                    //   this.permi= false
-                    //   // console.log(this.permi)
-
-                    // }
-
                     const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
 
                     this.obtenerRuta(element.atts[16].value.trim());

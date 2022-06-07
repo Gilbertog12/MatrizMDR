@@ -1,5 +1,9 @@
 <h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea >Dimension > Riesgo > Consecuencia
     <button *ngIf="consecuenciaModel.consecuenciaStatusId !=='008' && consecuenciaModel.CanAdd==='true'|| controlesstatusa && consecuenciaModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId,statusc)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="(consecuenciaModel.consecuenciaStatusId ==='001'|| consecuenciaModel.consecuenciaStatusId ==='002'||consecuenciaModel.consecuenciaStatusId ==='006') &&consecuenciaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="(consecuenciaModel.consecuenciaStatusId ==='004'|| consecuenciaModel.consecuenciaStatusId ==='007') &&consecuenciaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId)">Editar</button>
+    <button *ngIf="(consecuenciaModel.consecuenciaStatusId ==='004') &&consecuenciaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId,'IV')">Validar</button>
+    <button *ngIf="( consecuenciaModel.consecuenciaStatusId ==='007') &&consecuenciaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(consecuenciaModel.key,consecuenciaModel.consecuenciaStatusId,'IA')">Aprobar</button>
 </h6>
 
 

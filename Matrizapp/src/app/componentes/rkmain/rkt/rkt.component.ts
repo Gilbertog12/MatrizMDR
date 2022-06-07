@@ -41,6 +41,7 @@ export class RktComponent implements OnInit {
 
   public tareasList: any[] = [];
   public logList: any[] = [];
+  public llaves: string[] = [];
 
 
   public Perfil: any[] = [];
@@ -84,6 +85,7 @@ public canAdd : string
               private controlService: ControlsService,
               private confirm: MatDialog,
               private route: ActivatedRoute,
+              private router: Router,
               private Cajas:ServiciocajasService,
               private _Recargarble:ServiciocajasService
               ) {
@@ -830,6 +832,112 @@ public canAdd : string
 
 
 
+  }
+
+  enviarAvalidar(id,status,tipo){
+    const _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
+    _atts.push({ name: 'status', value: tipo });
+    _atts.push({ name: 'key', value: id });
+    _atts.push({ name: 'statusItem', value: status });
+    _atts.push({ name: 'showCompleted', value: 'Y' });
+
+    const spinner = this.controlService.openSpinner();
+    
+    debugger
+    this.autentication.generic(_atts)
+    .subscribe( datos => {
+        console.log( datos)
+      if( datos.success){
+        datos.data.forEach(element => {
+
+          if (element.atts.length > 0){
+            
+            this.llaves.push( element.atts[16].value.trim(),'Y',)
+          }
+        })
+
+        console.log(this.llaves.toString())
+        this.sendValidate(this.llaves.toString(),status)
+        this.controlService.closeSpinner(spinner);
+      }
+    })
+
+  }
+
+  sendValidate(llaves,status){
+
+    let mnsje = 'Enviar a Validar'
+
+    if(status === '007'){
+      mnsje = 'Aprobar'
+    }
+
+    Swal2.fire({
+      html: `<h3><strong>${mnsje}</strong></h3>`,
+
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+
+        
+
+        const _atts = [];
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'VALIDATE' });
+            _atts.push({ name: 'onlyActualNode', value: 'Y' });
+            _atts.push({ name: 'key', value: llaves });
+
+            const obj = this.autentication.generic(_atts);
+            const spinner = this.controlService.openSpinner();        
+
+        obj.subscribe(
+                    (data) => {
+                      if (data.success === true) {
+
+
+                        this.mostrarMensaje();
+                        
+                        
+                        this.Cajas.notificaciones$.emit(true);
+                        
+                      ;
+
+                      } else {
+                        
+                        Swal2.fire('', data.message, 'error');
+                      }
+
+                      this.controlService.closeSpinner(spinner);
+
+                    },
+                    (error) => {
+                      
+                      this.controlService.closeSpinner(spinner);
+                    });
+                  }
+
+                });
+    
+  }
+  mostrarMensaje() {
+    Swal2.fire({
+    
+      title: 'Envio a Validacion en Proceso',
+      text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
+      imageUrl: 'assets/images/notificacion.png',
+      imageWidth: 150,
+    imageHeight: 150,
+      imageAlt: 'Notificacion',
+    })
+  
+    this.router.navigate(['/rkmain']);
   }
 
 }

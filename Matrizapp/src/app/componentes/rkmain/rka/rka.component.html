@@ -3,7 +3,10 @@
     <!-- Include text description of the icon's meaning for screen-readers -->
 
 
-    <button *ngIf="areaModel.areaStatusId !=='008' && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="(areaModel.areaStatusId ==='001'|| areaModel.areaStatusId ==='002'||areaModel.areaStatusId ==='006') && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="(areaModel.areaStatusId ==='004'|| areaModel.areaStatusId ==='007') && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)">Editar</button>
+    <button *ngIf="(areaModel.areaStatusId ==='004') && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId,'IV')">Validar</button>
+    <button *ngIf="( areaModel.areaStatusId ==='007') && areaModel.CanAdd ==='true' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId,'IA')">Aprobar</button>
 
 
 </h6>

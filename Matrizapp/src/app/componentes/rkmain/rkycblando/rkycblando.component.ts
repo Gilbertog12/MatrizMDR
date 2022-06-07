@@ -1,8 +1,17 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { MatDialogRef, MatPaginator, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../../../shared';
 import Swal2 from 'sweetalert2';
 import { FormControl, Validators } from '@angular/forms';
+
+
+
+export interface AddItem {
+  Id: string;
+  Descripcion: string;
+  selected: boolean;
+  }
+
 
 @Component({
   selector: 'app-rkycblando',
@@ -13,7 +22,14 @@ import { FormControl, Validators } from '@angular/forms';
 export class RkycblandoComponent implements OnInit {
 
   CblandoControl = new FormControl("", [Validators.required]);
-  
+  removable = true;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  bloquearFiltro: boolean;
+  isLoading: boolean;
+  public columnas : string[] = ['select', 'Id', 'Descripcion'];
+  public datasource: MatTableDataSource<AddItem>;
+  public controlesBList: AddItem[] = [];
+  public controlesBListSeleccionadas: AddItem[] = [];
   public cBlandoModel: any = {
     
     cblandoId: "",
@@ -39,34 +55,88 @@ export class RkycblandoComponent implements OnInit {
                 this.cBlandoModel.dimensionId = data.dimensionId;
                 this.cBlandoModel.riesgoId = data.riesgoId;
                 this.cBlandoModel.consecuenciaId = data.consecuenciaId;
-                this.cargarcblandos(
-                  this.cBlandoModel.areaId,
-                  this.cBlandoModel.procesoId,
-                  this.cBlandoModel.subprocesoId,
-                  this.cBlandoModel.actividadId,
-                  this.cBlandoModel.tareaId,
-                  this.cBlandoModel.dimensionId,
-                  this.cBlandoModel.riesgoId,
-                  this.cBlandoModel.consecuenciaId,
-                  this.cBlandoModel.name);
+                this.cargarcblandos(this.cBlandoModel.name);
               }
 
   ngOnInit() { }
 
-  cargarcblandos(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string, dimensionId: string, riesgoId: string, consecuenciaId: string,name:string) {
+
+  remove(fruit: AddItem): void {
+    const index = this.controlesBListSeleccionadas.indexOf(fruit);
+
+    if (index >= 0) {
+      this.controlesBListSeleccionadas.splice(index, 1);
+
+    }
+
+    this.deseleccionar(fruit)
+
+  }
+
+  deseleccionar(item:AddItem){
+    for(let i  = 0; i < this.datasource.data.length; i++){
+
+      if(this.datasource.data[i] === item && this.datasource.data[i].selected === true){
+        this.datasource.data[i].selected = false ;
+      }
+    }
+  }
+  applyFilter(filterValue: string) {
+    console.log(filterValue);
+
+    filterValue = filterValue.trim().toLowerCase()
+
+    
+      this.datasource.filter = filterValue
+
+      if(this.datasource.filteredData.length === 0){
+        this.bloquearFiltro = true
+        this.cargarcblandos(filterValue)
+
+      }
+    
+    
+    
+    
+  }
+
+  seleccionar( id: AddItem ) {
+    for (let i  = 0; i < this.datasource.data.length; i++) {
+      if ( this.datasource.data[i]['selected'] === true ) {
+
+        this.controlesBListSeleccionadas.push(this.datasource.data[i]) ;
+        this.controlesBListSeleccionadas = this.controlesBListSeleccionadas.filter((item, index) => {
+          return this.controlesBListSeleccionadas.indexOf(item) === index;
+        });
+      }else{
+        debugger
+        if(this.datasource.data[i]['selected'] === false){
+
+          this.remove(this.datasource.data[i])
+        }
+      }
+    }
+  }
+  
+  pageEvents(pagina:number){
+
+  }
+
+  cargarcblandos(name?:string) {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'CBLANDO_LIST'});
-    _atts.push({name: 'areaId', value: areaId });
-    _atts.push({name: 'procesoId', value: procesoId });
-    _atts.push({name: 'subprocesoId', value: subprocesoId });
-    _atts.push({name: 'actividadId', value: actividadId });
-    _atts.push({name: 'tareaId', value: tareaId });
-    _atts.push({name: 'dimensionId', value: dimensionId });
-    _atts.push({name: 'riesgoId', value: riesgoId });
-    _atts.push({name: 'consecuenciaId', value: consecuenciaId });
-    _atts.push({name: 'name', value: name });
-
+    _atts.push({name: 'areaId', value: this.cBlandoModel.careaId });
+    _atts.push({name: 'procesoId', value: this.cBlandoModel.procesoId });
+    _atts.push({name: 'subprocesoId', value: this.cBlandoModel.subprocesoId });
+    _atts.push({name: 'actividadId', value: this.cBlandoModel.actividadId });
+    _atts.push({name: 'tareaId', value: this.cBlandoModel.tareaId });
+    _atts.push({name: 'dimensionId', value: this.cBlandoModel.dimensionId });
+    _atts.push({name: 'riesgoId', value: this.cBlandoModel.riesgoId });
+    _atts.push({name: 'consecuenciaId', value: this.cBlandoModel.consecuenciaId });
+    _atts.push({ name: "lookupName", value: name });
+    this.isLoading = true
+   
 
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
@@ -75,15 +145,44 @@ export class RkycblandoComponent implements OnInit {
           const result = data.success;
           if (result) {
 
-            data.data.forEach( (element) => {
-              if ( element.atts.length > 0) {
-                  this.cBlandosList.push({
-                    Id: element.atts[0].value.trim(),
-                    Descripcion: element.atts[1].value
-                  });
+
+            if(data.data.length === 0){
+              this.isLoading = false
+              this.bloquearFiltro = false
+              return Swal2.fire({
+                icon : 'info',
+                text : 'Codigo/Descripcion no encontrada'
+              })
+            }
+
+             data.data.forEach((element) => {
+              if (element.atts.length > 0) {
+                this.controlesBList.unshift({
+                  Id: element.atts[0].value.trim(),
+                  Descripcion: element.atts[2].value.trim(),
+                  selected : false
+                });
+                this.bloquearFiltro = false
+              }else{
+               
               }
             });
 
+            this.controlesBList.sort(function (a, b) {
+              if (a.Id > b.Id) {
+                return 1;
+              }
+              if (a.Id < b.Id) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+            });
+
+            this.datasource = new MatTableDataSource<AddItem>(this.controlesBList);
+            console.log(this.datasource.data);
+            this.datasource.paginator = this.paginator;
+            this.isLoading = false
           } else {
             this.autentication.showMessage(data.success, data.message, this.cBlandoModel, data.redirect);
           }
@@ -97,7 +196,10 @@ export class RkycblandoComponent implements OnInit {
 
   guardar() {
 
-    let ids = this.cBlandoModel.cblandoId.toString();
+    let ids = []
+          this.controlesBListSeleccionadas.forEach( id => {
+            ids.push(id.Id)
+         })
 
     let _atts = [];
 
@@ -111,7 +213,7 @@ export class RkycblandoComponent implements OnInit {
     _atts.push({ name: 'dimensionId', value: this.cBlandoModel.dimensionId });
     _atts.push({ name: 'riesgoId', value: this.cBlandoModel.riesgoId });
     _atts.push({ name: 'consecuenciaId', value: this.cBlandoModel.consecuenciaId });
-    _atts.push({ name: 'cblandoId', value: ids });
+    _atts.push({ name: 'cblandoId', value: ids.toString() });
 
     // if ( this.cBlandoModel.cblandoId === undefined || this.cBlandoModel.cblandoId === null || this.cBlandoModel.cblandoId === '' ) { 
     //   // this.autentication.showMessage(false, 'Seleccione un Control Blando', this.cBlandoModel, false);
@@ -161,41 +263,6 @@ export class RkycblandoComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
-  async Buscar(event) {
-    if (event.key === "Enter") {
-      if (this.cBlandosList.length === 0) {
-        // alert("No Hay datos que coincidad con la busqueda");
-
-        this.autentication.showMessage(
-          false,
-          "No Hay coincidencias",
-          this.cBlandoModel,
-          false
-        );
-        this.cBlandoModel.name = "";
-        this.cBlandosList = [];
-
-        this.cargarcblandos( this.cBlandoModel.areaId,
-          this.cBlandoModel.procesoId,
-          this.cBlandoModel.subprocesoId,
-          this.cBlandoModel.actividadId,
-          this.cBlandoModel.tareaId,
-          this.cBlandoModel.dimensionId,
-          this.cBlandoModel.riesgoId,
-          this.cBlandoModel.consecuenciaId, this.cBlandoModel.name);
-      } else {
-        this.cBlandosList = [];
-        this.cargarcblandos(this.cBlandoModel.areaId,
-          this.cBlandoModel.procesoId,
-          this.cBlandoModel.subprocesoId,
-          this.cBlandoModel.actividadId,
-          this.cBlandoModel.tareaId,
-          this.cBlandoModel.dimensionId,
-          this.cBlandoModel.riesgoId,
-          this.cBlandoModel.consecuenciaId,this.cBlandoModel.name);
-        console.log(this.cBlandosList);
-      }
-    }
-  }
+  
 
 }
