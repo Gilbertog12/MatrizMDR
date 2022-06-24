@@ -7,6 +7,7 @@ import { ControlsService } from './controls.service';
 import { MatDialog } from '@angular/material';
 import { RkmessagesComponent } from '../../componentes/rkmain/rkmessages/rkmessages.component';
 import { InfoComponent } from '../../componentes/rkmain/info/info.component';
+import Swal2 from 'sweetalert2';
 
 @Injectable()
 export class AuthenticationService {
@@ -392,5 +393,23 @@ export class AuthenticationService {
         this.logout();
       }
     });
+  }
+
+
+  mensajeFlujoAprobacion(titulo){
+    Swal2.fire({
+      
+      title: titulo,
+      text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
+      imageUrl: 'assets/images/notificacion.png',
+      imageWidth: 150,
+    imageHeight: 150,
+      imageAlt: 'Notificacion',
+      position : 'top-end',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  
+    this.router.navigate(['/rkmain']);
   }
 }

@@ -71,6 +71,7 @@ export class NotificacionesComponent  {
                   fecha: element.atts[5].value.trim(),
                   no_items: element.atts[6].value.trim(),
                   usuario: element.atts[7].value.trim(),
+                  avance: element.atts[8].value.trim()+'%', 
                   check: false,
                   habilitado : this.deshabilitar
 

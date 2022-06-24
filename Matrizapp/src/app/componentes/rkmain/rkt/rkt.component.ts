@@ -78,6 +78,7 @@ public canAdd : string
   percreacion: string;
   loading: boolean = true;
   tabDefault: number;
+  allow: string;
 
 
   constructor(private autentication: AuthenticationService,
@@ -187,6 +188,8 @@ public canAdd : string
         (data) => {
           const result = data.success;
           if (result) {
+
+            this.allow = localStorage.getItem('allow')
             console.log(data)
             data.data.forEach( (element) => {
               console.log(data)
@@ -850,6 +853,22 @@ public canAdd : string
     .subscribe( datos => {
         console.log( datos)
       if( datos.success){
+
+        if (datos.data[0].atts[0].name === 'TIMEOUT') {
+          // debugger
+          this.controlService.closeSpinner(spinner);
+
+          Swal2.fire({
+            icon: 'info',
+            text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+          }).then((resultado) => {
+            
+          });
+
+          return;
+
+        }
         datos.data.forEach(element => {
 
           if (element.atts.length > 0){

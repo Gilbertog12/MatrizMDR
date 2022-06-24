@@ -47,10 +47,6 @@ export class RkpendComponent implements OnInit {
 
   @Input() Recargar: boolean = false;
 
-  @Output() reload: EventEmitter<String>  = new EventEmitter<String>();
-
-  @Output() Activador = new EventEmitter();
-
   FechaDesde = '';
   FechaHasta = '';
   FechaDesdeServicio = '';
@@ -130,9 +126,11 @@ export class RkpendComponent implements OnInit {
     // public papa :RkmainComponent,
 
               @Inject(MAT_DIALOG_DATA) public data: any, private cajas: ServiciocajasService) {
+
+                console.log(data)
       this.data.key,
       this.data.status;
-      this.recargar();
+      this.recargar(this.data.completo);
 
       this.mostrar();
       console.log(this.cajas.caja1);
@@ -272,7 +270,7 @@ export class RkpendComponent implements OnInit {
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
 
-                            //this.recargaArbol(); 
+                            //this.recargaArbol();
                             this.dialogRef.close(false);
 
                           } else {
@@ -608,7 +606,7 @@ export class RkpendComponent implements OnInit {
 
   }
 
-   recargar() {
+   recargar(completo?: boolean) {
 
     this.pendList = [];
     const _atts = [];
@@ -617,12 +615,17 @@ export class RkpendComponent implements OnInit {
     _atts.push({ name: 'status', value: 'EV' });
     _atts.push({ name: 'key', value: this.data.id });
     _atts.push({ name: 'statusItem', value: this.data.status });
-    if (this.complete == true) {
-      _atts.push({ name: 'showCompleted', value: 'N' });
+    if ( !completo) {
+      if (this.complete === true) {
+        _atts.push({ name: 'showCompleted', value: 'N' });
 
+      } else {
+              _atts.push({ name: 'showCompleted', value: 'Y' });
+
+      }
     } else {
-            _atts.push({ name: 'showCompleted', value: 'Y' });
-
+      this.complete = completo;
+      _atts.push({ name: 'showCompleted', value: 'N' });
     }
 
     const spinner = this.controlService.openSpinner();
@@ -635,8 +638,6 @@ export class RkpendComponent implements OnInit {
             console.log(data);
             const result = data.success;
             if (result) {
-
-              
 
                 data.data.forEach((element) => {
                   if (element.atts.length > 0) {
@@ -681,8 +682,6 @@ export class RkpendComponent implements OnInit {
                 console.log([this.pendList]);
 
                 this.TotalRegistros = this.pendList.length;
-
-              
 
               // this.comprobarPadre()
 
@@ -1029,7 +1028,7 @@ mostrarMensaje() {
   //   html : '<p>Verifique el avance del proceso  en el icono de notificaciones  <i style="color:red" class="fa fa-bell"></i></p>',
   // });
   Swal2.fire({
-    
+
     title: 'Envio a Validacion en Proceso',
     text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
     imageUrl: 'assets/images/notificacion.png',

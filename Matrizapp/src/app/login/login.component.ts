@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, HttpMethodService, ControlsService } from '../shared';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { isNullOrUndefined } from 'util';
@@ -131,18 +131,23 @@ export class LoginComponent implements OnInit {
         }
         return result;
      },
-     (error) => {
+     (error:HttpErrorResponse) => {
        
        this.controlService.closeSpinner(spinner);
        console.log(error);
        console.log(error.error.error_description);
-       this.controlService.snackbarError(error.error.error_description);
+       console.log(error.status);
+      //  this.controlService.snackbarError(error.error.error_description);
        
-       Swal2.fire({
-         title: error.error.error_description,
-         icon: 'error',
-         text: error.error.error_description
-       });
+
+      if(error.status === 400){
+
+        Swal2.fire({
+          title: 'Error de inicio de Sesión',
+          text: 'Su usuario y contraseña no coinciden',
+          icon: 'error',
+        });
+      }
      });
 
   }
@@ -185,7 +190,7 @@ export class LoginComponent implements OnInit {
     copyright() {
     Swal2.fire({
       icon: 'info',
-      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.4 <br />Fecha de compilación: 2022-06-05<br />',
+      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.6 <br />Fecha de compilación: 2022-06-22<br />',
       showCloseButton: true
 
     });

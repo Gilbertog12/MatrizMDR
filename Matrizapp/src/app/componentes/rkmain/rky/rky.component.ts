@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, HttpMethodService, ControlsService } from '../../../shared';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTabChangeEvent } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RkycblandoComponent } from '../rkycblando/rkycblando.component';
 import { RkycduroComponent } from '../rkycduro/rkycduro.component';
@@ -62,6 +62,9 @@ export class RkyComponent implements OnInit {
   public aprobacion = 'aprobacion';
   public validacionaprobacion = 'validacionaprobacion';
   creacionaprobacion = 'creacionaprobacion';
+  tabDefault: number;
+  controlBlando = [];
+  loading: boolean = false;
 
 public key: string;
 public version: string;
@@ -81,6 +84,7 @@ public Razon: string;
   controlesstatus: any = '';
   statusc: any = '';
   controlesstatusa: boolean;
+  allow: string;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -101,6 +105,7 @@ public Razon: string;
       this.did = params['did'];
       this.rid = params['rid'];
       this.yid = params['yid'];
+      this.tabDefault = 0;
       this.consecuenciaModel = {};
       this.epfList = [];
       this.cBlandosList = [];
@@ -119,7 +124,7 @@ public Razon: string;
     this.percreacion = localStorage.getItem('NoCreador');
     // console.log(this.controlesstatus)
     this.controlesstatus = '';
-    this.Cajas.RecargarDetalle$.subscribe((resp)=> {
+    this.Cajas.RecargarDetalle$.subscribe((resp) => {
       if (resp) {
 
         this.consecuenciaModel = {};
@@ -157,6 +162,8 @@ public Razon: string;
             console.log(data);
             const result = data.success;
             if (result) {
+
+              this.allow = localStorage.getItem('allow');
               console.log(data);
               data.data.forEach((element) => {
                 if (element.atts.length > 0) {
@@ -210,218 +217,14 @@ public Razon: string;
                       Creador: element.atts[45].value.trim()
 
                     };
-                   
+
                     // alert(this.consecuenciaModel.key);
                     localStorage.setItem('keySelected', this.consecuenciaModel.key);
                     localStorage.setItem('versionSelected', this.consecuenciaModel.consecuenciaVersion);
                     localStorage.setItem('statusSelected', this.consecuenciaModel.consecuenciaStatusId);
 
                   } else {
-                    let _s: string;
-                    _s = element.atts[0].value;
 
-                    if (_s.includes('epf')) {
-
-                      // console.log(element.atts[2].value.trim().toString().bold())
-
-                      if (element.atts[5].value === '008' && this.btn === 'lectura') {
-                        this.epfListLectura.push({
-
-                          offset: element.atts[0].value,
-                          controlId: element.atts[1].value.trim(),
-                          controlDesc:  element.atts[2].value.trim(),
-                          epfId: element.atts[3].value.trim(),
-                          epfDesc: element.atts[4].value.trim(),
-                          epfStatus: element.atts[5].value.trim(),
-                          epfversion: element.atts[6].value.trim(),
-                          seqNum: element.atts[7].value.trim(),
-                          pendingDelete: element.atts[8].value.trim(),
-                          displayDeleteIcon: element.atts[9].value.trim(),
-                          controlDescExt: element.atts[10].value.trim()
-
-                        });
-
-                        console.log(this.epfListLectura);
-
-                      } else {
-
-                        const a = element.atts[2].value.trim();
-
-                        this.epfList.push({
-
-                          offset: element.atts[0].value,
-                          controlId: element.atts[1].value.trim(),
-                          controlDesc:  element.atts[2].value.trim(),
-                          epfId: element.atts[3].value.trim(),
-                          epfDesc: element.atts[4].value.trim(),
-                          epfStatus: element.atts[5].value.trim(),
-                          epfversion: element.atts[6].value.trim(),
-                          seqNum: element.atts[7].value.trim(),
-                          pendingDelete: element.atts[8].value.trim(),
-                          displayDeleteIcon: element.atts[9].value.trim(),
-                          controlDescExt: element.atts[10].value.trim()
-
-                        });
-
-                        // if(element.atts[5].value.trim() !== '008'){
-
-                        //     this.statusc = element.atts[5].value.trim()
-
-                        // }
-                        if (element.atts[5].value.trim() !== '008') {
-
-                          // if(this.controlesstatus !== ''){
-                          //   this.controlesstatus = ''
-                          // }
-
-                          this.controlesstatus = this.controlesstatus +' '+ element.atts[5].value.trim();
-
-                        }
-                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
-
-                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
-
-                      }
-
-                      // console.log(this.epfList)
-                    } else if (_s.includes('cblando')) {
-
-                      if (element.atts[5].value === '008' && this.btn === 'lectura') {
-
-                        this.cBlandosListLectura.push({
-                          offset: element.atts[0].value,
-                          cblandoId: element.atts[1].value.trim(),
-                          cblandoDescripcion: element.atts[2].value.trim(),
-                          cblandoFamiliaId: element.atts[3].value.trim(),
-                          cblandoFamiliaDesc: element.atts[4].value.trim(),
-                          cblandoStatus: element.atts[5].value.trim(),
-                          cblandoVersion: element.atts[6].value.trim(),
-                          pendingDelete: element.atts[7].value.trim(),
-                          displayDeleteIcon: element.atts[8].value.trim(),
-                          cblandoDescripcionExt: element.atts[9].value.trim()
-
-                        });
-
-                      } else {
-                        this.cBlandosList.push({
-                          offset: element.atts[0].value,
-                          cblandoId: element.atts[1].value.trim(),
-                          cblandoDescripcion: element.atts[2].value.trim(),
-                          cblandoFamiliaId: element.atts[3].value.trim(),
-                          cblandoFamiliaDesc: element.atts[4].value.trim(),
-                          cblandoStatus: element.atts[5].value.trim(),
-                          cblandoVersion: element.atts[6].value.trim(),
-                          pendingDelete: element.atts[7].value.trim(),
-                          displayDeleteIcon: element.atts[8].value.trim(),
-                          cblandoDescripcionExt: element.atts[9].value.trim()
-
-                        });
-                        // if(element.atts[5].value.trim() !== '008'){
-                        //   this.statusc = element.atts[5].value.trim()
-                        // }
-                        if (element.atts[5].value.trim() !== '008') {
-
-                          this.controlesstatus = this.controlesstatus +' '+ element.atts[5].value.trim();
-                        }
-                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
-
-                        console.log(this.controlesstatus);
-                      }
-
-                    } else if (_s.includes('cduro')) {
-
-                      if (  element.atts[7].value === '008' && this.btn === 'lectura') {
-                        this.cDurosListLectura.push({
-                          offset: element.atts[0].value,
-                          cduroId: element.atts[1].value.trim(),
-                          controlDuroDesc: element.atts[2].value.trim(),
-                          cduroClasificacionDesc: element.atts[3].value.trim(),
-                          cduroTipo1Desc: element.atts[4].value.trim(),
-                          cduroTipo2Desc: element.atts[5].value.trim(),
-                          cduroEfectividad: element.atts[6].value.trim(),
-                          cduroStatus: element.atts[7].value.trim(),
-                          cduroVersion: element.atts[8].value.trim(),
-                          pendingDelete: element.atts[9].value.trim(),
-                          displayDeleteIcon: element.atts[10].value.trim()
-
-                        });
-
-                      } else {
-                      this.cDurosList.push({
-                        offset: element.atts[0].value,
-                        cduroId: element.atts[1].value.trim(),
-                        controlDuroDesc: element.atts[2].value.trim(),
-                        cduroClasificacionDesc: element.atts[3].value.trim(),
-                        cduroTipo1Desc: element.atts[4].value.trim(),
-                        cduroTipo2Desc: element.atts[5].value.trim(),
-                        cduroEfectividad: element.atts[6].value.trim(),
-                        cduroStatus: element.atts[7].value.trim(),
-                        cduroVersion: element.atts[8].value.trim(),
-                        pendingDelete: element.atts[9].value.trim(),
-                          displayDeleteIcon: element.atts[10].value.trim()
-
-                      });
-                      // if(element.atts[5].value.trim() !== '008'){
-                      //   if(this.statusc !== '006'){
-
-                      //     this.statusc = element.atts[5].value.trim()
-                      //   }
-                      // }
-                      if (element.atts[7].value.trim() !== '008') {
-
-                        this.controlesstatus = this.controlesstatus +' '+ element.atts[7].value.trim();
-                      }
-                        // this.controlesstatusa = this.validarcontroles(this.controlesstatus)
-
-                      console.log(this.controlesstatus);
-                    }
-                    } else if (_s.includes('doc')) {
-
-                      if (element.atts[6].value === '008' && this.btn === 'lectura') {
-
-                        this.docsListLectura.push({
-                          offset: element.atts[0].value.trim(),
-                          documentNo: element.atts[1].value.trim(),
-                          documentType: element.atts[2].value.trim(),
-                          documentName: element.atts[3].value.trim(),
-                          documentUrl: element.atts[4].value.trim(),
-                          documentVersion: element.atts[5].value.trim(),
-                          docStatus: element.atts[6].value.trim(),
-                          docVersion: element.atts[7].value.trim(),
-                          seqNum: element.atts[8].value.trim(),
-                          displayDeleteIcon: element.atts[9].value.trim(),
-                          pendingDelete: element.atts[10].value.trim(),
-
-                        });
-
-                      } else {
-
-                        this.docsList.push({
-                          offset: element.atts[0].value.trim(),
-                          documentNo: element.atts[1].value.trim(),
-                          documentType: element.atts[2].value.trim(),
-                          documentName: element.atts[3].value.trim(),
-                          documentUrl: element.atts[4].value.trim(),
-                          documentVersion: element.atts[5].value.trim(),
-                          docStatus: element.atts[6].value.trim(),
-                          docVersion: element.atts[7].value.trim(),
-                          seqNum: element.atts[8].value.trim(),
-                          displayDeleteIcon: element.atts[9].value.trim()
-
-                        });
-                        // if(element.atts[5].value.trim() !== '008'){
-                        //   if(this.statusc !== '006'){
-
-                        //     this.statusc = element.atts[5].value.trim()
-                        //   }
-                        // }
-                        if (element.atts[6].value.trim() !== '008') {
-
-                          this.controlesstatus = this.controlesstatus +' '+ element.atts[6].value.trim();
-                        }
-                        console.log(this.controlesstatus);
-                      }
-                    }
                   }
                 }
               });
@@ -457,8 +260,8 @@ public Razon: string;
     if (string !== '') {
       let arry = string.split(' ');
 
-      debugger
-      this.mostrar(localStorage.getItem('PerfilRkj'))
+      debugger;
+      this.mostrar(localStorage.getItem('PerfilRkj'));
       switch (this.btn) {
 
         case 'creacion': // LECTURA Y CREACION
@@ -1329,8 +1132,6 @@ public Razon: string;
 
   }
 
-  
-
    mostrar(perfil)  {
 
     switch (perfil) {
@@ -2123,7 +1924,7 @@ public Razon: string;
       }
 
     }
-    enviarAvalidar(id,status,tipo){
+    enviarAvalidar(id, status, tipo) {
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
@@ -2131,41 +1932,58 @@ public Razon: string;
       _atts.push({ name: 'key', value: id });
       _atts.push({ name: 'statusItem', value: status });
       _atts.push({ name: 'showCompleted', value: 'Y' });
-  
+
       const spinner = this.controlService.openSpinner();
-      
-      debugger
+
+      debugger;
       this.autentication.generic(_atts)
       .subscribe( datos => {
-          console.log( datos)
-        if( datos.success){
+          console.log( datos);
+          if ( datos.success) {
+
+          if (datos.data[0].atts[0].name === 'TIMEOUT') {
+            // debugger
+            this.controlService.closeSpinner(spinner);
+
+            Swal2.fire({
+              icon: 'info',
+              text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+            }).then((resultado) => {
+
+            });
+
+            return;
+
+          }
+
           datos.data.forEach(element => {
-  
-            if (element.atts.length > 0){
-              
-              this.llaves.push( element.atts[16].value.trim(),'Y',)
+
+            if (element.atts.length > 0) {
+
+              this.llaves.push( element.atts[16].value.trim(), 'Y', );
             }
-          })
-  
-          console.log(this.llaves.toString())
-          this.sendValidate(this.llaves.toString(),status)
+          });
+
+          console.log(this.llaves.toString());
+          this.sendValidate(this.llaves.toString(), status);
           this.controlService.closeSpinner(spinner);
         }
-      })
-  
+      });
+
     }
-  
-    sendValidate(llaves,status){
-  
-      let mnsje = 'Enviar a Validar'
-  
-      if(status === '007'){
-        mnsje = 'Aprobar'
+
+    sendValidate(llaves, status) {
+
+      let mnsje = 'Enviar a Validar';
+
+      if (status === '007') {
+        mnsje = 'Aprobar';
       }
-  
+
       Swal2.fire({
         html: `<h3><strong>${mnsje}</strong></h3>`,
-  
+
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -2174,59 +1992,289 @@ public Razon: string;
         cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.value) {
-  
-          
-  
+
           const _atts = [];
-              _atts.push({ name: 'scriptName', value: 'coemdr' });
-              _atts.push({ name: 'action', value: 'VALIDATE' });
-              _atts.push({ name: 'onlyActualNode', value: 'Y' });
-              _atts.push({ name: 'key', value: llaves });
-  
-              const obj = this.autentication.generic(_atts);
-              const spinner = this.controlService.openSpinner();        
-  
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'action', value: 'VALIDATE' });
+          _atts.push({ name: 'onlyActualNode', value: 'Y' });
+          _atts.push({ name: 'key', value: llaves });
+
+          const obj = this.autentication.generic(_atts);
+          const spinner = this.controlService.openSpinner();
+
           obj.subscribe(
                       (data) => {
                         if (data.success === true) {
-  
-  
+
                           this.mostrarMensaje();
-                          
-                          
+
                           this.Cajas.notificaciones$.emit(true);
-                          
-                        ;
-  
+
                         } else {
-                          
+
                           Swal2.fire('', data.message, 'error');
                         }
-  
+
                         this.controlService.closeSpinner(spinner);
-  
+
                       },
                       (error) => {
-                        
+
                         this.controlService.closeSpinner(spinner);
                       });
                     }
-  
+
                   });
-      
+
     }
     mostrarMensaje() {
       Swal2.fire({
-      
+
         title: 'Envio a Validacion en Proceso',
         text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
         imageUrl: 'assets/images/notificacion.png',
         imageWidth: 150,
       imageHeight: 150,
         imageAlt: 'Notificacion',
-      })
-    
+      });
+
       this.router.navigate(['/rkmain']);
+    }
+
+    test(e: MatTabChangeEvent) {
+
+      console.log(e);
+
+      // console.log(this.tabDefault)
+
+      switch (e.index) {
+        
+          case 1:
+            this.controlBlandPestaña();
+            break;
+          case 2:
+              this.controlDuroPestaña();
+              break;
+          case 3:
+              this.epfPestaña();
+              break;
+          case 4:
+                this.documentosPestaña();
+                break;
+      }
+
+    }
+
+    controlBlandPestaña() {
+
+      this.loading = true;
+      this.cBlandosList = [];
+      const _atts = [];
+      _atts.push({ name: 'scriptName', value: 'coemdr' });
+      _atts.push({ name: 'action', value: 'CONSEC_SEARCH_CONTROLB' });
+      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
+      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
+      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
+      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
+      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
+      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
+      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
+      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+
+      const spinner = this.controlService.openSpinner();
+
+      this.autentication.generic(_atts)
+      .subscribe( (data) => {
+
+        if (data.success) {
+
+          data.data.forEach((element) => {
+            this.cBlandosList.push({
+
+                          offset: element.atts[0].value,
+                          cblandoId: element.atts[1].value.trim(),
+                          cblandoDescripcion: element.atts[2].value.trim(),
+                          cblandoFamiliaId: element.atts[3].value.trim(),
+                          cblandoFamiliaDesc: element.atts[4].value.trim(),
+                          cblandoStatus: element.atts[5].value.trim(),
+                          cblandoVersion: element.atts[6].value.trim(),
+                          pendingDelete: element.atts[7].value.trim(),
+                          displayDeleteIcon: element.atts[8].value.trim(),
+                          cblandoDescripcionExt: element.atts[9].value.trim(),
+
+                          
+            });
+            if (element.atts[5].value.trim() !== '008') {
+
+              this.controlesstatus = this.controlesstatus + ' ' + element.atts[5].value.trim();
+            }
+          });
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        } else {
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        }
+
+      });
+    }
+    controlDuroPestaña() {
+
+      this.loading = true;
+      this.cDurosList = [];
+      const _atts = [];
+      _atts.push({ name: 'scriptName', value: 'coemdr' });
+      _atts.push({ name: 'action', value: 'CONSEC_SEARCH_CONTROLD' });
+      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
+      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
+      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
+      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
+      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
+      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
+      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
+      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+
+      const spinner = this.controlService.openSpinner();
+
+      this.autentication.generic(_atts)
+      .subscribe( (data) => {
+
+        if (data.success) {
+
+          data.data.forEach((element) => {
+            this.cDurosList.push({
+
+              offset: element.atts[0].value,
+              cduroId: element.atts[1].value.trim(),
+              controlDuroDesc: element.atts[2].value.trim(),
+              cduroClasificacionDesc: element.atts[3].value.trim(),
+              cduroTipo1Desc: element.atts[4].value.trim(),
+              cduroTipo2Desc: element.atts[5].value.trim(),
+              cduroEfectividad: element.atts[6].value.trim(),
+              cduroStatus: element.atts[7].value.trim(),
+              cduroVersion: element.atts[8].value.trim(),
+              pendingDelete: element.atts[9].value.trim(),
+              displayDeleteIcon: element.atts[10].value.trim()
+            });
+
+            if (element.atts[5].value.trim() !== '008') {
+
+              this.controlesstatus = this.controlesstatus + ' ' + element.atts[5].value.trim();
+            }
+          });
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        } else {
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        }
+
+      });
+    }
+    epfPestaña() {
+
+      this.loading = true;
+      this.epfList = [];
+      const _atts = [];
+      _atts.push({ name: 'scriptName', value: 'coemdr' });
+      _atts.push({ name: 'action', value: 'CONSEC_SEARCH_CONTROLE' });
+      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
+      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
+      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
+      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
+      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
+      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
+      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
+      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+
+      const spinner = this.controlService.openSpinner();
+
+      this.autentication.generic(_atts)
+      .subscribe( (data) => {
+
+        if (data.success) {
+
+          data.data.forEach((element) => {
+            this.epfList.push({
+
+                          offset: element.atts[0].value,
+                          controlId: element.atts[1].value.trim(),
+                          controlDesc:  element.atts[2].value.trim(),
+                          epfId: element.atts[3].value.trim(),
+                          epfDesc: element.atts[4].value.trim(),
+                          epfStatus: element.atts[5].value.trim(),
+                          epfversion: element.atts[6].value.trim(),
+                          seqNum: element.atts[7].value.trim(),
+                          pendingDelete: element.atts[8].value.trim(),
+                          displayDeleteIcon: element.atts[9].value.trim(),
+                          controlDescExt: element.atts[10].value.trim()
+            });
+
+            if (element.atts[5].value.trim() !== '008') {
+
+              this.controlesstatus = this.controlesstatus + ' ' + element.atts[5].value.trim();
+            }
+          });
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        } else {
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        }
+
+      });
+    }
+    documentosPestaña() {
+
+      this.loading = true;
+      this.docsList = [];
+      const _atts = [];
+      _atts.push({ name: 'scriptName', value: 'coemdr' });
+      _atts.push({ name: 'action', value: 'CONSEC_SEARCH_DOCS' });
+      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
+      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
+      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
+      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
+      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
+      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
+      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
+      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+
+      const spinner = this.controlService.openSpinner();
+
+      this.autentication.generic(_atts)
+      .subscribe( (data) => {
+
+        if (data.success) {
+
+          data.data.forEach((element) => {
+            this.docsList.push({
+
+                          offset: element.atts[0].value.trim(),
+                          documentNo: element.atts[1].value.trim(),
+                          documentType: element.atts[2].value.trim(),
+                          documentName: element.atts[3].value.trim(),
+                          documentUrl: element.atts[4].value.trim(),
+                          documentVersion: element.atts[5].value.trim(),
+                          docStatus: element.atts[6].value.trim(),
+                          docVersion: element.atts[7].value.trim(),
+                          seqNum: element.atts[8].value.trim(),
+                          displayDeleteIcon: element.atts[9].value.trim()
+            });
+
+            if (element.atts[5].value.trim() !== '008') {
+
+              this.controlesstatus = this.controlesstatus + ' ' + element.atts[5].value.trim();
+            }
+          });
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        } else {
+          this.loading = false;
+          this.controlService.closeSpinner(spinner);
+        }
+
+      });
     }
 
 }

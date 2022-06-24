@@ -1082,7 +1082,7 @@ export class RkmainComponent implements OnInit, OnChanges {
     }
   }
 
-  ver(nodo: any) {
+  ver(nodo) {
 
     // localStorage.setItem('nodo',JSON.stringify(nodo))
 
@@ -1098,6 +1098,7 @@ export class RkmainComponent implements OnInit, OnChanges {
     localStorage.setItem('statusSelected', nodo.status.trim());
     localStorage.setItem('itemseleccionado', nodo.route );
     localStorage.setItem('seleccionado', nodo );
+    localStorage.setItem('allow', nodo.permiso );
 
     this.nodoseleccionado = localStorage.getItem('itemseleccionado');
 

@@ -21,7 +21,9 @@ export class CajasdashboardComponent implements OnInit {
     ENVIAR_A_VALIDAR_CONSTRUCCION: 0,
     RECHAZADO: 0,
     POR_VALIDAR: 0,
-    POR_APROBAR: 0
+    POR_APROBAR: 0,
+    pendientes : '    ITEMS PENDIENTES ENVIAR VALIDAR   ',
+    construccion : '    ITEMS EN CONSTRUCCION   '
   };
   prueba: any;
   mostrar: boolean = false;
@@ -43,7 +45,7 @@ export class CajasdashboardComponent implements OnInit {
     this.nodoseleccionado = localStorage.getItem('itemseleccionado');
 
     this.cargarDashboard();
-
+      console.log(this.dashboardData.pendientes)
   }
 
   enviarAvalidar(){
@@ -264,7 +266,7 @@ export class CajasdashboardComponent implements OnInit {
     });
   }
 
-  async VerEnviarValidar() {
+  async VerEnviarValidar(completo?: boolean) {
 
     const conf = this.confirm.open(RkpendComponent,
       {
@@ -279,7 +281,8 @@ export class CajasdashboardComponent implements OnInit {
           button_confirm: 'Cerrar',
           button_close: 'Cerrar',
           id: this.data.id,
-          status: this.data.status
+          status: this.data.status,
+          completo : completo
 
         },
         // panelClass : 'tabla'

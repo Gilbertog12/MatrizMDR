@@ -61,6 +61,7 @@ EnviarHijos: string;
   permisoValidar: boolean;
   loading: boolean;
   llaves: string[] = [];
+  allow: string;
 
 constructor(private autentication: AuthenticationService,
             private methodService: HttpMethodService,
@@ -112,7 +113,7 @@ ver(areaId: string, procesoId: string) {
         const result = data.success;
         console.log(data)
         if (result) {
-
+          this.allow = localStorage.getItem('allow')
           data.data.forEach( (element) => {
             if ( element.atts.length > 0) {
               if ( element.atts[0].value === '0' ) {
@@ -401,6 +402,22 @@ cargarRiesgo(){
     .subscribe( datos => {
         console.log( datos)
       if( datos.success){
+
+        if (datos.data[0].atts[0].name === 'TIMEOUT') {
+          // debugger
+          this.controlService.closeSpinner(spinner);
+
+          Swal2.fire({
+            icon: 'info',
+            text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+          }).then((resultado) => {
+            
+          });
+
+          return;
+
+        }
         datos.data.forEach(element => {
 
           if (element.atts.length > 0){

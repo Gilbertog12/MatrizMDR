@@ -122,6 +122,7 @@ public Razon: string;
   message: string;
   valorMessage: string;
   contadorNotificaciones: number = 0;
+  allow: string;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -474,6 +475,8 @@ public Razon: string;
             if (result) {
 
         console.log(data);
+
+        this.allow = localStorage.getItem('allow')
         data.data.forEach((element) => {
                 if (element.atts.length > 0) {
 
@@ -1860,6 +1863,23 @@ public Razon: string;
             .subscribe( datos => {
                 console.log( datos)
               if( datos.success){
+
+                if (datos.data[0].atts[0].name === 'TIMEOUT') {
+                  // debugger
+                  this.controlService.closeSpinner(spinner);
+      
+                  Swal2.fire({
+                    icon: 'info',
+                    text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+      
+                  }).then((resultado) => {
+                    
+                  });
+      
+                  return;
+      
+                }
+                
                 datos.data.forEach(element => {
         
                   if (element.atts.length > 0){

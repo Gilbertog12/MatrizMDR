@@ -63,6 +63,7 @@ public Razon: string;
   valorMessage: string;
   arrayPrueba: any;
   llaves: string[] = [];
+  allow: string;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -138,7 +139,7 @@ public Razon: string;
             console.log(data);
             if (result) {
 
-              
+              this.allow = localStorage.getItem('allow')
 
             
 
@@ -168,6 +169,7 @@ public Razon: string;
                       statusParent: data.data[0].atts[16].value,
                       CanAdd: data.data[0].atts[17].value,
                       CanModify: data.data[0].atts[18].value,
+                      
                     };
 
                     localStorage.setItem('keySelected', this.areaModel.key);
@@ -408,13 +410,35 @@ public Razon: string;
       _atts.push({ name: 'showCompleted', value: 'Y' });
   
       const spinner = this.controlService.openSpinner();
-      
-      debugger
+      // 
+      // debugger
       this.autentication.generic(_atts)
       .subscribe( datos => {
           console.log( datos)
         if( datos.success){
+
+
+          if (datos.data[0].atts[0].name === 'TIMEOUT') {
+            // debugger
+            this.controlService.closeSpinner(spinner);
+
+            Swal2.fire({
+              icon: 'info',
+              text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+            }).then((resultado) => {
+              
+            });
+
+            return;
+
+          }
+
+
           datos.data.forEach(element => {
+
+
+            
   
             if (element.atts.length > 0){
               
@@ -433,9 +457,11 @@ public Razon: string;
     sendValidate(llaves,status){
 
       let mnsje = 'Enviar a Validar'
-
+      let titulo = 'Envio a Validacion en Proceso'
+      
       if(status === '007'){
         mnsje = 'Aprobar'
+         titulo = 'Aprobacion en Proceso'
       }
   
       Swal2.fire({
@@ -466,7 +492,8 @@ public Razon: string;
                         if (data.success === true) {
   
   
-                          this.mostrarMensaje();
+                          // this.mostrarMensaje();
+                        this.autentication.mensajeFlujoAprobacion(titulo)
                           
                           
                           this.Cajas.notificaciones$.emit(true);
@@ -490,19 +517,8 @@ public Razon: string;
                   });
       
     }
-    mostrarMensaje() {
-      Swal2.fire({
-      
-        title: 'Envio a Validacion en Proceso',
-        text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
-        imageUrl: 'assets/images/notificacion.png',
-        imageWidth: 150,
-      imageHeight: 150,
-        imageAlt: 'Notificacion',
-      })
     
-      this.router.navigate(['/rkmain']);
-    }
+    
 
 
 }
