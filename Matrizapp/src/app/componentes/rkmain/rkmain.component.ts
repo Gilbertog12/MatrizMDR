@@ -35,7 +35,11 @@ import { AddrkyComponent } from '../../AddPages/addrky/addrky.component';
 
 export class DynamicFlatNode {
   constructor(public item: string, public level = 1, public expandable = false,
-              public isLoading = false, public key: string, public route: string, public version: string, public status: string, public sp: any[] = [], public hijo: string, public canAdd: string, public permiso: string, public perfiles: string, public pendingDelete: string , public StatusPadre: boolean, public displayDeleteIcon: string) { }
+              public isLoading = false, public key: string, public route: string,
+              public version: string, public status: string, public sp: any[] = [],
+              public hijo: string, public canAdd: string, public permiso: string,
+              public perfiles: string, public pendingDelete: string ,
+              public StatusPadre: boolean, public displayDeleteIcon: string) { }
 
   }
 
@@ -102,7 +106,7 @@ export class DynamicFlatNode {
         } else {
           node.isLoading = true;
 
-        //console.log(node);
+        // console.log(node);
           const params = [];
           params.push({ name: 'scriptName', value: 'coemdr' });
           params.push({ name: 'action', value: 'SEARCH_NODE' });
@@ -130,7 +134,7 @@ export class DynamicFlatNode {
 
           if (data['success'] === true) {
 
-            data['data'].forEach(function (value) {
+            data['data'].forEach(function(value) {
               const name = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
               const key = value['atts'][7]['value'];
               const status = value['atts'][3]['value'];
@@ -278,7 +282,7 @@ export class DynamicFlatNode {
     };
     this.data.splice(index + 1, 0, ...[dfn]);
     this.data = [...this.data];
-    //this.dataChange.next(this.data);
+    // this.dataChange.next(this.data);
   }
 
   changeNode(index: number, name: string) {
@@ -312,13 +316,13 @@ export class DynamicFlatNode {
   styleUrls: ['./rkmain.component.scss']
 })
 
-export class RkmainComponent implements OnInit, OnChanges {
+export class RkmainComponent implements OnInit {
 
   public cambio: DynamicDataSource;
   date = new Date().getFullYear();
 
   public href: any = '';
-  public showDashboard: Boolean = false;
+  public showDashboard: boolean = false;
   public color = 'accent';
   public checked = false;
   public tittle = 'Validar/Aprobar';
@@ -410,69 +414,6 @@ export class RkmainComponent implements OnInit, OnChanges {
   minutos: number = 4;
   segundos: number = 59;
 
-   // PolarArea
-
-   public barChartData: ChartDataSets[] = [
-    { data: [300, 100, 40, 120] }
-  ];
-
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-
-    tooltips: {
-      enabled: false
-   },
-
-    title: {
-      display: true,
-      text: 'Transacciones Pendientes',
-      fontSize: 30
-    },
-
-    animation: {
-      onComplete: function () {
-        var ctx = this.chart.ctx;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        var chart = this;
-        var datasets = this.config.data.datasets;
-
-        datasets.forEach(function (dataset: Array<any>, i: number) {
-          ctx.font = "10px Arial";
-
-          ctx.fillStyle = "Black";
-          chart.getDatasetMeta(i).data.forEach(function (p: any, j: any) {
-            ctx.fillText(datasets[i].data[j], p._model.x, p._model.y - 5);
-          });
-
-        });
-      }
-    },
-
-    legend: {
-  display: false,
- }
-  };
-
-  public barChartLabels: Label[] = ['ITEMS PENDIENTES DE VALIDAR',
-                                    'ITEMS PENDIENTES DE VALIDAR',
-                                     'ITEMS RECHAZADOS',
-                                     'ITEMS PENDIENTES POR APROBAR'];
-
-   public chartColors: Array<any> = [
-    {
-      backgroundColor: [
-        "rgba(233, 217, 11, 0.8)",
-        // "rgba(145, 145, 145, 0.8)",
-        "rgba(235, 104, 100, 0.8)",
-        "rgba(28, 146, 62, 0.8)",
-        "rgba(59, 133, 205, 0.8)"
-      ]
-    },
-
-  ];
-
-   public barChartType: ChartType = 'bar';
   t: any;
   PosicionAMover: any;
   accion: { name: string; value: string; };
@@ -499,7 +440,7 @@ export class RkmainComponent implements OnInit, OnChanges {
   notificacionesContador: any;
   visible: boolean = true;
 
-  //mmetodos para hacer logout automatico
+  // mmetodos para hacer logout automatico
 
   constructor(
     private autentication: AuthenticationService,
@@ -570,22 +511,12 @@ export class RkmainComponent implements OnInit, OnChanges {
     //                '======================================'
       const colorM = 'Green';
       console.log(`%c${mensaje}`, `color:${colorM}`);
-    // localStorage.setItem('recargarAprobaciones', 'false');
-    // this.refresh = localStorage.getItem('recargarAprobaciones');
+
       this.recargarArbol();
-    // this.aperfil()
-    // this.verSinAprobar();
-    // this.idleLogout();
-    // window.addEventListener('mousemove', this.resetear, true);
 
-    // this.cargarDashboardData();
-
-    // console.log(this.SL)
-
-      this.Cajas.Recargar$.subscribe(resp => {
+      this.Cajas.Recargar$.subscribe((resp) => {
       if (resp) {
-      ////debugger;
-      // this.abrirNodo()
+
       this.refrescoItemModificado();
 
       }
@@ -597,21 +528,13 @@ export class RkmainComponent implements OnInit, OnChanges {
 
       this.informacion = this.usuario + ' ' + this.distrito + ' ' + this.posicion;
 
-    // if (this.href === '/rkmain') {
-    //   this.cargarDashboard();
-    // }
-    //observable que mantiene escuchando cambios para el tema del refresh
       this.sub = Observable.interval(3000)
     .subscribe((val) => {
       if (localStorage.getItem('isSendToValidate') === '1') {
         localStorage.setItem('isSendToValidate', '0');
         const key = localStorage.getItem('keySelected');
-        // console.log(key)
-        // console.log('ejecuto');
 
-        // this.abrirNodoYSeleccionar();
         this.recargarPadre();
-        // this.router.navigate(['/rkmain/']);
 
       }
     });
@@ -627,7 +550,7 @@ export class RkmainComponent implements OnInit, OnChanges {
       if (--this.segundos < 0) {
         this.segundos = 59;
         if (--this.minutos < 0) {
-          //////debugger
+
           clearInterval(t);
           this.autentication.logout();
         }
@@ -639,153 +562,20 @@ export class RkmainComponent implements OnInit, OnChanges {
   }
 
   SinPermisos() {
-    //Esta funcion se ejecuta cuando la posicion no tiene permisos de creacion o Elimninacion , despliega un mensaje de error!
 
     Swal2.fire({
       icon: 'error',
       html: 'Posicion ' + this.posicion.bold() + ' no tiene Priveligios'
-      // background:'#A8A4A3',
 
     });
   }
-
-  ngOnChanges() {
-
-  }
-/*
-  public cargarDashboardData() {
-        let t;
-        const parentThis = this;
-        function reloj(rset?: boolean) {
-      if (rset) {
-        this.minutos = 4;
-        this.segundos = 59;
-      }
-
-      // window.addEventListener('mousemove',this.t)
-      if (--this.segundos < 0) {
-        this.segundos = 59;
-        if (--this.minutos < 0) {
-          //////debugger
-          clearInterval(this.t);
-          this.autentication.logout();
-        }
-      }
-
-    }
-
-        window.onload = resetTimer;
-        window.addEventListener('mousemove', resetTimer, true);
-
-        function resetTimer() {
-
-      clearInterval(t);
-
-      t = setTimeout(() => {
-        //console.log(localStorage.getItem('recargarAprobaciones'));
-        reloj(true);
-
-      }, 1000);
-
-    }
-
-  }*/
-/*
-  cargarDashboard() {
-    const _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr' });
-    // _atts.push({ name: 'stdJobNo1', value: '' });
-    _atts.push({ name: 'action', value: 'TABLERO_LIST' });
-
-    // window.addEventListener('mousemove')
-
-    // const spinner = this.controlService.openSpinner()
-    const promiseView = new Promise((resolve, reject) => {
-      this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            // console.log(data)
-            const result = data.success;
-            if (result) {
-              this.Cajas.caja1 = data.data[0].atts[1].value.trim();
-              this.dashboardData = {
-                ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
-                POR_VALIDAR: data.data[0].atts[2].value.trim(),
-                Rechazados: data.data[0].atts[3].value.trim(),
-                POR_APROBAR: data.data[0].atts[4].value.trim(),
-                En_Construccion: data.data[0].atts[5].value.trim()
-              };
-            } else {
-              // this.controlService.closeSpinner(spinner);
-
-              this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
-            }
-            return result;
-          });
-    });
-  }*/
-
- /* pruebs() {
-    const _atts = [];
-    _atts.push({ name: 'scriptName', value: 'coemdr' });
-    // _atts.push({ name: 'stdJobNo1', value: '' });
-    _atts.push({ name: 'action', value: 'TABLERO_LIST' });
-
-    this.autentication.generic(_atts)
-        .subscribe(
-          (data) => {
-            console.log(data);
-            const result = data.success;
-            if (result) {
-              this.Cajas.caja1 = data.data[0].atts[1].value.trim();
-              this.dashboardData = {
-                ENVIAR_A_VALIDAR: data.data[0].atts[1].value.trim(),
-                POR_VALIDAR: data.data[0].atts[2].value.trim(),
-                Rechazados: data.data[0].atts[3].value.trim(),
-                POR_APROBAR: data.data[0].atts[4].value.trim(),
-                En_Construccion: data.data[0].atts[5].value.trim()
-              };
-            } else {
-              // this.controlService.closeSpinner(spinner);
-
-              this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
-            }
-            return result;
-          });
-
-  }*/
 
   switchToTree() {
     this.recargarArbol();
   }
 
-  public idleLogout() {
-    let t;
-    const parentThis = this;
-
-    window.onload = resetTimer;
-
-    window.addEventListener('mousemove', resetTimer, true);
-
-    function resetTimer() {
-
-      clearTimeout(t);
-      t = setTimeout(() => {
-        //console.log(localStorage.getItem('recargarAprobaciones'));
-
-      }, 2000);
-
-    }
-
-  }
-
   abrirNodo(recarga?) {
 
-    // this.treeControl.collapseAll()
-
-    // this.treeControl.expandAll()
-
-    //////debugger
     if (recarga) {
 
       this.recargarArbol(true);
@@ -795,10 +585,6 @@ export class RkmainComponent implements OnInit, OnChanges {
       this.getSelection = this.getSelection;
     }
 
-    // console.log(this.getSelection)
-    // localStorage.setItem('seleccion',this.getSelection)
-    // this.mostrarNivelesSuperiores()
-
   }
 
   mostrarNivelesSuperiores() {
@@ -806,17 +592,15 @@ export class RkmainComponent implements OnInit, OnChanges {
     for (let i = 0 ; i < this.dataSource.data.length; i++) {
 
       if (this.dataSource.data[i]['level'] === this.getSelection.level && this.dataSource.data[i]['key'] === this.getSelection.key ) {
-        console.log("soy igual que el seleccionado");
+        console.log('soy igual que el seleccionado');
       }
 
     }
   }
 
-  //tema del refresh/
   abrirNodoYSeleccionar() {
-    // console.log(this.getSelection);
+
     const key = localStorage.getItem('UltimoEnviado');
-    // console.log(key)
 
     if (key.length === 2) {
 
@@ -829,25 +613,9 @@ export class RkmainComponent implements OnInit, OnChanges {
       // console.log(this.getSelection)
       this.treeControl.collapse(JSON.parse(localStorage.getItem('comparar')));
       this.treeControl.expand(JSON.parse(localStorage.getItem('comparar')));
-      // console.log(JSON.parse(localStorage.getItem('comparar')))
 
     }
-    // this.abrirNodo()
 
-    // this.treeControl.collapse(this.treeControl.dataNodes[key])
-    // this.treeControl.expand(this.treeControl.dataNodes[key])
-
-    // if(key.length == 2){
-    //     this.recargarArbol();
-
-    // }else{
-    //   document.getElementById(key).style.backgroundColor= '#cff5e9';
-
-    // }
-
-      // console.log(document.getElementById(key))
-
-    // this.ver(localStorage.getItem('keySelected'))
   }
 
   recargarPadre(ruta?) {
@@ -865,7 +633,7 @@ export class RkmainComponent implements OnInit, OnChanges {
   }
 
   recargarArbol(arbol?: boolean) {
-    //////debugger
+    ////// debugger
     this.notificacionesPendientes();
     // this.notificacionesList.notificaciones ='0'
     this.isLoading = true;
@@ -890,7 +658,7 @@ export class RkmainComponent implements OnInit, OnChanges {
         if (data['success'] === true) {
               // console.log(data)
 
-          data['data'].forEach(function (value) {
+          data['data'].forEach( (value) => {
             const key: string = value['atts'][7]['value'];
             const name: string = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
             const status = value['atts'][3]['value'];
@@ -916,19 +684,19 @@ export class RkmainComponent implements OnInit, OnChanges {
                 case 'NNYNN':
                   var NoCreador = 'Y';
                   break;
-                case 'NYYNY': //APROBADORVALIDADOR
+                case 'NYYNY': // APROBADORVALIDADOR
                    NoCreador = 'Y';
                    break;
 
-                case 'NNYNY': //VALIDADOR
+                case 'NNYNY': // VALIDADOR
                    NoCreador = 'Y';
                    break;
 
-                case 'NYYNN': //APROBADOR
+                case 'NYYNN': // APROBADOR
                    NoCreador = 'Y';
                    break;
 
-                  case 'YYYNY': //Administrador
+                  case 'YYYNY': // Administrador
                    NoCreador = 'Y';
                    break;
 
@@ -965,14 +733,9 @@ export class RkmainComponent implements OnInit, OnChanges {
 
             localStorage.setItem('canAdd', canAdd);
 
-            // console.log(localStorage.getItem('canAdd'))
-
             response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [], hijo, canAdd, permiso, perfiles, pendingDelete, StatusPadre, displayDeleteIcon));
 
           });
-
-          // console.log(prueba);
-          // console.log(response);
 
           this.dataSource.data = response;
           console.log(this.dataSource.data);
@@ -995,28 +758,13 @@ export class RkmainComponent implements OnInit, OnChanges {
           this.autentication.showMessage(data.success, data.message, data['data'], data.redirect);
         }
         this.isLoading = false;
-       // if(arbol){
-          //////debugger
 
-         // this.ExpandirNodos(this.getSelection.key)
-        //}
-        // this.bandera = true;
       },
         error => {
           console.log(error);
 
           if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet3', {}, false); }
         });
-
-        // let key = localStorage.getItem('UltimoEnviado')
-        // if(key != ''){
-
-        //   console.log(key)
-
-        // // console.log(document.getElementById(key))
-        // document.getElementById(key).style.backgroundColor= '#cff5e9';
-        // // document.getElementById(key).className= 'background-highlight';
-        // }
 
   }
 
@@ -1038,7 +786,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
   isExpandable = (node: DynamicFlatNode) => node.expandable;
 
-  hasChild = (_: number, _nodeData: DynamicFlatNode) => { return _nodeData.expandable; };
+  hasChild = (_: number, _nodeData: DynamicFlatNode) =>  _nodeData.expandable;
 
   nuevo(nodo: any) {
 
@@ -1102,42 +850,10 @@ export class RkmainComponent implements OnInit, OnChanges {
 
     this.nodoseleccionado = localStorage.getItem('itemseleccionado');
 
-    /*let a:any = localStorage.getItem('itemseleccionado')
-
-    a= a.slice(4,nodo.route.length)
-    // a = a.split('/')
-
-    if (a[0]) {
-      this.nodoseleccionado =a[0];
-    }
-    if (a[1]) {
-      this.nodoseleccionado =a[0]+a[1];
-    }
-    if (a[2]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]
-    }
-    if (a[3]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]
-    }
-    if (a[4]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]
-    }
-    if (a[5]) {
-      this.nodoseleccionado =a[0]+a[1]+a[2]+a[3]+a[4]+a[5]
-    }
-    if (a[6]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]
-    }
-    if (a[7]) {
-      this.nodoseleccionado = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]+a[7]
-    }*/
-
-    // console.log(this.nodoseleccionado)
+    
 
     this.HabilitarEnvioValidacion();
-    // this.ruta = localStorage.getItem('keySelected');
-
-    //console.log(nodo);
+    
   }
 
   HabilitarEnvioValidacion() {
@@ -1147,9 +863,9 @@ export class RkmainComponent implements OnInit, OnChanges {
 
   }
 
-  // //////debugger;
+  
   verTable(item: any) {
-    //alert(item.ruta.trim().length.toString());
+    // alert(item.ruta.trim().length.toString());
     switch (item.key.trim().length.toString()) {
       case '2':
         this.router.navigate(['/rka/' + item.key]);
@@ -1187,7 +903,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
   @ViewChildren(MatTreeNode, { read: ElementRef }) treeNodes: ElementRef[];
 
-  clase = "background-highlight";
+  clase = 'background-highlight';
   hasListener: any[] = [];
   oldHighlight: ElementRef;
 
@@ -1224,14 +940,14 @@ export class RkmainComponent implements OnInit, OnChanges {
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'key', value: status });
     _atts.push({ name: 'action', value: 'RESUMEN_NODO' });
-//PendientesNodo
+// PendientesNodo
     const spinner = this.controlService.openSpinner();
     const obj =  this.autentication.generic(_atts);
 
-    obj.subscribe((data => {
+    obj.subscribe(((data) => {
       if (data.success === true) {
 
-        data.data.forEach(element => {
+        data.data.forEach((element) => {
 
           this.PendientesNodo = {
                   TOTAL: element.atts[1].value.trim(),
@@ -1242,25 +958,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
         });
 
-        // data.data.forEach((element) => {
-        //   if (element.atts.length > 0) {
-        //     this.PendientesNodo.push({
-        //       TOTAL: element.atts[1].value.trim(),
-        //       TOTAL_EV: element.atts[2].value.trim(),
-        //       TOTAL_EA: element.atts[3].value.trim(),
-
-        //     });
-        //   }
-        // this.PendientesNodo ={
-        //   TOTAL: data.data[0].atts[1].value.trim(),
-        //   TOTAL_EV: data.data[0].atts[2].value.trim(),
-        //   TOTAL_EA: data.data[0].atts[3].value.trim(),
-
-        // }
-        // return this.PendientesNodo
-      // }
-
-          // console.log(this.PendientesNodo)
+        
         }
 
     }));
@@ -1270,7 +968,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
   refrescoItemModificado() {
 
-    ////debugger;
+    //// debugger;
     for (let i = 0 ; i < this.dataSource.data.length; i++) {
 
       if (this.dataSource.data[i] === this.getSelection) {
@@ -1510,7 +1208,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
   async eliminar(node) {
 
-    //console.log(node);
+    // console.log(node);
     // this.mensajes(node.key)
     // this.getSelection = node;
 
@@ -1633,7 +1331,7 @@ export class RkmainComponent implements OnInit, OnChanges {
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado);
+                        // this.ver(this.nodoseleccionado);
                       }, 1000 );
 
                     } else {
@@ -1769,7 +1467,7 @@ export class RkmainComponent implements OnInit, OnChanges {
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado);
+                        // this.ver(this.nodoseleccionado);
                       }, 1000 );
 
                     } else {
@@ -1905,7 +1603,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
           obj.subscribe(
               (data) => {
-                //////debugger;
+                ////// debugger;
                 if (data.success === true) {
                   if (data.data[0].atts[0].value === 'I' ) {
 
@@ -1931,7 +1629,7 @@ export class RkmainComponent implements OnInit, OnChanges {
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado);
+                        // this.ver(this.nodoseleccionado);
                       }, 1000 );
 
                     } else {
@@ -2067,7 +1765,7 @@ export class RkmainComponent implements OnInit, OnChanges {
                         this.recargarPadre();
 
                         this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                        //this.ver(this.nodoseleccionado);
+                        // this.ver(this.nodoseleccionado);
                       }, 1000 );
 
                     } else {
@@ -2108,7 +1806,7 @@ export class RkmainComponent implements OnInit, OnChanges {
               },
               (error) => {
               console.log(error);
-                //////debugger
+                ////// debugger
                 // if ( error.status === 401 ) { this.autentication.logout(); return; }
               this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet5', node, false);
               this.controlService.closeSpinner(spinner);
@@ -2214,7 +1912,7 @@ export class RkmainComponent implements OnInit, OnChanges {
                 // setTimeout( () => {
                   // console.log('nodo');
                   // this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
-                  //this.ver(this.nodoseleccionado);
+                  // this.ver(this.nodoseleccionado);
                   // }, 1000 );
 
                   if ( recargable === _areaId) {
@@ -2676,7 +2374,7 @@ export class RkmainComponent implements OnInit, OnChanges {
 
               if (recargable !== '') {
 
-                //aqui*
+                // aqui*
                 if ( recargable === key) {
 
                   this.abrirNodo();
@@ -3028,7 +2726,7 @@ export class RkmainComponent implements OnInit, OnChanges {
       async mostrar() {
 
     switch (this.cargo) {
-      case 'NNYNN': //SOLO LECTURA
+      case 'NNYNN': // SOLO LECTURA
         this.sololectura = true;
 
         return;
@@ -3242,7 +2940,7 @@ export class RkmainComponent implements OnInit, OnChanges {
     const canI = this.compararNiveles(levelto, levelfrom);
     const stutuspermitido = this.statusPadreCopy(statusto, levelto);
 
-    ////debugger;
+    //// debugger;
     if (!canI ) {
 
       Swal2.fire({
@@ -3334,7 +3032,7 @@ export class RkmainComponent implements OnInit, OnChanges {
     };
   }
 
-  //cerrar Session al cerrar pestaña
+  // cerrar Session al cerrar pestaña
 
   @HostListener('window:beforeunload', ['$event'])
 beforeunloadHandler(event) {
@@ -3397,15 +3095,15 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
       console.log(data);
       const result = data.success;
       debugger
-            if (result) {
+      if (result) {
 
               this.notificacionesList = {
                 notificaciones: data.data[0].atts[0].value.trim(),
 
               };
-              ////debugger;
+              //// debugger;
               if (data.data[0].atts[0].value.trim() === '1') {
-                
+
                 // debugger
                 this.contadorNotificaciones();
                 this.getClass(false);
@@ -3415,7 +3113,7 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
                 this.icon = 'notifications';
                 this.visible = false;
                 // this.cambiarColorNotificacion()
-                
+
               } else {
                 this.claseNotificacion = 'img-circle material-icons-outlined';
                 this.bloqueado = true ;
@@ -3431,7 +3129,7 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
 
               this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
             }
-            return result;
+      return result;
           });
 
 }
@@ -3595,7 +3293,6 @@ obtenerEstado( item: DynamicFlatNode ) {
 
 }
 
-
 /**
  * If the status is 008, return an empty string. Otherwise, if the status is 006, return '(*)'.
  * Otherwise, if the status is 004, return '(**)'. Otherwise, if the status is 007, return '(***)'.
@@ -3604,7 +3301,6 @@ obtenerEstado( item: DynamicFlatNode ) {
  * @returns a string.
  */
 valoreAsterisco(item) {
-
 
   return item.status === '008' ? '' :
           item.status === '006' ? '(*)' :
@@ -3786,7 +3482,7 @@ BotonesAccion(node: DynamicFlatNode) {
           return this.botones = ['assets/images/Add.png', 'assets/images/Delete.png', false , false , 'img-circle botonHabilitado'  , ' img-circle botonDeshabilitado'];
         } else {
           debugger
-        return this.botones =  ['assets/images/botn_blanco.jpg', 'assets/images/Delete.png' , true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
+          return this.botones =  ['assets/images/botn_blanco.jpg', 'assets/images/Delete.png' , true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
       }
 
     }
@@ -3796,7 +3492,7 @@ BotonesAccion(node: DynamicFlatNode) {
       // return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
       return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
     } else {
-      
+
     return this.botones =  ['assets/images/botn_blanco.jpg', 'assets/images/Delete_Disabled.png' , true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
   }
 

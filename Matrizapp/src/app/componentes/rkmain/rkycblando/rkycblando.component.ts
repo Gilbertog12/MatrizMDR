@@ -4,14 +4,11 @@ import { AuthenticationService, ControlsService } from '../../../shared';
 import Swal2 from 'sweetalert2';
 import { FormControl, Validators } from '@angular/forms';
 
-
-
 export interface AddItem {
   Id: string;
   Descripcion: string;
   selected: boolean;
   }
-
 
 @Component({
   selector: 'app-rkycblando',
@@ -31,22 +28,23 @@ export class RkycblandoComponent implements OnInit {
   public controlesBList: AddItem[] = [];
   public controlesBListSeleccionadas: AddItem[] = [];
   public cBlandoModel: any = {
-    
+
     cblandoId: "",
     name: "",
     areaDescripcion: "",
-    
+
   };
-  public descripcion: string
-  
+  public descripcion: string;
+
   bankMultiFilterCtrl = new FormControl();
 
   public cBlandosList: any[] = [];
+  indice: number = 1;
 
   constructor(public dialogRef: MatDialogRef<RkycblandoComponent>,
               private controlService: ControlsService,
               private autentication: AuthenticationService,
-              @Inject(MAT_DIALOG_DATA) public data: any) { 
+              @Inject(MAT_DIALOG_DATA) public data: any) {
                 this.cBlandoModel.areaId = data.areaId;
                 this.cBlandoModel.procesoId = data.procesoId;
                 this.cBlandoModel.subprocesoId = data.subprocesoId;
@@ -60,7 +58,6 @@ export class RkycblandoComponent implements OnInit {
 
   ngOnInit() { }
 
-
   remove(fruit: AddItem): void {
     const index = this.controlesBListSeleccionadas.indexOf(fruit);
 
@@ -69,14 +66,14 @@ export class RkycblandoComponent implements OnInit {
 
     }
 
-    this.deseleccionar(fruit)
+    this.deseleccionar(fruit);
 
   }
 
-  deseleccionar(item:AddItem){
-    for(let i  = 0; i < this.datasource.data.length; i++){
+  deseleccionar(item: AddItem) {
+    for (let i  = 0; i < this.datasource.data.length; i++) {
 
-      if(this.datasource.data[i] === item && this.datasource.data[i].selected === true){
+      if (this.datasource.data[i] === item && this.datasource.data[i].selected === true) {
         this.datasource.data[i].selected = false ;
       }
     }
@@ -84,20 +81,16 @@ export class RkycblandoComponent implements OnInit {
   applyFilter(filterValue: string) {
     console.log(filterValue);
 
-    filterValue = filterValue.trim().toLowerCase()
+    filterValue = filterValue.trim().toLowerCase();
 
-    
-      this.datasource.filter = filterValue
+    this.datasource.filter = filterValue;
 
-      if(this.datasource.filteredData.length === 0){
-        this.bloquearFiltro = true
-        this.cargarcblandos(filterValue)
+    if (this.datasource.filteredData.length === 0) {
+        this.bloquearFiltro = true;
+        this.cargarcblandos(filterValue);
 
       }
-    
-    
-    
-    
+
   }
 
   seleccionar( id: AddItem ) {
@@ -108,21 +101,26 @@ export class RkycblandoComponent implements OnInit {
         this.controlesBListSeleccionadas = this.controlesBListSeleccionadas.filter((item, index) => {
           return this.controlesBListSeleccionadas.indexOf(item) === index;
         });
-      }else{
-        debugger
-        if(this.datasource.data[i]['selected'] === false){
+      } else {
+        debugger;
+        if (this.datasource.data[i]['selected'] === false) {
 
-          this.remove(this.datasource.data[i])
+          this.remove(this.datasource.data[i]);
         }
       }
     }
   }
-  
-  pageEvents(pagina:number){
 
+  pageEvents(pagina: number) {
+
+    if (!this.paginator.hasNextPage()) {
+      debugger;
+      this.indice = this.indice + 1;
+      this.cargarcblandos('', this.indice);
+     }
   }
 
-  cargarcblandos(name?:string) {
+  cargarcblandos(name?: string, index?) {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'CBLANDO_LIST'});
@@ -135,8 +133,8 @@ export class RkycblandoComponent implements OnInit {
     _atts.push({name: 'riesgoId', value: this.cBlandoModel.riesgoId });
     _atts.push({name: 'consecuenciaId', value: this.cBlandoModel.consecuenciaId });
     _atts.push({ name: "lookupName", value: name });
-    this.isLoading = true
-   
+    _atts.push({ name: "index", value: index });
+    this.isLoading = true;
 
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
@@ -145,26 +143,36 @@ export class RkycblandoComponent implements OnInit {
           const result = data.success;
           if (result) {
 
+            if (data.data.length === 0 && index !== undefined) {
 
-            if(data.data.length === 0){
-              this.isLoading = false
-              this.bloquearFiltro = false
+              this.isLoading = false;
+              this.bloquearFiltro = false;
               return Swal2.fire({
                 icon : 'info',
+                text : 'Items Listados en su totalidad'
+              });
+            } else {
+                if (data.data.length === 0) {
+                  this.isLoading = false;
+                  this.bloquearFiltro = false;
+                  return Swal2.fire({
+                icon : 'info',
                 text : 'Codigo/Descripcion no encontrada'
-              })
+              });
+                }
+
             }
 
-             data.data.forEach((element) => {
+            data.data.forEach((element) => {
               if (element.atts.length > 0) {
                 this.controlesBList.unshift({
                   Id: element.atts[0].value.trim(),
                   Descripcion: element.atts[2].value.trim(),
                   selected : false
                 });
-                this.bloquearFiltro = false
-              }else{
-               
+                this.bloquearFiltro = false;
+              } else {
+
               }
             });
 
@@ -182,7 +190,7 @@ export class RkycblandoComponent implements OnInit {
             this.datasource = new MatTableDataSource<AddItem>(this.controlesBList);
             console.log(this.datasource.data);
             this.datasource.paginator = this.paginator;
-            this.isLoading = false
+            this.isLoading = false;
           } else {
             this.autentication.showMessage(data.success, data.message, this.cBlandoModel, data.redirect);
           }
@@ -196,10 +204,10 @@ export class RkycblandoComponent implements OnInit {
 
   guardar() {
 
-    let ids = []
-          this.controlesBListSeleccionadas.forEach( id => {
-            ids.push(id.Id)
-         })
+    let ids = [];
+    this.controlesBListSeleccionadas.forEach( id => {
+            ids.push(id.Id);
+         });
 
     let _atts = [];
 
@@ -215,7 +223,7 @@ export class RkycblandoComponent implements OnInit {
     _atts.push({ name: 'consecuenciaId', value: this.cBlandoModel.consecuenciaId });
     _atts.push({ name: 'cblandoId', value: ids.toString() });
 
-    // if ( this.cBlandoModel.cblandoId === undefined || this.cBlandoModel.cblandoId === null || this.cBlandoModel.cblandoId === '' ) { 
+    // if ( this.cBlandoModel.cblandoId === undefined || this.cBlandoModel.cblandoId === null || this.cBlandoModel.cblandoId === '' ) {
     //   // this.autentication.showMessage(false, 'Seleccione un Control Blando', this.cBlandoModel, false);
     //   return;
     // }
@@ -229,25 +237,24 @@ export class RkycblandoComponent implements OnInit {
       if ( data.data[0].atts[1] ) {
         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.cBlandoModel, data.redirect);
         Swal2.fire({
-          icon:'success',
+          icon: 'success',
           text: 'Control Blando Agregado'
 
-        })
+        });
         this.dialogRef.close(true);
       } else {
         Swal2.fire({
-          icon:'error',
+          icon: 'error',
           text: data.message
-        })
+        });
         // this.autentication.showMessage(data.success, data.message, this.cBlandoModel, data.redirect);
       }
-    }
-    else {
+    } else {
       // this.autentication.showMessage(data.success, data.message, this.cBlandoModel, data.redirect);
       Swal2.fire({
-        icon:'error',
+        icon: 'error',
         text: data.message
-      })
+      });
     }
     this.controlService.closeSpinner(spinner);
     },
@@ -262,7 +269,5 @@ export class RkycblandoComponent implements OnInit {
   cancelar() {
     this.dialogRef.close(true);
   }
-
-  
 
 }

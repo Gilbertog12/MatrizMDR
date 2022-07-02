@@ -13,6 +13,8 @@ import { RkpendaprobModule } from '../rkpendaprob/rkpendaprob.module';
 import { Rkvalidarmodule } from '../rkvalidar/rkvalidar.module';
 import { cajadashboardModule } from '../../../rkmain/cajasdashboard/cajasdashboard.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { CdetalleModule } from '../cdetalle/cdetalle.module';
+import { CdetalleComponent } from '../cdetalle/cdetalle.component';
 
 @NgModule({
   imports: [
@@ -30,8 +32,9 @@ import { MatMenuModule } from '@angular/material/menu';
     RkpendaprobModule,
     cajadashboardModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
+    
   ],
-  declarations: [RkaComponent]
+  declarations: [RkaComponent,CdetalleComponent]
 })
 export class RkaModule { }

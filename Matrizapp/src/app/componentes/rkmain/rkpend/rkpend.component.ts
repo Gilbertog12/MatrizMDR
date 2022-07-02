@@ -1035,7 +1035,7 @@ mostrarMensaje() {
     imageWidth: 150,
   imageHeight: 150,
     imageAlt: 'Notificacion',
-  })
+  });
 
   this.router.navigate(['/rkmain']);
 

@@ -61,6 +61,7 @@ export class AddrkyComponent implements OnInit {
   bankMultiFilterCtrl = new FormControl()
   criticidadLevel: any[] = [];
   isLinear: boolean = true
+  indice: number = 1;
 
     constructor(public dialogRef: MatDialogRef<AddrkyComponent>,
                 private controlService: ControlsService,
@@ -94,7 +95,19 @@ export class AddrkyComponent implements OnInit {
 
   ngOnInit() { }
 
-  cargarconsecuencias( name? : string) {
+
+  pageEvents(pagina: MatPaginator) {
+        
+        
+    if (!this.paginator.hasNextPage()) {
+     debugger
+     this.indice = this.indice+1;
+     this.cargarconsecuencias('', this.indice);
+    }
+
+ }
+
+  cargarconsecuencias( name? : string, index?) {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'CONSECUENCIA_LIST'});
@@ -106,6 +119,7 @@ export class AddrkyComponent implements OnInit {
     _atts.push({name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
     _atts.push({name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
     _atts.push({ name: "lookupName", value: name });
+    _atts.push({ name: "index", value: index });
     this.isLoading = true
 
     const promiseView = new Promise((resolve, reject) => {
@@ -117,13 +131,26 @@ export class AddrkyComponent implements OnInit {
               
             // }
 
-            if(data.data.length === 0){
-              this.isLoading = false
-              this.bloquearFiltro = false
+            if (data.data.length === 0 && index !== undefined) {
+
+            
+
+              this.isLoading = false;
+              this.bloquearFiltro = false;
+              return Swal2.fire({
+                icon : 'info',
+                text : 'Items Listados en su totalidad'
+              });
+            }else{
+                if(data.data.length === 0){
+                  this.isLoading = false;
+              this.bloquearFiltro = false;
               return Swal2.fire({
                 icon : 'info',
                 text : 'Codigo/Descripcion no encontrada'
-              })
+              });
+                }
+
             }
             data.data.forEach((element) => {
               if (element.atts.length > 0) {

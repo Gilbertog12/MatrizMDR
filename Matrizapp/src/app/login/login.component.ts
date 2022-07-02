@@ -190,7 +190,7 @@ export class LoginComponent implements OnInit {
     copyright() {
     Swal2.fire({
       icon: 'info',
-      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.6 <br />Fecha de compilación: 2022-06-22<br />',
+      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.6 <br />Fecha de compilación: 2022-07-02<br />',
       showCloseButton: true
 
     });

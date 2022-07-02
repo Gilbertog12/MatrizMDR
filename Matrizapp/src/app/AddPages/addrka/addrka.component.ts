@@ -40,8 +40,7 @@
 
 //   /** Subject that emits when the component has been destroyed. */
 //   protected _onDestroy = new Subject<void>();
-  
-  
+
 //   constructor(
 //     public dialogRef: MatDialogRef<AddrkaComponent>,
 //     private controlService: ControlsService,
@@ -53,20 +52,18 @@
 //     ngOnInit() {
 //       this.cargarAreas(this.areaModel.areaId, this.areaModel.name);
 
-    
-
 //       this.bankMultiCtrl.setValue([this.areasList[10], this.areasList[11], this.areasList[12]]);
 
 //       // load the initial bank list
 //       this.filteredBanksMulti.next(this.areasList.slice());
-  
+
 //       // listen for search field value changes
 //       this.bankMultiFilterCtrl.valueChanges
 //         .pipe(takeUntil(this._onDestroy))
 //         .subscribe(() => {
 //           this.filterBanksMulti();
 //         });
-      
+
 //     }
 
 //     protected filterBanksMulti() {
@@ -86,30 +83,26 @@
 //         this.areasList.filter(bank => bank.Descripcion.toLowerCase().indexOf(search) > -1)
 //       );
 //     }
-  
 
 //   ngOnChanges(){
 //     this.aux += this.areaModel.areaId
 
-    
 //   }
 
 //   onClick(descripcion: string) {
 //     this.areaModel.areaDescripcion = descripcion;
 //   }
 
-  
 //     buscar() {
-    
+
 //       const valor = this.txtBuscar.nativeElement.value;
-  
+
 //       if ( valor.trim().length === 0 ) {
 //         return;
 //       }
 //       this.cargarAreas(this.areaModel.areaId,valor);
 //       this.txtBuscar.nativeElement.value = '';
 //     }
-  
 
 //   cargarAreas(areaId: string, name: string) {
 //     let _atts = [];
@@ -172,7 +165,6 @@
 //       cancelButtonColor: '#d33'
 //     }).then((result)=>{
 
-        
 //         if(result.value){
 
 //           let ids = this.areaModel.areaId.toString();
@@ -197,7 +189,6 @@
 //                 console.log('Otro')
 //                 console.log(data.data[0].atts[0].value)
 
-
 //                 Swal2.fire({
 
 //                   title:'Area Agregada',
@@ -220,9 +211,9 @@
 //                 text: data.message,
 //                 showConfirmButton: false,
 //                 timer: 2000
-                
+
 //               })
-              
+
 //             }
 //             this.controlService.closeSpinner(spinner);
 //           },
@@ -269,7 +260,6 @@
 //     //             console.log('Otro')
 //     //             console.log(data.data[0].atts[0].value)
 
-
 //     //             Swal2.fire({
 
 //     //               title:'Area Agregada',
@@ -292,9 +282,9 @@
 //     //             text: data.message,
 //     //             showConfirmButton: false,
 //     //             timer: 2000
-                
+
 //     //           })
-              
+
 //     //         }
 //     //         this.controlService.closeSpinner(spinner);
 //     //       },
@@ -347,7 +337,6 @@ import { takeUntil } from 'rxjs/operators';
 import { pipe, ReplaySubject, Subject } from 'rxjs';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 
-
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -359,8 +348,6 @@ export interface AddItem {
   Descripcion: string;
   selected: boolean;
   }
-
-
 
 @Component({
   selector: 'app-addrka',
@@ -395,6 +382,7 @@ export class AddrkaComponent implements OnInit {
   protected _onDestroy = new Subject<void>();
   arrAux: any;
   seleccion: any;
+  indice: number = 1;
 
   constructor(
     public dialogRef: MatDialogRef<AddrkaComponent>,
@@ -422,7 +410,6 @@ export class AddrkaComponent implements OnInit {
 
     }
 
-
     remove(fruit: AddItem): void {
       const index = this.areasListSeleccionadas.indexOf(fruit);
 
@@ -431,14 +418,14 @@ export class AddrkaComponent implements OnInit {
 
       }
 
-      this.deseleccionar(fruit)
+      this.deseleccionar(fruit);
 
     }
 
-    deseleccionar(item:AddItem){
-      for(let i  = 0; i < this.datasource2.data.length; i++){
+    deseleccionar(item: AddItem) {
+      for (let i  = 0; i < this.datasource2.data.length; i++) {
 
-        if(this.datasource2.data[i] === item && this.datasource2.data[i].selected === true){
+        if (this.datasource2.data[i] === item && this.datasource2.data[i].selected === true) {
           this.datasource2.data[i].selected = false ;
         }
       }
@@ -446,22 +433,17 @@ export class AddrkaComponent implements OnInit {
     applyFilter(filterValue: string) {
       console.log(filterValue);
 
-      filterValue = filterValue.trim().toLowerCase()
+      filterValue = filterValue.trim().toLowerCase();
 
-      
-        this.datasource2.filter = filterValue
-  
-        if(this.datasource2.filteredData.length === 0){
-          this.bloquearFiltro = true
-          this.cargarAreas(filterValue)
+      this.datasource2.filter = filterValue;
+
+      if (this.datasource2.filteredData.length === 0) {
+          this.bloquearFiltro = true;
+          this.cargarAreas(filterValue);
 
         }
-      
-      
-      
-      
+
     }
-    
 
   onClick(descripcion: string) {
     this.areaModel.areaDescripcion = descripcion;
@@ -475,11 +457,11 @@ export class AddrkaComponent implements OnInit {
         this.areasListSeleccionadas = this.areasListSeleccionadas.filter((item, index) => {
           return this.areasListSeleccionadas.indexOf(item) === index;
         });
-      }else{
-        debugger
-        if(this.datasource2.data[i]['selected'] === false){
+      } else {
+        debugger;
+        if (this.datasource2.data[i]['selected'] === false) {
 
-          this.remove(this.datasource2.data[i])
+          this.remove(this.datasource2.data[i]);
         }
       }
     }
@@ -499,11 +481,18 @@ export class AddrkaComponent implements OnInit {
       this.txtBuscar.nativeElement.value = '';
     }
 
-    pageEvents(pagina:number){
+    pageEvents(pagina: MatPaginator) {
+        
+        
+       if (!this.paginator.hasNextPage()) {
+        debugger
+        this.indice = this.indice+1;
+        this.cargarAreas('', this.indice);
+       }
 
     }
 
-    ordenarArray(items:AddItem[]){
+    ordenarArray(items: AddItem[]) {
       items.sort(function (a, b) {
         if (a.Id > b.Id) {
           return 1;
@@ -516,21 +505,40 @@ export class AddrkaComponent implements OnInit {
       });
     }
 
+    sonIguales(respuesta) {
 
-  cargarAreas(name?:string) {
+      this.areasList = this.areasList.sort();
+
+      for ( const i  in this.areasList) {
+
+        // console.log(respuesta[i]['atts'][0].value);
+        
+        if (respuesta[i]['atts'][0].value.trim() === this.areasList[i].Id) {
+            return true;
+        }else{
+
+          return false;
+        }
+
+      }
+
+    }
+
+  cargarAreas(name?: string, index?) {
     let _atts = [];
 
-     _atts.push({ name: "scriptName", value: "coemdr" });
-     _atts.push({ name: "action", value: this.areaModel.accion });
-     _atts.push({name: 'areaId', value: this.areaModel.areaId });
-     _atts.push({name: 'procesoId', value: this.areaModel.procesoId });
-     _atts.push({name: 'subprocesoId', value: this.areaModel.subprocesoId });
-     _atts.push({name: 'actividadId', value: this.areaModel.actividadId });
-     _atts.push({name: 'tareaId', value: this.areaModel.tareaId });
-     _atts.push({name: 'dimensionId', value:this.areaModel.dimensionId });
-     _atts.push({name: 'riesgoId', value: this.areaModel.riesgoId });
-     _atts.push({ name: "lookupName", value: name });
-     this.isLoading = true
+    _atts.push({ name: "scriptName", value: "coemdr" });
+    _atts.push({ name: "action", value: this.areaModel.accion });
+    _atts.push({name: 'areaId', value: this.areaModel.areaId });
+    _atts.push({name: 'procesoId', value: this.areaModel.procesoId });
+    _atts.push({name: 'subprocesoId', value: this.areaModel.subprocesoId });
+    _atts.push({name: 'actividadId', value: this.areaModel.actividadId });
+    _atts.push({name: 'tareaId', value: this.areaModel.tareaId });
+    _atts.push({name: 'dimensionId', value: this.areaModel.dimensionId });
+    _atts.push({name: 'riesgoId', value: this.areaModel.riesgoId });
+    _atts.push({ name: "lookupName", value: name });
+    _atts.push({ name: "index", value: index });
+    this.isLoading = true;
 
     const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts).subscribe(
@@ -538,29 +546,49 @@ export class AddrkaComponent implements OnInit {
           const result = data.success;
           if (result) {
             // if(data.data.length > 0){
-              
-            // }
 
-            if(data.data.length === 0){
-              this.isLoading = false
-              this.bloquearFiltro = false
+            // }
+              debugger
+            if (data.data.length === 0 && index !== undefined) {
+
+            
+
+              this.isLoading = false;
+              this.bloquearFiltro = false;
+              return Swal2.fire({
+                icon : 'info',
+                text : 'Items Listados en su totalidad'
+              });
+            }else{
+                if(data.data.length === 0){
+                  this.isLoading = false;
+              this.bloquearFiltro = false;
               return Swal2.fire({
                 icon : 'info',
                 text : 'Codigo/Descripcion no encontrada'
-              })
+              });
+                }
+
             }
-            data.data.forEach((element) => {
+
+            // let duplicado = this.sonIguales(data.data);
+            // debugger
+            data.data.forEach((element, index) => {
+
               if (element.atts.length > 0) {
                 this.areasList.unshift({
                   Id: element.atts[0].value.trim(),
                   Descripcion: element.atts[2].value.trim(),
                   selected : false
                 });
-                this.bloquearFiltro = false
-              }else{
-               
+                this.bloquearFiltro = false;
+              } else {
+
               }
             });
+            // if( !duplicado){
+
+            // }
 
             // console.log(this.areasList);
             this.areasList.sort(function (a, b) {
@@ -574,8 +602,9 @@ export class AddrkaComponent implements OnInit {
               return 0;
             });
 
+            console.log(this.areasList);
             this.datasource2 = new MatTableDataSource<AddItem>(this.areasList);
-            console.log(this.datasource2.data);
+            
             this.datasource2.paginator = this.paginator;
           } else {
             this.autentication.showMessage(
@@ -585,7 +614,7 @@ export class AddrkaComponent implements OnInit {
               data.redirect
             );
           }
-          this.isLoading = false
+          this.isLoading = false;
           return result;
         },
         (error) => {
@@ -605,27 +634,26 @@ export class AddrkaComponent implements OnInit {
     console.log(this.aux);
   }
 
+  llenarPeticion(accion: string, key: string) {
 
-  llenarPeticion(accion:string,key:string){
-
-    switch(accion){
+    switch (accion) {
       case 'PROCESO_CREATE':
 
       return [{ name: 'scriptName', value: 'coemdr' },
          { name: 'action', value: this.data.crear },
          { name: 'areaId', value: this.data.areaId },
          { name: 'procesoId', value:  key.toString() },
-          ]
-        
+          ];
+
       case 'SUBPROCESO_CREATE':
         return [{ name: 'scriptName', value: 'coemdr' },
          { name: 'action', value: this.data.crear },
          { name: 'areaId', value: this.data.areaId },
          { name: 'procesoId', value: this.data.procesoId },
          { name: 'subprocesoId', value: key.toString() },
-         
-         ]
-      
+
+         ];
+
       case 'ACTIVIDAD_CREATE':
         return [{ name: 'scriptName', value: 'coemdr' },
          { name: 'action', value: this.data.crear },
@@ -633,8 +661,8 @@ export class AddrkaComponent implements OnInit {
          { name: 'procesoId', value: this.data.procesoId },
          { name: 'subprocesoId', value: this.data.subprocesoId },
          { name: 'actividadId', value:  key.toString() },
-         ]
-      
+         ];
+
       case 'TAREA_CREATE':
         return [{ name: 'scriptName', value: 'coemdr' },
          { name: 'action', value: this.data.crear },
@@ -642,8 +670,8 @@ export class AddrkaComponent implements OnInit {
          { name: 'procesoId', value: this.data.procesoId },
          { name: 'subprocesoId', value: this.data.subprocesoId },
          { name: 'actividadId', value: this.data.actividadId },
-         { name: 'tareaId', value:  key.toString() }]
-      
+         { name: 'tareaId', value:  key.toString() }];
+
       case 'DIMENSION_CREATE':
         return [{ name: 'scriptName', value: 'coemdr' },
          { name: 'action', value: this.data.crear },
@@ -652,8 +680,8 @@ export class AddrkaComponent implements OnInit {
          { name: 'subprocesoId', value: this.data.subprocesoId },
          { name: 'actividadId', value: this.data.actividadId },
          { name: 'tareaId', value: this.data.tareaId },
-         { name: 'dimensionId', value: key.toString() }]
-      
+         { name: 'dimensionId', value: key.toString() }];
+
       case 'RIESGO_CREATE':
         return [{ name: 'scriptName', value: 'coemdr' },
          { name: 'action', value: this.data.crear },
@@ -663,19 +691,18 @@ export class AddrkaComponent implements OnInit {
          { name: 'actividadId', value: this.data.actividadId },
          { name: 'tareaId', value: this.data.tareaId },
          { name: 'dimensionId', value: this.data.dimensionId },
-         { name: 'riesgoId', value: key.toString() }]
-      
+         { name: 'riesgoId', value: key.toString() }];
+
       default:
         return [{ name: 'scriptName', value: 'coemdr' },
         { name: 'action', value: this.data.crear },
-        { name: 'areaId', value: key.toString()}]
+        { name: 'areaId', value: key.toString()}];
 
     }
 
   }
 
   async guardar() {
-    
 
     Swal2.fire({
       title: this.data.title,
@@ -690,38 +717,35 @@ export class AddrkaComponent implements OnInit {
 
         if (result.value) {
 
-         let ids = []
-          this.areasListSeleccionadas.forEach( id => {
-            ids.push(id.Id)
-         })
-         
-         
-          
-          const _atts = this.llenarPeticion(this.data.crear, ids.toString())
+         let ids = [];
+         this.areasListSeleccionadas.forEach( id => {
+            ids.push(id.Id);
+         });
 
-          const spinner = this.controlService.openSpinner();
-          const obj =  this.autentication.generic(_atts);
+         const _atts = this.llenarPeticion(this.data.crear, ids.toString());
 
-          obj.subscribe(
+         const spinner = this.controlService.openSpinner();
+         const obj =  this.autentication.generic(_atts);
+
+         obj.subscribe(
           (data) => {
             if (data.success === true) {
-              console.log('Aqui!!!')
-              console.log(data.data[0])
+              console.log('Aqui!!!');
+              console.log(data.data[0]);
 
               if (data.data[0].atts[1]) {
 
-                console.log('Otro')
-                console.log(data.data[0].atts[0].value)
-
+                console.log('Otro');
+                console.log(data.data[0].atts[0].value);
 
                 Swal2.fire({
 
                   title: this.data.ok,
-                  icon:'success',
+                  icon: 'success',
                   showConfirmButton: false,
                   timer: 2000
                 }
-                )
+                );
                 this.areaModel = {
                   areaId: "",
                   areaDescripcion: "",
@@ -736,9 +760,9 @@ export class AddrkaComponent implements OnInit {
                 text: data.message,
                 showConfirmButton: false,
                 timer: 2000
-                
-              })
-              
+
+              });
+
             }
             this.controlService.closeSpinner(spinner);
           },
@@ -755,14 +779,13 @@ export class AddrkaComponent implements OnInit {
 
   cancelar() {
     this.areaModel.areaId = '';
-    if(this.data.accion !== 'AREA_CREATE'){
+    if (this.data.accion !== 'AREA_CREATE') {
 
       this.dialogRef.close(false);
-    }else{
+    } else {
       this.dialogRef.close(true);
-      
+
     }
   }
 
 }
-
