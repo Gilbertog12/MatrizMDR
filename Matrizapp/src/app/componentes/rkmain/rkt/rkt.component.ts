@@ -36,7 +36,7 @@ export class RktComponent implements OnInit {
   public stdJobList: any[] = [];
   public stdJobListLectura: any[] = [];
   public modificar:boolean =false;
-  public data: any
+  public data: any;
   public anterior:any;
 
   public tareasList: any[] = [];
@@ -61,12 +61,12 @@ export class RktComponent implements OnInit {
   public validacion = 'Validacion';
   public aprobacion = 'aprobacion';
   public validacionaprobacion = 'validacionaprobacion';
-  creacionaprobacion ='creacionaprobacion'
+  creacionaprobacion ='creacionaprobacion';
 
-public key:string
-public version : string
-public Razon : string
-public canAdd : string
+public key:string;
+public version : string;
+public Razon : string;
+public canAdd : string;
 
   private id : string;
   private pid : string;
@@ -79,6 +79,11 @@ public canAdd : string
   loading: boolean = true;
   tabDefault: number;
   allow: string;
+  boton: string;
+  contador2: any;
+  contador1: number;
+  uid: string;
+  vueltas: any;
 
 
   constructor(private autentication: AuthenticationService,
@@ -93,7 +98,7 @@ public canAdd : string
 
                 //this.aperfil()
 
-                this.canAdd=localStorage.getItem('canAdd')
+                this.canAdd=localStorage.getItem('canAdd');
 
                 this.route.params.subscribe( params => {
                   this.id = params['id'];
@@ -106,7 +111,7 @@ public canAdd : string
                   this.detalleList = [];
                   this.stdJobList = [];
                   
-                  this.tabDefault = 0
+                  this.tabDefault = 0;
                   this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
                   
 
@@ -119,8 +124,8 @@ public canAdd : string
     // this.cargarRiesgo()
 
     localStorage.setItem('isSendToValidate', '0');
-    localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'))
-    this.percreacion = localStorage.getItem('NoCreador')
+    localStorage.setItem('UltimoEnviado', localStorage.getItem('keySelected'));
+    this.percreacion = localStorage.getItem('NoCreador');
 
     // this.Cajas.Recargar$.subscribe(resp=>{
     //   if(resp){
@@ -140,11 +145,11 @@ public canAdd : string
             this.detalleList = [];
             this.stdJobList = [];
             // this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
-            this.cargarRiesgo()        
+            this.cargarRiesgo();        
 
 
       }
-    })
+    });
 
 
   }
@@ -152,22 +157,7 @@ public canAdd : string
 
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string, tareaId: string) {
 
-    // debugger
-    if(this.tareaModel !== {}){
-      this.tareaModel = {}
-    };
-    if(this.dimensionesList !== []){
-      this.dimensionesList = []
-    }
-    if(this.detalleList !== []){
-      this.detalleList = []
-    }
-    if(this.stdJobList !== []){
-      this.stdJobList = []
-    }
-    if(this.detalleList !== []){
-      this.detalleList = []
-    }
+    
 
 
     let _atts = [];
@@ -189,10 +179,10 @@ public canAdd : string
           const result = data.success;
           if (result) {
 
-            this.allow = localStorage.getItem('allow')
-            console.log(data)
+            this.allow = localStorage.getItem('allow');
+            console.log(data);
             data.data.forEach( (element) => {
-              console.log(data)
+              console.log(data);
               if ( element.atts.length > 0) {
                 if ( element.atts[0].value === '0' ) {
                   this.tareaModel = {
@@ -222,27 +212,27 @@ public canAdd : string
                     tareaStatus: data.data[0].atts[23].value,
                     tareaStatusId :data.data[0].atts[27].value,
                   };
-                  console.log(this.tareaModel.tareaStatusId)
+                  console.log(this.tareaModel.tareaStatusId);
                   if(parseInt(this.tareaModel.tareaStatusId) == 1 || parseInt(this.tareaModel.tareaStatusId) == 2 ||parseInt(this.tareaModel.tareaStatusId) == 6 ){
-                    var StatusTemp = 1
+                    var StatusTemp = 1;
                   }else{
-                    var StatusTemp = parseInt(this.tareaModel.tareaStatusId)
+                    var StatusTemp = parseInt(this.tareaModel.tareaStatusId);
                   }
-                  console.log(StatusTemp)
+                  console.log(StatusTemp);
 
                   if(parseInt(this.tareaModel.statusParent) == 1 || parseInt(this.tareaModel.statusParent) == 2 ||parseInt(this.tareaModel.statusParent) == 6 ){
-                    var StatusTempP = 1
+                    var StatusTempP = 1;
                   }else{
-                    var StatusTempP = parseInt(this.tareaModel.statusParent)
+                    var StatusTempP = parseInt(this.tareaModel.statusParent);
                   }
 
 
                   if(StatusTemp <StatusTempP){
-                    this.permisoValidar = true
+                    this.permisoValidar = true;
                   }else{
-                    this.permisoValidar= false
+                    this.permisoValidar= false;
                   }
-                  console.log(this.permisoValidar)
+                  console.log(this.permisoValidar);
 
                   localStorage.setItem('keySelected', this.tareaModel.key);
                   localStorage.setItem('versionSelected', this.tareaModel.tareaVersion);
@@ -324,8 +314,9 @@ public canAdd : string
                 }
               }
             });
-
-            this.cargarRiesgo()
+            const parameters = [ this.allow , this.tareaModel.tareaStatusId , this.tareaModel.CanAdd ];
+            this.boton = this.autentication.botonesFlujoAprobacion(parameters);
+            this.cargarRiesgo();
           } else {
             this.controlService.closeSpinner(spinner);
             this.autentication.showMessage(data.success, data.message, this.tareaModel, data.redirect);
@@ -335,8 +326,8 @@ public canAdd : string
           return result;
       },
       (error) => {
-        debugger
-          console.log(error)
+        debugger;
+          console.log(error);
         this.controlService.closeSpinner(spinner);
         this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet', this.tareaModel, false);
       });
@@ -347,10 +338,10 @@ public canAdd : string
 
 
 
-    console.log(this.anterior.length)
+    console.log(this.anterior.length);
 
     if( this.anterior.trimEnd() != this.tareaModel.tareaDescripcionExt.trimEnd()){
-      this.modificar = true
+      this.modificar = true;
     }
 
 
@@ -381,7 +372,7 @@ public canAdd : string
                       text: 'Descripcion Extendida',
                       icon: 'success'
 
-                    })
+                    });
 
                   }
                   else {
@@ -390,7 +381,7 @@ public canAdd : string
                       text: data.message,
                       icon: 'error'
 
-                    })
+                    });
 
                   }
                 }
@@ -406,7 +397,7 @@ public canAdd : string
               });
 
               this.controlService.closeSpinner(spinner);
-              console.log(this.tareaModel.tareaDescripcionExt)
+              console.log(this.tareaModel.tareaDescripcionExt);
 
 
 
@@ -441,7 +432,7 @@ public canAdd : string
         this.detalleList = [];
         this.stdJobList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid);
-        this._Recargarble.Recargar$.emit(true)
+        this._Recargarble.Recargar$.emit(true);
 
       }
     });
@@ -490,11 +481,11 @@ public canAdd : string
     if (data.success === true) {
       if ( data.data[0].atts[1] ) {
         // this.autentication.showMessage(data.success, data.data[0].atts[1].value, this.tareaModel, data.redirect);
-        this._Recargarble.Recargar$.emit(true)
+        this._Recargarble.Recargar$.emit(true);
         Swal2.fire({
           icon:'success',
           text:data.data[0].atts[1].value
-        })
+        });
       }
       this.tareaModel = {};
       this.dimensionesList = [];
@@ -507,7 +498,7 @@ public canAdd : string
       Swal2.fire({
         icon:'error',
         text:data.message
-      })
+      });
     }
     this.controlService.closeSpinner(spinner);
     },
@@ -542,36 +533,36 @@ public canAdd : string
     switch(status){
 
       case  '000' :
-          this.VerCajasdashboard(key)
+          this.VerCajasdashboard(key);
 
       break;
      case  '001' :
 
-      this.VerCajasdashboard(key)
+      this.VerCajasdashboard(key);
 
 
       break;
      case  '002' :
 
-      this.VerCajasdashboard(key)
+      this.VerCajasdashboard(key);
 
       break;
      case  '003' :
 
-      this.VerCajasdashboard(key)
+      this.VerCajasdashboard(key);
      case  '006' :
 
-      this.VerCajasdashboard(key)
+      this.VerCajasdashboard(key);
 
       break;
 
       case '004':
 
-            this.VerRkvalidarC(key)
+            this.VerRkvalidarC(key);
         break;
 
       case '007':
-        this.VerRkporaprobar(key)
+        this.VerRkporaprobar(key);
 
         break;
 
@@ -649,8 +640,8 @@ public canAdd : string
 
   cargarRiesgo(){
 
-    this.loading = true
-    this.dimensionesList=[]
+    this.loading = true;
+    this.dimensionesList=[];
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'ITEM_EVALRISK_DETAIL_READ' });
@@ -665,7 +656,7 @@ public canAdd : string
 
       if (data.success === true) {
 
-        console.log(data)
+        console.log(data);
 
 
 
@@ -681,19 +672,19 @@ public canAdd : string
                           pendingDelete: element.atts[7].value
           });
 
-        })
+        });
 
-        this.loading = false
-        this.tabDefault = -1
+        this.loading = false;
+        this.tabDefault = -1;
         this.controlService.closeSpinner(spinner);
         
       }else{
         
-        this.loading = false
-        this.tabDefault = -1
+        this.loading = false;
+        this.tabDefault = -1;
         this.controlService.closeSpinner(spinner);
         }
-      })
+      });
 
       // this.loading = false
 
@@ -702,9 +693,9 @@ public canAdd : string
 
   cargarPestañasDetalle(){
 
-    this.loading = true
+    this.loading = true;
 
-      this.detalleList=[]
+      this.detalleList=[];
       let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'TAREA_READ_DETAIL' });
@@ -715,7 +706,7 @@ public canAdd : string
     _atts.push({ name: 'tareaId', value:  this.tid });
 
 
-    const spinner = this.controlService.openSpinner()
+    const spinner = this.controlService.openSpinner();
 
     const obj =  this.autentication.generic(_atts);
 
@@ -723,7 +714,7 @@ public canAdd : string
 
               if (data.success === true) {
 
-                console.log(data)
+                console.log(data);
 
 
 
@@ -742,26 +733,26 @@ public canAdd : string
                     criticidad: element.atts[9].value
                       });
 
-                })
-                this.loading = false
+                });
+                this.loading = false;
 
-                this.controlService.closeSpinner(spinner)
+                this.controlService.closeSpinner(spinner);
                 
               }else{
                 
-                this.loading = false
-                this.controlService.closeSpinner(spinner)
+                this.loading = false;
+                this.controlService.closeSpinner(spinner);
         }
-      })
+      });
 
       // this.loading = false
 
   }
   cargarPestañasStdJob(){
 
-    this.loading = true
+    this.loading = true;
 
-      this.stdJobList=[]
+      this.stdJobList=[];
       let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'TAREA_READ_STDJOB' });
@@ -771,7 +762,7 @@ public canAdd : string
     _atts.push({ name: 'actividadId', value:  this.cid });
     _atts.push({ name: 'tareaId', value:  this.tid });
 
-    const spinner = this.controlService.openSpinner()
+    const spinner = this.controlService.openSpinner();
 
     const obj =  this.autentication.generic(_atts);
 
@@ -779,7 +770,7 @@ public canAdd : string
 
               if (data.success === true) {
 
-                console.log(data)
+                console.log(data);
 
 
 
@@ -798,16 +789,16 @@ public canAdd : string
                         displayDeleteIcon: element.atts[9].value
                       });
 
-                })
-                this.loading = false
-                this.controlService.closeSpinner(spinner)
+                });
+                this.loading = false;
+                this.controlService.closeSpinner(spinner);
                 
               }else{
                 
-                this.loading = false
-                this.controlService.closeSpinner(spinner)
+                this.loading = false;
+                this.controlService.closeSpinner(spinner);
               }
-            })
+            });
 
             // this.loading = false
 
@@ -815,20 +806,20 @@ public canAdd : string
 
   test(e){
 
-    console.log(e)
+    console.log(e);
     // debugger
     switch(e.index){
       case 0:
         if(this.tabDefault !== e.index){
 
-          this.cargarRiesgo()
+          this.cargarRiesgo();
         }
         break;
         case 1:
-          this.cargarPestañasStdJob()
+          this.cargarPestañasStdJob();
           break;
           case 2:
-          this.cargarPestañasDetalle()
+          this.cargarPestañasDetalle();
         break;
 
     }
@@ -837,60 +828,67 @@ public canAdd : string
 
   }
 
-  enviarAvalidar(id,status,tipo){
+  enviarAvalidar(id, status, tipo) {
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: tipo });
     _atts.push({ name: 'key', value: id });
+    _atts.push({ name: 'soloNodos', value: "Y" });
     _atts.push({ name: 'statusItem', value: status });
     _atts.push({ name: 'showCompleted', value: 'Y' });
 
     const spinner = this.controlService.openSpinner();
-    
-    debugger
+    //
+    // debugger
     this.autentication.generic(_atts)
     .subscribe( datos => {
-        console.log( datos)
-      if( datos.success){
 
-        if (datos.data[0].atts[0].name === 'TIMEOUT') {
-          // debugger
-          this.controlService.closeSpinner(spinner);
 
-          Swal2.fire({
-            icon: 'info',
-            text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+      if (datos.data[0].atts[0].name === 'TIMEOUT') {
+        // debugger
+        this.controlService.closeSpinner(spinner);
 
-          }).then((resultado) => {
-            
-          });
+        Swal2.fire({
+          icon: 'info',
+          text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
 
-          return;
+        }).then((resultado) => {
+          
+        });
 
-        }
-        datos.data.forEach(element => {
+        return;
 
-          if (element.atts.length > 0){
-            
-            this.llaves.push( element.atts[16].value.trim(),'Y',)
+      }
+      
+        console.log( datos);
+        if ( datos.success) {
+
+        datos.data.forEach((element) => {
+
+          if ( element.atts[0].name === 'uuid'){
+            console.log(element);
+            this.uid =  element.atts[0].value;
+
           }
-        })
+        });
 
-        console.log(this.llaves.toString())
-        this.sendValidate(this.llaves.toString(),status)
+        this.sendValidate( status);
         this.controlService.closeSpinner(spinner);
       }
-    })
+    });
 
   }
 
-  sendValidate(llaves,status){
 
-    let mnsje = 'Enviar a Validar'
+  sendValidate( status) {
 
-    if(status === '007'){
-      mnsje = 'Aprobar'
+    let mnsje = 'Enviar a Validar';
+    let titulo = 'Envio a Validacion en Proceso';
+
+    if(status === '007') {
+      mnsje = 'Aprobar';
+      titulo = 'Aprobacion en Proceso';
     }
 
     Swal2.fire({
@@ -905,31 +903,27 @@ public canAdd : string
     }).then((result) => {
       if (result.value) {
 
-        
-
         const _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: 'Y' });
-            _atts.push({ name: 'key', value: llaves });
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'VALIDATE' });
+        _atts.push({ name: 'onlyActualNode', value: 'Y' });
+        _atts.push({ name: 'uuid', value: this.uid });
+            // _atts.push({ name: 'key', value: llaves });
 
-            const obj = this.autentication.generic(_atts);
-            const spinner = this.controlService.openSpinner();        
+        const obj = this.autentication.generic(_atts);
+        const spinner = this.controlService.openSpinner();
 
         obj.subscribe(
                     (data) => {
                       if (data.success === true) {
 
+                        // this.mostrarMensaje();
+                      this.autentication.mensajeFlujoAprobacion(titulo);
 
-                        this.mostrarMensaje();
-                        
-                        
-                        this.Cajas.notificaciones$.emit(true);
-                        
-                      ;
+                      this.Cajas.notificaciones$.emit(true);
 
                       } else {
-                        
+
                         Swal2.fire('', data.message, 'error');
                       }
 
@@ -937,26 +931,112 @@ public canAdd : string
 
                     },
                     (error) => {
-                      
+
                       this.controlService.closeSpinner(spinner);
                     });
                   }
 
                 });
-    
-  }
-  mostrarMensaje() {
-    Swal2.fire({
-    
-      title: 'Envio a Validacion en Proceso',
-      text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
-      imageUrl: 'assets/images/notificacion.png',
-      imageWidth: 150,
-    imageHeight: 150,
-      imageAlt: 'Notificacion',
-    })
-  
-    this.router.navigate(['/rkmain']);
+
   }
 
+
+  obtenerVueltas(llaves) {
+    this.vueltas = Math.ceil(llaves.length / 1000 );
+    this.dividirLlaves(llaves);
+  }
+
+  async dividirLlaves(llaves?) {
+
+    // const vueltas = Math.ceil(llaves.length / 1000 )
+    if (llaves.length > 1000 ) {
+
+      if (this.contador2 < this.vueltas) {
+
+        let llavesp = this.obtenerPorcion(llaves);
+        this.autentication.envioPorLotes(llavesp, this.uid)
+        .subscribe( (uuid) => {
+
+          uuid.data.forEach( (uid) => {
+              this.uid = uid.atts[1].value.trim();
+          });
+          this.contador1 = this.contador1 + 1000;
+          this.contador2++;
+          this.dividirLlaves(llaves);
+
+        });
+
+      } else {
+
+        this.envioAEllipse(llaves.slice(this.contador1, llaves.length), 'T' );
+      }
+
+    } else {
+       this.envioAEllipse(llaves, 'T' );
+
+    }
+
+  }
+
+obtenerPorcion(llaves: any) {
+
+  const valores = llaves.slice(this.contador1 , (this.contador2 * 1000));
+
+  return valores.toString();
+}
+async envioAEllipse(keys: any[], envio: string ) {
+
+  let valores:string = '';
+
+  let mnsje = 'Enviar a Validar';
+  let titulo = 'Envio a Validacion en Proceso';
+
+  if(status === '007') {
+      mnsje = 'Aprobar';
+      titulo = 'Aprobacion en Proceso';
+    }
+
+  const _atts = [];
+  _atts.push({ name: 'scriptName', value: 'coemdr' });
+  _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+  _atts.push({ name: 'onlyActualNode', value: 'Y' });
+
+  _atts.push({ name: 'key', value: keys.toString() });
+  _atts.push({ name: 'envio', value: envio });
+  _atts.push({ name: 'uuid', value: this.uid });
+
+  console.log(_atts);
+
+  const obj = await this.autentication.generic(_atts);
+  const spinner = this.controlService.openSpinner();
+
+  obj.subscribe(
+                (data) => {
+                    if (data.success === true) {
+
+                      if (this.uid === '') {
+
+                        this.uid = data[1]['atts'][1].value;
+
+                        // this.dividirLlaves();
+                      }
+
+                      this.autentication.mensajeFlujoAprobacion(titulo);
+                      // this.dialogRef.close(false);
+                      this.Cajas.notificaciones$.emit(true);
+
+                } else {
+
+                  Swal2.fire('', data.message, 'error');
+                }
+
+                    this.controlService.closeSpinner(spinner);
+
+              },
+              (error) => {
+                this.controlService.closeSpinner(spinner);
+                console.log(error);
+                // this.controlService.closeSpinner(spinner);
+              });
+}
 }

@@ -171,7 +171,6 @@ export class RkporaprobarComponent implements OnInit {
               console.log(data.data.length);
               if (data.data.length > 0) {
 
-
                 if (data.data[0].atts[0].name === 'TIMEOUT') {
                   // debugger
                   this.controlService.closeSpinner(spinner);
@@ -190,38 +189,44 @@ export class RkporaprobarComponent implements OnInit {
                   return;
 
                 }
-
+                if ( data.data.length > 3000 ) {
+                  return Swal2.fire({
+                    title: 'Limite de visualizacion excedido',
+                    text : 'si desea validar la informacion baje un nivel',
+                  });
+                }
                 data.data.forEach((element) => {
 
                   if (element.atts.length > 0) {
 
-                    const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
+                    const fecha = this.convertiFechaYhora(element.atts[5].value.trim());
 
-                    this.obtenerRuta(element.atts[16].value.trim());
+                    this.obtenerRuta(element.atts[6].value.trim());
 
                     this.pendList.push({
                       Accion: element.atts[1].value.trim(),
                       Entidad: element.atts[2].value.trim(),
                       Id: element.atts[3].value.trim(),
                       Descripcion: element.atts[4].value.trim(),
-                      Area: element.atts[5].value.trim(),
-                      Proceso: element.atts[6].value.trim(),
-                      Subproceso: element.atts[7].value.trim(),
-                      Actividad: element.atts[8].value.trim(),
-                      Tarea: element.atts[9].value.trim(),
-                      Dimension: element.atts[10].value.trim(),
-                      Riesgo: element.atts[11].value.trim(),
-                      Consecuencia: element.atts[12].value.trim(),
-                      Controles : element.atts[13].value.trim(),
+                      key: element.atts[6].value.trim(),
+                      version : element.atts[7].value.trim(),
                       Fecha: fecha,
-                      key: element.atts[16].value.trim(),
-                      version : element.atts[17].value.trim(),
-                      Comentarios : element.atts[18].value.trim(),
-                      // permiso: this.permi,
+                      Comentarios : element.atts[8].value.trim(),
+                      status: element.atts[9].value.trim(),
                       check: false,
-                      status: element.atts[19].value.trim(),
-                      TipoControl: element.atts[21].value,
-                      rutaJerarquia: this.rutaJerarquia
+                      bloqueo : false
+                      // Area: element.atts[5].value.trim(),
+                      // Proceso: element.atts[6].value.trim(),
+                      // Subproceso: element.atts[7].value.trim(),
+                      // Actividad: element.atts[8].value.trim(),
+                      // Tarea: element.atts[9].value.trim(),
+                      // Dimension: element.atts[10].value.trim(),
+                      // Riesgo: element.atts[11].value.trim(),
+                      // Consecuencia: element.atts[12].value.trim(),
+                      // Controles : element.atts[13].value.trim(),
+                      // permiso: this.permi,
+                      // TipoControl: element.atts[21].value,
+                      // rutaJerarquia: this.rutaJerarquia,
 
                     });
 
@@ -236,7 +241,7 @@ export class RkporaprobarComponent implements OnInit {
                 this.TotalRegistros = this.pendList.length;
                 this.controlService.closeSpinner(spinner);
               } else {
-                
+
                 this.controlService.closeSpinner(spinner);
                 this.dialogRef.close(false);
                 // this.mostrarMensaje();
@@ -244,7 +249,6 @@ export class RkporaprobarComponent implements OnInit {
               }
 
               // this.comprobarPadre()
-             
 
             } else {
               this.controlService.closeSpinner(spinner);
@@ -264,16 +268,6 @@ export class RkporaprobarComponent implements OnInit {
       imprime() {
     console.log(this.FechaDesde = this.FechaDesde.split('-').join(''));
     console.log(this.FechaHasta = this.FechaHasta.split('-').join('') );
-
-    // let a = this.FechaDesde.substring(0,4);
-    // console.log(a)
-    // let b = this.FechaDesde.substring(7,5);
-    // console.log
-    // let c = this.FechaDesde.substring(8,10);
-    // let d = this.FechaHasta.substring(0,4);
-    // let e = this.FechaHasta.substring(7,5);
-    // let f = this.FechaHasta.substring(8,10);
-    // let total=a+b+c
 
     this.FechaDesdeServicio = this.FechaDesde;
 
@@ -499,6 +493,17 @@ export class RkporaprobarComponent implements OnInit {
     }
 
   async sendvalidate() {
+
+
+    if ( this.totalMarcados > 1000) {
+
+      return Swal2.fire({
+          icon: 'info',
+          text : 'la cantidad de items que esta intentando enviar a validar excede el limite deben ser menores o iguales a 1000',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar',
+      });
+    }
 
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionar al menos 1 item', {}, false);

@@ -18,7 +18,7 @@
             <div class="col-xl-12">
             
             <mat-form-field>
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" [disabled]="bloquearFiltro">
+                <input matInput type="text" #txtBuscar (keyup.enter)="applyFilter($event.target.value)"  autocomplete="off" placeholder="Filter"  autofocus>
         
             </mat-form-field>
             <mat-progress-bar *ngIf="isLoading" style="width: 100%" mode="buffer"></mat-progress-bar>

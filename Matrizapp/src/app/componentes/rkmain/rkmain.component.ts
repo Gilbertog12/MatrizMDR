@@ -28,6 +28,7 @@ import { AutologoutService } from '../../shared/services/autologout.service';
 import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 import { AddrkaComponent } from '../../AddPages/addrka/addrka.component';
 import { AddrkyComponent } from '../../AddPages/addrky/addrky.component';
+import { EntidadesPendientesComponent } from './entidades-pendientes/entidades-pendientes.component';
 
 @Injectable({
   providedIn: 'root',
@@ -642,7 +643,8 @@ export class RkmainComponent implements OnInit {
     this.dataSource = new DynamicDataSource(this.treeControl, this.autentication, this.controlService);
 
     const params = [];
-    params.push({ name: 'scriptName', value: 'coemdr' });
+
+    params.push({ name: 'scriptName', value: 'coersk' });
     params.push({ name: 'action', value: 'SEARCH_NODE' });
     params.push({ name: 'level', value: '1' });
     params.push({ name: 'id', value: '' });
@@ -659,6 +661,7 @@ export class RkmainComponent implements OnInit {
               // console.log(data)
 
           data['data'].forEach( (value) => {
+            debugger
             const key: string = value['atts'][7]['value'];
             const name: string = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
             const status = value['atts'][3]['value'];
@@ -846,14 +849,12 @@ export class RkmainComponent implements OnInit {
     localStorage.setItem('statusSelected', nodo.status.trim());
     localStorage.setItem('itemseleccionado', nodo.route );
     localStorage.setItem('seleccionado', nodo );
-    localStorage.setItem('allow', nodo.permiso );
+    localStorage.setItem('allow', this.Cajas.permiso );
 
     this.nodoseleccionado = localStorage.getItem('itemseleccionado');
 
-    
-
     this.HabilitarEnvioValidacion();
-    
+
   }
 
   HabilitarEnvioValidacion() {
@@ -863,7 +864,6 @@ export class RkmainComponent implements OnInit {
 
   }
 
-  
   verTable(item: any) {
     // alert(item.ruta.trim().length.toString());
     switch (item.key.trim().length.toString()) {
@@ -958,7 +958,6 @@ export class RkmainComponent implements OnInit {
 
         });
 
-        
         }
 
     }));
@@ -3086,6 +3085,8 @@ mostrarNotificaciones() {
 }
 
 notificacionesPendientes(borradoNotificacion?: boolean) {
+
+  debugger
   const _atts = [];
   _atts.push({ name: 'scriptName', value: 'coemdr' });
   _atts.push({ name: 'action', value: 'NOTIFICACION_STATUS' });
@@ -3094,7 +3095,7 @@ notificacionesPendientes(borradoNotificacion?: boolean) {
     (data) => {
       console.log(data);
       const result = data.success;
-      debugger
+      // debugger
       if (result) {
 
               this.notificacionesList = {
@@ -3157,16 +3158,16 @@ contadorNotificaciones() {
 
               console.log( data.data.length);
               this.notificacionesContador = data.data.length;
-              if(aux === this.contadorNotificaciones){
+              if(aux === this.contadorNotificaciones) {
                 this.visible = true;
               }
               if (this.notificacionesContador >= 100) {
                 this.notificacionesContador = '99+';
               }
-              if(this.notificacionesContador > 0 || this.notificacionesContador ==='99+'){
+              if(this.notificacionesContador > 0 || this.notificacionesContador ==='99+') {
 
                 this.visible = false;
-              }else{
+              } else {
                 this.visible = true;
               }
               } else {
@@ -3481,7 +3482,7 @@ BotonesAccion(node: DynamicFlatNode) {
           // return this.botones = ['assets/images/Add_Disabled.png', 'assets/images/Delete_Disabled.png', true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
           return this.botones = ['assets/images/Add.png', 'assets/images/Delete.png', false , false , 'img-circle botonHabilitado'  , ' img-circle botonDeshabilitado'];
         } else {
-          debugger
+          // debugger
           return this.botones =  ['assets/images/botn_blanco.jpg', 'assets/images/Delete.png' , true, true, 'img-circle botonDeshabilitado' , 'img-circle botonDeshabilitado'];
       }
 
@@ -3498,4 +3499,21 @@ BotonesAccion(node: DynamicFlatNode) {
 
   }
 }
+
+entidadesPendientes() {
+  const conf = this.confirm.open(EntidadesPendientesComponent, {
+    hasBackdrop: true,
+    height: 'auto',
+    width: 'auto',
+    data:
+    {
+      title: 'Informacion',
+      message: '',
+      button_confirm: 'Ok',
+      button_close: 'Cerrar'
+
+    }
+  })
+}
+
 }

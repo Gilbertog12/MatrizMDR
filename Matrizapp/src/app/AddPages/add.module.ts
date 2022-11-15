@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatStepperModule} from '@angular/material/stepper';
+import { NuevaEntidadComponent } from '../nueva-entidad/nueva-entidad.component';
 
 
 
@@ -60,30 +61,28 @@ import {MatStepperModule} from '@angular/material/stepper';
   ],
   declarations: [
       AddrkaComponent,
-     
       AddrkyComponent,
-     
       AddrkyprobabilidadComponent,
-      AddrkyseveridadComponent
-    
+      AddrkyseveridadComponent,
+      NuevaEntidadComponent
+
     ],
 
     exports: [
         AddrkaComponent,
-       
         AddrkyComponent,
-      
         AddrkyprobabilidadComponent,
         AddrkyseveridadComponent
     ],
 
     entryComponents:[
       AddrkaComponent,
-     
+
       AddrkyComponent,
-      
+
       AddrkyprobabilidadComponent,
-      AddrkyseveridadComponent
+      AddrkyseveridadComponent,
+      NuevaEntidadComponent
     ]
 })
 export class AddModule { }

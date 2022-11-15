@@ -106,6 +106,8 @@ import { ChartsModule } from './charts/charts.module';
 import { HeaderModule } from './layout/header/header.module';
 import { AddModule } from './AddPages/add.module';
 
+import { NuevaEntidadComponent } from './nueva-entidad/nueva-entidad.component';
+
 
 
 
@@ -162,7 +164,8 @@ import { AddModule } from './AddPages/add.module';
     NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.circleSwish}),
     ReactiveFormsModule,
     MatBadgeModule,
-    HeaderModule
+    HeaderModule,
+    
 
 
 
@@ -202,6 +205,9 @@ import { AddModule } from './AddPages/add.module';
     FilterdataPipe,
 
 
+    // NuevaEntidadComponent,
+
+
     // ChecklistComponent,
 
 
@@ -214,7 +220,7 @@ import { AddModule } from './AddPages/add.module';
 
   ],
   providers: [AuthGuard, AuthenticationService, HttpMethodService, ControlsService,
-              { provide: MatPaginatorIntl, useClass: CustomPaginator}],
+              { provide: MatPaginatorIntl, useClass: CustomPaginator, }],
   bootstrap: [AppComponent],
   entryComponents: [ SpinnerComponent]
 })

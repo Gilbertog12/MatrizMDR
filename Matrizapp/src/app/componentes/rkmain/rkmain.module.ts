@@ -36,6 +36,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { AddModule } from '../../AddPages/add.module';
+import { EntidadesPendientesComponent } from './entidades-pendientes/entidades-pendientes.component';
+import { EntidadesPendientesModule } from './entidades-pendientes/entidades-pendientes.module';
 
 
 
@@ -68,7 +70,8 @@ import { AddModule } from '../../AddPages/add.module';
     DragDropModule,
     ScrollingModule,
     NotificacionesModule,
-    MatBadgeModule
+    MatBadgeModule,
+    EntidadesPendientesModule
 
     // CajaslinkModule,    
     // cajadashboardModule
@@ -77,7 +80,7 @@ import { AddModule } from '../../AddPages/add.module';
     
   ],
   declarations: [RkmainComponent,  DashboardComponent,CajaslinkComponent],
-
+  
   exports:[
     RkmainComponent
   ]

@@ -1,0 +1,50 @@
+
+  <div class="wrapper wrapper--w900">
+    <!-- <div class="card card-6"> -->
+        <div class="card-heading">
+            <h2 class="title">Crear Nueva Entidad</h2>
+        </div>
+        <div class="card-body">
+            <form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="login()">
+                <div class="form-row">
+                    <div class="name">Descripcion</div>
+                    <div class="value">
+                        <input class="input--style-6" type="text" name="full_name"
+                        formControlName = 'Descripcion'
+                        >
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="name">Texto Extendido</div>
+                    <div class="value">
+                        <div class="input-group">
+                            <input class="input--style-6" type="text"  
+                            formControlName = 'TextoExtendido'
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="name">Razón</div>
+                    <div class="value">
+                        <div class="input-group">
+                            <textarea class="textarea--style-6" 
+                            formControlName = 'Razon'
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="card-footer">
+            <button class="btn btn--radius-2 btn--blue-2" type="submit">Crear Entidad</button>
+        </div> -->
+
+        <mat-dialog-actions align="end">
+          <button mat-raised-button color="primary" class="nuevo_entidad" type="submit"  [disabled]="miFormulario.invalid">Nueva Entidad</button>
+          <!-- <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button> -->
+          <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+      </mat-dialog-actions>
+    <!-- </div> -->
+</div>

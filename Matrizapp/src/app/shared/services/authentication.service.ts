@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { RkmessagesComponent } from '../../componentes/rkmain/rkmessages/rkmessages.component';
 import { InfoComponent } from '../../componentes/rkmain/info/info.component';
 import Swal2 from 'sweetalert2';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -15,52 +16,83 @@ export class AuthenticationService {
   private clientSecret = '';
   public _nodoDetalle: any[] = [];
 
-  get nodoArea(){
+  get nodoArea() {
     return [...this._nodoDetalle];
   }
+
+  public perfiles = [
+    {
+
+     perfil : 'validador', valor : 'NNYNY',
+    }, {
+
+     perfil : 'creador', valor : 'NNYYN',
+    }, {
+
+     perfil : 'aprobador', valor : 'NYYNN',
+    }, {
+
+     perfil : 'validadorAprobador', valor : 'NYYNY',
+    }, {
+     perfil : 'validadorCreador', valor : 'NNYYY',
+
+    }, {
+
+     perfil : 'aprobadorCreador', valor : 'NYYYN',
+    }, {
+
+     perfil : 'admin', valor : 'NYYYY',
+    }, {
+
+     perfil : 'superUsuario', valor : 'YYYYY',
+    }, {
+
+     perfil : 'admin2', valor : 'YNNNN'
+    }
+   ];
 
   constructor(
     private http: HttpClient,
     private httpService: HttpMethodService,
     private controlService: ControlsService,
     private confirm: MatDialog,
-    private router: Router
+    private router: Router,
+
   ) {}
 
+  // login(
+  //   usernameV: string,
+  //   passwordV: string,
+  //   districtV: any,
+  //   positionV: string,
+  //   recordar: boolean
+  // ) {
+  //   const _url = this.httpService.baseUrl + '/values/login/';
+  //   const online = navigator.onLine;
 
-  login(
-    usernameV: string,
-    passwordV: string,
-    districtV: any,
-    positionV: string,
-    recordar: boolean
-  ) {
-    const _url = this.httpService.baseUrl + '/values/login/';
-    const online = navigator.onLine;
+  //   // debugger;
+  //   if (!online) {
+  //     this.controlService.snackbarError(
+  //       'Ha ocurrido un error al tratar de conectarse con el servidor.'
+  //     );
+  //     this.logout();
+  //     return;
+  //   }
 
-    // debugger;
-    if (!online) {
-      this.controlService.snackbarError(
-        'Ha ocurrido un error al tratar de conectarse con el servidor.'
-      );
-      this.logout();
-      return;
-    }
+  //   let body: any;
 
-    let body: any;
+  //   body = {
+  //     username: usernameV,
+  //     pwd: passwordV === 'undefined' ? '' : passwordV,
+  //     district: districtV.toUpperCase(),
+  //     position: positionV.toUpperCase(),
+  //   };
 
-    body = {
-      username: usernameV,
-      pwd: passwordV === 'undefined' ? '' : passwordV,
-      district: districtV.toUpperCase(),
-      position: positionV.toUpperCase(),
-    };
-
-    let headersV = new HttpHeaders();
-    headersV = headersV.append('Content-Type', 'application/json');
-    // debugger;
-    return this.http.post<any>(_url, body, { headers: headersV });
-  }
+  //   let headersV = new HttpHeaders();
+  //   headersV = headersV.append('Content-Type', 'application/json');
+  //   // debugger;
+  //   return this.http.post<any>(_url, body, { headers: headersV });
+  // }
 
   login_token(
     usernameV: string,
@@ -68,7 +100,7 @@ export class AuthenticationService {
     districtV: string,
     positionV: string
   ) {
-    // debugger;
+    debugger;
 
     const _url = this.httpService.baseUrl.slice(0, -4) + '/token';
     const online = navigator.onLine;
@@ -204,11 +236,12 @@ export class AuthenticationService {
 
     return this.http.post(_url, body, { headers: headersV })
     .subscribe( (resp: any) => {
-      this._nodoDetalle = resp.data[0]['atts']
+      this._nodoDetalle = resp.data[0]['atts'];
       console.log(this._nodoDetalle);
     });
 
   }
+
   generic(listParams: any[]) {
     const _url = this.httpService.baseUrl + '/values/generic/';
     const online = navigator.onLine;
@@ -240,6 +273,55 @@ export class AuthenticationService {
       'Authorization',
       'bearer ' + localStorage.getItem('tk')
     );
+
+    return this.http.post<any>(_url, body, { headers: headersV });
+
+  }
+
+  envioPorLotes(keys: string, uuid: string) {
+    const _url = this.httpService.baseUrl + '/values/generic/';
+    const online = navigator.onLine;
+    // this.limpiar()
+    if (!online) {
+      // this.controlService.snackbarError('Ha ocurrido un error al tratar de conectarse con el servidor.');
+      this.logout();
+
+      return;
+    }
+
+    let body: any;
+
+    body = {
+      atts: [
+        {
+          name: 'scriptName', value: 'coemdr'
+        },
+        {
+          name: 'action', value: 'SEND_VALIDATE'
+        },
+        {
+          name: 'onlyActualNode', value: 'Y'
+        },
+        {
+          name: 'key', value: keys
+        },
+        {
+          name: 'envio', value: 'P'
+        },
+        {
+          name: 'uuid', value: uuid
+        },
+      ]
+    };
+
+    let headersV = new HttpHeaders();
+    headersV = headersV.append('Content-Type', 'application/json');
+    headersV = headersV.append(
+      'Authorization',
+      'bearer ' + localStorage.getItem('tk')
+    );
+
+    // return  this.http.post<any>(_url, body, { headers: headersV }).toPromise();
 
     return this.http.post<any>(_url, body, { headers: headersV });
 
@@ -395,10 +477,9 @@ export class AuthenticationService {
     });
   }
 
-
-  mensajeFlujoAprobacion(titulo){
+  mensajeFlujoAprobacion(titulo) {
     Swal2.fire({
-      
+
       title: titulo,
       text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
       imageUrl: 'assets/images/notificacion.png',
@@ -408,8 +489,47 @@ export class AuthenticationService {
       position : 'top-end',
       showConfirmButton: false,
       timer: 1500
-    })
-  
+    });
+
     this.router.navigate(['/rkmain']);
+  }
+
+  botonesFlujoAprobacion( parametros) {
+
+    const [perfil, estatus, canAdd] = parametros;
+
+    if (canAdd === 'true') {
+
+      const perfilEllipse = this.conseguirPerfil( perfil );
+      if (perfilEllipse) {
+        return this.botonFlujo(perfilEllipse, estatus);
+      }
+    }
+
+  }
+
+  conseguirPerfil(perfil) {
+      return this.perfiles.find( (perfilEvaluar) => perfilEvaluar.valor === perfil);
+  }
+
+  botonFlujo(perfilEll, estado) {
+
+    if (perfilEll.perfil === 'creador' || perfilEll.perfil === 'validador' || perfilEll.perfil === 'aprobador'
+        || perfilEll.perfil === 'admin' || perfilEll.perfil === 'admin2') {
+
+      if ( (perfilEll.perfil === 'admin' || perfilEll.perfil === 'creador' ) && (estado === '000' || estado === '001' || estado === '002' || estado === '006')) {
+          return 'creador';
+      }
+      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'validador') && estado === '004') {
+
+          return 'validador';
+
+        }
+      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'aprobador') && estado === '007') {
+          return 'aprobador';
+        }
+
+    }
+
   }
 }

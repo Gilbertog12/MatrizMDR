@@ -1,10 +1,11 @@
 <h6 class="article-title">
     Area > Proceso > Subproceso > Actividad > Tarea > Dimension
     <!-- <button *ngIf="dimensionModel.dimensionStatusId !=='008' && dimensionModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button> -->
-    <button *ngIf="(dimensionModel.dimensionStatusId ==='001'|| dimensionModel.dimensionStatusId ==='002'||dimensionModel.dimensionStatusId ==='006') && (dimensionModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button *ngIf="(dimensionModel.dimensionStatusId ==='004'|| dimensionModel.dimensionStatusId ==='007') && (dimensionModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)">Editar</button>
-    <button *ngIf="(dimensionModel.dimensionStatusId ==='004') && (dimensionModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,'IV')">Validar</button>
-    <button *ngIf="( dimensionModel.dimensionStatusId ==='007') && (dimensionModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,'IA')">Aprobar</button>
+
+    <button *ngIf="boton === 'creador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)">Editar</button>
+    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,'IV')">Validar</button>
+    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,'IA')">Aprobar</button>
 </h6>
 
 <div class="row">

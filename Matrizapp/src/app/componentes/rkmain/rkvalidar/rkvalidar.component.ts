@@ -194,39 +194,40 @@ export class RkvalidarComponent implements OnInit {
 
                     data.data.forEach((element) => {
 
-                  if (element.atts.length > 0) {
+                      if (element.atts.length > 0) {
 
-                    const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
-
-                    this.obtenerRuta(element.atts[16].value.trim());
-
-                    this.pendList.push({
-                      Accion: element.atts[1].value.trim(),
-                      Entidad: element.atts[2].value.trim(),
-                      Id: element.atts[3].value.trim(),
-                      Descripcion: element.atts[4].value.trim(),
-                      Area: element.atts[5].value.trim(),
-                      Proceso: element.atts[6].value.trim(),
-                      Subproceso: element.atts[7].value.trim(),
-                      Actividad: element.atts[8].value.trim(),
-                      Tarea: element.atts[9].value.trim(),
-                      Dimension: element.atts[10].value.trim(),
-                      Riesgo: element.atts[11].value.trim(),
-                      Consecuencia: element.atts[12].value.trim(),
-                      Controles : element.atts[13].value.trim(),
-                      Fecha: fecha,
-                      key: element.atts[16].value.trim(),
-                      version : element.atts[17].value.trim(),
-                      Comentarios : element.atts[18].value.trim(),
-                      // permiso: this.permi,
-                      check: false,
-                      status: element.atts[19].value.trim(),
-                      TipoControl: element.atts[21].value,
-                      rutaJerarquia: this.rutaJerarquia
-
-                    });
-
-                  }
+                        const fecha = this.convertiFechaYhora(element.atts[5].value.trim());
+    
+                        this.obtenerRuta(element.atts[6].value.trim());
+    
+                        this.pendList.push({
+                          Accion: element.atts[1].value.trim(),
+                          Entidad: element.atts[2].value.trim(),
+                          Id: element.atts[3].value.trim(),
+                          Descripcion: element.atts[4].value.trim(),
+                          key: element.atts[6].value.trim(),
+                          version : element.atts[7].value.trim(),
+                          Fecha: fecha,
+                          Comentarios : element.atts[8].value.trim(),
+                          status: element.atts[9].value.trim(),
+                          check: false,
+                          bloqueo : false
+                          // Area: element.atts[5].value.trim(),
+                          // Proceso: element.atts[6].value.trim(),
+                          // Subproceso: element.atts[7].value.trim(),
+                          // Actividad: element.atts[8].value.trim(),
+                          // Tarea: element.atts[9].value.trim(),
+                          // Dimension: element.atts[10].value.trim(),
+                          // Riesgo: element.atts[11].value.trim(),
+                          // Consecuencia: element.atts[12].value.trim(),
+                          // Controles : element.atts[13].value.trim(),
+                          // permiso: this.permi,
+                          // TipoControl: element.atts[21].value,
+                          // rutaJerarquia: this.rutaJerarquia,
+    
+                        });
+    
+                      }
 
                 }
 
@@ -583,6 +584,17 @@ checkUncheckAll() {
 
   async sendvalidate() {
 
+
+    if ( this.totalMarcados > 1000) {
+
+      return Swal2.fire({
+          icon: 'info',
+          text : 'la cantidad de items que esta intentando enviar a validar excede el limite deben ser menores o iguales a 1000',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar',
+      });
+    }
+
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionar al menos 1 item', {}, false);
       if (this.soloControles) {
@@ -866,6 +878,17 @@ checkUncheckAll() {
   }
 
  async Rechazar() {
+
+
+  if ( this.totalMarcados > 1000) {
+
+    return Swal2.fire({
+        icon: 'info',
+        text : 'la cantidad de items que esta intentando enviar a validar excede el limite deben ser menores o iguales a 1000',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar',
+    });
+  }
 
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);

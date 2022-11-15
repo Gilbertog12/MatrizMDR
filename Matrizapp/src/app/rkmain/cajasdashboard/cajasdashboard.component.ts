@@ -1,11 +1,13 @@
 import { Component, OnInit, inject, Inject } from '@angular/core';
-import { AuthenticationService, ControlsService,ServiciocajasService } from '../../shared';
+import { AuthenticationService, ControlsService, ServiciocajasService } from '../../shared';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RkpendaprobComponent } from '../../componentes/rkmain/rkpendaprob/rkpendaprob.component';
 import { RkpendComponent } from '../../componentes/rkmain/rkpend/rkpend.component';
 import { Router } from '@angular/router';
 import Swal2 from 'sweetalert2';
-
+import { text } from '@angular/core/src/render3/instructions';
+import { Y } from '@angular/cdk/keycodes';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-cajasdashboard',
@@ -28,6 +30,12 @@ export class CajasdashboardComponent implements OnInit {
   prueba: any;
   mostrar: boolean = false;
   llaves: string[] = [];
+  keys: any;
+  uid: string = '';
+  contador1: number = 1;
+  contador2: number = 1;
+  vueltas: number;
+  llaves1: any;
 
   constructor(private autentication: AuthenticationService,
               private confirm: MatDialog ,
@@ -45,42 +53,114 @@ export class CajasdashboardComponent implements OnInit {
     this.nodoseleccionado = localStorage.getItem('itemseleccionado');
 
     this.cargarDashboard();
-      console.log(this.dashboardData.pendientes)
+    // console.log(this.dashboardData.pendientes);
   }
 
-  enviarAvalidar(){
+  enviarAvalidar() {
+
+
+
+
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
     _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
     _atts.push({ name: 'status', value: 'EV' });
     _atts.push({ name: 'key', value: this.data.id });
+    _atts.push({ name: 'soloNodos', value: "Y" });
     _atts.push({ name: 'statusItem', value: this.data.status });
     _atts.push({ name: 'showCompleted', value: 'Y' });
 
     const spinner = this.controlService.openSpinner();
-    
-    debugger
+
+    // debugger
     this.autentication.generic(_atts)
-    .subscribe( datos => {
-        console.log( datos)
-      if( datos.success){
-        datos.data.forEach(element => {
+    .subscribe( (datos) => {
+        // console.log( datos);
+        if ( datos.success) {
 
-          if (element.atts.length > 0){
-            
-            this.llaves.push( element.atts[16].value.trim(),'Y',)
+
+
+          
+
+          console.log(datos.data);
+          datos.data.forEach((element) => {
+
+          if (element.atts.length > 0) {
+            // this.keys.push(element.atts[1].value.trim());
+
+            if ( element.atts[0].name === 'uuid') {
+              console.log(element)
+              this.uid =  element.atts[0].value;
+
+            }
           }
-        })
 
-        console.log(this.llaves.toString())
-        this.sendValidate(this.llaves.toString())
-        this.controlService.closeSpinner(spinner);
+          console.log(this.uid);
+
+        });
+
+          // console.log(this.llaves.slice(1));
+          // console.log(this.llaves.toString());
+          this.sendValidate();
+
+          // this.cortarMensaje();
+          this.controlService.closeSpinner(spinner);
       }
-    })
+    });
 
   }
 
-  sendValidate(llaves){
+  sendValidate() {
+
+    Swal2.fire({
+      html: '<h3><strong>Enviar a Validar</strong></h3>',
+
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        const _atts = [];
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+        _atts.push({ name: 'onlyActualNode', value: 'Y' });
+        _atts.push({ name: 'uuid', value: this.uid });
+        if (this.dashboardData.ENVIAR_A_VALIDAR < 3000) {
+
+           _atts.push({ name: 'key', value: this.data.id });
+        }
+
+        const obj = this.autentication.generic(_atts);
+        const spinner = this.controlService.openSpinner();
+
+        obj
+        .subscribe( (data) => {
+
+          if (data.success === true) {
+
+            this.mostrarMensaje();
+
+            this.Cajas.notificaciones$.emit(true);
+            this.cancelar()
+          ;
+
+          } else {
+
+            Swal2.fire('', data.message, 'error');
+          }
+
+          this.controlService.closeSpinner(spinner);
+        });
+                  }
+
+                });
+
+  }
+
+ async sendValidate2(llaves: Array<any>) {
 
     Swal2.fire({
       html: '<h3><strong>Enviar a Validar</strong></h3>',
@@ -94,57 +174,142 @@ export class CajasdashboardComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        
-
-        const _atts = [];
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
-            _atts.push({ name: 'onlyActualNode', value: 'Y' });
-            _atts.push({ name: 'key', value: llaves });
-
-            const obj = this.autentication.generic(_atts);
-            const spinner = this.controlService.openSpinner();        
-
-        obj.subscribe(
-                    (data) => {
-                      if (data.success === true) {
-
-
-                        this.mostrarMensaje();
-                        
-                        
-                        this.Cajas.notificaciones$.emit(true);
-                        this.cancelar()
-                      ;
-
-                      } else {
-                        
-                        Swal2.fire('', data.message, 'error');
-                      }
-
-                      this.controlService.closeSpinner(spinner);
-
-                    },
-                    (error) => {
-                      
-                      this.controlService.closeSpinner(spinner);
-                    });
                   }
 
                 });
-    
+
   }
+
+  obtenerVueltas(llaves) {
+    this.vueltas = Math.ceil(llaves.length / 1000 );
+    this.dividirLlaves(llaves);
+  }
+
+  obtenerPorcion(llaves) {
+    let llavesPartes: string = '';
+    debugger;
+    const valores = llaves.slice(this.contador1 , (this.contador2 * 1000));
+
+    return valores.toString();
+  }
+
+  async dividirLlaves(llaves?) {
+
+    // const vueltas = Math.ceil(llaves.length / 1000 )
+    if (llaves.length > 1000 ) {
+
+      if (this.contador2 < this.vueltas) {
+
+        let llavesp = this.obtenerPorcion(llaves);
+        this.autentication.envioPorLotes(llavesp, this.uid)
+        .subscribe( (uuid) => {
+
+          uuid.data.forEach( (uid) => {
+              this.uid = uid.atts[1].value.trim();
+          });
+          this.contador1 = this.contador1 + 1000;
+          this.contador2++;
+          this.dividirLlaves(llaves);
+
+        });
+
+      } else {
+        debugger;
+        this.envioAEllipse(llaves.slice(this.contador1, llaves.length), 'T' );
+      }
+
+    } else {
+       this.envioAEllipse(llaves, 'T' );
+
+    }
+
+  }
+
+  async envioAEllipse(keys: any[], envio: string ) {
+
+    let valores: string = '';
+
+    const _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+    _atts.push({ name: 'onlyActualNode', value: 'Y' });
+
+    _atts.push({ name: 'key', value: keys.toString() });
+    _atts.push({ name: 'envio', value: envio });
+    _atts.push({ name: 'uuid', value: this.uid });
+
+    console.log(_atts);
+
+    const obj = await this.autentication.generic(_atts);
+    const spinner = this.controlService.openSpinner();
+
+    obj.subscribe(
+                  (data) => {
+                      if (data.success === true) {
+
+                        if (this.uid === '') {
+                          debugger;
+                          this.uid = data[1]['atts'][1].value;
+
+                          // this.dividirLlaves();
+                        }
+                        this.mostrarMensaje();
+                        this.cancelar();
+                        this.Cajas.notificaciones$.emit(true);
+
+                  } else {
+
+                    Swal2.fire('', data.message, 'error');
+                  }
+
+                      this.controlService.closeSpinner(spinner);
+
+                },
+                (error) => {
+                  this.controlService.closeSpinner(spinner);
+                  console.log(error);
+                  // this.controlService.closeSpinner(spinner);
+                });
+  }
+
+  cortarMensaje() {
+    const tamMensaje = 2000;
+    let texto = this.llaves.toString();
+    const original = texto.length ;
+    let contador = 0;
+    let final = 0;
+    // debugger;
+    while (texto.length > tamMensaje) {
+
+      if ( original === final ) {
+        console.log(texto.substring(0, tamMensaje) , 'T');
+
+      } else {
+
+        console.log(texto.substring(0, tamMensaje) , 'P');
+      }
+
+      texto = texto.substring(tamMensaje + 1, texto.length);
+      contador++;
+      final = original - texto.length ;
+      console.log(original - texto.length);
+      console.log(final);
+    }
+
+    // enviarPOST(text.substring(0, tamMensaje) , "T");
+  }
+
   mostrarMensaje() {
     Swal2.fire({
-    
+
       title: 'Envio a Validacion en Proceso',
       text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
       imageUrl: 'assets/images/notificacion.png',
       imageWidth: 150,
     imageHeight: 150,
       imageAlt: 'Notificacion',
-    })
-  
+    });
+
     this.router.navigate(['/rkmain']);
   }
 
@@ -161,7 +326,7 @@ export class CajasdashboardComponent implements OnInit {
       this.autentication.generic(_atts)
         .subscribe(
           (data) => {
-            console.log(data);
+            // console.log(data);
             const result = data.success;
             if (result) {
               // this.Cajas.caja1 = data.data[0].atts[1].value.trim()
@@ -268,6 +433,15 @@ export class CajasdashboardComponent implements OnInit {
 
   async VerEnviarValidar(completo?: boolean) {
 
+    // console.log(this.dashboardData.ENVIAR_A_VALIDAR>'1000');
+
+    // if (this.dashboardData.ENVIAR_A_VALIDAR > 1000) {
+    //       return Swal2.fire({
+    //         title: 'Limite de visualizacion excedido',
+    //         text : 'si desea validar la informacion baje un nivel',
+    //       });
+    // }
+
     const conf = this.confirm.open(RkpendComponent,
       {
         hasBackdrop: true,
@@ -292,13 +466,13 @@ export class CajasdashboardComponent implements OnInit {
       .subscribe(async (result) => {
         if (result === 'undefined' || !result) {
 
-          this.cancelar()
-          
+          this.cancelar();
+
           // this.cargarDashboard();
         } else {
           // this.cargarDashboard();
           this.cancelar();
-          
+
         }
       });
       // this.cancelar()
@@ -333,7 +507,6 @@ export class CajasdashboardComponent implements OnInit {
           // this.cargarDashboard();
           this.cancelar();
 
-
         }
       });
   }
@@ -342,7 +515,7 @@ export class CajasdashboardComponent implements OnInit {
 
     // this.Cajas.RecargarDetalle$.emit(true)
     this.dialogRef.close(false);
-    
+
         // this.router.navigate(['/rkmain/cargando']);
     // setTimeout(() => {
     //   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);

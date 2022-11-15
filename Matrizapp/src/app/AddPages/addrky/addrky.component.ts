@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MatPaginator, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../../shared';
 import { FormControl, Validators } from '@angular/forms';
@@ -42,6 +42,7 @@ export class AddrkyComponent implements OnInit {
   public datasource: MatTableDataSource<AddItem>;
   removable = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('txtBuscar') txtBuscar!: ElementRef<HTMLInputElement>;
   bloquearFiltro: boolean;
   isLoading: boolean;
   public areasListSeleccionadas: AddItem[] = [];
@@ -87,7 +88,8 @@ export class AddrkyComponent implements OnInit {
                     name: this.data.name
                   };
                   this.consecuenciasList = [];
-                  this.cargarconsecuencias(this.consecuenciaModel.name);
+                  debugger
+                  this.cargarconsecuencias();
                   this.cargarprobabilidad();
                   this.cargarseveridad();
                   this.cargarcriticidad();
@@ -95,19 +97,25 @@ export class AddrkyComponent implements OnInit {
 
   ngOnInit() { }
 
-
   pageEvents(pagina: MatPaginator) {
-        
-        
+
     if (!this.paginator.hasNextPage()) {
-     debugger
-     this.indice = this.indice+1;
-     this.cargarconsecuencias('', this.indice);
-    }
+      debugger;
+      this.indice = this.indice + 1;
+      console.log(this.txtBuscar.nativeElement.value);
+      if (this.txtBuscar.nativeElement.value === "" || this.txtBuscar.nativeElement.value === undefined ) {
+        this.cargarconsecuencias('', this.indice);
+      } else {
+        this.consecuenciasList = [];
+        this.cargarconsecuencias(this.txtBuscar.nativeElement.value, this.indice);
+
+      }
+
+     }
 
  }
 
-  cargarconsecuencias( name? : string, index?) {
+  cargarconsecuencias( name?, index?) {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'CONSECUENCIA_LIST'});
@@ -118,7 +126,11 @@ export class AddrkyComponent implements OnInit {
     _atts.push({name: 'tareaId', value: this.consecuenciaModel.tareaId });
     _atts.push({name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
     _atts.push({name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-    _atts.push({ name: "lookupName", value: name });
+    if(name === '' || name === undefined){
+
+    }else{
+      _atts.push({ name: "lookupName", value: '%'+name });
+    }
     _atts.push({ name: "index", value: index });
     this.isLoading = true
 
@@ -128,12 +140,10 @@ export class AddrkyComponent implements OnInit {
           const result = data.success;
           if (result) {
             // if(data.data.length > 0){
-              
+
             // }
 
             if (data.data.length === 0 && index !== undefined) {
-
-            
 
               this.isLoading = false;
               this.bloquearFiltro = false;
@@ -161,7 +171,7 @@ export class AddrkyComponent implements OnInit {
                 });
                 this.bloquearFiltro = false
               }else{
-               
+
               }
             });
 
@@ -313,7 +323,7 @@ export class AddrkyComponent implements OnInit {
 
       let ids = []
       if(this.areasListSeleccionadas.length >0){
-        
+
         this.areasListSeleccionadas.forEach( id => {
           ids.push(id.Id)
        })
@@ -323,7 +333,6 @@ export class AddrkyComponent implements OnInit {
           text : 'Debe seleccionar al menos una consecuencia'
         })
       }
-      
 
     let _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr'});
@@ -368,7 +377,6 @@ export class AddrkyComponent implements OnInit {
           riesgoResidualS: ''
         };
         // this.consecuenciasList = [];
-        // this.cargarconsecuencias(this.consecuenciaModel.areaId, this.consecuenciaModel.procesoId, this.consecuenciaModel.subprocesoId, this.consecuenciaModel.actividadId, this.consecuenciaModel.tareaId, this.consecuenciaModel.dimensionId, this.consecuenciaModel.riesgoId,this.consecuenciaModel.name);
 
         this.cancelar();
       }
@@ -391,10 +399,6 @@ export class AddrkyComponent implements OnInit {
 		}
 	})
 
-
-
-
-
   }
 
   Criticidad(){
@@ -409,7 +413,6 @@ export class AddrkyComponent implements OnInit {
       _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
       _atts.push({ name: 'severidadId', value: this.consecuenciaModel.riesgoPuroP });
       _atts.push({ name: 'probabilidadId', value: this.consecuenciaModel.riesgoPuroS });
-
 
       const promiseView = new Promise((resolve, reject) => {
       this.autentication.generic(_atts)
@@ -429,8 +432,6 @@ export class AddrkyComponent implements OnInit {
 
             console.log(this.criticidadLevel)
 
-            
-
           } else {
 
             this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
@@ -442,9 +443,6 @@ export class AddrkyComponent implements OnInit {
       });
     });
     }
-
-
-
 
   }
 
@@ -507,9 +505,6 @@ export class AddrkyComponent implements OnInit {
     });
   }
 
-
- 
-
   remove(fruit: AddItem): void {
     const index = this.areasListSeleccionadas.indexOf(fruit);
 
@@ -548,24 +543,20 @@ export class AddrkyComponent implements OnInit {
       }
     }
   }
-  applyFilter(filterValue: string) {
+  applyFilter(filterValue) {
     console.log(filterValue);
 
-    filterValue = filterValue.trim().toLowerCase()
+    filterValue = filterValue.trim().toLowerCase();
 
-    
-      this.datasource.filter = filterValue
+    this.datasource.filter = filterValue;
 
-      if(this.datasource.filteredData.length === 0){
-        this.bloquearFiltro = true
-        this.cargarconsecuencias(filterValue)
+        // tslint:disable-next-line: one-line
 
-      }
-    
-    
-    
-    
+          this.datasource.data = [];
+          this.bloquearFiltro = true;
+          this.consecuenciasList = [];
+          this.cargarconsecuencias(filterValue);
+
   }
-
 
 }

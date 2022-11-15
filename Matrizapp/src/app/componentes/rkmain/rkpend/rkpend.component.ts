@@ -115,6 +115,7 @@ export class RkpendComponent implements OnInit {
   vArrayKeys: any;
   nodo: any;
   bloquearNodos: boolean = false;
+  uid: string;
 
   constructor(public dialogRef: MatDialogRef<RkpendComponent>,
               private controlService: ControlsService, private spinner: NgxLoadingService,
@@ -127,13 +128,13 @@ export class RkpendComponent implements OnInit {
 
               @Inject(MAT_DIALOG_DATA) public data: any, private cajas: ServiciocajasService) {
 
-                console.log(data)
+                console.log(data);
       this.data.key,
       this.data.status;
-      this.recargar(this.data.completo);
+                this.recargar(this.data.completo);
 
-      this.mostrar();
-      console.log(this.cajas.caja1);
+                this.mostrar();
+                console.log(this.cajas.caja1);
     }
 
     // tslint:disable-next-line: no-empty
@@ -209,12 +210,15 @@ export class RkpendComponent implements OnInit {
     for (let i = 0; i < this.pendList.length; i++) {
       this.pendList[i].check = this.masterSelected;
       this.pendList[i].bloqueo = true;
+
+      this.mostrarRestaurar(this.pendList[i].status);
       if (this.masterSelected === true) {
         this.totalMarcados = this.pendList.length;
 
       } else {
         this.totalMarcados = 0;
         this.pendList[i].bloqueo = false;
+        this.MostrarRestaurar = false;
       }
     }
 
@@ -223,6 +227,16 @@ export class RkpendComponent implements OnInit {
    sendvalidate() {
 
     console.log(this.valor);
+
+    if ( this.totalMarcados > 1000) {
+
+      return Swal2.fire({
+          icon: 'info',
+          text : 'la cantidad de items que esta intentando enviar a validar excede el limite deben ser menores o iguales a 1000',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar',
+      });
+    }
 
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionar al menos 1 item', {}, false);
@@ -270,7 +284,7 @@ export class RkpendComponent implements OnInit {
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
 
-                            //this.recargaArbol();
+                            // this.recargaArbol();
                             this.dialogRef.close(false);
 
                           } else {
@@ -303,34 +317,33 @@ export class RkpendComponent implements OnInit {
         }).then((result) => {
           if (result.value) {
 
-            console.log(this.valor);
-
             const _atts = [];
             _atts.push({ name: 'scriptName', value: 'coemdr' });
             _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
             _atts.push({ name: 'onlyActualNode', value: 'Y' });
             _atts.push({ name: 'key', value: this.valor });
 
-            console.log(_atts);
-
             const spinner = this.controlService.openSpinner();
             const obj = this.autentication.generic(_atts);
 
             obj.subscribe(
                         (data) => {
-                          if (data.success === true) {
 
+                          // //debugger;
+
+                          if (data.success === true) {
                             // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
 
-                            this.mostrarMensaje();
                             // Swal2.fire('Registro Enviado a Validar', '', 'success' );
+
+                            this.mostrarMensaje();
                             // localStorage.setItem('isSendToValidate','1')
                             // this.cerrar('falso');
                             this.totalMarcados = 0;
                             this.sendSome = true;
                             this._Recargarble.notificaciones$.emit(true);
-                            //this.recargaArbol();
-                            // this.cerrar('cerrar');
+
+                            // this.recargaArbol();
                             this.dialogRef.close(false);
 
                           } else {
@@ -345,7 +358,8 @@ export class RkpendComponent implements OnInit {
                           // if ( error.status === 401 ) { this.autentication.logout(); return; }
                           this.controlService.closeSpinner(spinner);
                         });
-                      }
+            
+                    }
 
                     });
       }
@@ -359,6 +373,67 @@ export class RkpendComponent implements OnInit {
   }
 
 //
+
+    envioPeticiones(total: string) {
+
+        if (total === 'T') {
+          console.log('totalidad');
+        }else{
+          this.uid = '123dfsdfljkjgj';
+        }
+
+           //       const _atts = [];
+      //       _atts.push({ name: 'scriptName', value: 'coemdr' });
+      //       _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+      //       _atts.push({ name: 'onlyActualNode', value: 'Y' });
+      //       _atts.push({ name: 'key', value: this.valor });
+      //       _atts.push({ name: 'envio', value: 'T' });
+
+      //       const spinner = this.controlService.openSpinner();
+      //       const obj =  this.autentication.generic(_atts);
+
+            // this.mostrarMensaje();
+
+            // obj.subscribe(
+            //             (data) => {
+            //               if (data.success === true) {
+            //                 console.log(data.data)
+            //                 // this.autentication.showMessage(data.success, data.data[0].atts[1].value, data.data, data.redirect);
+
+            //                 this.mostrarMensaje();
+            //                 // Swal2.fire('Registro Enviado a Validar', '', 'success' );
+            //                 // localStorage.setItem('isSendToValidate','1')
+            //                 // this.cerrar('falso');
+            //                 this.totalMarcados = 0;
+            //                 this.sendSome = true;
+            //                 this._Recargarble.notificaciones$.emit(true);
+            //                 //this.recargaArbol();
+            //                 // this.cerrar('cerrar');
+            //                 this.dialogRef.close(false);
+
+            //               } else {
+            //                 // this.autentication.showMessage(data.success, data.message, {}, data.redirect);
+            //                 Swal2.fire('', data.message, 'error');
+            //               }
+
+            //               this.controlService.closeSpinner(spinner);
+
+            //             },
+            //             (error) => {
+            //               // if ( error.status === 401 ) { this.autentication.logout(); return; }
+            //               this.controlService.closeSpinner(spinner);
+            //             });
+
+    }
+
+    mostrarRestaurar(status) {
+
+      if (status === '006') {
+        this.MostrarRestaurar = true;
+      } else {
+        this.MostrarRestaurar = false;
+      }
+    }
 
     MarcarJerarquia(Value, status, chek) {
 
@@ -638,38 +713,38 @@ export class RkpendComponent implements OnInit {
             console.log(data);
             const result = data.success;
             if (result) {
-
-                data.data.forEach((element) => {
+                  // console.log(data.data);
+                  data.data.forEach((element) => {
                   if (element.atts.length > 0) {
 
-                    const fecha = this.convertiFechaYhora(element.atts[15].value.trim());
+                    const fecha = this.convertiFechaYhora(element.atts[5].value.trim());
 
-                    this.obtenerRuta(element.atts[16].value.trim());
+                    this.obtenerRuta(element.atts[6].value.trim());
 
                     this.pendList.push({
                       Accion: element.atts[1].value.trim(),
                       Entidad: element.atts[2].value.trim(),
                       Id: element.atts[3].value.trim(),
                       Descripcion: element.atts[4].value.trim(),
-                      Area: element.atts[5].value.trim(),
-                      Proceso: element.atts[6].value.trim(),
-                      Subproceso: element.atts[7].value.trim(),
-                      Actividad: element.atts[8].value.trim(),
-                      Tarea: element.atts[9].value.trim(),
-                      Dimension: element.atts[10].value.trim(),
-                      Riesgo: element.atts[11].value.trim(),
-                      Consecuencia: element.atts[12].value.trim(),
-                      Controles : element.atts[13].value.trim(),
+                      key: element.atts[6].value.trim(),
+                      version : element.atts[7].value.trim(),
                       Fecha: fecha,
-                      key: element.atts[16].value.trim(),
-                      version : element.atts[17].value.trim(),
-                      Comentarios : element.atts[18].value.trim(),
-                      // permiso: this.permi,
+                      Comentarios : element.atts[8].value.trim(),
+                      status: element.atts[9].value.trim(),
                       check: false,
-                      status: element.atts[19].value.trim(),
-                      TipoControl: element.atts[21].value,
-                      rutaJerarquia: this.rutaJerarquia,
                       bloqueo : false
+                      // Area: element.atts[5].value.trim(),
+                      // Proceso: element.atts[6].value.trim(),
+                      // Subproceso: element.atts[7].value.trim(),
+                      // Actividad: element.atts[8].value.trim(),
+                      // Tarea: element.atts[9].value.trim(),
+                      // Dimension: element.atts[10].value.trim(),
+                      // Riesgo: element.atts[11].value.trim(),
+                      // Consecuencia: element.atts[12].value.trim(),
+                      // Controles : element.atts[13].value.trim(),
+                      // permiso: this.permi,
+                      // TipoControl: element.atts[21].value,
+                      // rutaJerarquia: this.rutaJerarquia,
 
                     });
 
@@ -679,9 +754,9 @@ export class RkpendComponent implements OnInit {
 
                 );
 
-                console.log([this.pendList]);
+                  console.log([this.pendList]);
 
-                this.TotalRegistros = this.pendList.length;
+                  this.TotalRegistros = this.pendList.length;
 
               // this.comprobarPadre()
 
@@ -828,7 +903,7 @@ export class RkpendComponent implements OnInit {
   }
 
   // Nueva Logica para marcado de jerarquia en la tabla
-  marcar(key) {
+  marcar(key, status?) {
 
   this.bloquearNodos = true;
   console.log(this.bloquearNodos);
@@ -991,6 +1066,7 @@ marcarHijosTodos(vKeys, qKeys, vLargo, nodoMarcado, nivel) {
 
 restablerSeleccion() {
   this.bloquearNodos = false;
+  this.MostrarRestaurar = false;
   for (let i = 0; i < this.pendList.length; i++) {
     this.pendList[i].check = false;
     this.pendList[i].bloqueo = false;

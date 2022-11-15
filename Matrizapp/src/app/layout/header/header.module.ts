@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { rkHelpModule } from '../../rkmain/rkhelp/rkhelp.module';
 import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { CambioPosicionComponent } from './cambio-posicion/cambio-posicion.component';
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
     rkHelpModule,
     MatMenuModule
   ],
-  declarations: [AppHeaderComponent],
+  declarations: [AppHeaderComponent, CambioPosicionComponent],
   entryComponents: [AppHeaderComponent],
   exports: [AppHeaderComponent]
 })

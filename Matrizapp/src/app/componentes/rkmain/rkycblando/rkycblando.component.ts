@@ -1,4 +1,5 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+/* A dialog component that is used to add controls to a risk. */
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MatPaginator, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../../../shared';
 import Swal2 from 'sweetalert2';
@@ -21,6 +22,7 @@ export class RkycblandoComponent implements OnInit {
   CblandoControl = new FormControl("", [Validators.required]);
   removable = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('txtBuscar') txtBuscar!: ElementRef<HTMLInputElement>;
   bloquearFiltro: boolean;
   isLoading: boolean;
   public columnas : string[] = ['select', 'Id', 'Descripcion'];
@@ -53,7 +55,7 @@ export class RkycblandoComponent implements OnInit {
                 this.cBlandoModel.dimensionId = data.dimensionId;
                 this.cBlandoModel.riesgoId = data.riesgoId;
                 this.cBlandoModel.consecuenciaId = data.consecuenciaId;
-                this.cargarcblandos(this.cBlandoModel.name);
+                this.cargarcblandos();
               }
 
   ngOnInit() { }
@@ -78,18 +80,20 @@ export class RkycblandoComponent implements OnInit {
       }
     }
   }
-  applyFilter(filterValue: string) {
+  applyFilter(filterValue) {
+    console.log(filterValue);
     console.log(filterValue);
 
     filterValue = filterValue.trim().toLowerCase();
 
     this.datasource.filter = filterValue;
 
-    if (this.datasource.filteredData.length === 0) {
-        this.bloquearFiltro = true;
-        this.cargarcblandos(filterValue);
+        // tslint:disable-next-line: one-line
 
-      }
+    this.datasource.data = [];
+    this.bloquearFiltro = true;
+    this.controlesBList = [];
+    this.cargarcblandos(filterValue);
 
   }
 
@@ -111,16 +115,25 @@ export class RkycblandoComponent implements OnInit {
     }
   }
 
-  pageEvents(pagina: number) {
+  pageEvents(pagina: MatPaginator) {
 
     if (!this.paginator.hasNextPage()) {
       debugger;
       this.indice = this.indice + 1;
-      this.cargarcblandos('', this.indice);
-     }
-  }
+      console.log(this.txtBuscar.nativeElement.value);
+      if (this.txtBuscar.nativeElement.value === "" || this.txtBuscar.nativeElement.value === undefined ) {
+        this.cargarcblandos('', this.indice);
+      } else {
+        this.controlesBList = [];
+        this.cargarcblandos(this.txtBuscar.nativeElement.value, this.indice);
 
-  cargarcblandos(name?: string, index?) {
+      }
+
+     }
+
+ }
+
+  cargarcblandos(name?, index?) {
     let _atts = [];
     _atts.push({name: 'scriptName', value: 'coemdr'});
     _atts.push({name: 'action', value: 'CBLANDO_LIST'});
@@ -132,7 +145,11 @@ export class RkycblandoComponent implements OnInit {
     _atts.push({name: 'dimensionId', value: this.cBlandoModel.dimensionId });
     _atts.push({name: 'riesgoId', value: this.cBlandoModel.riesgoId });
     _atts.push({name: 'consecuenciaId', value: this.cBlandoModel.consecuenciaId });
-    _atts.push({ name: "lookupName", value: name });
+    if(name === '' || name === undefined){
+
+    }else{
+      _atts.push({ name: "lookupName", value: '%'+name });
+    }
     _atts.push({ name: "index", value: index });
     this.isLoading = true;
 
@@ -209,6 +226,7 @@ export class RkycblandoComponent implements OnInit {
             ids.push(id.Id);
          });
 
+    console.log(ids)
     let _atts = [];
 
     _atts.push({ name: 'scriptName', value: 'coemdr'});

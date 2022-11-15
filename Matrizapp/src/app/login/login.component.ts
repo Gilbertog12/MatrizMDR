@@ -83,20 +83,21 @@ export class LoginComponent implements OnInit {
   array1 = [];
   array2 = [];
 
-  
-
   login() {
     localStorage.setItem('isLoggedinApp', 'false');
     const spinner = this.controlService.openSpinner();
+    // debugger
+    // this.deafultValues();
 
+    
 
     this.model.district = 'COLL';
-
+     debugger
     this.model.position = this.posDefault;
 
     this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
-    debugger;
-    this.autentication.login_token(this.model.username, this.model.password, this.model.district, this.model.position)
+
+    this.autentication.login_token(this.model.username, this.model.password, this.model.district,  this.posDefault)
     .subscribe(
 
        (data) => {
@@ -107,11 +108,11 @@ export class LoginComponent implements OnInit {
         if (result) {
 
           this.router.navigate([this.returnUrl]);
-             localStorage.setItem('isLoggedinApp', 'true');
-             localStorage.setItem('tk', result);
-             this.controlService.closeSpinner(spinner);
-             localStorage.setItem('show Dashboard', 'true');
-             if (this.recordar) {
+          localStorage.setItem('isLoggedinApp', 'true');
+          localStorage.setItem('tk', result);
+          this.controlService.closeSpinner(spinner);
+          localStorage.setItem('show Dashboard', 'true');
+          if (this.recordar) {
 
                localStorage.setItem('recordar', 'true');
               } else {
@@ -119,11 +120,9 @@ export class LoginComponent implements OnInit {
 
              }
 
-             
-
-             localStorage.setItem('Usuario', this.model.username.toUpperCase() );
-             localStorage.setItem('Distrito', this.model.district);
-             localStorage.setItem('Posicion', this.model.position);
+          localStorage.setItem('Usuario', this.model.username.toUpperCase() );
+          localStorage.setItem('Distrito', this.model.district);
+          localStorage.setItem('Posicion', this.model.position);
 
         } else {
           this.controlService.closeSpinner(spinner);
@@ -131,16 +130,15 @@ export class LoginComponent implements OnInit {
         }
         return result;
      },
-     (error:HttpErrorResponse) => {
-       
+     ( error:HttpErrorResponse ) => {
+
        this.controlService.closeSpinner(spinner);
        console.log(error);
        console.log(error.error.error_description);
        console.log(error.status);
       //  this.controlService.snackbarError(error.error.error_description);
-       
 
-      if(error.status === 400){
+       if(error.status === 400) {
 
         Swal2.fire({
           title: 'Error de inicio de Sesión',
@@ -157,9 +155,11 @@ export class LoginComponent implements OnInit {
     const spinner = this.controlService.openSpinner();
     this.autentication.positions( this.model.username, this.model.password)
     .subscribe( (data) => {
-      console.log(data.success)
+      console.log(data)
       if (data.success === true) {
-        
+        // debugger
+        this.posDefault = '';
+        this.posicionesEllipse = []
         data.data[0].atts.forEach((x) => {
           this.posicionesEllipse.push({
             name : x.name,
@@ -168,8 +168,10 @@ export class LoginComponent implements OnInit {
       });
 
         this.posDefault = this.posicionesEllipse[0].name;
-        
-        this.controlService.closeSpinner(spinner);
+
+        this.login();
+
+        // this.controlService.closeSpinner(spinner);
 
       } else {
 
@@ -179,18 +181,21 @@ export class LoginComponent implements OnInit {
     }),
      // tslint:disable-next-line: no-unused-expression
      (error) => {
-       
+
        this.controlService.closeSpinner(spinner);
        this.controlService.snackbarError('Ha ocurrido un error al intentar conectarse, verifique su conexión a internet');
        alert(error.error);
      };
+
+
+    
 
   }
 
     copyright() {
     Swal2.fire({
       icon: 'info',
-      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.3.6 <br />Fecha de compilación: 2022-07-02<br />',
+      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.4.1 <br />Fecha de compilación: 2022-10-20<br />',
       showCloseButton: true
 
     });

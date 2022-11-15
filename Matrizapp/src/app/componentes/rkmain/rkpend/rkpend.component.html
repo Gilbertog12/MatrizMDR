@@ -68,7 +68,7 @@
                     <!-- <button (click)="Mostrarbarra()"><i class="fa fa-search"></i></button> -->
                 </th>
                 <th class="sticky-top"><b>Descripcion</b></th>
-                <th class="sticky-top"><b>Area</b></th>
+                <!-- <th class="sticky-top"><b>Area</b></th>
                 <th class="sticky-top"><b>Proceso</b></th>
                 <th class="sticky-top"><b>SubProceso</b></th>
                 <th class="sticky-top"><b>Actividad</b></th>
@@ -76,7 +76,7 @@
                 <th class="sticky-top"><b>Dimension</b></th>
                 <th class="sticky-top"><b>Riesgo</b></th>
                 <th class="sticky-top"><b>Consecuencia</b></th>
-                <th class="sticky-top"><b>Controles</b></th>
+                <th class="sticky-top"><b>Controles</b></th> -->
 
 
             </tr>
@@ -87,7 +87,7 @@
         <tbody>
             <tr *ngFor="let item of pendList | filtro: entidadfiltro">
                 <td class="sticky">
-                    <input type="checkbox" class="checkmark" (change)="marcar(item.key)" [value]="item.check" [(ngModel)]="item.check" [disabled]="item.bloqueo">
+                    <input type="checkbox" class="checkmark" (change)="marcar(item.key,item.status)" [value]="item.check" [(ngModel)]="item.check" [disabled]="item.bloqueo">
                     <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
         
                                 </ng-template>
@@ -122,7 +122,7 @@
                 <td><a routerLink="" reload='true' (click)='verTable(item.key)'>
                                 {{item.Descripcion}}  </a></td>
 
-                <td>{{item.Area}}</td>
+                <!-- <td>{{item.Area}}</td>
                 <td>{{item.Proceso}}</td>
                 <td>{{item.Subproceso}}</td>
                 <td>{{item.Actividad}}</td>
@@ -130,7 +130,7 @@
                 <td>{{item.Dimension}}</td>
                 <td>{{item.Riesgo}}</td>
                 <td>{{item.Consecuencia}}</td>
-                <td>{{item.TipoControl}}-{{item.Controles}}</td>
+                <td>{{item.TipoControl}}-{{item.Controles}}</td> -->
 
 
 

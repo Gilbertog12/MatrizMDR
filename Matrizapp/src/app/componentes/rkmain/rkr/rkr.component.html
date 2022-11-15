@@ -1,9 +1,11 @@
 <h6 class="article-title">Area > Proceso > Subproceso > Actividad > Tarea > Dimension > Riesgo
     <!-- <button *ngIf="riesgoModel.riesgoStatusId !=='008' && riesgoModel.CanAdd === 'true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button> -->
-    <button *ngIf="(riesgoModel.riesgoStatusId ==='001'|| riesgoModel.riesgoStatusId ==='002'||riesgoModel.riesgoStatusId ==='006') &&(riesgoModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button *ngIf="(riesgoModel.riesgoStatusId ==='004'|| riesgoModel.riesgoStatusId ==='007') &&(riesgoModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)">Editar</button>
-    <button *ngIf="(riesgoModel.riesgoStatusId ==='004') &&(riesgoModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,'IV')">Validar</button>
-    <button *ngIf="( riesgoModel.riesgoStatusId ==='007') &&(riesgoModel.CanAdd ==='true'  && allow === 'YN') " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,'IA')">Aprobar</button>
+    
+
+    <button *ngIf="boton === 'creador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
+    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)">Editar</button>
+    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,'IV')">Validar</button>
+    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,'IA')">Aprobar</button>
 </h6>
 
 

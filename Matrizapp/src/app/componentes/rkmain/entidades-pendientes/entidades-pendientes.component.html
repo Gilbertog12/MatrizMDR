@@ -1,0 +1,64 @@
+<!-- <h4>NOTIFICACIÓN <br> STATUS PROCESOS DE VALIDACION</h4>
+
+<mat-dialog-content>
+    <table class="table cebra">
+        <thead>
+
+
+            <tr>
+
+                <th class="sticky-top"><b>Usuario</b></th>
+                <th class="sticky-top"><b>Fecha y Hora</b></th>
+                <th class="sticky-top"><b>Jerarquia</b></th>
+                <th class="sticky-top"><b>Estado</b></th>
+                <th class="sticky-top"><b>Acción</b></th>
+                <th class="sticky-top"><b>Items</b></th>
+                <th class="sticky-top"><b>Avance</b></th>
+                <th class="sticky-top "><b id='check'>Eliminar</b></th>
+
+
+            </tr>
+
+
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let notificacion of notificaciones" [ngClass]="getClass(notificacion.comentario)">
+
+                <td>{{notificacion.usuario}}</td>
+                <td>{{notificacion.fecha}}</td>
+                <td>{{notificacion.jerarquia}}</td>
+                <td>{{getText(notificacion.comentario)}}</td>
+                <td>{{notificacion.estado}}</td>
+                <td>{{notificacion.no_items}}</td>
+                <td>{{notificacion.avance}}</td>
+
+                <td style="align-items: center; text-align: center;">
+                    <input type="checkbox" [value]="notificacion.check" style="align-items: center; text-align: center;" [(ngModel)]="notificacion.check" [disabled]='notificacion.habilitado'>
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</mat-dialog-content>
+
+
+
+
+
+<mat-dialog-actions align="end" cdkDragHandle>
+
+    <button mat-raised-button color="primary" (click)="validarEliminacion()">{{ data.button_confirm }}</button>
+    <button mat-raised-button color="accent" (click)="cargarNotificiaciones()">Actualizar</button>
+
+
+
+
+
+
+
+
+
+</mat-dialog-actions> -->

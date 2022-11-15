@@ -85,6 +85,11 @@ public Razon: string;
   statusc: any = '';
   controlesstatusa: boolean;
   allow: string;
+  boton: string;
+  vueltas: number;
+  contador2: number;
+  uid: string;
+  contador1: number;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -228,7 +233,8 @@ public Razon: string;
                   }
                 }
               });
-
+              const parameters = [ this.allow , this.consecuenciaModel.consecuenciaStatusId , this.consecuenciaModel.CanAdd ];
+            this.boton = this.autentication.botonesFlujoAprobacion(parameters)
               this.controlesstatusa = this.validarcontroles(this.controlesstatus);
               this.controlesstatus = '';
               this.controlService.closeSpinner(spinner);
@@ -493,6 +499,7 @@ public Razon: string;
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        this.controlBlandPestaña();
       }
     });
 
@@ -545,12 +552,13 @@ public Razon: string;
                     text: 'Control Blando Eliminado'
                   });
                 }
-                this.consecuenciaModel = {};
+                // this.consecuenciaModel = {};
                 this.epfList = [];
                 this.cBlandosList = [];
                 this.cDurosList = [];
                 this.docsList = [];
-                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+                // this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+                this.controlBlandPestaña();
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
                 Swal2.fire({
@@ -595,12 +603,10 @@ public Razon: string;
 
     conf.afterClosed().subscribe(async (result) => {
       if (result) {
-        this.consecuenciaModel = {};
-        this.epfList = [];
-        this.cBlandosList = [];
-        this.cDurosList = [];
-        this.docsList = [];
-        this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        // this.consecuenciaModel = {};
+        
+        // this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        this.controlDuroPestaña();
       }
     });
 
@@ -652,12 +658,9 @@ public Razon: string;
                     text: 'Control Duro Eliminado'
                   });
                 }
-                this.consecuenciaModel = {};
-                this.epfList = [];
-                this.cBlandosList = [];
-                this.cDurosList = [];
-                this.docsList = [];
-                this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+               
+                // this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+                this.controlDuroPestaña();
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
                 Swal2.fire({
@@ -707,6 +710,7 @@ public Razon: string;
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        this.epfPestaña()
 
       } else {
         this.consecuenciaModel = {};
@@ -771,6 +775,7 @@ public Razon: string;
                 this.cDurosList = [];
                 this.docsList = [];
                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+                this.epfPestaña()
               } else {
                 // this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
                 Swal2.fire('', data.message, 'error');
@@ -780,6 +785,7 @@ public Razon: string;
                 this.cDurosList = [];
                 this.docsList = [];
                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+                
 
               }
               this.controlService.closeSpinner(spinner);
@@ -824,6 +830,7 @@ public Razon: string;
         this.cDurosList = [];
         this.docsList = [];
         this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+        this.documentosPestaña()
       } else {
         this.consecuenciaModel = {};
         this.epfList = [];
@@ -883,6 +890,7 @@ public Razon: string;
                 this.cDurosList = [];
                 this.docsList = [];
                 this.ver(this.id, this.pid, this.sid, this.cid, this.tid, this.did, this.rid, this.yid);
+                this.documentosPestaña()
               } else {
                 this.autentication.showMessage(data.success, data.message, this.consecuenciaModel, data.redirect);
               }
@@ -1930,55 +1938,61 @@ public Razon: string;
       _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
       _atts.push({ name: 'status', value: tipo });
       _atts.push({ name: 'key', value: id });
+      _atts.push({ name: 'soloNodos', value: "Y" });
       _atts.push({ name: 'statusItem', value: status });
       _atts.push({ name: 'showCompleted', value: 'Y' });
 
       const spinner = this.controlService.openSpinner();
-
-      debugger;
+      //
+      // debugger
       this.autentication.generic(_atts)
       .subscribe( datos => {
+
+
+        if (datos.data[0].atts[0].name === 'TIMEOUT') {
+          // debugger
+          this.controlService.closeSpinner(spinner);
+
+          Swal2.fire({
+            icon: 'info',
+            text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+
+          }).then((resultado) => {
+            
+          });
+
+          return;
+
+        }
+        
           console.log( datos);
           if ( datos.success) {
 
-          if (datos.data[0].atts[0].name === 'TIMEOUT') {
-            // debugger
-            this.controlService.closeSpinner(spinner);
+          datos.data.forEach((element) => {
 
-            Swal2.fire({
-              icon: 'info',
-              text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
+            if ( element.atts[0].name === 'uuid'){
+              console.log(element);
+              this.uid =  element.atts[0].value;
 
-            }).then((resultado) => {
-
-            });
-
-            return;
-
-          }
-
-          datos.data.forEach(element => {
-
-            if (element.atts.length > 0) {
-
-              this.llaves.push( element.atts[16].value.trim(), 'Y', );
             }
           });
 
-          console.log(this.llaves.toString());
-          this.sendValidate(this.llaves.toString(), status);
+          this.sendValidate( status);
           this.controlService.closeSpinner(spinner);
         }
       });
 
     }
 
-    sendValidate(llaves, status) {
+
+    sendValidate( status) {
 
       let mnsje = 'Enviar a Validar';
+      let titulo = 'Envio a Validacion en Proceso';
 
-      if (status === '007') {
+      if(status === '007') {
         mnsje = 'Aprobar';
+        titulo = 'Aprobacion en Proceso';
       }
 
       Swal2.fire({
@@ -1997,7 +2011,8 @@ public Razon: string;
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'VALIDATE' });
           _atts.push({ name: 'onlyActualNode', value: 'Y' });
-          _atts.push({ name: 'key', value: llaves });
+          _atts.push({ name: 'uuid', value: this.uid });
+              // _atts.push({ name: 'key', value: llaves });
 
           const obj = this.autentication.generic(_atts);
           const spinner = this.controlService.openSpinner();
@@ -2006,9 +2021,10 @@ public Razon: string;
                       (data) => {
                         if (data.success === true) {
 
-                          this.mostrarMensaje();
+                          // this.mostrarMensaje();
+                        this.autentication.mensajeFlujoAprobacion(titulo);
 
-                          this.Cajas.notificaciones$.emit(true);
+                        this.Cajas.notificaciones$.emit(true);
 
                         } else {
 
@@ -2027,19 +2043,106 @@ public Razon: string;
                   });
 
     }
-    mostrarMensaje() {
-      Swal2.fire({
 
-        title: 'Envio a Validacion en Proceso',
-        text: 'Verifique en el icono de notificaciones, que la solicitud ha sido ejecutada exitosamente',
-        imageUrl: 'assets/images/notificacion.png',
-        imageWidth: 150,
-      imageHeight: 150,
-        imageAlt: 'Notificacion',
-      });
 
-      this.router.navigate(['/rkmain']);
+    obtenerVueltas(llaves) {
+      this.vueltas = Math.ceil(llaves.length / 1000 );
+      this.dividirLlaves(llaves);
     }
+
+    async dividirLlaves(llaves?) {
+
+      // const vueltas = Math.ceil(llaves.length / 1000 )
+      if (llaves.length > 1000 ) {
+
+        if (this.contador2 < this.vueltas) {
+
+          let llavesp = this.obtenerPorcion(llaves);
+          this.autentication.envioPorLotes(llavesp, this.uid)
+          .subscribe( (uuid) => {
+
+            uuid.data.forEach( (uid) => {
+                this.uid = uid.atts[1].value.trim();
+            });
+            this.contador1 = this.contador1 + 1000;
+            this.contador2++;
+            this.dividirLlaves(llaves);
+
+          });
+
+        } else {
+
+          this.envioAEllipse(llaves.slice(this.contador1, llaves.length), 'T' );
+        }
+
+      } else {
+         this.envioAEllipse(llaves, 'T' );
+
+      }
+
+    }
+
+  obtenerPorcion(llaves: any) {
+
+    const valores = llaves.slice(this.contador1 , (this.contador2 * 1000));
+
+    return valores.toString();
+  }
+  async envioAEllipse(keys: any[], envio: string ) {
+
+    let valores:string = '';
+
+    let mnsje = 'Enviar a Validar';
+    let titulo = 'Envio a Validacion en Proceso';
+
+    if(status === '007') {
+        mnsje = 'Aprobar';
+        titulo = 'Aprobacion en Proceso';
+      }
+
+    const _atts = [];
+    _atts.push({ name: 'scriptName', value: 'coemdr' });
+    _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
+    _atts.push({ name: 'onlyActualNode', value: 'Y' });
+
+    _atts.push({ name: 'key', value: keys.toString() });
+    _atts.push({ name: 'envio', value: envio });
+    _atts.push({ name: 'uuid', value: this.uid });
+
+    console.log(_atts);
+
+    const obj = await this.autentication.generic(_atts);
+    const spinner = this.controlService.openSpinner();
+
+    obj.subscribe(
+                  (data) => {
+                      if (data.success === true) {
+
+                        if (this.uid === '') {
+
+                          this.uid = data[1]['atts'][1].value;
+
+                          // this.dividirLlaves();
+                        }
+
+                        this.autentication.mensajeFlujoAprobacion(titulo);
+                        // this.dialogRef.close(false);
+                        this.Cajas.notificaciones$.emit(true);
+
+                  } else {
+
+                    Swal2.fire('', data.message, 'error');
+                  }
+
+                      this.controlService.closeSpinner(spinner);
+
+                },
+                (error) => {
+                  this.controlService.closeSpinner(spinner);
+                  console.log(error);
+                  // this.controlService.closeSpinner(spinner);
+                });
+  }
 
     test(e: MatTabChangeEvent) {
 
@@ -2069,17 +2172,19 @@ public Razon: string;
 
       this.loading = true;
       this.cBlandosList = [];
+
+      console.log(this.consecuenciaModel)
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'CONSEC_SEARCH_CONTROLB' });
-      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
-      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
-      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
-      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
-      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
-      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
-      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+      _atts.push({ name: 'areaId', value: this.id });
+      _atts.push({ name: 'procesoId', value: this.pid });
+      _atts.push({ name: 'subprocesoId', value: this.sid });
+      _atts.push({ name: 'actividadId', value: this.cid });
+      _atts.push({ name: 'tareaId', value: this.tid });
+      _atts.push({ name: 'dimensionId', value: this.did });
+      _atts.push({ name: 'riesgoId', value: this.rid });
+      _atts.push({ name: 'consecuenciaId', value: this.yid });
 
       const spinner = this.controlService.openSpinner();
 
@@ -2125,14 +2230,14 @@ public Razon: string;
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'CONSEC_SEARCH_CONTROLD' });
-      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
-      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
-      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
-      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
-      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
-      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
-      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+      _atts.push({ name: 'areaId', value: this.id });
+      _atts.push({ name: 'procesoId', value: this.pid });
+      _atts.push({ name: 'subprocesoId', value: this.sid });
+      _atts.push({ name: 'actividadId', value: this.cid });
+      _atts.push({ name: 'tareaId', value: this.tid });
+      _atts.push({ name: 'dimensionId', value: this.did });
+      _atts.push({ name: 'riesgoId', value: this.rid });
+      _atts.push({ name: 'consecuenciaId', value: this.yid });
 
       const spinner = this.controlService.openSpinner();
 
@@ -2178,14 +2283,14 @@ public Razon: string;
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'CONSEC_SEARCH_CONTROLE' });
-      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
-      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
-      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
-      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
-      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
-      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
-      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+      _atts.push({ name: 'areaId', value: this.id });
+      _atts.push({ name: 'procesoId', value: this.pid });
+      _atts.push({ name: 'subprocesoId', value: this.sid });
+      _atts.push({ name: 'actividadId', value: this.cid });
+      _atts.push({ name: 'tareaId', value: this.tid });
+      _atts.push({ name: 'dimensionId', value: this.did });
+      _atts.push({ name: 'riesgoId', value: this.rid });
+      _atts.push({ name: 'consecuenciaId', value: this.yid });
 
       const spinner = this.controlService.openSpinner();
 
@@ -2231,14 +2336,14 @@ public Razon: string;
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'CONSEC_SEARCH_DOCS' });
-      _atts.push({ name: 'areaId', value: this.consecuenciaModel.areaId });
-      _atts.push({ name: 'procesoId', value: this.consecuenciaModel.procesoId });
-      _atts.push({ name: 'subprocesoId', value: this.consecuenciaModel.subprocesoId });
-      _atts.push({ name: 'actividadId', value: this.consecuenciaModel.actividadId });
-      _atts.push({ name: 'tareaId', value: this.consecuenciaModel.tareaId });
-      _atts.push({ name: 'dimensionId', value: this.consecuenciaModel.dimensionId });
-      _atts.push({ name: 'riesgoId', value: this.consecuenciaModel.riesgoId });
-      _atts.push({ name: 'consecuenciaId', value: this.consecuenciaModel.consecuenciaId });
+      _atts.push({ name: 'areaId', value: this.id });
+      _atts.push({ name: 'procesoId', value: this.pid });
+      _atts.push({ name: 'subprocesoId', value: this.sid });
+      _atts.push({ name: 'actividadId', value: this.cid });
+      _atts.push({ name: 'tareaId', value: this.tid });
+      _atts.push({ name: 'dimensionId', value: this.did });
+      _atts.push({ name: 'riesgoId', value: this.rid });
+      _atts.push({ name: 'consecuenciaId', value: this.yid });
 
       const spinner = this.controlService.openSpinner();
 

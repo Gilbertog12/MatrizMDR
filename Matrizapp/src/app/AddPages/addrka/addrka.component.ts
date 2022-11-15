@@ -336,6 +336,7 @@ import Swal2 from 'sweetalert2';
 import { takeUntil } from 'rxjs/operators';
 import { pipe, ReplaySubject, Subject } from 'rxjs';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
+import { NuevaEntidadComponent } from '../../nueva-entidad/nueva-entidad.component';
 
 export interface PeriodicElement {
   name: string;
@@ -406,7 +407,7 @@ export class AddrkaComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.cargarAreas(this.areaModel.name);
+      this.cargarAreas();
 
     }
 
@@ -430,18 +431,19 @@ export class AddrkaComponent implements OnInit {
         }
       }
     }
-    applyFilter(filterValue: string) {
+    applyFilter(filterValue) {
       console.log(filterValue);
 
       filterValue = filterValue.trim().toLowerCase();
 
       this.datasource2.filter = filterValue;
 
-      if (this.datasource2.filteredData.length === 0) {
-          this.bloquearFiltro = true;
-          this.cargarAreas(filterValue);
+          // tslint:disable-next-line: one-line
 
-        }
+      this.datasource2.data = [];
+      this.bloquearFiltro = true;
+      this.areasList = [];
+      this.cargarAreas(filterValue);
 
     }
 
@@ -482,12 +484,19 @@ export class AddrkaComponent implements OnInit {
     }
 
     pageEvents(pagina: MatPaginator) {
-        
-        
+
        if (!this.paginator.hasNextPage()) {
-        debugger
-        this.indice = this.indice+1;
-        this.cargarAreas('', this.indice);
+        debugger;
+        console.log(this.txtBuscar.nativeElement.value);
+        if (this.txtBuscar.nativeElement.value === "" || this.txtBuscar.nativeElement.value === undefined ) {
+          this.cargarAreas('', this.indice);
+        } else {
+          this.indice = this.indice + 1;
+          this.areasList = [];
+          this.cargarAreas(this.txtBuscar.nativeElement.value, this.indice);
+
+        }
+
        }
 
     }
@@ -512,10 +521,10 @@ export class AddrkaComponent implements OnInit {
       for ( const i  in this.areasList) {
 
         // console.log(respuesta[i]['atts'][0].value);
-        
+
         if (respuesta[i]['atts'][0].value.trim() === this.areasList[i].Id) {
             return true;
-        }else{
+        } else {
 
           return false;
         }
@@ -524,7 +533,7 @@ export class AddrkaComponent implements OnInit {
 
     }
 
-  cargarAreas(name?: string, index?) {
+  cargarAreas(name?, index?) {
     let _atts = [];
 
     _atts.push({ name: "scriptName", value: "coemdr" });
@@ -536,7 +545,11 @@ export class AddrkaComponent implements OnInit {
     _atts.push({name: 'tareaId', value: this.areaModel.tareaId });
     _atts.push({name: 'dimensionId', value: this.areaModel.dimensionId });
     _atts.push({name: 'riesgoId', value: this.areaModel.riesgoId });
-    _atts.push({ name: "lookupName", value: name });
+    if (name === '' || name === undefined) {
+
+    } else {
+      _atts.push({ name: "lookupName", value: '%' + name });
+    }
     _atts.push({ name: "index", value: index });
     this.isLoading = true;
 
@@ -548,10 +561,8 @@ export class AddrkaComponent implements OnInit {
             // if(data.data.length > 0){
 
             // }
-              debugger
-            if (data.data.length === 0 && index !== undefined) {
-
-            
+              // debugger;
+              if (data.data.length === 0 && index !== undefined) {
 
               this.isLoading = false;
               this.bloquearFiltro = false;
@@ -559,11 +570,11 @@ export class AddrkaComponent implements OnInit {
                 icon : 'info',
                 text : 'Items Listados en su totalidad'
               });
-            }else{
-                if(data.data.length === 0){
+            } else {
+                if (data.data.length === 0) {
                   this.isLoading = false;
-              this.bloquearFiltro = false;
-              return Swal2.fire({
+                  this.bloquearFiltro = false;
+                  return Swal2.fire({
                 icon : 'info',
                 text : 'Codigo/Descripcion no encontrada'
               });
@@ -573,7 +584,7 @@ export class AddrkaComponent implements OnInit {
 
             // let duplicado = this.sonIguales(data.data);
             // debugger
-            data.data.forEach((element, index) => {
+              data.data.forEach((element, index) => {
 
               if (element.atts.length > 0) {
                 this.areasList.unshift({
@@ -591,7 +602,7 @@ export class AddrkaComponent implements OnInit {
             // }
 
             // console.log(this.areasList);
-            this.areasList.sort(function (a, b) {
+              this.areasList.sort(function (a, b) {
               if (a.Id > b.Id) {
                 return 1;
               }
@@ -602,10 +613,15 @@ export class AddrkaComponent implements OnInit {
               return 0;
             });
 
-            console.log(this.areasList);
-            this.datasource2 = new MatTableDataSource<AddItem>(this.areasList);
-            
-            this.datasource2.paginator = this.paginator;
+              console.log(this.areasList);
+              this.areasList = this.areasList.filter( (elem, pos) => {
+              return this.areasList.indexOf(elem) === pos;
+            });
+
+              console.log(this.areasList)
+              this.datasource2 = new MatTableDataSource<AddItem>(this.areasList);
+
+              this.datasource2.paginator = this.paginator;
           } else {
             this.autentication.showMessage(
               data.success,
@@ -786,6 +802,27 @@ export class AddrkaComponent implements OnInit {
       this.dialogRef.close(true);
 
     }
+  }
+
+
+  nuevaEntidad(){
+
+    const conf = this.confirm.open(NuevaEntidadComponent, {
+      hasBackdrop: true,
+      height: '600px',
+      width: '950px',
+        data: {
+          title: 'Agregar Proceso',
+          message: ``,
+          accion: 'PROCESO_LIST',
+          crear : 'PROCESO_CREATE',
+          ok : 'Proceso Agregado',
+          button_confirm: 'Guardar',
+          button_close: 'Cancelar',
+          panelClass: 'nueva-entidad'
+        }
+      });
+
   }
 
 }
