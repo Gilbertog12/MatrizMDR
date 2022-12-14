@@ -14,7 +14,11 @@
                 <th class="sticky-top"><b>Acción</b></th>
                 <th class="sticky-top"><b>Items</b></th>
                 <th class="sticky-top"><b>Avance</b></th>
-                <th class="sticky-top "><b id='check'>Eliminar</b></th>
+                <th class="sticky-top "> 
+                <b id='check'>Eliminar</b>
+                <br>
+                     <input type="checkbox" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" >
+                    </th>
 
 
             </tr>

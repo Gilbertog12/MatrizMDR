@@ -89,10 +89,10 @@ export class LoginComponent implements OnInit {
     // debugger
     // this.deafultValues();
 
-    
+    console.log(spinner)
 
     this.model.district = 'COLL';
-     debugger
+    //  debugger
     this.model.position = this.posDefault;
 
     this.model.password = this.model.password === 'undefined' ? '' : this.model.password;
@@ -195,7 +195,7 @@ export class LoginComponent implements OnInit {
     copyright() {
     Swal2.fire({
       icon: 'info',
-      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.4.1 <br />Fecha de compilación: 2022-10-20<br />',
+      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.4.2 <br />Fecha de compilación: 2022-12-06<br />',
       showCloseButton: true
 
     });

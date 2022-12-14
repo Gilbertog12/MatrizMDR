@@ -144,7 +144,7 @@ public Razon: string;
       // this.canAdd = localStorage.getItem('canAdd');
       // this.valorChckCopiado = localStorage.getItem('idCheckCopiado');
 
-      this.Cajas.notificaciones$.subscribe((resp)=>{
+      this.Cajas.notificaciones$.subscribe((resp) => {
         // this.activarNotificaciones()
          });
 
@@ -390,8 +390,6 @@ public Razon: string;
         }
       });
 
-
-
   }
 
   ejemplo() {
@@ -439,8 +437,6 @@ public Razon: string;
   ver(areaId: string, procesoId: string, subprocesoId: string, actividadId: string , activarRiesgo: boolean) {
 
     this.loading = true;
-
-
 
     const _atts = [];
     _atts.push({ name: 'scriptName', value: 'coemdr' });
@@ -1077,7 +1073,7 @@ public Razon: string;
 
       validarBotones() {
         debugger
-        if(localStorage.getItem('CanAddCheck') === 'true'){
+        if (localStorage.getItem('CanAddCheck') === 'true') {
           if (localStorage.getItem('isCreador') === 'true') {
             let statusId = localStorage.getItem('statusSelected');
             if (statusId === '001' || statusId === '002' || statusId === '008' ) {
@@ -1104,14 +1100,13 @@ public Razon: string;
           this.rutaImgCopy = 'assets/images/copy2.png';
           this.rutaImgPaste = 'assets/images/paste2.png';
         }
-        }else{
+        } else {
           this.crear = false;
           this.deshabilitado = true;
           this.rutaImgAdd = 'assets/images/Add_Disabled.png';
           this.rutaImgCopy = 'assets/images/copy2.png';
           this.rutaImgPaste = 'assets/images/paste2.png';
         }
-
 
       }
       cargarPestañaCheck() {
@@ -1143,8 +1138,6 @@ public Razon: string;
                   console.log(data);
 
                   data.data.forEach((element) => {
-
-
 
                     if (localStorage.getItem('statusSelected') !== '001' || localStorage.getItem('statusSelected') !== '002' || localStorage.getItem('statusSelected') !== '008') {
 
@@ -1190,8 +1183,6 @@ public Razon: string;
                 this.pegar = this.anonimmo(this.checklistEllipse, this.checklistEllipse.length, this.actividadModel.actividadStatusId);
   });
 
-
-
       }
 
       anonimmo(checklist, longitud: number, status: string) {
@@ -1210,7 +1201,6 @@ public Razon: string;
                 }
 
               } else if ( longitud > 0 ) {
-
 
                       // let permitido = 0;
                       for (let i = 0 ; i < longitud; i++) {
@@ -1589,8 +1579,6 @@ public Razon: string;
 
             console.log(this.valor, this.comments, this.valoresCheck);
 
-
-
             this.actualizarCheck(this.valor, this.comments, this.valoresCheck);
           }
 
@@ -1698,9 +1686,6 @@ public Razon: string;
             }
           }
 
-
-
-
           actualizarCheck(item, comentario, checkValidation) {
 
             const _atts = [];
@@ -1755,8 +1740,6 @@ public Razon: string;
                       (error) => {
                         this.controlService.closeSpinner(spinner);
                       });
-
-
 
           }
 
@@ -1844,63 +1827,61 @@ public Razon: string;
             _atts.push({ name: 'soloNodos', value: "Y" });
             _atts.push({ name: 'statusItem', value: status });
             _atts.push({ name: 'showCompleted', value: 'Y' });
-      
+
             const spinner = this.controlService.openSpinner();
             //
             // debugger
             this.autentication.generic(_atts)
             .subscribe( datos => {
-      
-      
+
               if (datos.data[0].atts[0].name === 'TIMEOUT') {
                 // debugger
                 this.controlService.closeSpinner(spinner);
-      
+
                 Swal2.fire({
                   icon: 'info',
                   text: `Numero de items en Validación/Construcción excedido: ${datos.data[0].atts[0].value.trim()} ,bajar de nivel en la jerarquía`
-      
+
                 }).then((resultado) => {
-                  
+
                 });
-      
+
                 return;
-      
+
               }
-              
+
                 console.log( datos);
                 if ( datos.success) {
-      
+
                 datos.data.forEach((element) => {
-      
-                  if ( element.atts[0].name === 'uuid'){
+
+                  if ( element.atts[0].name === 'uuid') {
                     console.log(element);
                     this.uid =  element.atts[0].value;
-      
+
                   }
                 });
-      
+
                 this.sendValidate( status);
                 this.controlService.closeSpinner(spinner);
               }
             });
-      
+
           }
-      
-      
+
           sendValidate( status) {
-      
+
             let mnsje = 'Enviar a Validar';
             let titulo = 'Envio a Validacion en Proceso';
-      
-            if(status === '007') {
+
+            if (status === '007') {
               mnsje = 'Aprobar';
               titulo = 'Aprobacion en Proceso';
             }
-      
+
             Swal2.fire({
               html: `<h3><strong>${mnsje}</strong></h3>`,
-      
+
               icon: 'info',
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
@@ -1909,142 +1890,164 @@ public Razon: string;
               cancelButtonText: 'Cancelar'
             }).then((result) => {
               if (result.value) {
-      
+
                 const _atts = [];
                 _atts.push({ name: 'scriptName', value: 'coemdr' });
                 _atts.push({ name: 'action', value: 'VALIDATE' });
                 _atts.push({ name: 'onlyActualNode', value: 'Y' });
                 _atts.push({ name: 'uuid', value: this.uid });
                     // _atts.push({ name: 'key', value: llaves });
-      
+
                 const obj = this.autentication.generic(_atts);
                 const spinner = this.controlService.openSpinner();
-      
+
                 obj.subscribe(
                             (data) => {
                               if (data.success === true) {
-      
+
                                 // this.mostrarMensaje();
                               this.autentication.mensajeFlujoAprobacion(titulo);
-      
+
                               this.Cajas.notificaciones$.emit(true);
-      
+
                               } else {
-      
+
                                 Swal2.fire('', data.message, 'error');
                               }
-      
+
                               this.controlService.closeSpinner(spinner);
-      
+
                             },
                             (error) => {
-      
+
                               this.controlService.closeSpinner(spinner);
                             });
                           }
-      
+
                         });
-      
+
           }
-      
-      
+
           obtenerVueltas(llaves) {
             this.vueltas = Math.ceil(llaves.length / 1000 );
             this.dividirLlaves(llaves);
           }
-      
+
           async dividirLlaves(llaves?) {
-      
+
             // const vueltas = Math.ceil(llaves.length / 1000 )
             if (llaves.length > 1000 ) {
-      
+
               if (this.contador2 < this.vueltas) {
-      
+
                 let llavesp = this.obtenerPorcion(llaves);
                 this.autentication.envioPorLotes(llavesp, this.uid)
                 .subscribe( (uuid) => {
-      
+
                   uuid.data.forEach( (uid) => {
                       this.uid = uid.atts[1].value.trim();
                   });
                   this.contador1 = this.contador1 + 1000;
                   this.contador2++;
                   this.dividirLlaves(llaves);
-      
+
                 });
-      
+
               } else {
-      
+
                 this.envioAEllipse(llaves.slice(this.contador1, llaves.length), 'T' );
               }
-      
+
             } else {
                this.envioAEllipse(llaves, 'T' );
-      
+
             }
-      
+
           }
-      
+
         obtenerPorcion(llaves: any) {
-      
+
           const valores = llaves.slice(this.contador1 , (this.contador2 * 1000));
-      
+
           return valores.toString();
         }
         async envioAEllipse(keys: any[], envio: string ) {
-      
-          let valores:string = '';
-      
+
+          let valores: string = '';
+
           let mnsje = 'Enviar a Validar';
           let titulo = 'Envio a Validacion en Proceso';
-      
-          if(status === '007') {
+
+          if (status === '007') {
               mnsje = 'Aprobar';
               titulo = 'Aprobacion en Proceso';
             }
-      
+
           const _atts = [];
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'SEND_VALIDATE' });
           _atts.push({ name: 'onlyActualNode', value: 'Y' });
-      
+
           _atts.push({ name: 'key', value: keys.toString() });
           _atts.push({ name: 'envio', value: envio });
           _atts.push({ name: 'uuid', value: this.uid });
-      
+
           console.log(_atts);
-      
+
           const obj = await this.autentication.generic(_atts);
           const spinner = this.controlService.openSpinner();
-      
+
           obj.subscribe(
                         (data) => {
                             if (data.success === true) {
-      
+
                               if (this.uid === '') {
-      
+
                                 this.uid = data[1]['atts'][1].value;
-      
+
                                 // this.dividirLlaves();
                               }
-      
+
                               this.autentication.mensajeFlujoAprobacion(titulo);
                               // this.dialogRef.close(false);
                               this.Cajas.notificaciones$.emit(true);
-      
+
                         } else {
-      
+
                           Swal2.fire('', data.message, 'error');
                         }
-      
+
                             this.controlService.closeSpinner(spinner);
-      
+
                       },
                       (error) => {
                         this.controlService.closeSpinner(spinner);
                         console.log(error);
                         // this.controlService.closeSpinner(spinner);
                       });
+        }
+
+        generarReporte(key) {
+
+
+          this.autentication.generarReporte(key)
+          .subscribe( resp =>
+            console.log(resp))
+
+          // const _atts = [];
+          // _atts.push({ name: 'scriptName', value: 'coemdr' });
+          // _atts.push({ name: 'action', value: 'SEND_REPORT_MDR' });
+          // _atts.push({ name: 'key', value: key });
+
+          // const obj =  this.autentication.generic(_atts);
+          // const spinner = this.controlService.openSpinner();
+
+          // obj.subscribe( (data) => {
+
+          //   if (data.succes === true) {
+          //     this.controlService.closeSpinner(spinner);
+          //   }
+          // });
         }
 
   }

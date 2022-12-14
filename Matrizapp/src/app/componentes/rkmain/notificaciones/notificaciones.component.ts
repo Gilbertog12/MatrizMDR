@@ -19,6 +19,7 @@ export class NotificacionesComponent  {
   notificaciones: any = [];
   valor: string;
   deshabilitar: boolean = false;
+  masterSelected = false;
 
   constructor(public dialogRef: MatDialogRef<NotificacionesComponent>,
               private controlService: ControlsService,
@@ -71,7 +72,7 @@ export class NotificacionesComponent  {
                   fecha: element.atts[5].value.trim(),
                   no_items: element.atts[6].value.trim(),
                   usuario: element.atts[7].value.trim(),
-                  avance: element.atts[8].value.trim()+'%', 
+                  avance: element.atts[8].value.trim()+'%',
                   check: false,
                   habilitado : this.deshabilitar
 
@@ -148,5 +149,25 @@ export class NotificacionesComponent  {
       default :
         return `Ejecución fallida ${texto}`;
     }
+  }
+
+
+
+  checkUncheckAll() {
+    // tslint:disable-next-line: prefer-for-of
+
+    for (let i = 0; i < this.notificaciones.length; i++) {
+      this.notificaciones[i].check = this.masterSelected;
+
+
+
+      if (this.masterSelected === true) {
+
+
+      } else {
+
+      }
+    }
+
   }
 }

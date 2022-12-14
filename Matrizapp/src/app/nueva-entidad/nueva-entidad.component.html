@@ -1,50 +1,129 @@
+<button class="close" mat-dialog-title mat-button >X</button>
+<!-- <h1 mat-dialog-title>Login</h1> -->
 
-  <div class="wrapper wrapper--w900">
-    <!-- <div class="card card-6"> -->
-        <div class="card-heading">
-            <h2 class="title">Crear Nueva Entidad</h2>
-        </div>
-        <div class="card-body">
-            <form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="login()">
-                <div class="form-row">
-                    <div class="name">Descripcion</div>
-                    <div class="value">
-                        <input class="input--style-6" type="text" name="full_name"
-                        formControlName = 'Descripcion'
-                        >
+<mat-dialog-content >
+  <form autocomplete="off"  [formGroup]="miFormulario" (ngSubmit)="add()">
+     
+    <div class="row">
+      <div class="col-6">
+            <mat-form-field >
+              <mat-label>Codigo</mat-label>
+              <input  formControlName = 'code' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('code')">
+                Tamaño obligatorio 4 caracteres
+              </span>
+            </mat-form-field>
+          <mat-form-field >
+              <mat-label>Descripcion</mat-label>
+              <input formControlName = 'description' matInput type="text" >
+            </mat-form-field>
+          <mat-form-field >
+              <mat-label>Texto Extendido</mat-label>
+              <input formControlName = 'extendedText' matInput type="text" >
+            </mat-form-field>
+          <mat-form-field *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'">
+              <mat-label>Clasificacion</mat-label>
+              <input formControlName = 'clasification' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('clasification')">
+                Tamaño obligatorio 2 caracteres
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field *ngIf="data.tabla === '+RKT'" >
+              <mat-label>Ocupacion</mat-label>
+              <input formControlName = 'ocupation' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('ocupation')">
+                Tamaño obligatorio 2 caracteres
+              </span>
+            </mat-form-field>
+          <mat-form-field *ngIf="data.tabla === '+RKT'">
+              <mat-label>Tipo Tarea</mat-label>
+              <input formControlName = 'taskType' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('taskType')">
+                Tamaño obligatorio 2 caracteres
+              </span>
+            </mat-form-field>
+          <mat-form-field *ngIf="data.tabla === '+RKR'">
+              <mat-label>branch</mat-label>
+              <input formControlName = 'branch' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('branch')">
+                Tamaño obligatorio 2 caracteres
+              </span>
+            </mat-form-field>
+          <mat-form-field *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">
+              <mat-label>Familia</mat-label>
+              <input formControlName = 'family' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('family')">
+                Tamaño obligatorio 2 caracteres
+              </span>
+            </mat-form-field>
+          <!-- <mat-form-field >
+              <mat-label>Comentario</mat-label>
+              <input formControlName = 'Comentario' matInput type="text" >
+            </mat-form-field> -->
+          </div>
+           
+           
+            
+              
+            </div>
+            <div class="float-end">
+              <button  class="add" mat-button [disabled]="miFormulario.invalid">Agregar</button>
+              
+            </div>
+            
+            
+    </form>
+    <br>
+</mat-dialog-content>
 
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="name">Texto Extendido</div>
-                    <div class="value">
-                        <div class="input-group">
-                            <input class="input--style-6" type="text"  
-                            formControlName = 'TextoExtendido'
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="name">Razón</div>
-                    <div class="value">
-                        <div class="input-group">
-                            <textarea class="textarea--style-6" 
-                            formControlName = 'Razon'
-                            ></textarea>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <!-- <div class="card-footer">
-            <button class="btn btn--radius-2 btn--blue-2" type="submit">Crear Entidad</button>
-        </div> -->
+<mat-dialog-content>
+  <table  class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th>Codigo</th>
+        <th>Descripcion</th>
+        <th>Texto Extandido</th>
+        <th *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'" >Clasificacion</th>
+        <th *ngIf="data.tabla === '+RKT'">ocupacion</th>
+        <th *ngIf="data.tabla === '+RKT'">Tipo Tarea</th>
+        <th *ngIf="data.tabla === '+RKR'" >Rama</th>
+        <th *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">Familia</th>
+        <!-- <th>Comentarios</th> -->
+        <th>Respuesta Ellipse</th>
+        <th>Borrar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of solicitudes">
+        <td >{{item.code}}</td>
+        <td >{{item.description}}</td>
+        <td >{{item.extendedText}}</td>
+        <td *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'">{{item.clasification}}</td>
+        <td *ngIf="data.tabla === '+RKT'" >{{item.ocupation}}</td>
+        <td *ngIf="data.tabla === '+RKT'" >{{item.taskType}}</td>
+        <td *ngIf="data.tabla === '+RKR'" >{{item.branch}}</td>
+        <td *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">{{item.family}}</td>
+        
+        <!-- <td >{{item.Comentario}}</td> -->
+        <td *ngIf="isLoading"><mat-progress-bar  style="width: 50px" mode="buffer"></mat-progress-bar></td>
+        <td *ngIf="!isLoading" >{{item.mensaje}}</td>
+        <td >
+          <button class="btn btn-sm btn-light btn-round"  (click)="delete(item)" id="eliminar" >
+            <mat-icon  class="material-icons">delete_forever</mat-icon></button></td>
+      </tr>
+    </tbody>
+  </table>
+      
+</mat-dialog-content>
 
-        <mat-dialog-actions align="end">
-          <button mat-raised-button color="primary" class="nuevo_entidad" type="submit"  [disabled]="miFormulario.invalid">Nueva Entidad</button>
-          <!-- <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button> -->
-          <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
-      </mat-dialog-actions>
-    <!-- </div> -->
-</div>
+<mat-dialog-actions>
+    <button mat-button class="solicitud" (click)="crear()"  [disabled]="solicitudes.length === 0">Guardar</button><button (click)="cerrar()" button mat-button class="cancel">Cerrar</button>
+</mat-dialog-actions>

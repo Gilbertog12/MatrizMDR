@@ -404,6 +404,8 @@ export class AddrkaComponent implements OnInit {
                     riesgoId: this.data.riesgoId,
                     name : ''
       };
+
+      
     }
 
     ngOnInit() {
@@ -811,6 +813,7 @@ export class AddrkaComponent implements OnInit {
       hasBackdrop: true,
       height: '600px',
       width: '950px',
+      panelClass: 'my-dialog',
         data: {
           title: 'Agregar Proceso',
           message: ``,
@@ -819,7 +822,8 @@ export class AddrkaComponent implements OnInit {
           ok : 'Proceso Agregado',
           button_confirm: 'Guardar',
           button_close: 'Cancelar',
-          panelClass: 'nueva-entidad'
+          panelClass: 'nueva-entidad',
+          tabla : this.data.tabla
         }
       });
 

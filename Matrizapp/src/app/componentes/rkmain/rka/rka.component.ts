@@ -606,4 +606,20 @@ public Razon: string;
                 });
   }
 
+
+  generarReporte(){
+    this.autentication.generarReporte(this.areaModel.key)
+    .subscribe(
+      (resp:any) => {
+
+        Swal2.fire({
+          text : resp.data[0].atts[1].value,
+          icon : 'info'
+
+        }
+        );
+      }
+    )
+  }
+
 }

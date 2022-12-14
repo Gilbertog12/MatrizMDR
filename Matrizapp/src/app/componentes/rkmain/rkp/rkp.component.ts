@@ -606,5 +606,11 @@ async envioAEllipse(keys: any[], envio: string ) {
 }
 
 
+generarReporte(){
+
+  this.autentication.generarReporte(this.procesoModel.key)
+  .subscribe(console.log)
+}
+
 
 }

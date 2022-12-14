@@ -233,12 +233,9 @@ export class AuthenticationService {
       'Authorization',
       'bearer ' + localStorage.getItem('tk')
     );
-
+    console.log(body)
     return this.http.post(_url, body, { headers: headersV })
-    .subscribe( (resp: any) => {
-      this._nodoDetalle = resp.data[0]['atts'];
-      console.log(this._nodoDetalle);
-    });
+   
 
   }
 
@@ -532,4 +529,51 @@ export class AuthenticationService {
     }
 
   }
+
+  generarReporte(key: string) {
+
+    const _url = this.httpService.baseUrl + '/values/generic/';
+    let body: any;
+
+    body = {
+      atts: [
+        {name:"scriptName",value:"coemdr"},
+        {name:"action",value:"SEND_REPORT_MDR"},
+        {name:'key',value:key}
+      ]
+
+    };
+    let headersV = new HttpHeaders();
+    headersV = headersV.append('Content-Type', 'application/json');
+    headersV = headersV.append(
+      'Authorization',
+      'bearer ' + localStorage.getItem('tk')
+    );
+
+    return this.http.post(_url, body, { headers: headersV });
+  }
+  EnviarSolicitud() {
+
+    const _url = this.httpService.baseUrl + '/values/generic/';
+    let body: any;
+
+    body = {
+      atts: [
+        {name:"scriptName",value:"coemdr"},
+        {name:"action",value:"SEND_DEFINITION"},
+        
+      ]
+
+    };
+    let headersV = new HttpHeaders();
+    headersV = headersV.append('Content-Type', 'application/json');
+    headersV = headersV.append(
+      'Authorization',
+      'bearer ' + localStorage.getItem('tk')
+    );
+
+    return this.http.post(_url, body, { headers: headersV });
+  }
+
+  
 }

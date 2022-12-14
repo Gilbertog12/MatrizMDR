@@ -661,7 +661,7 @@ export class RkmainComponent implements OnInit {
               // console.log(data)
 
           data['data'].forEach( (value) => {
-            debugger
+            // debugger
             const key: string = value['atts'][7]['value'];
             const name: string = value['atts'][1]['value'] + ' - ' + value['atts'][2]['value'];
             const status = value['atts'][3]['value'];
@@ -2044,7 +2044,9 @@ export class RkmainComponent implements OnInit {
             ok : 'Actividad Agregada',
             areaId: _areaId,
             procesoId: _procesoId,
-            subprocesoId: _subprocesoId
+            subprocesoId: _subprocesoId,
+            nuevo : false,
+            tabla : '+RKC'
           }
         });
 
@@ -2123,7 +2125,9 @@ export class RkmainComponent implements OnInit {
             areaId: _areaId,
             procesoId: _procesoId,
             subprocesoId: _subprocesoId,
-            actividadId: _actividadId
+            actividadId: _actividadId,
+            nuevo : true,
+            tabla : '+RKT'
           }
         });
         conf.afterClosed()
@@ -2283,7 +2287,9 @@ export class RkmainComponent implements OnInit {
             subprocesoId: _subprocesoId,
             actividadId: _actividadId,
             tareaId: _tareaId,
-            dimensionId: _dimensionId
+            dimensionId: _dimensionId,
+            nuevo : true,
+            tabla : '+RKR'
           }
         });
         conf.afterClosed()
@@ -2360,7 +2366,9 @@ export class RkmainComponent implements OnInit {
             actividadId: _actividadId,
             tareaId: _tareaId,
             dimensionId: _dimensionId,
-            riesgoId: _riesgoId
+            riesgoId: _riesgoId,
+            nuevo : true,
+            tabla : '+RKY'
           }
         });
         conf.afterClosed()

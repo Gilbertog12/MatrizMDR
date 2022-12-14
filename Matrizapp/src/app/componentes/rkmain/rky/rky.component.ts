@@ -487,7 +487,9 @@ public Razon: string;
         tareaId: this.tid,
         dimensionId: this.did,
         riesgoId: this.rid,
-        consecuenciaId: this.yid
+        consecuenciaId: this.yid,
+        nuevo: true,
+        tabla : '+RKB'
       }
     });
 
@@ -698,7 +700,8 @@ public Razon: string;
         tareaId: this.tid,
         dimensionId: this.did,
         riesgoId: this.rid,
-        consecuenciaId: this.yid
+        consecuenciaId: this.yid,
+        nuevo :true
       }
     });
 

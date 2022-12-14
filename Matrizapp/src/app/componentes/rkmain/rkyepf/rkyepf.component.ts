@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthenticationService, ControlsService } from '../../../shared';
 import Swal2 from 'sweetalert2';
+import { NuevaEntidadComponent } from '../../../nueva-entidad/nueva-entidad.component';
 
 @Component({
   selector: 'app-rkyepf',
@@ -22,6 +23,7 @@ export class RkyepfComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<RkyepfComponent>,
               private controlService: ControlsService,
               private autentication: AuthenticationService,
+              private confirm: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any) { 
                 this.epfModel.areaId = data.areaId;
                 this.epfModel.procesoId = data.procesoId;
@@ -172,6 +174,27 @@ export class RkyepfComponent implements OnInit {
 
   cancelar() {
     this.dialogRef.close(true);
+  }
+
+  nuevaEntidad(){
+
+    const conf = this.confirm.open(NuevaEntidadComponent, {
+      hasBackdrop: true,
+      height: '600px',
+      width: '950px',
+        data: {
+          title: 'Agregar Proceso',
+          message: ``,
+          accion: 'PROCESO_LIST',
+          crear : 'PROCESO_CREATE',
+          ok : 'Proceso Agregado',
+          button_confirm: 'Guardar',
+          button_close: 'Cancelar',
+          panelClass: 'nueva-entidad',
+          tabla : '+RKF'
+        }
+      });
+
   }
 
 }

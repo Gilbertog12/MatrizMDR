@@ -613,4 +613,9 @@ public llaves : string[] = []
                   // this.controlService.closeSpinner(spinner);
                 });
   }
+
+
+  generarReporte(){
+    this.autentication.generarReporte(this.subprocesoModel.key)
+  }
 }
