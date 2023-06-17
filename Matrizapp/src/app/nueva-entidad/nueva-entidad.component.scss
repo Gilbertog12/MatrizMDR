@@ -29,6 +29,12 @@ button[disabled]{
   cursor: pointer;
 }
 
+#eliminar:disabled{
+  color: #7dbafc;
+  background-color: #fff;
+  cursor: not-allowed;
+}
+
 .closed{
   position: absolute;
   background: red;

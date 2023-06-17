@@ -7,6 +7,7 @@ import { isNullOrUndefined } from 'util';
 import Swal2 from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ServiciocajasService } from '../shared/services/serviciocajas.service';
+import { includes } from 'core-js/fn/array';
 
 interface Posiciones {
     name : string;
@@ -52,6 +53,7 @@ export class LoginComponent implements OnInit {
     this.Version();
     this.min = 4;
     this.sec = 59;
+
     // this.prueba();
               }
 
@@ -59,6 +61,8 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
 
   ngOnInit() {
+
+    
      // get return url from route parameters or default to '/'
      this.autentication.BorrarStorage();
      this.returnUrl = isNullOrUndefined(this.route.snapshot.queryParams['returnUrl']) || this.route.snapshot.queryParams['returnUrl'] === '/' || this.route.snapshot.queryParams['returnUrl'] === '' ? '/rkmain' : this.route.snapshot.queryParams['returnUrl'];
@@ -68,7 +72,7 @@ export class LoginComponent implements OnInit {
         this.model.username = localStorage.getItem('Usuario');
         this.recordar = true;
         this.model.recordar = this.recordar;
-        console.log('epa la arepa');
+        
     } else {
       this.recordar = false;
       this.model.recordar = this.recordar;
@@ -85,6 +89,17 @@ export class LoginComponent implements OnInit {
 
   login() {
     localStorage.setItem('isLoggedinApp', 'false');
+    debugger
+    if(!this.ambiente.includes('Dev')){
+
+        if(!this.model.username.includes('@collahuasi.cl')){
+
+          this.model.username = this.model.username+'@collahuasi.cl'
+          
+        }
+
+
+    }
     const spinner = this.controlService.openSpinner();
     // debugger
     // this.deafultValues();
@@ -121,6 +136,7 @@ export class LoginComponent implements OnInit {
              }
 
           localStorage.setItem('Usuario', this.model.username.toUpperCase() );
+          localStorage.setItem('pwd', this.model.password );
           localStorage.setItem('Distrito', this.model.district);
           localStorage.setItem('Posicion', this.model.position);
 
@@ -195,7 +211,7 @@ export class LoginComponent implements OnInit {
     copyright() {
     Swal2.fire({
       icon: 'info',
-      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.4.2 <br />Fecha de compilación: 2022-12-06<br />',
+      html: 'Matriz de riesgos, Copyright  . <br /> <b>Summa consulting.</b><br /> Version Aplicativo WEB 4.4.7 <br />Fecha de compilación: 2023-06-17<br />',
       showCloseButton: true
 
     });

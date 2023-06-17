@@ -357,6 +357,7 @@ export class AuthenticationService {
     localStorage.removeItem('statusSelected');
     localStorage.removeItem('CanAddCheck');
     localStorage.removeItem('lastAction');
+    localStorage.removeItem('pwd');
   }
 
   limpiar() {
@@ -512,17 +513,21 @@ export class AuthenticationService {
   botonFlujo(perfilEll, estado) {
 
     if (perfilEll.perfil === 'creador' || perfilEll.perfil === 'validador' || perfilEll.perfil === 'aprobador'
-        || perfilEll.perfil === 'admin' || perfilEll.perfil === 'admin2') {
+        || perfilEll.perfil === 'admin' || perfilEll.perfil === 'admin2' || perfilEll.perfil ==='validadorAprobador'
+        || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador') {
 
-      if ( (perfilEll.perfil === 'admin' || perfilEll.perfil === 'creador' ) && (estado === '000' || estado === '001' || estado === '002' || estado === '006')) {
+      if ( (perfilEll.perfil === 'admin' || perfilEll.perfil === 'creador' || perfilEll.perfil === 'validador' || perfilEll.perfil === 'aprobador' || perfilEll.perfil ==='validadorAprobador'
+      || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador' ) && (estado === '000' || estado === '001' || estado === '002' || estado === '006')) {
           return 'creador';
       }
-      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'validador') && estado === '004') {
+      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'validador' || perfilEll.perfil === 'aprobador' || perfilEll.perfil ==='validadorAprobador'
+      || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador') && estado === '004') {
 
           return 'validador';
 
         }
-      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'aprobador') && estado === '007') {
+      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'aprobador' || perfilEll.perfil ==='validadorAprobador'
+      || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador') && estado === '007') {
           return 'aprobador';
         }
 

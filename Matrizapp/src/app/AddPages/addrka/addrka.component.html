@@ -82,7 +82,7 @@
 </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-        <!-- <button  *ngIf="data.nuevo" mat-raised-button class="nuevo_entidad" (click)="nuevaEntidad()">Nueva Entidad</button> -->
+        <button  *ngIf="data.nuevo" mat-raised-button class="nuevo_entidad" (click)="nuevaEntidad()">Nueva Entidad</button>
         <button mat-raised-button color="primary" (click)="guardar()">{{ data.button_confirm }}</button>
         <button mat-raised-button color="warn" (click)="cancelar()">{{ data.button_close }}</button>
     </mat-dialog-actions>

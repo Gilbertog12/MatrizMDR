@@ -1,0 +1,38 @@
+<h1 mat-dialog-title  >{{data.titulo}}</h1>
+
+<!-- <h1 mat-dialog-title>Login</h1> -->
+
+<mat-dialog-content >
+  <form autocomplete="off"  [formGroup]="miFormulario" (ngSubmit)="add()" >
+     
+    <div class="row">
+      <div class="col-8">
+           
+          <mat-form-field >
+              <mat-label>Usuario</mat-label>
+              <input formControlName = 'usuario'  readonly="true"   matInput type="text" >
+              
+            </mat-form-field>
+          <mat-form-field >
+              <mat-label>Posicion</mat-label>
+              <mat-select class="full-width" formControlName = 'posiscion' [(ngModel)]="posDefault"  >
+                <mat-option *ngFor="let item of posicionesEllipse" [value]="item.name">{{item.name}} - {{item.value}}</mat-option>
+            </mat-select>
+            </mat-form-field> 
+          
+          </div>
+           
+           
+            
+              
+            </div>
+            <div class="float-end">
+              <button mat-raised-button color="warn" type="button" (click)="cerrar()" >Cancelar</button>
+              <button mat-raised-button color="primary" (click)="add()" >Aceptar</button>
+              
+            </div>
+            
+            
+    </form>
+    <br>
+</mat-dialog-content>

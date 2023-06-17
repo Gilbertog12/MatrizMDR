@@ -31,8 +31,8 @@
 
 
 
-      <!-- <button class="btn btn-sm btn-light btn-round" (click)="entidadesPendientes()" >
-        <mat-icon  class="material-icons">fact_check</mat-icon></button> -->
+      <button class="btn btn-sm btn-light btn-round" (click)="entidadesPendientes()" >
+        <mat-icon  class="material-icons">fact_check</mat-icon></button>
 
       <button class="btn btn-sm btn-light btn-round" (click)="mostrarNotificaciones()" [disabled]="bloqueado">
         <mat-icon [matBadge]="notificacionesContador" [matBadgeHidden]="visible" matBadgeSize="medium" class="material-icons">notifications_none</mat-icon></button>
@@ -48,7 +48,7 @@
         />
       </button>
 
-                  <button [style.display]="AgregarArea" *ngIf="percreacion === 'N'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()">
+                  <button [style.display]="AgregarArea" *ngIf="percreacion === 'N' && administrador === 'Y'" class="btn btn-sm btn-light btn-round" (click)="nuevaArea()">
         <img
           class="img-circle"
           src="assets/images/Add.png"

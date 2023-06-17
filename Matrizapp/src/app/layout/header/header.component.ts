@@ -9,6 +9,7 @@ import { ConfirmationComponent } from '../../controls/confirmation/confirmation.
 import { AddrkaComponent } from '../../AddPages/addrka/addrka.component';
 import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
 import { ServiciocajasService } from '../../shared/services/serviciocajas.service';
+import { CambioPosicionComponent } from '../../cambio-posicion/cambio-posicion.component';
 
 @Component({
   selector: 'my-app-header',
@@ -32,7 +33,7 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string;
-  public version: string = 'Version: 4.4.2';
+  public version: string = 'Version: 4.4.7';
   public posicion: string;
   public distrito: string;
   public usuario2: string;
@@ -58,6 +59,10 @@ export class AppHeaderComponent implements OnInit {
      }
 
   ngOnInit() {
+    this.posiciones.notificaciones$.subscribe ( (recarga) => {
+      this.refrescarData();
+    }
+    );
     this.Version();
     this.AppConfig = APPCONFIG;
     this.usuario = JSON.parse(localStorage.getItem('currentUserPTEL'));
@@ -76,6 +81,14 @@ export class AppHeaderComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout();
+  }
+
+  refrescarData(){
+    this.usuario2 = localStorage.getItem('Usuario');
+    this.posicion = localStorage.getItem('Posicion');
+    this.distrito = localStorage.getItem('Distrito');
+
+    this.informacion = this.usuario2 + ' ' + this.distrito + ' ' + this.posicion;
   }
 
 /**
@@ -160,6 +173,21 @@ export class AppHeaderComponent implements OnInit {
       width: '800px',
       data: {
         title: 'Agregar Área',
+        message: ``,
+        button_confirm: 'Guardar',
+        button_close: 'Cerrar'
+      }
+    });
+
+  }
+  cambiarPosicion() {
+
+    const modal = this.confirm.open(CambioPosicionComponent, {
+      hasBackdrop: true,
+      height: 'auto',
+      width: '800px',
+      data: {
+        titulo: 'Cambiar Posicion',
         message: ``,
         button_confirm: 'Guardar',
         button_close: 'Cerrar'

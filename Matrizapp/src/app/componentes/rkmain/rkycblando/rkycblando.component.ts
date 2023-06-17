@@ -307,7 +307,8 @@ export class RkycblandoComponent implements OnInit {
           button_confirm: 'Guardar',
           button_close: 'Cancelar',
           panelClass: 'nueva-entidad',
-          tabla : this.data.tabla
+          tabla : this.data.tabla,
+          titulo: 'Solicitud de creación Control Blando'
         }
       });
 

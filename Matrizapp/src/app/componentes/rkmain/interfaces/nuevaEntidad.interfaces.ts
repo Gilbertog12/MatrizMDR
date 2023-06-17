@@ -1,6 +1,6 @@
 export interface NuevaEntidad {
     type: any;
-    code: any;
+    code?: any;
     description: any;
     extendedText?: any;
     ocupation?: any;

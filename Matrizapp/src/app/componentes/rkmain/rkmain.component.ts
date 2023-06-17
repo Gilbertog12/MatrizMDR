@@ -440,6 +440,7 @@ export class RkmainComponent implements OnInit {
   botones: any[] = [];
   notificacionesContador: any;
   visible: boolean = true;
+  administrador: string;
 
   // mmetodos para hacer logout automatico
 
@@ -520,6 +521,8 @@ export class RkmainComponent implements OnInit {
 
       this.refrescoItemModificado();
 
+      }else{
+        this.recargarArbol();
       }
     });
 
@@ -746,6 +749,7 @@ export class RkmainComponent implements OnInit {
           console.log(this.Cajas.permiso);
 
           localStorage.setItem('PerfilRkj', this.Cajas.permiso);
+          localStorage.setItem('administrador', this.Cajas.permiso.substring(0, 1) );
           localStorage.setItem('isSelectedNode', 'false');
           localStorage.setItem('keySelected', '');
           localStorage.setItem('versionSelected', '');
@@ -754,6 +758,7 @@ export class RkmainComponent implements OnInit {
           this.StatusPadre = localStorage.getItem('StatusPadre');
           this.percreacion = localStorage.getItem('NoCreador');
           this.notificacionesList.notificaciones = localStorage.getItem('notificaciones');
+          this.administrador = localStorage.getItem('administrador');
           // console.log(this.fix )
 
         } else {
@@ -2046,7 +2051,8 @@ export class RkmainComponent implements OnInit {
             procesoId: _procesoId,
             subprocesoId: _subprocesoId,
             nuevo : false,
-            tabla : '+RKC'
+            tabla : '+RKC',
+            
           }
         });
 
@@ -2127,7 +2133,8 @@ export class RkmainComponent implements OnInit {
             subprocesoId: _subprocesoId,
             actividadId: _actividadId,
             nuevo : true,
-            tabla : '+RKT'
+            tabla : '+RKT',
+            titulo : 'Solicitud de creación  Tarea'
           }
         });
         conf.afterClosed()
@@ -2289,7 +2296,8 @@ export class RkmainComponent implements OnInit {
             tareaId: _tareaId,
             dimensionId: _dimensionId,
             nuevo : true,
-            tabla : '+RKR'
+            tabla : '+RKR',
+            titulo : 'Solicitud de creación  Riesgo'
           }
         });
         conf.afterClosed()
@@ -2368,7 +2376,8 @@ export class RkmainComponent implements OnInit {
             dimensionId: _dimensionId,
             riesgoId: _riesgoId,
             nuevo : true,
-            tabla : '+RKY'
+            tabla : '+RKY',
+            titulo : 'Solicitud de creación  Consecencia'
           }
         });
         conf.afterClosed()

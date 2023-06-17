@@ -823,7 +823,8 @@ export class AddrkaComponent implements OnInit {
           button_confirm: 'Guardar',
           button_close: 'Cancelar',
           panelClass: 'nueva-entidad',
-          tabla : this.data.tabla
+          tabla : this.data.tabla,
+          titulo : this.data.titulo
         }
       });
 

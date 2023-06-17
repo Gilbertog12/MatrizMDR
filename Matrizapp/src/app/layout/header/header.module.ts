@@ -11,6 +11,7 @@ import { rkHelpModule } from '../../rkmain/rkhelp/rkhelp.module';
 import { RkhelpComponent } from '../../rkmain/rkhelp/rkhelp.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CambioPosicionComponent } from './cambio-posicion/cambio-posicion.component';
+import { posicionModule } from './cambio-posicion/posicion.module';
 
 
 @NgModule({
@@ -25,9 +26,10 @@ import { CambioPosicionComponent } from './cambio-posicion/cambio-posicion.compo
     MatCheckboxModule,
     MatIconModule,
     rkHelpModule,
+    posicionModule,
     MatMenuModule
   ],
-  declarations: [AppHeaderComponent, CambioPosicionComponent],
+  declarations: [AppHeaderComponent],
   entryComponents: [AppHeaderComponent],
   exports: [AppHeaderComponent]
 })

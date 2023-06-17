@@ -16,9 +16,10 @@ import { time } from 'console';
 export class  NuevaEntidadComponent implements OnInit {
 
   miFormulario: FormGroup;
-  solicitudes: NuevaEntidad[] = [];
+  solicitudes: any[] = [];
   isLoading:boolean = false
   solicitudesResponse: NuevaEntidad[] = [];
+  bloquearBotones: boolean = false;
   constructor( private fb: FormBuilder, private autentication: AuthenticationService,
                @Inject(MAT_DIALOG_DATA) public data: any,
                public MatDialogRef: MatDialogRef<NuevaEntidadComponent>,
@@ -39,10 +40,10 @@ export class  NuevaEntidadComponent implements OnInit {
         this.miFormulario = this.fb.group({
 
           type : '+RKC',
-          code: ['', [Validators.required, Validators.maxLength(4) ]],
+          // code: ['', [Validators.required, Validators.maxLength(4) ]],
           description: ['', [Validators.required,Validators.maxLength(50) ]],
           extendedText: ['', ],
-          clasification: ['', [Validators.required]],
+          // clasification: ['', [Validators.required]],
           // Comentario: ['', [Validators.required]],
         });
         break;
@@ -51,11 +52,11 @@ export class  NuevaEntidadComponent implements OnInit {
         this.miFormulario = this.fb.group({
 
           type : '+RKT',
-          code: ['', [Validators.required, Validators.maxLength(4), Validators.minLength(4) ]],
+          // code: ['', [Validators.required, Validators.maxLength(4), Validators.minLength(4) ]],
           description: ['', [Validators.required,Validators.maxLength(50) ]],
           extendedText: ['', ],
-          ocupation: ['', [Validators.required , Validators.maxLength(2), Validators.minLength(2)]],
-          taskType: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
+          // ocupation: ['', [Validators.required , Validators.maxLength(2), Validators.minLength(2)]],
+          // taskType: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
           // Comentario: ['', [Validators.required]],
         });
         break;
@@ -63,7 +64,7 @@ export class  NuevaEntidadComponent implements OnInit {
         this.miFormulario = this.fb.group({
 
           type : '+RKY',
-          code: ['', [Validators.required, Validators.maxLength(4) ]],
+          // code: ['', [Validators.required, Validators.maxLength(4) ]],
           description: ['', [Validators.required,Validators.maxLength(50) ]],
           extendedText: ['', ],
           // Comentario: ['', [Validators.required]],
@@ -73,12 +74,12 @@ export class  NuevaEntidadComponent implements OnInit {
         this.miFormulario = this.fb.group({
 
           type : '+RKR',
-          code: ['', [Validators.required, Validators.maxLength(4) ]],
+          // code: ['', [Validators.required, Validators.maxLength(4) ]],
           description: ['', [Validators.required,Validators.maxLength(50) ]],
           extendedText: ['', ],
-          branch: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
-          family: ['', [Validators.required , Validators.maxLength(2), Validators.minLength(2)]],
-          clasification: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
+          // branch: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
+          // family: ['', [Validators.required , Validators.maxLength(2), Validators.minLength(2)]],
+          // clasification: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
           // Comentario: ['', [Validators.required]],
         });
         break;
@@ -86,10 +87,10 @@ export class  NuevaEntidadComponent implements OnInit {
         this.miFormulario = this.fb.group({
 
           type : '+RKB',
-          code: ['', [Validators.required, Validators.maxLength(4) ]],
+          // code: ['', [Validators.required, Validators.maxLength(4) ]],
           description: ['', [Validators.required,Validators.maxLength(50) ]],
           extendedText: ['', ],
-          family: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
+          // family: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
           // Comentario: ['', [Validators.required]],
         });
         break;
@@ -121,9 +122,19 @@ export class  NuevaEntidadComponent implements OnInit {
     this.solicitudes = aux;
   }
 
-  crear() {
+ async crear() {
 
-    this.isLoading = true
+    if(this.solicitudes.length === 0){
+      Swal2.fire({
+        icon:'info',
+        text : `Debe haber al menos una ${this.data.titulo}`
+      })
+
+      return 
+    }
+
+    this.isLoading = true;
+    this.bloquearBotones = true
     let _atts = [];
     let  spinner = this.controlService.openSpinner();
     switch (this.data.tabla) {
@@ -148,17 +159,31 @@ export class  NuevaEntidadComponent implements OnInit {
         break;
       case '+RKT' :
 
+      // for (let valores of this.solicitudes) {
+      //   console.log(valores);
+      //   let index = 0
+      //   _atts.push({ name: 'scriptName', value: 'coemdr' });
+      //   _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+      //   _atts.push({ name: 'type', value: valores.type });
+      //   _atts.push({ name: 'description', value: valores.description });
+      //   _atts.push({ name: 'extendedText', value: valores.extendedText });
+      //   debugger
+      //   console.log(index);
+      //   await this.enviarSolicitud(_atts, index);
+      //   index++
+      //   _atts = [];
         
+      // }
 
         this.solicitudes.forEach( (item, index) => {
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
           _atts.push({ name: 'type', value: item.type });
-          _atts.push({ name: 'code', value: item.code });
+          // _atts.push({ name: 'code', value: item.code });
           _atts.push({ name: 'description', value: item.description });
           _atts.push({ name: 'extendedText', value: item.extendedText });
-          _atts.push({ name: 'occupation', value: item.ocupation });
-          _atts.push({ name: 'taskType', value: item.taskType });
+          // _atts.push({ name: 'occupation', value: item.ocupation });
+          // _atts.push({ name: 'taskType', value: item.taskType });
           // _atts.push({ name: 'requestComment', value: item.Comentario });
           console.log(index);
           this.enviarSolicitud(_atts, index);
@@ -172,11 +197,13 @@ export class  NuevaEntidadComponent implements OnInit {
         break;
       case '+RKY' :
 
+
+      
         this.solicitudes.forEach( (item, index) => {
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
           _atts.push({ name: 'type', value: item.type });
-          _atts.push({ name: 'code', value: item.code });
+          // _atts.push({ name: 'code', value: item.code });
           _atts.push({ name: 'description', value: item.description });
           _atts.push({ name: 'extendedText', value: item.extendedText });
           // _atts.push({ name: 'requestComment', value: item.Comentario });
@@ -194,12 +221,12 @@ export class  NuevaEntidadComponent implements OnInit {
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
           _atts.push({ name: 'type', value: item.type });
-          _atts.push({ name: 'code', value: item.code });
+          // _atts.push({ name: 'code', value: item.code });
           _atts.push({ name: 'description', value: item.description });
           _atts.push({ name: 'extendedText', value: item.extendedText });
-          _atts.push({ name: 'branch', value: item.branch });
-          _atts.push({ name: 'family', value: item.family });
-          _atts.push({ name: 'classification', value: item.clasification });
+          // _atts.push({ name: 'branch', value: item.branch });
+          // _atts.push({ name: 'family', value: item.family });
+          // _atts.push({ name: 'classification', value: item.clasification });
           // _atts.push({ name: 'requestComment', value: item.Comentario });
 
           this.enviarSolicitud(_atts, index);
@@ -307,8 +334,8 @@ export class  NuevaEntidadComponent implements OnInit {
             code: llave.code,
             description: llave.description,
             extendedText: llave.extendedText,
-            ocupation: llave.ocupation,
-            taskType: llave.taskType,
+            // ocupation: llave.ocupation,
+            // taskType: llave.taskType,
             // Comentario: llave.Comentario,
             mensaje,
 
@@ -317,10 +344,10 @@ export class  NuevaEntidadComponent implements OnInit {
           console.log(this.solicitudesResponse);
           this.solicitudesResponse.push({
             type: llave.type,
-            code: llave.code,
+            // code: llave.code,
             description: llave.description,
-            ocupation: llave.ocupation,
-            taskType: llave.taskType,
+            // ocupation: llave.ocupation,
+            // taskType: llave.taskType,
             // Comentario: llave.Comentario,
             mensaje,
 
@@ -334,7 +361,7 @@ export class  NuevaEntidadComponent implements OnInit {
           console.log(this.solicitudesResponse);
           this.solicitudesResponse.push({
             type: llave.type,
-            code: llave.code,
+            // code: llave.code,
             description: llave.description,
             extendedText: llave.extendedText,
             // Comentario: llave.Comentario,
@@ -345,7 +372,7 @@ export class  NuevaEntidadComponent implements OnInit {
           console.log(this.solicitudesResponse);
           this.solicitudesResponse.push({
             type: llave.type,
-            code: llave.code,
+            // code: llave.code,
             description: llave.description,
             // Comentario: llave.Comentario,
             mensaje,
@@ -359,13 +386,13 @@ export class  NuevaEntidadComponent implements OnInit {
           console.log(this.solicitudesResponse);
           this.solicitudesResponse.push({
             type: llave.type,
-            code: llave.code,
+            // code: llave.code,
             description: llave.description,
             extendedText: llave.extendedText,
-            branch : llave.branch,
-            family : llave.family,
+            // branch : llave.branch,
+            // family : llave.family,
             /*  */
-            clasification : llave.clasification,
+            // clasification : llave.clasification,
             // Comentario: llave.Comentario,
             mensaje,
 
@@ -374,11 +401,11 @@ export class  NuevaEntidadComponent implements OnInit {
           console.log(this.solicitudesResponse);
           this.solicitudesResponse.push({
             type: llave.type,
-            code: llave.code,
+            // code: llave.code,
             description: llave.description,
-            branch: llave.branch,
-            family : llave.family,
-            clasification : llave.clasification,
+            // branch: llave.branch,
+            // family : llave.family,
+            // clasification : llave.clasification,
             // Comentario: llave.Comentario,
             mensaje,
 

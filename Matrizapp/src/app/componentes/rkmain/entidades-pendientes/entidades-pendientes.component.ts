@@ -17,8 +17,9 @@ import { text } from '@angular/core/src/render3/instructions';
 })
 export class EntidadesPendientesComponent implements OnInit {
 
-  titulo = 'Solicitud de Creacion de Registros en Tablas Maestras';
+  titulo = 'Solicitud de creación de registros en tablas Maestras';
   public solicitudes: any[] = [];
+  masterSelected = false;
 
   miFormulario: FormGroup = this.fb.group(
     {
@@ -53,14 +54,17 @@ export class EntidadesPendientesComponent implements OnInit {
       data.data.forEach((element) => {
 
         const tipo = this.getTipo( element.atts[1].value.trim());
+        const tabla = this.getTabkaAuxiliar( element.atts[1].value.trim());
 
         this.solicitudes.push({
           tipo,
+          tablatipo : element.atts[1].value.trim(),
           TABLE_CODE: element.atts[2].value.trim(),
           TABLE_DESC: element.atts[3].value.trim(),
-          ASSOC_REC: element.atts[4].value.trim(),
+          // ASSOC_REC: element.atts[4].value.trim(),
           TEXTO_EXTENDIDO: element.atts[5].value.trim(),
           COMENTARIOS: element.atts[5].value.trim(),
+          check: false,
         });
 
       });
@@ -91,14 +95,71 @@ export class EntidadesPendientesComponent implements OnInit {
 
   }
 
-  EnviarSolicitud() {
+  getTabkaAuxiliar(tabla) {
 
-    this.autentication.EnviarSolicitud().subscribe(
+    switch (tabla) {
+
+      case '+RKC':
+      return 'Actividad';
+      case '+RKT':
+      return '+MR5';
+      case '+RKR':
+      return '+MR7';
+      case '+RKY':
+      return '+MR8';
+      case '+RKB':
+      return '+MR9';
+
+  }
+
+  }
+
+  obtenerCodigosYTablas(accion: string) {
+    const codigos = [];
+    const tipos = [];
+    debugger;
+    this.solicitudes.forEach( (item) => {
+          if (item.check) {
+            codigos.push( item.TABLE_CODE);
+            tipos.push( item.tablatipo);
+          }
+        }
+      );
+    this.EnviarSolicitud(codigos.toString(), tipos.toString(), accion);
+
+  }
+
+  EnviarSolicitud( codigos, tipos , accion) {
+
+    const atts = [];
+
+    atts.push({name: 'scriptName', value: 'coemdr'});
+    atts.push({name: 'action', value: accion});
+    if (accion === 'DELETE_DEFINITION') {
+      atts.push({name: 'type', value: tipos});
+      atts.push({name: 'code', value: codigos});
+
+    } else {
+
+      atts.push({name: 'types', value: tipos});
+      atts.push({name: 'codes', value: codigos});
+
+   }
+
+    let mensaje = '';
+    if ( accion === 'DELETE_DEFINITION') {
+
+     mensaje = 'Solicitudes Eliminadas';
+   } else {
+     mensaje = 'Solicitudes han sido enviadas a aprobar';
+   }
+
+    this.autentication.generic(atts).subscribe(
 
       (data: any) => {
         console.log(data.data[0].atts[1].value);
         Swal2.fire({
-          text : data.data[0].atts[1].value,
+          text : mensaje,
           icon : 'info'
 
         }
@@ -110,6 +171,13 @@ export class EntidadesPendientesComponent implements OnInit {
 
   cerrar() {
     this.dialogRef.close();
+  }
+
+  checkUncheckAll() {
+    this.solicitudes.forEach( (item) => {
+      item.check = this.masterSelected;
+
+    });
   }
 
 }

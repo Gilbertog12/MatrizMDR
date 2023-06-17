@@ -261,19 +261,27 @@ public llaves : string[] = []
 
         data.data.forEach((element) =>{
 
-          this.actividadesList.push({
-            offset: element.atts[0].value,
-            Id: element.atts[1].value.trim(),
-            Descripcion: element.atts[2].value,
-            actividadRiesgoPuroN: element.atts[3].value,
-            actividadRiesgoPuroM: element.atts[4].value,
-            actividadRiesgoPuroS: element.atts[5].value,
-            actividadRiesgoResidualN: element.atts[6].value,
-            actividadRiesgoResidualM: element.atts[7].value,
-            actividadRiesgoResidualS: element.atts[8].value,
-            estado: element.atts[9].value,
-            pendingDelete: element.atts[11].value
-          });
+          
+          if(element.atts[9].value !== '010'){
+
+            this.actividadesList.push({
+            
+              offset: element.atts[0].value,
+              Id: element.atts[1].value.trim(),
+              Descripcion: element.atts[2].value,
+              actividadRiesgoPuroN: element.atts[3].value,
+              actividadRiesgoPuroM: element.atts[4].value,
+              actividadRiesgoPuroS: element.atts[5].value,
+              actividadRiesgoResidualN: element.atts[6].value,
+              actividadRiesgoResidualM: element.atts[7].value,
+              actividadRiesgoResidualS: element.atts[8].value,
+              estado: element.atts[9].value,
+              pendingDelete: element.atts[11].value
+            });
+
+          }
+
+         
 
         })
 
@@ -617,5 +625,16 @@ public llaves : string[] = []
 
   generarReporte(){
     this.autentication.generarReporte(this.subprocesoModel.key)
+    .subscribe(
+      (resp:any) => {
+
+        Swal2.fire({
+          text : resp.data[0].atts[1].value,
+          icon : 'info'
+
+        }
+        );
+      }
+    )
   }
 }

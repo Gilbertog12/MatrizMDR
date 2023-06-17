@@ -128,6 +128,9 @@ public Razon: string;
   contador2: number;
   contador1: number;
   uid: string;
+  indice: number = 1;
+  disabledBack: boolean = false;
+  disabledNext: boolean = false;
 
   constructor(private autentication: AuthenticationService,
               private methodService: HttpMethodService,
@@ -858,7 +861,7 @@ public Razon: string;
                 this.detalleList = [];
                 this.stdJobList = [];
                 this.ver(this.id, this.pid, this.sid, this.cid, false);
-                this.cargarPestañasLog();
+                this.cargarPestañasLog(1);
                 // this._Recargarble.Recargar$.emit(true);
                 // this._Recargarble.Recargar$.emit(true)
               } else {
@@ -902,11 +905,10 @@ public Razon: string;
 
   }
 
-      cargarPestañasLog() {
+      cargarPestañasLog(indice:number) {
 
         this.loading = true;
 
-        this.logList = [];
         const _atts = [];
         _atts.push({ name: 'scriptName', value: 'coemdr' });
         _atts.push({ name: 'action', value: 'ACTIVIDAD_READ_LOG' });
@@ -914,6 +916,7 @@ public Razon: string;
         _atts.push({ name: 'procesoId', value:  this.pid });
         _atts.push({ name: 'subprocesoId', value:  this.sid });
         _atts.push({ name: 'actividadId', value:  this.cid });
+        _atts.push({ name: 'index', value: this.indice  });
 
         const spinner = this.controlService.openSpinner();
 
@@ -925,26 +928,34 @@ public Razon: string;
 
                     console.log(data);
 
-                    data.data.forEach((element) => {
-
-                      this.logList.push({
-                            offset: element.atts[0].value,
-                            ULTIMAFECHAHORAMODIFICACION: element.atts[1].value,
-                            ultimaUsuarioModifico: element.atts[2].value,
-                            operacion: element.atts[3].value,
-                            item: element.atts[4].value,
-                            before: element.atts[5].value,
-                            after: element.atts[6].value,
-                            version: element.atts[7].value,
-                            // ultimaHoraModificacion: element.atts[9].value,
-                            // actividad: element.atts[1].value,
-                            // consecuencia: element.atts[5].value,
-                            // control: element.atts[6].value,
-                            // tarea: element.atts[2].value,
-                            // dimension: element.atts[3].value,
+                    if(data.data.length > 0){
+                      
+                      this.logList = []
+                      data.data.forEach((element) => {
+  
+                        this.logList.push({
+                              offset: element.atts[0].value,
+                              ULTIMAFECHAHORAMODIFICACION: element.atts[1].value,
+                              ultimaUsuarioModifico: element.atts[2].value,
+                              operacion: element.atts[3].value,
+                              item: element.atts[4].value,
+                              before: element.atts[5].value,
+                              after: element.atts[6].value,
+                              version: element.atts[7].value,
+                              // ultimaHoraModificacion: element.atts[9].value,
+                              // actividad: element.atts[1].value,
+                              // consecuencia: element.atts[5].value,
+                              // control: element.atts[6].value,
+                              // tarea: element.atts[2].value,
+                              // dimension: element.atts[3].value,
+                            });
+  
                           });
+                          this.disabledNext = false
+                    }else{
+                      this.disabledNext = true
+                    }
 
-                        });
                     this.loading = false;
                     this.habilitar = true;
                     this.controlService.closeSpinner(spinner);
@@ -1272,7 +1283,7 @@ public Razon: string;
                 this.cargarPestañasDetalle();
                 break;
             case 4:
-                  this.cargarPestañasLog();
+                  this.cargarPestañasLog(1);
                   break;
         }
 
@@ -2027,27 +2038,35 @@ public Razon: string;
                       });
         }
 
-        generarReporte(key) {
+        generarReporte() {
 
 
-          this.autentication.generarReporte(key)
-          .subscribe( resp =>
-            console.log(resp))
+          this.autentication.generarReporte(this.actividadModel.key)
+          .subscribe(
+            (resp:any) => {
+      
+              Swal2.fire({
+                text : resp.data[0].atts[1].value,
+                icon : 'info'
+      
+              }
+              );
+            }
+          )
+        }
 
-          // const _atts = [];
-          // _atts.push({ name: 'scriptName', value: 'coemdr' });
-          // _atts.push({ name: 'action', value: 'SEND_REPORT_MDR' });
-          // _atts.push({ name: 'key', value: key });
 
-          // const obj =  this.autentication.generic(_atts);
-          // const spinner = this.controlService.openSpinner();
+        // metodo para paginar el log
+        log(pagina:number){
+          this.indice = this.indice+pagina
+          if(this.indice === 0){
+            this.disabledBack = true
+            return
+          }else{
+            this.disabledBack = false
 
-          // obj.subscribe( (data) => {
-
-          //   if (data.succes === true) {
-          //     this.controlService.closeSpinner(spinner);
-          //   }
-          // });
+          }
+          this.cargarPestañasLog(this.indice)
         }
 
   }

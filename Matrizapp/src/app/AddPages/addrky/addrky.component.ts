@@ -132,7 +132,11 @@ export class AddrkyComponent implements OnInit {
     }else{
       _atts.push({ name: "lookupName", value: '%'+name });
     }
-    _atts.push({ name: "index", value: index });
+    if(index === '' || index === undefined){
+
+    }else{
+      _atts.push({ index: "index", value: index });
+    }
     this.isLoading = true
 
     const promiseView = new Promise((resolve, reject) => {
@@ -575,7 +579,8 @@ export class AddrkyComponent implements OnInit {
           button_confirm: 'Guardar',
           button_close: 'Cancelar',
           panelClass: 'nueva-entidad',
-          tabla : this.data.tabla
+          tabla : this.data.tabla,
+          titulo:'Solicitud de creación Consecuencia'
         }
       });
 

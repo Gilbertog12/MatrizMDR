@@ -660,6 +660,16 @@
 
             <mat-tab label="Log ">
                 <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                          <li class="page-item disabled">
+                            <button class="material-icons btn btn-primary  btn-sm " (click)="log(-1)" [disabled] = "disabledBack">arrow_left</button>
+                          </li>
+                          <li class="page-item">
+                            <button class="material-icons  btn btn-primary  btn-sm" (click)="log(+1)" [disabled] = "disabledNext">arrow_right</button>
+                          </li>
+                        </ul>
+                      </nav>
                     <div class="lds-spinner div_centrado" *ngIf="loading">
                         <div></div>
                         <div></div>

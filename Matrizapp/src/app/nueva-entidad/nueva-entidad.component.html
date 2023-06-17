@@ -1,4 +1,5 @@
-<button class="close" mat-dialog-title mat-button >X</button>
+<h1 mat-dialog-title  >{{data.titulo}}</h1>
+<button class="close" (click)="cerrar()" >X</button>
 <!-- <h1 mat-dialog-title>Login</h1> -->
 
 <mat-dialog-content >
@@ -6,23 +7,27 @@
      
     <div class="row">
       <div class="col-6">
-            <mat-form-field >
+            <!-- <mat-form-field >
               <mat-label>Codigo</mat-label>
               <input  formControlName = 'code' matInput type="text" >
               <span class="form-text text-danger"
               *ngIf="esvalido('code')">
                 Tamaño obligatorio 4 caracteres
               </span>
-            </mat-form-field>
+            </mat-form-field> -->
           <mat-form-field >
               <mat-label>Descripcion</mat-label>
               <input formControlName = 'description' matInput type="text" >
+              <span class="form-text text-danger"
+              *ngIf="esvalido('description')">
+                Tamaño Maximo 50 caracteres
+              </span>
             </mat-form-field>
           <mat-form-field >
               <mat-label>Texto Extendido</mat-label>
               <input formControlName = 'extendedText' matInput type="text" >
             </mat-form-field>
-          <mat-form-field *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'">
+          <!-- <mat-form-field *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'">
               <mat-label>Clasificacion</mat-label>
               <input formControlName = 'clasification' matInput type="text" >
               <span class="form-text text-danger"
@@ -63,7 +68,7 @@
               *ngIf="esvalido('family')">
                 Tamaño obligatorio 2 caracteres
               </span>
-            </mat-form-field>
+            </mat-form-field> -->
           <!-- <mat-form-field >
               <mat-label>Comentario</mat-label>
               <input formControlName = 'Comentario' matInput type="text" >
@@ -75,7 +80,7 @@
               
             </div>
             <div class="float-end">
-              <button  class="add" mat-button [disabled]="miFormulario.invalid">Agregar</button>
+              <button  class="add" mat-button [disabled]=" bloquearBotones ">Agregar</button>
               
             </div>
             
@@ -88,35 +93,35 @@
   <table  class="table">
     <thead class="thead-dark">
       <tr>
-        <th>Codigo</th>
+        <!-- <th>Codigo</th> -->
         <th>Descripcion</th>
-        <th>Texto Extandido</th>
-        <th *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'" >Clasificacion</th>
+        <th>Texto Extendido</th>
+        <!-- <th *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'" >Clasificacion</th>
         <th *ngIf="data.tabla === '+RKT'">ocupacion</th>
         <th *ngIf="data.tabla === '+RKT'">Tipo Tarea</th>
         <th *ngIf="data.tabla === '+RKR'" >Rama</th>
-        <th *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">Familia</th>
+        <th *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">Familia</th> -->
         <!-- <th>Comentarios</th> -->
-        <th>Respuesta Ellipse</th>
+        <th>Mensaje Ellipse</th>
         <th>Borrar</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of solicitudes">
-        <td >{{item.code}}</td>
+        <!-- <td >{{item.code}}</td> -->
         <td >{{item.description}}</td>
         <td >{{item.extendedText}}</td>
-        <td *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'">{{item.clasification}}</td>
+        <!-- <td *ngIf="data.tabla === '+RKC' || data.tabla === '+RKR'">{{item.clasification}}</td>
         <td *ngIf="data.tabla === '+RKT'" >{{item.ocupation}}</td>
         <td *ngIf="data.tabla === '+RKT'" >{{item.taskType}}</td>
         <td *ngIf="data.tabla === '+RKR'" >{{item.branch}}</td>
-        <td *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">{{item.family}}</td>
+        <td *ngIf="data.tabla === '+RKR' || data.tabla === '+RKB'">{{item.family}}</td> -->
         
         <!-- <td >{{item.Comentario}}</td> -->
         <td *ngIf="isLoading"><mat-progress-bar  style="width: 50px" mode="buffer"></mat-progress-bar></td>
         <td *ngIf="!isLoading" >{{item.mensaje}}</td>
         <td >
-          <button class="btn btn-sm btn-light btn-round"  (click)="delete(item)" id="eliminar" >
+          <button class="btn btn-sm btn-light btn-round"  (click)="delete(item)" id="eliminar" [disabled]="bloquearBotones">
             <mat-icon  class="material-icons">delete_forever</mat-icon></button></td>
       </tr>
     </tbody>
@@ -125,5 +130,5 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <button mat-button class="solicitud" (click)="crear()"  [disabled]="solicitudes.length === 0">Guardar</button><button (click)="cerrar()" button mat-button class="cancel">Cerrar</button>
+    <button mat-button class="solicitud" (click)="crear()"  [disabled]="bloquearBotones">Guardar</button><button (click)="cerrar()" button mat-button class="cancel">Cerrar</button>
 </mat-dialog-actions>

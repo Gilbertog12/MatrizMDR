@@ -1,5 +1,5 @@
 
-  <h1 mat-dialog-draggable-title>{{titulo| titlecase}}</h1>
+  <h1 mat-dialog-draggable-title>{{titulo}}</h1>
 
 
 <mat-dialog-content > 
@@ -9,8 +9,12 @@
         <th>Tipo</th>
         <th>Codigo</th>
         <th>Descripcion</th>
-        <th>Valores Asociados</th>      
+        <!-- <th>Valores Asociados</th>       -->
         <th>Texto Extendido</th>
+        <th style="align-items: center; text-align: center;"><b id='check'>Seleccionar</b>
+        <br>
+        <input style="align-items: center; text-align: center;" type="checkbox" style="background-color: green !important;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()"  />
+      </th>
         <!-- <th>Comentarios</th> -->
         
       </tr>
@@ -20,8 +24,9 @@
         <td>{{item.tipo}}</td>
         <td>{{item.TABLE_CODE}}</td>
         <td>{{item.TABLE_DESC}}</td>
-        <td>{{item.ASSOC_REC}}</td>
+        <!-- <td>{{item.ASSOC_REC}}</td> -->
         <td>{{item.TEXTO_EXTENDIDO}}</td>
+        <td style="align-items: center; text-align: center;"> <input type="checkbox"  style="align-items: center; text-align: center;" [value]="item.check" [(ngModel)]="item.check" ></td>
         <!-- <td>{{item.COMENTARIOS}}</td> -->
         <!-- <td>{{item.Comentarios}}</td> -->
        
@@ -35,7 +40,8 @@
 
 <mat-dialog-actions align="end" >
 
-  <button mat-raised-button color="accent" (click)="EnviarSolicitud()">Enviar Solicitud</button>
-  <button mat-raised-button color="warn" (click)="cerrar()">Cerrar</button>
+  <button mat-raised-button color="accent" (click)="obtenerCodigosYTablas('SEND_DEFINITION')">Enviar Solicitud</button>
+  <button mat-raised-button color="warn" (click)="obtenerCodigosYTablas('DELETE_DEFINITION')">Eliminar Solicitud</button>
+  <button mat-raised-button color="primary" (click)="cerrar()">Cerrar</button>
 
 </mat-dialog-actions>

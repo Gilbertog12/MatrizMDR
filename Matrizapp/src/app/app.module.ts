@@ -111,6 +111,7 @@ import { NuevaEntidadComponent } from './nueva-entidad/nueva-entidad.component';
 
 
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -203,6 +204,9 @@ import { NuevaEntidadComponent } from './nueva-entidad/nueva-entidad.component';
 
 
     FilterdataPipe,
+
+
+  
 
 
     // NuevaEntidadComponent,

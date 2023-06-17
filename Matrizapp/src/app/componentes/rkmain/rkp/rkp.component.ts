@@ -609,7 +609,17 @@ async envioAEllipse(keys: any[], envio: string ) {
 generarReporte(){
 
   this.autentication.generarReporte(this.procesoModel.key)
-  .subscribe(console.log)
+  .subscribe(
+    (resp:any) => {
+
+      Swal2.fire({
+        text : resp.data[0].atts[1].value,
+        icon : 'info'
+
+      }
+      );
+    }
+  )
 }
 
 
