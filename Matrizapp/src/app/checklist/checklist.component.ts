@@ -9,6 +9,8 @@ import { AuthenticationService, ControlsService } from '../shared';
 import { check } from '../componentes/rkmain/interfaces/checklist.interfaces';
 import { F } from '@angular/cdk/keycodes';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import swal from 'sweetalert';
+import { forEach } from 'core-js/core/array';
 
 @Component({
   selector: 'app-checklist',
@@ -65,6 +67,8 @@ export class ChecklistComponent implements OnInit {
 
   });
   unicos: any[];
+  contadorBuenos: number;
+  contadorMalos: number;
 
   constructor(
     public dialogRef: MatDialogRef<ChecklistComponent>,
@@ -165,6 +169,112 @@ export class ChecklistComponent implements OnInit {
       );
     });
   }
+
+ /* async guardar() {
+
+    Swal2.fire({
+      title: 'Agregar item CheckList',
+      text: '¿Desea guardar este registro?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then(async (result) => {
+
+        if (result.value) {
+
+    this.valor = '';
+    this.comments = '';
+    this.aplica = '';
+
+    for (let i = 0; i < this.checklistEllipse.length; i++) {
+
+      // this.valor = this.valor + ',' + this.checklistEllipse[i].table_code;
+      // this.comments = this.comments + '^~|' + this.checklistEllipse[i].comentario;
+      if ( this.checklistEllipse[i].check === true) {
+        this.checklistEllipse[i].checkValidation = 'Y';
+      } else {
+        this.checklistEllipse[i].checkValidation = 'N';
+      }
+      // this.aplica = this.aplica + ',' + this.checklistEllipse[i].checkValidation;
+    }
+
+    /*this.checklistEllipse.forEach((valor) => {
+      this.valor = this.valor + ',' + valor.table_code;
+      this.comments = this.comments + '^~|' + valor.comentario;
+      if ( valor.check === true) {
+        valor.checkValidation = 'Y';
+      } else {
+        valor.checkValidation = 'N';
+      }
+      this.aplica = this.aplica + ',' + valor.checkValidation;
+      // console.log(valor.table_code)
+
+    });
+    const spinner = this.controlService.openSpinner();
+
+    this.valor = this.valor.slice(1);
+    this.comments = this.comments.slice(3);
+    this.aplica = this.aplica.slice(1);
+    console.log(this.valor, this.comments);
+    console.log(this.aplica);
+
+    if(this.comments.includes('undefined')){
+
+      return Swal2.fire({
+        title : '<b style = "color:red"> ADVERTENCIA </b>',
+        icon : 'warning',
+        text : 'Comentario Obligatorio'
+      });
+    }
+    for (let i = 0; i < this.checklistEllipse.length; i++) {
+
+      this.valor = this.checklistEllipse[i].table_code;
+      this.comments = this.checklistEllipse[i].comentario;
+      this.aplica = this.checklistEllipse[i].checkValidation;
+
+      let resp = await this.SendCheckList(this.actividadModel.areaId,this.actividadModel.procesoId,this.actividadModel.subprocesoId ,this.actividadModel.actividadId,this.valor,this.aplica,this.comments )
+      console.log(resp.success)
+      if(resp.success === true){
+
+      }else{
+        
+        this.controlService.closeSpinner(spinner);
+         Swal2.fire({
+          icon: 'error',
+          text: resp.message,
+          showConfirmButton: false,
+          timer: 2000
+
+        });
+        // this.cancelar();
+        return
+        
+      }
+      }
+      Swal2.fire({
+        title: 'item Agregado',
+                  icon: 'success',
+                  showConfirmButton: false,
+                  timer: 2000
+
+      });
+      this.checkModel = {
+        areaId: '',
+        chkDescripcionSola: '',
+      };
+      this.areasList = [];
+      this.cargarAreas();
+      this.cancelar();
+      this.controlService.closeSpinner(spinner);
+    }
+
+    });
+
+  }*/
+
 
   async guardar() {
 

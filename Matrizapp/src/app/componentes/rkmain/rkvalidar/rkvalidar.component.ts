@@ -199,6 +199,8 @@ export class RkvalidarComponent implements OnInit {
                         const fecha = this.convertiFechaYhora(element.atts[5].value.trim());
     
                         this.obtenerRuta(element.atts[6].value.trim());
+                        let jerarquiaMapeada = this.autentication.getJerarquia(element.atts[6].value.trim())
+                        console.log(jerarquiaMapeada)
     
                         this.pendList.push({
                           Accion: element.atts[1].value.trim(),
@@ -211,7 +213,8 @@ export class RkvalidarComponent implements OnInit {
                           Comentarios : element.atts[8].value.trim(),
                           status: element.atts[9].value.trim(),
                           check: false,
-                          bloqueo : false
+                          bloqueo : false,
+                          jerarquia : jerarquiaMapeada
                           // Area: element.atts[5].value.trim(),
                           // Proceso: element.atts[6].value.trim(),
                           // Subproceso: element.atts[7].value.trim(),
@@ -303,46 +306,8 @@ export class RkvalidarComponent implements OnInit {
               data.data.forEach((element) => {
             if (element.atts.length > 0) {
 
-              const rutaLongitud = element.atts[16].value.trim().length;
-              const ruta = element.atts[16].value.trim();
-              // console.log(ruta)
-              console.group();
-              console.log(rutaLongitud.toString());
-              console.groupEnd();
-              switch (rutaLongitud.toString()) {
-
-                case '2':
-                  this.rutaJerarquia = ruta;
-                  console.log(this.rutaJerarquia);
-                  break;
-                case '6':
-                  this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6);
-                  break;
-                case '10':
-                  this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10);
-                  break;
-                  case '14':
-
-                  this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14);
-                  break;
-                  case '18':
-                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18);
-                    break;
-                  case '19':
-                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
-                    break;
-                  case '23':
-                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
-                    break;
-                  case '27':
-                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27);
-                    break;
-                  case '31':
-
-                    this.rutaJerarquia = ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27) + '-' + element.atts[21].value.trim() + ruta.substring(28, 31);
-                    break;
-                }
-
+              let jerarquiaMapeada = this.autentication.getJerarquia(element.atts[6].value.trim())
+              console.log(jerarquiaMapeada)
               this.pendList.push({
                 Accion: element.atts[1].value.trim(),
                 Entidad: element.atts[2].value.trim(),
@@ -365,7 +330,7 @@ export class RkvalidarComponent implements OnInit {
                 check: false,
                 status: element.atts[19].value.trim(),
                 TipoControl: element.atts[21].value,
-                rutaJerarquia: this.rutaJerarquia
+                rutaJerarquia: jerarquiaMapeada
 
               });
 

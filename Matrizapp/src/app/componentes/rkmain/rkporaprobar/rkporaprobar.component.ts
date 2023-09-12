@@ -202,7 +202,7 @@ export class RkporaprobarComponent implements OnInit {
                     const fecha = this.convertiFechaYhora(element.atts[5].value.trim());
 
                     this.obtenerRuta(element.atts[6].value.trim());
-
+                    let jerarquiaMapeada = this.autentication.getJerarquia(element.atts[6].value.trim())
                     this.pendList.push({
                       Accion: element.atts[1].value.trim(),
                       Entidad: element.atts[2].value.trim(),
@@ -214,7 +214,8 @@ export class RkporaprobarComponent implements OnInit {
                       Comentarios : element.atts[8].value.trim(),
                       status: element.atts[9].value.trim(),
                       check: false,
-                      bloqueo : false
+                      bloqueo : false,
+                      jerarquia : jerarquiaMapeada
                       // Area: element.atts[5].value.trim(),
                       // Proceso: element.atts[6].value.trim(),
                       // Subproceso: element.atts[7].value.trim(),

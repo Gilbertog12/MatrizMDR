@@ -520,14 +520,14 @@ export class AuthenticationService {
       || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador' ) && (estado === '000' || estado === '001' || estado === '002' || estado === '006')) {
           return 'creador';
       }
-      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'validador' || perfilEll.perfil === 'aprobador' || perfilEll.perfil ==='validadorAprobador'
-      || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador') && estado === '004') {
+      if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'validador' ||  perfilEll.perfil ==='validadorAprobador'
+      || perfilEll.perfil ==='validadorCreador') && estado === '004') {
 
           return 'validador';
 
         }
       if ((perfilEll.perfil === 'admin' || perfilEll.perfil === 'aprobador' || perfilEll.perfil ==='validadorAprobador'
-      || perfilEll.perfil ==='validadorCreador'|| perfilEll.perfil ==='aprobadorCreador') && estado === '007') {
+      || perfilEll.perfil ==='aprobadorCreador') && estado === '007') {
           return 'aprobador';
         }
 
@@ -578,6 +578,44 @@ export class AuthenticationService {
     );
 
     return this.http.post(_url, body, { headers: headersV });
+  }
+
+
+  getJerarquia(rutaJerarquia){
+    const rutaLongitud = rutaJerarquia.length;
+    const ruta = rutaJerarquia;
+
+    switch (rutaLongitud.toString()) {
+
+      case '2':
+        return ruta;
+        
+      case '6':
+        return ruta.substring(0, 2) + '-' + ruta.substring(2, 6);
+      case '10':
+        return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10);
+        case '14':
+
+        return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14);
+        case '18':
+          return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18);
+
+        case '19':
+          return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19);
+
+        case '23':
+          return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23);
+          break;
+        case '27':
+          return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27);
+          break;
+        case '31':
+
+          return ruta.substring(0, 2) + '-' + ruta.substring(2, 6) + '-' + ruta.substring(6, 10) + '-' + ruta.substring(10, 14) + '-' + ruta.substring(14, 18) + '-' + ruta.substring(18, 19) + '-' + ruta.substring(19, 23) + '-' + ruta.substring(23, 27) + '-' + ruta.substring(27, 31);
+          break;
+      }
+
+
   }
 
   

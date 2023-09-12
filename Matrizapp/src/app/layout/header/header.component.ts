@@ -33,7 +33,7 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string;
-  public version: string = 'Version: 4.4.7';
+  public version: string = 'Version: 4.4.9';
   public posicion: string;
   public distrito: string;
   public usuario2: string;
@@ -45,6 +45,7 @@ export class AppHeaderComponent implements OnInit {
 
   };
   tiempoVida: string;
+  perfil: string;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
@@ -55,6 +56,8 @@ export class AppHeaderComponent implements OnInit {
               public posiciones: ServiciocajasService
     ) {
       this.ObtenerVersionCoemdr();
+    
+
       // this.aperfil()
      }
 
@@ -76,7 +79,8 @@ export class AppHeaderComponent implements OnInit {
     this.posicion = localStorage.getItem('Posicion');
     this.distrito = localStorage.getItem('Distrito');
 
-    this.informacion = this.usuario2 + ' ' + this.distrito + ' ' + this.posicion;
+    this.informacion = `${this.usuario2}  ${this.distrito}  ${this.posicion}`;
+    // this.perfil = "Creador"
   }
 
   logout() {
@@ -88,7 +92,7 @@ export class AppHeaderComponent implements OnInit {
     this.posicion = localStorage.getItem('Posicion');
     this.distrito = localStorage.getItem('Distrito');
 
-    this.informacion = this.usuario2 + ' ' + this.distrito + ' ' + this.posicion;
+    this.informacion = `${this.usuario2}  ${this.distrito}  ${this.posicion}`;
   }
 
 /**
@@ -132,6 +136,7 @@ export class AppHeaderComponent implements OnInit {
       });
 
     });
+    this.perfilesUsuario()
   }
 
   // help() {
@@ -343,6 +348,12 @@ export class AppHeaderComponent implements OnInit {
           });
     });
 
+  }
+
+
+  perfilesUsuario(){
+    let pe = localStorage.getItem('PerfilRkj')
+    console.log(this.autentication.conseguirPerfil(pe))
   }
 
 }

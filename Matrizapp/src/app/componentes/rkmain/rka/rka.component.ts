@@ -149,6 +149,8 @@ public Razon: string;
                   // console.log(element.atts[0].value)
                   if ( element.atts[0].value === '0'   ) {
 
+                    
+
                     this.areaModel = {
                       offset: data.data[0].atts[0].value,
                       areaId: data.data[0].atts[1].value,
@@ -270,19 +272,25 @@ public Razon: string;
 
         data.data.forEach((element) => {
 
-          this.procesosList.push({
-            offset: element.atts[0].value,
-            Id: element.atts[1].value.trim(),
-            Descripcion: element.atts[2].value,
-            procesoRiesgoPuroN: element.atts[3].value,
-            procesoRiesgoPuroM: element.atts[4].value,
-            procesoRiesgoPuroS: element.atts[5].value,
-            procesoRiesgoResidualN: element.atts[6].value,
-            procesoRiesgoResidualM: element.atts[7].value,
-            procesoRiesgoResidualS: element.atts[8].value,
-            estado: element.atts[9].value,
-            pendingDelete: element.atts[11].value
-          });
+          if(  element.atts[9].value !== '010'){
+
+            this.procesosList.push({
+              offset: element.atts[0].value,
+              Id: element.atts[1].value.trim(),
+              Descripcion: element.atts[2].value,
+              procesoRiesgoPuroN: element.atts[3].value,
+              procesoRiesgoPuroM: element.atts[4].value,
+              procesoRiesgoPuroS: element.atts[5].value,
+              procesoRiesgoResidualN: element.atts[6].value,
+              procesoRiesgoResidualM: element.atts[7].value,
+              procesoRiesgoResidualS: element.atts[8].value,
+              estado: element.atts[9].value,
+              pendingDelete: element.atts[11].value
+            });
+
+          }
+
+         
 
         });
 

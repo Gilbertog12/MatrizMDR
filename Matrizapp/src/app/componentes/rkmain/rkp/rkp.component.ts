@@ -254,19 +254,25 @@ cargarRiesgo(){
 
       data.data.forEach((element) =>{
 
-        this.subprocesosList.push({
-          offset: element.atts[0].value,
-                  Id: element.atts[1].value.trim(),
-                  Descripcion: element.atts[2].value,
-                  subprocesoRiesgoPuroN: element.atts[3].value,
-                  subprocesoRiesgoPuroM: element.atts[4].value,
-                  subprocesoRiesgoPuroS: element.atts[5].value,
-                  subprocesoRiesgoResidualN: element.atts[6].value,
-                  subprocesoRiesgoResidualM: element.atts[7].value,
-                  subprocesoRiesgoResidualS: element.atts[8].value,
-                  estado: element.atts[9].value,
-                  pendingDelete: element.atts[11].value
-        });
+        if( element.atts[9].value !=='010'){
+
+          this.subprocesosList.push({
+            offset: element.atts[0].value,
+                    Id: element.atts[1].value.trim(),
+                    Descripcion: element.atts[2].value,
+                    subprocesoRiesgoPuroN: element.atts[3].value,
+                    subprocesoRiesgoPuroM: element.atts[4].value,
+                    subprocesoRiesgoPuroS: element.atts[5].value,
+                    subprocesoRiesgoResidualN: element.atts[6].value,
+                    subprocesoRiesgoResidualM: element.atts[7].value,
+                    subprocesoRiesgoResidualS: element.atts[8].value,
+                    estado: element.atts[9].value,
+                    pendingDelete: element.atts[11].value
+          });
+
+        }
+
+       
 
       })
       this.loading = false

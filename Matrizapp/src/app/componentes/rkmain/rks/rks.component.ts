@@ -258,7 +258,7 @@ public llaves : string[] = []
         console.log(data)
 
 
-
+        debugger
         data.data.forEach((element) =>{
 
           

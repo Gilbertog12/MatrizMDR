@@ -273,19 +273,25 @@ public Razon : string
 
         data.data.forEach((element) =>{
 
-          this.riesgosList.push({
-            offset: element.atts[0].value,
-            Id: element.atts[1].value.trim(),
-            Descripcion: element.atts[2].value,
-            riesgoRiesgoPuroN: element.atts[3].value,
-            riesgoRiesgoPuroM: element.atts[4].value,
-            riesgoRiesgoPuroS: element.atts[5].value,
-            riesgoRiesgoResidualN: element.atts[6].value,
-            riesgoRiesgoResidualM: element.atts[7].value,
-            riesgoRiesgoResidualS: element.atts[8].value,
-            estado: element.atts[9].value,
-            pendingDelete: element.atts[11].value
-          });
+          if(element.atts[9].value !== '010'){
+
+            this.riesgosList.push({
+              offset: element.atts[0].value,
+              Id: element.atts[1].value.trim(),
+              Descripcion: element.atts[2].value,
+              riesgoRiesgoPuroN: element.atts[3].value,
+              riesgoRiesgoPuroM: element.atts[4].value,
+              riesgoRiesgoPuroS: element.atts[5].value,
+              riesgoRiesgoResidualN: element.atts[6].value,
+              riesgoRiesgoResidualM: element.atts[7].value,
+              riesgoRiesgoResidualS: element.atts[8].value,
+              estado: element.atts[9].value,
+              pendingDelete: element.atts[11].value
+            });
+
+          }
+
+          
 
         })
 

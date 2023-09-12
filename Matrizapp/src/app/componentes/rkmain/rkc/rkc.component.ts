@@ -1318,19 +1318,25 @@ public Razon: string;
 
             data.data.forEach((element) => {
 
-              this.tareasList.push({
-                offset: element.atts[0].value,
-                Id: element.atts[1].value.trim(),
-                Descripcion: element.atts[2].value,
-                tareaRiesgoPuroN: element.atts[3].value,
-                tareaRiesgoPuroM: element.atts[4].value,
-                tareaRiesgoPuroS: element.atts[5].value,
-                tareaRiesgoResidualN: element.atts[6].value,
-                tareaRiesgoResidualM: element.atts[7].value,
-                tareaRiesgoResidualS: element.atts[8].value,
-                estado: element.atts[9].value,
-                pendingDelete: element.atts[11].value
-              });
+              if(element.atts[9].value !== '010'){
+
+                this.tareasList.push({
+                  offset: element.atts[0].value,
+                  Id: element.atts[1].value.trim(),
+                  Descripcion: element.atts[2].value,
+                  tareaRiesgoPuroN: element.atts[3].value,
+                  tareaRiesgoPuroM: element.atts[4].value,
+                  tareaRiesgoPuroS: element.atts[5].value,
+                  tareaRiesgoResidualN: element.atts[6].value,
+                  tareaRiesgoResidualM: element.atts[7].value,
+                  tareaRiesgoResidualS: element.atts[8].value,
+                  estado: element.atts[9].value,
+                  pendingDelete: element.atts[11].value
+                });
+
+              }
+
+             
 
             });
             this.loading = false;

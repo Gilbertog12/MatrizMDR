@@ -268,8 +268,11 @@ public Razon : string;
         console.log(data);
 
         data.data.forEach((element) =>{
+          if(element.atts[9].value !== '010'){
 
+            
           this.consecuenciasList.push({
+
 
             offset: element.atts[0].value,
                       Id: element.atts[1].value.trim(),
@@ -283,6 +286,9 @@ public Razon : string;
                       estado: element.atts[9].value,
                       pendingDelete: element.atts[11].value
           });
+
+          }
+
 
         });
 

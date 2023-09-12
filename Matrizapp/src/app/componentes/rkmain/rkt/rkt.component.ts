@@ -662,15 +662,22 @@ public canAdd : string;
 
         data.data.forEach((element) =>{
 
-          this.dimensionesList.push({
-            offset: element.atts[0].value,
-                          Id: element.atts[1].value.trim(),
-                          Descripcion: element.atts[2].value,
-                          dimensionRiesgoPuro: element.atts[3].value,
-                          dimensionRiesgoResidual: element.atts[4].value,
-                          estado: element.atts[5].value,
-                          pendingDelete: element.atts[7].value
-          });
+
+          if(element.atts[5].value !== '010'){
+
+            this.dimensionesList.push({
+              offset: element.atts[0].value,
+                            Id: element.atts[1].value.trim(),
+                            Descripcion: element.atts[2].value,
+                            dimensionRiesgoPuro: element.atts[3].value,
+                            dimensionRiesgoResidual: element.atts[4].value,
+                            estado: element.atts[5].value,
+                            pendingDelete: element.atts[7].value
+            });
+            
+          }
+
+          
 
         });
 

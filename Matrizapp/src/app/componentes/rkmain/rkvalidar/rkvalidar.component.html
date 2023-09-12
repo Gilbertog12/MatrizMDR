@@ -28,6 +28,7 @@
                     </ng-template>
                 </th>
                 <th class="sticky2 sticky-top"><b>Accion</b></th>
+                <th class="sticky-top"><b>Jerarquia</b></th>
                 <th class="sticky-top"><b>Comentarios</b></th>
                 <th class="sticky-top fecha"><b>Fecha</b><br></th>
                 <th class="sticky-top"><b>Entidad</b>
@@ -64,8 +65,12 @@
                                 </ng-template> -->
                 </td>
                 <td class="sticky2">{{item.Accion}}</td>
+
+                <td>{{item.jerarquia}}</td>
+
                 <td><textarea [(ngModel)]="item.Comentarios">{{item.Comentarios}}
                 </textarea> </td>
+
 
                 <td class="fecha">{{item.Fecha}}</td>
                 <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
