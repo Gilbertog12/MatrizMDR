@@ -151,6 +151,7 @@ export class RkvalidarComponent implements OnInit {
     _atts.push({ name: 'status', value: 'IV' });
     _atts.push({ name: 'key', value: this.data.id });
     _atts.push({ name: 'statusItem', value: this.data.status });
+    _atts.push({ name: 'empezarDesde', value: '0' });
     if (this.complete == true) {
       _atts.push({ name: 'showCompleted', value: 'N' });
 
@@ -845,15 +846,7 @@ checkUncheckAll() {
  async Rechazar() {
 
 
-  if ( this.totalMarcados > 1000) {
-
-    return Swal2.fire({
-        icon: 'info',
-        text : 'la cantidad de items que esta intentando enviar a validar excede el limite deben ser menores o iguales a 1000',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar',
-    });
-  }
+  
 
     if (this.valor.includes('Y')) {
       // this.autentication.showMessage(false, 'Debe Seleccionaar al menos 1 item', {}, false);
@@ -968,6 +961,7 @@ checkUncheckAll() {
               _atts.push({ name: 'key', value: this.valor });
               _atts.push({ name: 'version', value: this.version});
               _atts.push({ name: 'approveInd', value: 'U' });
+              
               // _atts.push({ name: 'isValidatingFromTree', value: this.isValidatingFromTree });
               _atts.push({ name: 'comments', value: this.comments });
               const spinner = this.controlService.openSpinner();

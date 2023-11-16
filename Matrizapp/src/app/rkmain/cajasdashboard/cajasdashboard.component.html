@@ -5,33 +5,45 @@
             <div class="col-xl-12 text-center">
                 <h4>Transacciones pendientes </h4>
             </div>
+
+            <div class="col-xl-3"></div>  
           <div class="col-xl-6">
             <div class="card text-center bg-warning">
             <div class="card-body">
 
               <h5 class="">{{dashboardData.ENVIAR_A_VALIDAR}} ITEMS PENDIENTES ENVIAR A VALIDAR</h5>
                                       
-              
-            <button class="btn btn-primary btn-sm "  (click)="enviarAvalidar()">Enviar</button>
-            <button class="btn btn-secondary btn-sm ml-5" (click)="VerEnviarValidar()" >Revisar Items</button>
+    
+            <button class="btn btn-primary btn-sm "  [disabled]="enviarV" (click)="enviarAvalidar()">Enviar</button>
+            
+
+            <button  class="btn btn-sm btn-outline-dark btn-sm ml-5"  (click)="generarReporte()"> <img
+              class="img-circle"
+              src="assets/images/excel.png"
+              style="width: 20px; height: 20px"
+            />Generar Reporte</button>
+            <!-- <button  class="btn btn-secondary btn-sm ml-5" (click)="VerEnviarValidar()" >Revisar Items</button> -->
             <hr>
-            <button class="btn btn-outline-dark btn-sm mt-9 creacion" (click)="VerEnviarValidar(true)">{{dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION}} ITEMS EN CONSTRUCCION</button>
+            <!-- <button class="btn btn-outline-dark btn-sm mt-9 creacion" (click)="VerEnviarValidar(true)" [disabled]="!vacio">{{dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION}} ITEMS EN CONSTRUCCION</button> -->
+            <button class="btn btn-outline-dark btn-sm mt-9 creacion" (click)="VerEnviarValidar(0)" [disabled]="vacio">{{dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION}} ITEMS EN CONSTRUCCION</button>
              </div>
             </div>
 
           </div>
-          
-          <div class="col-xl-6">
+          <!--- 
+            <div class="col-xl-6">
             <div class="card text-center bg-success">
             <div class="card-body">
               <h5 class="" (click)="VerEnviarAprobar()">{{dashboardData.RECHAZADO}} ITEMS RECHAZADOS</h5>
-                                      <!-- <p class="card-text">ITEMS PENDIENTES ENVIAR A VALIDAR</p> -->
+                                       <p class="card-text">ITEMS PENDIENTES ENVIAR A VALIDAR</p> 
               
            
             
         </div>
+      </div>
         </div>
-          </div>
+          -->
+          
         </div>  
         </div>
         

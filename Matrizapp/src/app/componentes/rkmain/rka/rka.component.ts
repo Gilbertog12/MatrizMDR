@@ -16,6 +16,7 @@ import { RkmainComponent } from '../rkmain.component';
 import { CajasdashboardComponent } from '../../../rkmain/cajasdashboard/cajasdashboard.component';
 import { async } from '@angular/core/testing';
 import { map } from 'rxjs/operators';
+import { title } from 'process';
 
 @Component({
   selector: 'app-rka',
@@ -404,7 +405,18 @@ public Razon: string;
 
     }
 
-    enviarAvalidar(id, status, tipo) {
+    
+
+/* The above code is a TypeScript function that is used to send a validation request or rejection
+request for a specific item. */
+    enviarAvalidar(id, status , rechazo?) {
+
+      let tipo = ''
+      if(status === '004'){
+         tipo = 'IV'
+      }else {
+         tipo = 'IA'
+      }
       const _atts = [];
       _atts.push({ name: 'scriptName', value: 'coemdr' });
       _atts.push({ name: 'action', value: 'PENDIENTE_VALIDAR_LIST' });
@@ -413,6 +425,7 @@ public Razon: string;
       _atts.push({ name: 'soloNodos', value: "Y" });
       _atts.push({ name: 'statusItem', value: status });
       _atts.push({ name: 'showCompleted', value: 'Y' });
+      _atts.push({ name: 'empezarDesde', value: '0' });
 
       const spinner = this.controlService.openSpinner();
       //
@@ -448,8 +461,15 @@ public Razon: string;
 
             }
           });
+          if(rechazo == true){
 
-          this.sendValidate( status);
+            // this.rechazar(status)
+            this.razonderechazo(status)
+
+          }else{
+            this.sendValidate( status);
+
+          }
           this.controlService.closeSpinner(spinner);
         }
       });
@@ -483,6 +503,104 @@ public Razon: string;
           _atts.push({ name: 'action', value: 'VALIDATE' });
           _atts.push({ name: 'onlyActualNode', value: 'Y' });
           _atts.push({ name: 'uuid', value: this.uid });
+              // _atts.push({ name: 'key', value: llaves });
+
+          const obj = this.autentication.generic(_atts);
+          const spinner = this.controlService.openSpinner();
+
+          obj.subscribe(
+                      (data) => {
+                        if (data.success === true) {
+
+                          // this.mostrarMensaje();
+                        this.autentication.mensajeFlujoAprobacion(titulo);
+
+                        this.Cajas.notificaciones$.emit(true);
+
+                        } else {
+
+                          Swal2.fire('', data.message, 'error');
+                        }
+
+                        this.controlService.closeSpinner(spinner);
+
+                      },
+                      (error) => {
+
+                        this.controlService.closeSpinner(spinner);
+                      });
+                    }
+
+                  });
+
+    }
+
+    async razonderechazo(status){
+
+      
+
+      const conf = this.confirm.open(RkReasonRejectComponent,
+        {
+          hasBackdrop: true,
+          // id: 'drag',
+          height: 'auto',
+          width: 'auto',
+          data:
+          {
+           title : 'Razon de Rechazo'
+            
+  
+          },
+          // panelClass : 'tabla'
+  
+        });
+
+        conf.afterClosed().subscribe( (resultado) =>{
+          
+
+            if(resultado.enviar){
+
+              this.rechazar(status,resultado.mensaje)
+            }
+          
+        })
+   
+
+    }
+    rechazar( status,razon? ) {
+
+      let mnsje = 'Rechazar Validacion';
+      let titulo = 'Rechazo en Proceso';
+
+      if(status === '007') {
+        mnsje = 'Rechazar Aprobacion';
+        titulo = 'Rechazo en Proceso';
+      }
+
+     
+
+      Swal2.fire({
+        html: `<h3><strong>${mnsje}</strong></h3>`,
+        text: 'Se procederá a RECHAZAR el(los) Registro(s) seleccionado(s)',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+      }).then((result) => {
+        if (result.value) {
+
+          const _atts = [];
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'action', value: 'VALIDATE' });
+          _atts.push({ name: 'onlyActualNode', value: 'Y' });
+          _atts.push({ name: 'uuid', value: this.uid });
+          _atts.push({ name: 'approveInd', value: 'U' });
+          _atts.push({ name: 'comments', value: razon });
+
+
+          console.log(_atts)
               // _atts.push({ name: 'key', value: llaves });
 
           const obj = this.autentication.generic(_atts);

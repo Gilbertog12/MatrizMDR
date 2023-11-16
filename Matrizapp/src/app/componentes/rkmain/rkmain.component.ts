@@ -40,7 +40,7 @@ export class DynamicFlatNode {
               public version: string, public status: string, public sp: any[] = [],
               public hijo: string, public canAdd: string, public permiso: string,
               public perfiles: string, public pendingDelete: string ,
-              public StatusPadre: boolean, public displayDeleteIcon: string) { }
+              public StatusPadre: boolean, public displayDeleteIcon: string, public tareaInconclusa : string) { }
 
   }
 
@@ -149,6 +149,7 @@ export class DynamicFlatNode {
 
               const statusParent = value['atts'][22]['value'];
               const displayDeleteIcon = value['atts'][23]['value'];
+              const tareaInconclusa = value['atts'][24]['value'];
               let flag;
               if (parseInt(status) < parseInt(statusParent)) {
                 var StatusPadre = true;
@@ -197,7 +198,7 @@ export class DynamicFlatNode {
                     route = 'rky/' + key.substring(0, 2) + '/' + key.substring(2, 6) + '/' + key.substring(6, 10) + '/' + key.substring(10, 14) + '/' + key.substring(14, 18) + '/' + key.substring(18, 19) + '/' + key.substring(19, 23) + '/' + key.substring(23, 27);
                     break;
                 }
-              response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios, hijo, canAdd, permiso, perfiles, pendingDelete, StatusPadre, displayDeleteIcon));
+              response.push(new DynamicFlatNode(name, node.level + 1, true, false, key, route, version, status, espacios, hijo, canAdd, permiso, perfiles, pendingDelete, StatusPadre, displayDeleteIcon ,tareaInconclusa));
               });
 
             localStorage.setItem('comparar', JSON.stringify(response));
@@ -249,7 +250,8 @@ export class DynamicFlatNode {
       perfiles: '',
       pendingDelete: '',
       StatusPadre: false,
-      displayDeleteIcon: ''
+      displayDeleteIcon: '',
+      tareaInconclusa : ''
 
     };
         this.data.splice(index + 1, 0, ...[dfn]);
@@ -278,7 +280,8 @@ export class DynamicFlatNode {
       perfiles: '',
       pendingDelete: '',
       StatusPadre: false,
-      displayDeleteIcon: ''
+      displayDeleteIcon: '',
+      tareaInconclusa : ''
 
     };
     this.data.splice(index + 1, 0, ...[dfn]);
@@ -442,6 +445,8 @@ export class RkmainComponent implements OnInit {
   visible: boolean = true;
   administrador: string;
 
+  aprobadosMdr: boolean = false;
+
   // mmetodos para hacer logout automatico
 
   constructor(
@@ -468,8 +473,8 @@ export class RkmainComponent implements OnInit {
       );
 
       this.Cajas.arbol$.subscribe ( (acciones) => {
-        if (acciones[0]) {
-
+        if (acciones[0] == true) {
+          console.log("entre al subscribe")
           this.encontrarNodoStatusCambiado(acciones[1]);
 
         }
@@ -502,7 +507,7 @@ export class RkmainComponent implements OnInit {
       // this.notificacionesPendientes();
 
       // this.cargarDashboard()
-      this.Vcompilacion = '4.2.2';
+      this.Vcompilacion = '4.5.0';
       var  mensaje =
     `    ======================================
               Version ${this.Vcompilacion}
@@ -515,6 +520,8 @@ export class RkmainComponent implements OnInit {
       console.log(`%c${mensaje}`, `color:${colorM}`);
 
       this.recargarArbol();
+
+     
 
       this.Cajas.Recargar$.subscribe((resp) => {
       if (resp) {
@@ -543,28 +550,8 @@ export class RkmainComponent implements OnInit {
       }
     });
   }
-  resetear() {
-    console.log('limpie');
- }
 
-  reloj(rset?: boolean) {
-
-    const t  = setInterval(() => {
-
-      if (--this.segundos < 0) {
-        this.segundos = 59;
-        if (--this.minutos < 0) {
-
-          clearInterval(t);
-          this.autentication.logout();
-        }
-      }
-
-    }, 1000);
-    console.log(`${this.minutos} : ${this.segundos}`);
-
-  }
-
+ 
   SinPermisos() {
 
     Swal2.fire({
@@ -602,25 +589,7 @@ export class RkmainComponent implements OnInit {
     }
   }
 
-  abrirNodoYSeleccionar() {
 
-    const key = localStorage.getItem('UltimoEnviado');
-
-    if (key.length === 2) {
-
-      this.recargarArbol();
-      document.getElementById(key).style.backgroundColor = '#cff5e9';
-    } else {
-
-      // console.log('estoy aqui')
-      // console.log(key)
-      // console.log(this.getSelection)
-      this.treeControl.collapse(JSON.parse(localStorage.getItem('comparar')));
-      this.treeControl.expand(JSON.parse(localStorage.getItem('comparar')));
-
-    }
-
-  }
 
   recargarPadre(ruta?) {
     console.log(this.getSelection);
@@ -636,21 +605,33 @@ export class RkmainComponent implements OnInit {
     }
   }
 
-  recargarArbol(arbol?: boolean) {
+  recargarArbol(arbol?: boolean , aprobados?:string ) {
     ////// debugger
     this.notificacionesPendientes();
     // this.notificacionesList.notificaciones ='0'
     this.isLoading = true;
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-
+    
     this.dataSource = new DynamicDataSource(this.treeControl, this.autentication, this.controlService);
 
+    
     const params = [];
+      if(arbol === true){
+
+        this.aprobadosMdr = false
+
+        
+      }
+
 
     params.push({ name: 'scriptName', value: 'coersk' });
     params.push({ name: 'action', value: 'SEARCH_NODE' });
     params.push({ name: 'level', value: '1' });
     params.push({ name: 'id', value: '' });
+    console.log(this.aprobadosMdr)
+    if(this.aprobadosMdr == true ){
+      params.push({ name: 'mostrarTodo', value: 'Y' })
+    }
 
     const response = [];
     const prueba = [];
@@ -677,6 +658,8 @@ export class RkmainComponent implements OnInit {
             const pendingDelete = value['atts'][20]['value'];
             const statusParent = value['atts'][22]['value'];
             const displayDeleteIcon = value['atts'][23]['value'];
+            let  tareaInconclusa = ''
+           
             // this.cargo = perfil
 
             if (parseInt(status) < parseInt(statusParent)) {
@@ -739,14 +722,14 @@ export class RkmainComponent implements OnInit {
 
             localStorage.setItem('canAdd', canAdd);
 
-            response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [], hijo, canAdd, permiso, perfiles, pendingDelete, StatusPadre, displayDeleteIcon));
+            response.push(new DynamicFlatNode(name, 1, true, false, key, 'rka/' + key, version, status, [], hijo, canAdd, permiso, perfiles, pendingDelete, StatusPadre, displayDeleteIcon,tareaInconclusa));
 
           });
 
           this.dataSource.data = response;
-          console.log(this.dataSource.data);
+          // console.log(this.dataSource.data);
           this.Cajas.permiso = this.dataSource.data[0].perfiles;
-          console.log(this.Cajas.permiso);
+          // console.log(this.Cajas.permiso);
 
           localStorage.setItem('PerfilRkj', this.Cajas.permiso);
           localStorage.setItem('administrador', this.Cajas.permiso.substring(0, 1) );
@@ -759,6 +742,11 @@ export class RkmainComponent implements OnInit {
           this.percreacion = localStorage.getItem('NoCreador');
           this.notificacionesList.notificaciones = localStorage.getItem('notificaciones');
           this.administrador = localStorage.getItem('administrador');
+
+         
+
+          this.Cajas.notificaciones$.emit(false);
+          // console.log(perfils.perfil)
           // console.log(this.fix )
 
         } else {
@@ -769,10 +757,12 @@ export class RkmainComponent implements OnInit {
 
       },
         error => {
-          console.log(error);
+           console.log(error);
 
           if ( error.status === 401 || error.status === 0 ) {  this.autentication.showMessage(false, 'Su sesión ha expirado', { }, true);  } else { this.autentication.showMessage(false, 'Ha ocurrido un error al intentar conectarse, verifique su conexión a internet3', {}, false); }
         });
+
+      
 
   }
 
@@ -983,7 +973,7 @@ export class RkmainComponent implements OnInit {
 
         } else {
 
-          console.log(this.dataSource.data[i]);
+          // console.log(this.dataSource.data[i]);
           const i2 = i - 1;
           this.getSelection = this.dataSource.data[i2];
           this.recargarPadre();
@@ -1052,7 +1042,7 @@ export class RkmainComponent implements OnInit {
           for (let i = 0 ; i < this.dataSource.data.length; i++) {
             if (this.dataSource.data[i].key === levelUp) {
 
-              console.log(this.dataSource.data[i]);
+              // console.log(this.dataSource.data[i]);
               this.getSelection = this.dataSource.data[i];
 
             }
@@ -1219,7 +1209,7 @@ export class RkmainComponent implements OnInit {
     for (let i = 0 ; i < this.dataSource.data.length; i++) {
 
       if (this.dataSource.data[i] === node) {
-        console.log(this.dataSource.data[i]);
+        // console.log(this.dataSource.data[i]);
         const i2 = i - 1;
         this.getSelection = this.dataSource.data[i2];
         this.recargarPadre();
@@ -3531,6 +3521,10 @@ entidadesPendientes() {
 
     }
   })
+}
+
+hola(){
+  this.recargarArbol(true)
 }
 
 }

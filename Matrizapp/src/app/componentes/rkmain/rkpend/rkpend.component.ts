@@ -9,7 +9,7 @@ import { ConfirmationComponent } from '../../../controls/confirmation/confirmati
 
 import { NgxLoadingService } from 'ngx-loading';
 
-import Swal from 'sweetAlert';
+
 import { RkmainComponent } from '../rkmain.component';
 import Swal2 from 'sweetalert2';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -110,12 +110,17 @@ export class RkpendComponent implements OnInit {
   entidadfiltro: any = '';
   soloControles: boolean;
   totalMarcados: number = 0;
+  totalMostrar: number = 0;
   buscar: boolean = false;
   sendSome: boolean = false;
   vArrayKeys: any;
   nodo: any;
   bloquearNodos: boolean = false;
   uid: string;
+  pagina: number = 0;
+  next: boolean = false;
+  numeroPg: number;
+  paginicial: number = 1;
 
   constructor(public dialogRef: MatDialogRef<RkpendComponent>,
               private controlService: ControlsService, private spinner: NgxLoadingService,
@@ -131,16 +136,24 @@ export class RkpendComponent implements OnInit {
                 console.log(data);
       this.data.key,
       this.data.status;
-                this.recargar(this.data.completo);
+      this.data.totales;
+
+      
+      this.recargar(this.data.empezar);
+
+      
 
                 this.mostrar();
                 console.log(this.cajas.caja1);
-    }
+              }
+              
+              // tslint:disable-next-line: no-empty
+              ngOnInit() {
+                // this.comprobarPadre()
+                
+              this.totalMostrar = parseInt(this.data.totales)
 
-    // tslint:disable-next-line: no-empty
-    ngOnInit() {
-      // this.comprobarPadre()
-
+              this.numeroPg = this.obtenerPaginas()
       console.log(this.complete);
 
       // this.MarcarJerarquia('01000200010001','')
@@ -151,15 +164,7 @@ export class RkpendComponent implements OnInit {
 
   }
 
-  Mostrarbarra() {
-
-    if (this.buscar) {
-      this.buscar = true;
-     } else {
-
-      this.buscar = true;
-    }
-  }
+ 
 
   ejecutar() {
     this._Recargarble.Recargar$.emit(true);
@@ -184,25 +189,7 @@ export class RkpendComponent implements OnInit {
 
   }
 
-  imprime() {
-    console.log(this.FechaDesde = this.FechaDesde.split('-').join(''));
-    console.log(this.FechaHasta = this.FechaHasta.split('-').join('') );
-
-    // let a = this.FechaDesde.substring(0,4);
-    // console.log(a)
-    // let b = this.FechaDesde.substring(7,5);
-    // console.log
-    // let c = this.FechaDesde.substring(8,10);
-    // let d = this.FechaHasta.substring(0,4);
-    // let e = this.FechaHasta.substring(7,5);
-    // let f = this.FechaHasta.substring(8,10);
-    // let total=a+b+c
-
-    this.FechaDesdeServicio = this.FechaDesde;
-
-    this.FechaHastaServicio = this.FechaHasta;
-
-  }
+  
 
   checkUncheckAll() {
     // tslint:disable-next-line: prefer-for-of
@@ -595,7 +582,7 @@ export class RkpendComponent implements OnInit {
 
                                 }
                               );
-                              this.recargar();
+                              // this.recargar();
                             }
 
                           } else {
@@ -685,7 +672,23 @@ export class RkpendComponent implements OnInit {
 
   }
 
-   recargar(completo?: boolean) {
+   recargar(paginacion:number ) {
+      
+
+
+     
+      if(paginacion === 20 || paginacion === -20){
+
+        this.pagina = this.pagina + paginacion
+        if(paginacion === -20){
+
+          this.paginicial = this.paginicial - 1
+
+        }else{
+          this.paginicial = this.paginicial + 1
+        }
+        }
+
 
     this.pendList = [];
     const _atts = [];
@@ -694,18 +697,11 @@ export class RkpendComponent implements OnInit {
     _atts.push({ name: 'status', value: 'EV' });
     _atts.push({ name: 'key', value: this.data.id });
     _atts.push({ name: 'statusItem', value: this.data.status });
-    if ( !completo) {
-      if (this.complete === true) {
-        _atts.push({ name: 'showCompleted', value: 'N' });
+  
+      _atts.push({ name: 'empezarDesde', value: this.pagina.toString() });
 
-      } else {
-              _atts.push({ name: 'showCompleted', value: 'Y' });
-
-      }
-    } else {
-      this.complete = completo;
-      _atts.push({ name: 'showCompleted', value: 'N' });
-    }
+    _atts.push({ name: 'showCompleted', value: 'N' });
+    
 
     const spinner = this.controlService.openSpinner();
     const promiseView = new Promise((resolve, reject) => {
@@ -713,7 +709,7 @@ export class RkpendComponent implements OnInit {
         .subscribe(
           (data) => {
             // console.log("RES:" + JSON.stringify(data));
-
+            
             console.log(data);
             const result = data.success;
             if (result) {
@@ -735,8 +731,8 @@ export class RkpendComponent implements OnInit {
                       key: element.atts[6].value.trim(),
                       version : element.atts[7].value.trim(),
                       Fecha: fecha,
-                      Comentarios : element.atts[8].value.trim(),
-                      status: element.atts[9].value.trim(),
+                      // Comentarios : element.atts[8].value.trim(),
+                      status: element.atts[8].value.trim(),
                       check: false,
                       bloqueo : false,
                       jerarquia : jerarquiaMapeada
@@ -761,11 +757,31 @@ export class RkpendComponent implements OnInit {
 
                 );
 
-                  console.log([this.pendList]);
+                
 
-                  this.TotalRegistros = this.pendList.length;
+                console.log(this.pendList.length)
+
+                if(this.TotalRegistros === 0)
+                {
+                  this.TotalRegistros =  this.pendList.length
+                }else{
+                  
+                  if(paginacion === -20){
+                    if(this.pagina === 0){
+                      
+                      this.TotalRegistros =  this.pendList.length
+                    }else {
+
+                      this.TotalRegistros = this.pagina 
+                    }
+                  }else{
+                    this.TotalRegistros =  this.TotalRegistros + this.pendList.length
+                  }
+                }
+                
 
               // this.comprobarPadre()
+              this.controlService.closeSpinner(spinner);
 
             } else {
               this.controlService.closeSpinner(spinner);
@@ -1121,6 +1137,34 @@ mostrarMensaje() {
   });
 
   this.router.navigate(['/rkmain']);
+
+}
+
+
+generarReporte(){
+  this.autentication.generarReporte(this.data.key)
+  .subscribe(
+    (resp:any) => {
+
+      Swal2.fire({
+        text : resp.data[0].atts[1].value,
+        icon : 'info'
+
+      }
+      );
+    }
+  )
+
+}
+
+onScroll(event){
+  console.log(event)
+}
+
+
+obtenerPaginas(){
+  return Math.ceil(this.totalMostrar / 20 )
+
 
 }
 

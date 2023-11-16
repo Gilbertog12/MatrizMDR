@@ -3,9 +3,9 @@
     <!-- <button *ngIf="dimensionModel.dimensionStatusId !=='008' && dimensionModel.CanAdd==='true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button> -->
 
     <button *ngIf="boton === 'creador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(dimensionModel.key,dimensionModel.dimensionStatusId)">Editar</button>
-    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,'IV')">Validar</button>
-    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,'IA')">Aprobar</button>
+    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId,true)">Rechazar</button>
+    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId)">Validar</button>
+    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(dimensionModel.key,dimensionModel.dimensionStatusId)">Aprobar</button>
 </h6>
 
 <div class="row">
@@ -115,8 +115,19 @@
 
                             </mat-form-field>
                         </div>
+
+                        
                     </div>
-                    <div class="divider"></div>
+                    <div class="divide">
+                        
+                        <button  class="btn btn-sm btn-light btn-round pl-1"  (click)="generarReporte()"> <img
+                            class="img-circle"
+                            src="assets/images/excel.png"
+                            style="width: 20px; height: 20px"
+                          />Generar Reporte</button>
+                    
+                </div>
+                    
                 </div>
             </div>
         </div>

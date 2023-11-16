@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule, MatButtonModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatIcon, MatIconModule } from '@angular/material';
 import { RkpendComponent } from './rkpend.component';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +11,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
 // import { RkmainRoutingModule } from '../rkmain-routing.module';
 import { FiltroPipe } from './filtro.pipe'
 import {MatDatepickerModule} from '@angular/material/datepicker'
+
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
@@ -29,6 +30,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     DragDropModule,
     MatDatepickerModule,
     MatSlideToggleModule,
+    MatIconModule
+    
 
     
     

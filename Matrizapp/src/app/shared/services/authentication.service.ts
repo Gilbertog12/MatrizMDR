@@ -475,6 +475,7 @@ export class AuthenticationService {
     });
   }
 
+  
   mensajeFlujoAprobacion(titulo) {
     Swal2.fire({
 
@@ -492,6 +493,13 @@ export class AuthenticationService {
     this.router.navigate(['/rkmain']);
   }
 
+
+  obtenerRkj(perfil){
+      let perfils = this.conseguirPerfil( perfil )
+      console.log(perfils)
+      return perfils
+  }
+
   botonesFlujoAprobacion( parametros) {
 
     const [perfil, estatus, canAdd] = parametros;
@@ -507,6 +515,7 @@ export class AuthenticationService {
   }
 
   conseguirPerfil(perfil) {
+      
       return this.perfiles.find( (perfilEvaluar) => perfilEvaluar.valor === perfil);
   }
 
@@ -532,6 +541,30 @@ export class AuthenticationService {
         }
 
     }
+
+  }
+
+  rechazarJerarquia(){
+    const _url = this.httpService.baseUrl + '/values/generic/';
+    let body: any;
+
+    body = {
+      atts: [
+        {name:"scriptName",value:"coemdr"},
+        {name:"action",value:"SEND_REPORT_MDR"},
+        {name:'key',value:'key'}
+      ]
+
+    };
+    let headersV = new HttpHeaders();
+    headersV = headersV.append('Content-Type', 'application/json');
+    headersV = headersV.append(
+      'Authorization',
+      'bearer ' + localStorage.getItem('tk')
+    );
+
+    return this.http.post(_url, body, { headers: headersV });
+
 
   }
 
@@ -617,6 +650,8 @@ export class AuthenticationService {
 
 
   }
+
+  
 
   
 }

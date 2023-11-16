@@ -4,9 +4,9 @@
 
 
     <button *ngIf="boton === 'creador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(areaModel.key,areaModel.areaStatusId)">Editar</button>
-    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId,'IV')">Validar</button>
-    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId,'IA')">Aprobar</button>
+    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId,true)">Rechazar</button>
+    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId)">Validar</button>
+    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(areaModel.key,areaModel.areaStatusId)">Aprobar</button>
 
 
 </h6>
@@ -96,7 +96,7 @@
                                 class="img-circle"
                                 src="assets/images/excel.png"
                                 style="width: 20px; height: 20px"
-                              />Descargar Excel</button>
+                              />Generar Reporte</button>
                         
                     </div>
                 </div>

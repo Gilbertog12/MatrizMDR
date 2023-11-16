@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ConfirmationComponent } from '../controls/confirmation/confirmation.component';
 import { AuthenticationService,ControlsService } from '../shared'
 import Swal2 from 'sweetalert2';
+import swal from 'sweetalert';
 
 
 
@@ -14,7 +15,7 @@ import Swal2 from 'sweetalert2';
 })
 export class RkReasonRejectComponent implements OnInit {
 
-  razon:string;
+  razon:string = '';
   valor:any;
   version : any;
   isValidatingFromTree: string;
@@ -26,7 +27,7 @@ export class RkReasonRejectComponent implements OnInit {
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any) {
           
-      console.log( this.razon)
+      
      }
 
   
@@ -99,8 +100,27 @@ export class RkReasonRejectComponent implements OnInit {
       )
   }
 
-  cerrar() {
-    this.dialogRef.close(true);
+  cerrar(){
+    this.dialogRef.close({ data: 'data',
+                            enviar :false});
   }
+
+  aceptar() {
+
+    if(this.razon.length <= 0 || this.razon.trim() === ''){
+      Swal2.fire({
+        title:'debe escribir la razón de rechazo',
+        icon: 'info',
+        showCloseButton:true
+      })
+    }else{
+        console.log(this.razon)
+      this.dialogRef.close({ data: 'data',
+                              mensaje: this.razon ,
+                              enviar :true});
+    }
+  }
+
+  
 
 }

@@ -16,7 +16,7 @@
     </span>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item ">
-                <a class="informacion">{{informacion}} </a> <br> <a class="informacion">{{perfil}}</a>
+                <a class="informacion">{{informacion}} </a> <br> <a class="informacion">Aprobador:<span style="color: blue;">{{apr}}</span> , Creador:<span style="color: blue;">{{cre}}</span> , Validador:<span style="color: blue;">{{val}}</span></a>
             </li>
             <li class="nav-item">
                 <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>help</mat-icon></button> </a>
@@ -26,15 +26,6 @@
                     account_circle
                     </mat-icon></button> </a>
             </li>
-            <!-- <li class="nav-item">
-                <a (click)="cambiarClave()"><button style="color: #175641 "   mat-button class="mat-button header-btn" myOpenSearchOverlay><mat-icon mat-list-icon style="color: #175641 " title='Help'>summarize</mat-icon></button> </a>
-            </li> -->
-            <!-- <button mat-button [matMenuTriggerFor]="beforeMenu">Reporte</button>
-            <mat-menu #beforeMenu="matMenu" xPosition="before">
-                <button mat-menu-item>Items Pendientes por Enviar a Validar</button>
-                <button mat-menu-item>Items Pendientes por Validar</button>
-                <button mat-menu-item>Items Pendientes por Aprobar</button>
-            </mat-menu> -->
             <li class="nav-item">
                 <button style="color: #175641" (click)="logout()" mat-button class="mat-button header-btn" myOpenSearchOverlay>
           <mat-icon mat-list-icon style="color: #175641">exit_to_app</mat-icon

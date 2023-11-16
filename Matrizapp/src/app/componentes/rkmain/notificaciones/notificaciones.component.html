@@ -13,7 +13,7 @@
                 <th class="sticky-top"><b>Estado</b></th>
                 <th class="sticky-top"><b>Acción</b></th>
                 <th class="sticky-top"><b>Items</b></th>
-                <th class="sticky-top"><b>Avance</b></th>
+                <!-- <th class="sticky-top"><b>Avance</b></th> -->
                 <th class="sticky-top "> 
                 <b id='check'>Eliminar</b>
                 <br>
@@ -35,7 +35,7 @@
                 <td>{{getText(notificacion.comentario)}}</td>
                 <td>{{notificacion.estado}}</td>
                 <td>{{notificacion.no_items}}</td>
-                <td>{{notificacion.avance}}</td>
+                <!-- <td>{{notificacion.avance}}</td> -->
 
                 <td style="align-items: center; text-align: center;">
                     <input type="checkbox" [value]="notificacion.check" style="align-items: center; text-align: center;" [(ngModel)]="notificacion.check" [disabled]='notificacion.habilitado'>

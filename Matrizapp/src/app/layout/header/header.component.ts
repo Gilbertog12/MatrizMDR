@@ -33,7 +33,7 @@ export class AppHeaderComponent implements OnInit {
   public valor: string;
   public Ambiente = '';
   public ver: string;
-  public version: string = 'Version: 4.4.9';
+  public version: string = 'Version: 4.5.0';
   public posicion: string;
   public distrito: string;
   public usuario2: string;
@@ -46,6 +46,10 @@ export class AppHeaderComponent implements OnInit {
   };
   tiempoVida: string;
   perfil: string;
+  valoresrkj: string;
+  apr: string;
+  cre: string;
+  val: string;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
@@ -63,7 +67,13 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.posiciones.notificaciones$.subscribe ( (recarga) => {
-      this.refrescarData();
+      // this.perfilesUsuario()
+      if(recarga === true){
+
+        this.refrescarData();
+      }else{
+        this.perfilesUsuario()
+      }
     }
     );
     this.Version();
@@ -93,6 +103,11 @@ export class AppHeaderComponent implements OnInit {
     this.distrito = localStorage.getItem('Distrito');
 
     this.informacion = `${this.usuario2}  ${this.distrito}  ${this.posicion}`;
+
+
+    this.perfilesUsuario()
+
+    // this.permisosRkj = 
   }
 
 /**
@@ -136,7 +151,7 @@ export class AppHeaderComponent implements OnInit {
       });
 
     });
-    this.perfilesUsuario()
+    // this.perfilesUsuario()
   }
 
   // help() {
@@ -353,7 +368,14 @@ export class AppHeaderComponent implements OnInit {
 
   perfilesUsuario(){
     let pe = localStorage.getItem('PerfilRkj')
-    console.log(this.autentication.conseguirPerfil(pe))
+    let adm = pe.substring(0,1)
+    this.apr = pe.substring(1,2)
+    this.cre = pe.substring(3,4)
+    this.val = pe.substring(4,5)
+
+    
+
+    
   }
 
 }

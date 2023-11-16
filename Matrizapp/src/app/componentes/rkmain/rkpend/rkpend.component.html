@@ -1,9 +1,9 @@
 <h4 *ngIf="complete" mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
 
-    {{ data.title }} </h4>
+    Items en construcción </h4>
 
-<h4 *ngIf="!complete" mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
-    Items pendientes por Enviar a Validar </h4>
+<!-- <h4 *ngIf="!complete" mat-dialog-draggable-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    Items pendientes por Enviar a Validar </h4> -->
 <!-- <div class="row" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle >
     <div class="col-xl-12">
         <div class="box-body">
@@ -37,18 +37,18 @@
         </div>
     </div>
 </div> -->
-<mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items en Construcción</mat-slide-toggle>
+<!-- <mat-slide-toggle (change)="recargar()" [(ngModel)]="complete">Items en Construcción</mat-slide-toggle> -->
 
-<mat-dialog-content style="padding-left: 0 !important;">
+<mat-dialog-content >
 
 
-    <table class="cebra">
+    <table class="cebra" >
 
         <thead>
 
 
             <tr>
-                <th class="sticky sticky-top ">
+                <!-- <th class="sticky sticky-top ">
                     <ng-template [ngIf]="bloquearNodos" [ngIfElse]="todos">
                         <b class="limpiar" (click)="restablerSeleccion()">Desmarcar</b>
 
@@ -56,16 +56,16 @@
                     <ng-template #todos>
                         <input type="checkbox" style="background-color: green !important;" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" [disabled]="bloquearNodos" /><b id='check'>Todos</b>
                     </ng-template>
-                </th>
+                </th> -->
 
-                <th class="sticky2 sticky-top"><b>Accion</b></th>
-                <th class="sticky2 sticky-top"><b>Jerarquia</b></th>
-                <th class="sticky-top"><b>Comentarios</b></th>
+                <th class="sticky-top sticky"><b>Accion</b></th>
+                <th class="sticky-top sticky2"><b>Jerarquia</b></th>
+                <!-- <th class="sticky-top"><b>Comentarios</b></th> -->
                 <th class="sticky-top fecha"><b>Fecha</b><br></th>
                 <th class="sticky-top"><b>Entidad</b>
 
-                    <br>
-                    <input type="text" id="filtro" name="entidadfiltro" [(ngModel)]="entidadfiltro">
+                    <!-- <br>
+                    <input type="text" id="filtro" name="entidadfiltro" [(ngModel)]="entidadfiltro"> -->
                     <!-- <button (click)="Mostrarbarra()"><i class="fa fa-search"></i></button> -->
                 </th>
                 <th class="sticky-top"><b>Descripcion</b></th>
@@ -87,19 +87,19 @@
 
         <tbody>
             <tr *ngFor="let item of pendList | filtro: entidadfiltro">
-                <td class="sticky">
+                <!-- <td class="sticky">
                     <input type="checkbox" class="checkmark" (change)="marcar(item.key,item.status)" [value]="item.check" [(ngModel)]="item.check" [disabled]="item.bloqueo">
-                    <!-- <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
+                     <ng-template [ngIf]="item.estado < item.statusParent" [ngIfElse]="PadreMayor">
         
                                 </ng-template>
                                 <ng-template #PadreMayor>
                                     <input readonly type="checkbox" style="align-items: left;" [value]="item.check" [(ngModel)]="item.check">
         
-                                </ng-template> -->
-                </td>
-                <td class="sticky2">{{item.Accion}}</td>
+                                </ng-template> 
+                </td> -->
+                <td >{{item.Accion}}</td>
                 <td>{{item.jerarquia}}</td>
-                <td>{{item.Comentarios}}</td>
+                <!-- <td>{{item.Comentarios}}</td> -->
                 <td class="fecha">{{item.Fecha}}</td>
                 <ng-template [ngIf]="item.Entidad === 'ACTIVIDAD'" [ngIfElse]="Permitido">
 
@@ -113,7 +113,7 @@
 
                 <ng-template #Permitido>
 
-                    <td style="min-width: 220px;">{{item.Entidad}}
+                    <td >{{item.Entidad}}
                         <br>
                         <span style="font-size: 9px; font-weight: bold">{{item.rutaJerarquia}}</span>
 
@@ -142,17 +142,35 @@
 
 
 </mat-dialog-content>
-<span class="contador">{{totalMarcados}}/{{TotalRegistros}}</span>
+<span class="contador">Pag {{paginicial}} de {{numeroPg}}</span>
 
+
+<mat-dialog-actions align="center" cdkDragHandle>
+
+    <button class="botonesAccion"  
+     mat-icon-button color="accent" *ngIf="TotalRegistros >20" >
+        <mat-icon  class="material-icons" (click)="recargar(-20)" >arrow_left</mat-icon>
+      </button>
+    
+    <button class="botonesAccion"  
+    mat-icon-button color="accent" *ngIf="TotalRegistros !== totalMostrar">
+        <mat-icon  class="material-icons" (click)="recargar(+20)" >arrow_right</mat-icon>
+      </button>
+</mat-dialog-actions>
+
+
+
+  <br>
 
 <mat-dialog-actions align="end" cdkDragHandle>
 
     <button mat-raised-button color="warn" (click)="cerrar('')">{{ data.button_close }}</button>
+    <!-- <button mat-raised-button color="primary" (click)="generarReporte()">Generar Reporte Excel</button> -->
     <!-- <button mat-raised-button color="warn" (click)="recargaArbol()">Pincha Aqui Pendejo</button> -->
 
 
     <!-- <button mat-raised-button color="warn" (click)="ejecutar()">{{ data.button_close }}</button> -->
-    <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
+    <!-- <ng-template [ngIf]="!complete" [ngIfElse]="incompletos">
         <button *ngIf="btn === creacion || btn === administrador || btn === creacionvalidacion  || btn ===  creacionaprobacion" mat-raised-button color="accent" (click)="consola('enviar a validar')">Enviar a Validar</button>
         <button *ngIf="btn === creacion  && MostrarRestaurar || btn === administrador  && MostrarRestaurar|| btn === creacionvalidacion  && MostrarRestaurar || btn ===  creacionaprobacion && MostrarRestaurar" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
 
@@ -162,7 +180,7 @@
         <button *ngIf="btn === creacion  && MostrarRestaurar || btn === administrador  && MostrarRestaurar|| btn === creacionvalidacion  && MostrarRestaurar || btn ===  creacionaprobacion && MostrarRestaurar" mat-raised-button color="primary" (click)="consola('restaurar')">Restaurar</button>
 
 
-    </ng-template>
+    </ng-template> -->
 
 
 

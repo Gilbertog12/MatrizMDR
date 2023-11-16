@@ -36,6 +36,9 @@ export class CajasdashboardComponent implements OnInit {
   contador2: number = 1;
   vueltas: number;
   llaves1: any;
+  vacio: boolean = false;
+  enviarV: boolean = false;
+
 
   constructor(private autentication: AuthenticationService,
               private confirm: MatDialog ,
@@ -69,6 +72,7 @@ export class CajasdashboardComponent implements OnInit {
     _atts.push({ name: 'soloNodos', value: "Y" });
     _atts.push({ name: 'statusItem', value: this.data.status });
     _atts.push({ name: 'showCompleted', value: 'Y' });
+    _atts.push({ name: 'empezarDesde', value: "0" })
 
     const spinner = this.controlService.openSpinner();
 
@@ -272,32 +276,7 @@ export class CajasdashboardComponent implements OnInit {
                 });
   }
 
-  cortarMensaje() {
-    const tamMensaje = 2000;
-    let texto = this.llaves.toString();
-    const original = texto.length ;
-    let contador = 0;
-    let final = 0;
-    // debugger;
-    while (texto.length > tamMensaje) {
-
-      if ( original === final ) {
-        console.log(texto.substring(0, tamMensaje) , 'T');
-
-      } else {
-
-        console.log(texto.substring(0, tamMensaje) , 'P');
-      }
-
-      texto = texto.substring(tamMensaje + 1, texto.length);
-      contador++;
-      final = original - texto.length ;
-      console.log(original - texto.length);
-      console.log(final);
-    }
-
-    // enviarPOST(text.substring(0, tamMensaje) , "T");
-  }
+  
 
   mostrarMensaje() {
     Swal2.fire({
@@ -406,6 +385,17 @@ export class CajasdashboardComponent implements OnInit {
             // console.log(this.dashboardData)
 
               this.controlService.closeSpinner(spinner);
+
+              debugger
+
+              console.log((this.dashboardData.ENVIAR_A_VALIDAR))
+              if( this.dashboardData.ENVIAR_A_VALIDAR <= 0){
+                  this.enviarV = true
+              }
+              console.log((this.dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION))
+              if( this.dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION <= 0){
+                  this.vacio = true
+              }
             } else {
 
               // this.autentication.showMessage(data.success, data.message, this.aprobacionesList, data.redirect);
@@ -428,10 +418,11 @@ export class CajasdashboardComponent implements OnInit {
             }
             return result;
           });
+         
     });
   }
 
-  async VerEnviarValidar(completo?: boolean) {
+  async VerEnviarValidar( empezar:number) {
 
     // console.log(this.dashboardData.ENVIAR_A_VALIDAR>'1000');
 
@@ -456,7 +447,9 @@ export class CajasdashboardComponent implements OnInit {
           button_close: 'Cerrar',
           id: this.data.id,
           status: this.data.status,
-          completo : completo
+          totales: this.dashboardData.ENVIAR_A_VALIDAR_CONSTRUCCION,
+          empezar : empezar,
+          
 
         },
         // panelClass : 'tabla'
@@ -521,6 +514,21 @@ export class CajasdashboardComponent implements OnInit {
     //   this.router.navigate(['/rkmain/' + this.nodoseleccionado]);
 
     // }, 1000);
+  }
+
+  generarReporte(){
+    this.autentication.generarReporte( this.data.id)
+    .subscribe(
+      (resp:any) => {
+
+        Swal2.fire({
+          text : resp.data[0].atts[1].value,
+          icon : 'info'
+
+        }
+        );
+      }
+    )
   }
 
 }

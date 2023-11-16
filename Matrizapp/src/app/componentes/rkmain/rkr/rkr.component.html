@@ -3,9 +3,9 @@
     
 
     <button *ngIf="boton === 'creador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(riesgoModel.key,riesgoModel.riesgoStatusId)">Editar</button>
-    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,'IV')">Validar</button>
-    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,'IA')">Aprobar</button>
+    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId,true)">Rechazar</button>
+    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId)">Validar</button>
+    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(riesgoModel.key,riesgoModel.riesgoStatusId)">Aprobar</button>
 </h6>
 
 
@@ -136,6 +136,15 @@
                             </mat-form-field>
                         </div>
                     </div>
+                    <div class="divide">
+                        
+                        <button  class="btn btn-sm btn-light btn-round pl-1"  (click)="generarReporte()"> <img
+                            class="img-circle"
+                            src="assets/images/excel.png"
+                            style="width: 20px; height: 20px"
+                          />Generar Reporte</button>
+                    
+                </div>
                 </div>
             </div>
         </div>

@@ -5,9 +5,9 @@
 
     <!-- <button *ngIf="actividadModel.actividadStatusId !=='008' &&actividadModel.CanAdd=== 'true'" mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button> -->
     <button *ngIf="boton === 'creador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)"><mat-icon mat-list-icon >dashboard</mat-icon>Dashboard</button>
-    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="Caja(actividadModel.key,actividadModel.actividadStatusId)">Editar</button>
-    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId,'IV')">Validar</button>
-    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId,'IA')">Aprobar</button>
+    <button *ngIf="boton === 'validador' || boton === 'aprobador' "  mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId,true)">Rechazar</button>
+    <button *ngIf="boton === 'validador'  " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId)">Validar</button>
+    <button *ngIf="boton === 'aprobador' " mat-button class="mat-button header-btn" myOpenSearchOverlay style="float: right; " (click)="enviarAvalidar(actividadModel.key,actividadModel.actividadStatusId)">Aprobar</button>
 
 </h6>
 
@@ -120,7 +120,7 @@
                             class="img-circle"
                             src="assets/images/excel.png"
                             style="width: 20px; height: 20px"
-                          />Descargar Excel</button>
+                          />Generar Reporte</button>
                     
                 </div>
                 </div>
@@ -157,8 +157,11 @@
                     <table class="mdl-data-table table-bordered table-striped cf no-margin">
                         <thead>
                             <tr>
-                                <th>
+                                <!-- <th>
                                     <button *ngIf='ActivarBoton' class="BotonSinColorNiRelleno" type="button" (click)='ReordenarItems()'>Reordenar</button>
+                                </th> -->
+                                <th style="text-align: center; ">
+                                    <p><b></b></p>
                                 </th>
                                 <th style="text-align: center; ">
                                     <p><b></b></p>
@@ -180,8 +183,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
-                                <tr *ngFor="let item of tareasList" cdkDrag>
+                            <tbody >
+                                <tr *ngFor="let item of tareasList" >
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="001" && item.pendingDelete === "Y"|| item.estado ==="002" && item.pendingDelete === "Y" || item.estado ==="003" && item.pendingDelete === "Y" || item.estado ==="006" && item.pendingDelete === "Y"'
                                         class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (*)</a></td>
                                     <td title="Pendiente Inactivacion (Eliminacion)." *ngIf=' item.estado ==="004" && item.pendingDelete === "Y"' class="mdl-data-table__cell--non-numeric">{{item.Id}}<a style="font-size: 11px;color: red;"> (**)</a></td>
@@ -658,70 +661,7 @@
                 </div>
             </mat-tab>
 
-            <mat-tab label="Log ">
-                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; ">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-end">
-                          <li class="page-item disabled">
-                            <button class="material-icons btn btn-primary  btn-sm " (click)="log(-1)" [disabled] = "disabledBack">arrow_left</button>
-                          </li>
-                          <li class="page-item">
-                            <button class="material-icons  btn btn-primary  btn-sm" (click)="log(+1)" [disabled] = "disabledNext">arrow_right</button>
-                          </li>
-                        </ul>
-                      </nav>
-                    <div class="lds-spinner div_centrado" *ngIf="loading">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin" *ngIf="!loading">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left; ">Fecha y Hora </th>
-                                <th style="text-align: left; ">Usuario</th>
-                                <th style="text-align: left; ">Operacion</th>
-                                <th style="text-align: left; ">Item</th>
-                                <!-- <th style="text-align: left; ">Ruta</th> -->
-                                <!-- <th style="text-align: left; width: 400px; ">Before</th> -->
-                                <th style="text-align: left; width: 400px; ">Jerarquia</th>
-                                <th style="text-align: left; ">Versión</th>
-                                <!-- <th style="text-align: left; ">Consecuencia</th>
-                                <th style="text-align: left; ">Control</th>
-                                <th style="text-align: left; ">Fecha</th>
-                                <th style="text-align: left; ">Hora</th>
-                                <th style="text-align: left; ">Operación</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of logList ">
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.ULTIMAFECHAHORAMODIFICACION}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.ultimaUsuarioModifico}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.operacion}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.item}}</td>
-                                <!-- <td class="mdl-data-table__cell--non-numeric ">{{item.before}}</td> -->
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.after}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.version}}</td>
-                                <!-- <td class="mdl-data-table__cell--non-numeric ">{{item.tarea}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.dimension}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.riesgo}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.consecuencia}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.control}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.ultimaHoraModificacion}}</td> -->
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </mat-tab>
+           
 
             <!-- <mat-tab disabled>
                 <ng-template mat-tab-label>
@@ -768,8 +708,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tbody cdkDropList (cdkDropListDropped)="drop($event) ">
-                                <tr *ngFor="let item of tareasList " cdkDrag>
+                            <!-- <tbody cdkDropList (cdkDropListDropped)="drop($event) "> -->
+                            <tbody >
+                                <!-- <tr *ngFor="let item of tareasList " cdkDrag> -->
+                                <tr *ngFor="let item of tareasList " >
                                     <!-- <td *ngIf=' item.estado ==="001" || item.estado ==="002" || item.estado ==="003" || item.estado ==="006"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (*)</a></td>
                                     <td *ngIf=' item.estado ==="004"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (**)</a></td>
                                     <td *ngIf=' item.estado ==="007"' class="mdl-data-table__cell--non-numeric ">{{item.Id}}<a style="font-size: 11px;color: red; "> (***)</a></td>
@@ -1102,63 +1044,7 @@
                     </table>
                 </div>
             </mat-tab>
-            <mat-tab label="Log ">
-
-                <div class="lds-spinner div_centrado" *ngIf="loading">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-
-                <div class="box box-default table-box table-responsive mdl-shadow--2dp " style="height: 500px; " *ngIf="!loading">
-                    <table class="mdl-data-table table-bordered table-striped cf no-margin ">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left; ">Fecha y Hora </th>
-                                <th style="text-align: left; ">Usuario</th>
-                                <th style="text-align: left; ">Operacion</th>
-                                <th style="text-align: left; ">Item</th>
-                                <!-- <th style="text-align: left; ">Ruta</th> -->
-                                <th style="text-align: left; width: 400px; ">Before</th>
-                                <th style="text-align: left; width: 400px; ">After</th>
-                                <th style="text-align: left; ">Versión</th>
-                                <!-- <th style="text-align: left; ">Consecuencia</th>
-                                <th style="text-align: left; ">Control</th>
-                                <th style="text-align: left; ">Fecha</th>
-                                <th style="text-align: left; ">Hora</th>
-                                <th style="text-align: left; ">Operación</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of logList ">
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.ULTIMAFECHAHORAMODIFICACION}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.ultimaUsuarioModifico}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.operacion}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.item}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.before}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.after}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.version}}</td>
-                                <!-- <td class="mdl-data-table__cell--non-numeric ">{{item.tarea}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.dimension}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.riesgo}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.consecuencia}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.control}}</td>
-                                <td class="mdl-data-table__cell--non-numeric ">{{item.ultimaHoraModificacion}}</td> -->
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </mat-tab>
-            <button (click)="mensaje()">Mas</button>
+          
 
         </mat-tab-group>
 

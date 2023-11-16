@@ -12,6 +12,7 @@ import { RkReasonRejectComponent } from './rk-reason-reject.component';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
