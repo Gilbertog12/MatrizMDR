@@ -81,8 +81,13 @@ export class RkcstdjobComponent implements OnInit {
    
    CargarStdJob(){
      
-    
-     
+    console.log( this.stdJobModel.stdJobNo1tx+"-"+  this.stdJobModel.stdJobNo1desc)
+    if(this.stdJobModel.stdJobNo1tx == undefined){
+      this.stdJobModel.stdJobNo1tx= ""
+    }
+    if(this.stdJobModel.stdJobNo1desc == undefined){
+      this.stdJobModel.stdJobNo1desc= ""
+    }
      this.StdJobList= []
      let _atts = [];
      _atts.push({ name: 'scriptName', value: 'coemdr'});

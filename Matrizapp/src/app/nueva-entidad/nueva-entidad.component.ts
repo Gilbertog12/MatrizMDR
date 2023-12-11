@@ -7,6 +7,7 @@ import Swal2 from 'sweetalert2';
 import { ControlsService } from '../shared';
 import { NuevaEntidad } from '../componentes/rkmain/interfaces/nuevaEntidad.interfaces';
 import { time } from 'console';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-nueva-entidad',
@@ -110,7 +111,7 @@ export class  NuevaEntidadComponent implements OnInit {
   add() {
     const spinner = this.controlService.openSpinner();
     this.solicitudes.push(this.miFormulario.value);
-    console.log(this.solicitudes);
+    // console.log(this.solicitudes);
     this.obtenerFormulario();
 
     this.controlService.closeSpinner(spinner)
@@ -137,45 +138,48 @@ export class  NuevaEntidadComponent implements OnInit {
     this.bloquearBotones = true
     let _atts = [];
     let  spinner = this.controlService.openSpinner();
-    switch (this.data.tabla) {
-      case '+RKC' :
-
-        this.solicitudes.forEach( (item, index) => {
-            _atts.push({ name: 'scriptName', value: 'coemdr' });
-            _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
-            _atts.push({ name: 'type', value: item.type });
-            _atts.push({ name: 'code', value: item.code });
-            _atts.push({ name: 'description', value: item.description });
-            _atts.push({ name: 'extendedText', value: item.extendedText });
-            _atts.push({ name: 'classification', value: item.clasification });
-            // _atts.push({ name: 'requestComment', value: item.Comentario });
-
-            this.enviarSolicitud(_atts, index);
-            _atts = [];
-          }
-
-          );
-          
-        break;
+     switch (this.data.tabla) {
+      
       case '+RKT' :
 
-      // for (let valores of this.solicitudes) {
-      //   console.log(valores);
-      //   let index = 0
-      //   _atts.push({ name: 'scriptName', value: 'coemdr' });
-      //   _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
-      //   _atts.push({ name: 'type', value: valores.type });
-      //   _atts.push({ name: 'description', value: valores.description });
-      //   _atts.push({ name: 'extendedText', value: valores.extendedText });
-      //   debugger
-      //   console.log(index);
-      //   await this.enviarSolicitud(_atts, index);
-      //   index++
-      //   _atts = [];
-        
-      // }
+          for( let i = 0 ; i < this.solicitudes.length ; i++){
 
-        this.solicitudes.forEach( (item, index) => {
+            _atts = []
+            _atts.push({ name: 'scriptName', value: 'coemdr' });
+            _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+            _atts.push({ name: 'type', value: this.solicitudes[i].type });
+            // _atts.push({ name: 'code', value: this.solicitudes[i].code });
+            _atts.push({ name: 'description', value: this.solicitudes[i].description });
+            _atts.push({ name: 'extendedText', value: this.solicitudes[i].extendedText });
+
+            let data = await  this.autentication.generic(_atts).toPromise()
+          
+            let respuesta = data.data[0].atts[1].value;
+            this.formato(this.solicitudes[i], respuesta);
+             this.reformar();
+             
+             
+            }
+            this.controlService.closeSpinner(spinner);
+            this.isLoading = false
+            
+          
+          /*this.solicitudes.map(async (item,index) => {
+            _atts = []
+          _atts.push({ name: 'scriptName', value: 'coemdr' });
+          _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+          _atts.push({ name: 'type', value: item.type });
+          // _atts.push({ name: 'code', value: item.code });
+          _atts.push({ name: 'description', value: item.description });
+          _atts.push({ name: 'extendedText', value: item.extendedText });
+
+         
+       _atts = [];
+
+          })*/
+       /* this.solicitudes.forEach( async (item, index) => {
+
+          _atts = []
           _atts.push({ name: 'scriptName', value: 'coemdr' });
           _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
           _atts.push({ name: 'type', value: item.type });
@@ -186,91 +190,133 @@ export class  NuevaEntidadComponent implements OnInit {
           // _atts.push({ name: 'taskType', value: item.taskType });
           // _atts.push({ name: 'requestComment', value: item.Comentario });
           console.log(index);
-          this.enviarSolicitud(_atts, index);
-          _atts = [];
+           let data = await  this.autentication.generic(_atts).toPromise()
+           console.log(data.success)
+           let respuesta = ''
+           if(data.success === true){
 
+            respuesta = data.data[0].atts[1].value;
+                this.formato(this.solicitudes[index], respuesta);
+                 this.reformar();
+                 this.controlService.closeSpinner(spinner);
+                 this.isLoading = false
+
+             _atts = [];
+           }
+          // console.log(_atts, 'HABLA CHONCA')
+          
         }
 
-        );
+        );*/
         
 
         break;
       case '+RKY' :
 
+      for( let i = 0 ; i < this.solicitudes.length ; i++){
 
+        _atts = []
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+        _atts.push({ name: 'type', value: this.solicitudes[i].type });
+        // _atts.push({ name: 'code', value: this.solicitudes[i].code });
+        _atts.push({ name: 'description', value: this.solicitudes[i].description });
+        _atts.push({ name: 'extendedText', value: this.solicitudes[i].extendedText });
+
+        let data = await  this.autentication.generic(_atts).toPromise()
       
-        this.solicitudes.forEach( (item, index) => {
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
-          _atts.push({ name: 'type', value: item.type });
-          // _atts.push({ name: 'code', value: item.code });
-          _atts.push({ name: 'description', value: item.description });
-          _atts.push({ name: 'extendedText', value: item.extendedText });
-          // _atts.push({ name: 'requestComment', value: item.Comentario });
-
-          this.enviarSolicitud(_atts, index);
-          _atts = [];
+        let respuesta = data.data[0].atts[1].value;
+        this.formato(this.solicitudes[i], respuesta);
+         this.reformar();
+         
+         
         }
-
-        );
+        this.controlService.closeSpinner(spinner);
+        this.isLoading = false
+      
+       
 
         break;
       case '+RKR' :
-        console.log(this.solicitudes);
-        this.solicitudes.forEach( (item, index) => {
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
-          _atts.push({ name: 'type', value: item.type });
-          // _atts.push({ name: 'code', value: item.code });
-          _atts.push({ name: 'description', value: item.description });
-          _atts.push({ name: 'extendedText', value: item.extendedText });
-          // _atts.push({ name: 'branch', value: item.branch });
-          // _atts.push({ name: 'family', value: item.family });
-          // _atts.push({ name: 'classification', value: item.clasification });
-          // _atts.push({ name: 'requestComment', value: item.Comentario });
+        
+      for( let i = 0 ; i < this.solicitudes.length ; i++){
 
-          this.enviarSolicitud(_atts, index);
-          _atts = [];
+        _atts = []
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+        _atts.push({ name: 'type', value: this.solicitudes[i].type });
+        // _atts.push({ name: 'code', value: this.solicitudes[i].code });
+        _atts.push({ name: 'description', value: this.solicitudes[i].description });
+        _atts.push({ name: 'extendedText', value: this.solicitudes[i].extendedText });
+
+        let data = await  this.autentication.generic(_atts).toPromise()
+      
+        let respuesta = data.data[0].atts[1].value;
+        this.formato(this.solicitudes[i], respuesta);
+         this.reformar();
+         
+         
         }
+        this.controlService.closeSpinner(spinner);
+        this.isLoading = false
 
-        );
+       
+
+        
 
         break;
       case '+RKB' :
 
-        this.solicitudes.forEach( (item, index) => {
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
-          _atts.push({ name: 'type', value: item.type });
-          _atts.push({ name: 'code', value: item.code });
-          _atts.push({ name: 'description', value: item.description });
-          _atts.push({ name: 'extendedText', value: item.extendedText });
-          _atts.push({ name: 'family', value: item.family });
-          // _atts.push({ name: 'requestComment', value: item.Comentario });
 
-          this.enviarSolicitud(_atts, index);
-          _atts = [];
+      for( let i = 0 ; i < this.solicitudes.length ; i++){
+
+        _atts = []
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+        _atts.push({ name: 'type', value: this.solicitudes[i].type });
+        // _atts.push({ name: 'code', value: this.solicitudes[i].code });
+        _atts.push({ name: 'description', value: this.solicitudes[i].description });
+        _atts.push({ name: 'extendedText', value: this.solicitudes[i].extendedText });
+        _atts.push({ name: 'family', value:this.solicitudes[i].family });
+        let data = await  this.autentication.generic(_atts).toPromise()
+      
+        let respuesta = data.data[0].atts[1].value;
+        this.formato(this.solicitudes[i], respuesta);
+         this.reformar();
+         
+         
         }
+        this.controlService.closeSpinner(spinner);
+        this.isLoading = false
 
-        );
+
+       
 
         break;
       case '+RKF' :
 
-        this.solicitudes.forEach( (item, index) => {
-          _atts.push({ name: 'scriptName', value: 'coemdr' });
-          _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
-          _atts.push({ name: 'type', value: item.type});
-          _atts.push({ name: 'code', value: item.code });
-          _atts.push({ name: 'description', value: item.description });
-          _atts.push({ name: 'extendedText', value: item.extendedText });
-          // _atts.push({ name: 'requestComment', value: item.Comentario });
+      for( let i = 0 ; i < this.solicitudes.length ; i++){
 
-          this.enviarSolicitud(_atts, index);
-          _atts = [];
+        _atts = []
+        _atts.push({ name: 'scriptName', value: 'coemdr' });
+        _atts.push({ name: 'action', value: 'CREATE_DEFINITION' });
+        _atts.push({ name: 'type', value: this.solicitudes[i].type });
+        // _atts.push({ name: 'code', value: this.solicitudes[i].code });
+        _atts.push({ name: 'description', value: this.solicitudes[i].description });
+        _atts.push({ name: 'extendedText', value: this.solicitudes[i].extendedText });
+  
+        let data = await  this.autentication.generic(_atts).toPromise()
+      
+        let respuesta = data.data[0].atts[1].value;
+        this.formato(this.solicitudes[i], respuesta);
+         this.reformar();
+         
+         
         }
+        this.controlService.closeSpinner(spinner);
+        this.isLoading = false
 
-        );
+      
 
         break;
     }
@@ -287,36 +333,7 @@ export class  NuevaEntidadComponent implements OnInit {
     this.controlService.closeSpinner(spinner);
   }
 
-  enviarSolicitud(req, index) {
-    console.log(req);
-    debugger
-    // console.log(this.solicitudes[index])
-    const spinner  = this.controlService.openSpinner();
-    this.autentication.genericMejorado(req)
-    .subscribe( ( resp: any) => {
-      let respuesta = '';
-      
-      if (resp.success) {
-
-        respuesta = resp.data[0].atts[1].value;
-        this.formato(this.solicitudes[index], respuesta);
-        this.reformar();
-        this.controlService.closeSpinner(spinner);
-        this.isLoading = false
-      } else {
-        respuesta =  resp.message;
-        this.formato(this.solicitudes[index], respuesta);
-        this.reformar();
-        this.controlService.closeSpinner(spinner);
-        this.isLoading = false
-      }
-      // this.solicitudes = [];
-      this.controlService.closeSpinner(spinner);
-      this.isLoading = false
-    }
-      );
-
-  }
+  
 
   cerrar() {
     this.MatDialogRef.close();
